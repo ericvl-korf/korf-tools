@@ -16,7 +16,7 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 
 | To log | Do this |
 | --- | --- |
-| Clock | Start or pause with the clock button or the space bar. The −5 s and +5 s buttons correct the time. Under them, the Speed buttons run the clock at 0.5× (slower), 1× (normal) or 1.25× (faster). The speed is saved with the match. The clock stops at the end of each half (30:00 in a 60-minute match) and shows Half time: the court is locked and the clock button becomes Start 2nd half. Press that button when play restarts; the space bar does not start the next half. At full time the clock stops for good (use −5 s if the time needs correcting). |
+| Clock | Start or pause with the clock button or the space bar. The −5 s and +5 s buttons correct the time. Under them, the Speed buttons run the clock at 0.5× (slower), 1× (normal) or 1.25× (faster). The speed is saved with the match. The clock stops at the end of each half (30:00 in a 60-minute match) and shows Half time. The clock button becomes Start overtime, and a separate Start 2nd half button starts the next half (the space bar never does). You can keep tracking while the clock is stopped, in case the referee allows extra time: press Start overtime to run an overtime stopwatch, and events are logged as 30:00 +mm:ss (60:00 +mm:ss at full time). Once overtime has started, the −5 s and +5 s buttons are disabled. At full time the clock stops for good. |
 | Passes | Click the court for the start of the first pass. Each next click ends one pass and starts the next. |
 | Shot | Double-click where it was taken. **Step 1:** pick the shot type (Distance shot is pre-selected; press 1 for Distance shot or 2 for Runner) and, if names are logged, the shooter. Click the selected type again, or press Enter, to continue with the shooter unknown. **Step 2:** Goal, a rebound, Ball out, or Defended shot. Attack options sit in the left column, defence in the right. |
 | Other events | Penalty, Free pass, turnover tiles, Time out and Subs sit above the court. |
@@ -28,14 +28,14 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 
 ![Figure 4. Shot popup, step 2: attack outcomes and four rebounders on the left, defence on the right, in team colours.](images/log-4.png)
 
-![Figure 5. Half time: the clock stops at 30:00 and waits for Start 2nd half.](images/log-5.png)
+![Figure 5. Half time with overtime running: the clock reads 30:00 +00:03, events are logged as 30:00 +mm:ss, and Start 2nd half starts the next half.](images/log-5.png)
 
 Team colours fill each team's buttons. Where names are logged, player buttons get a coloured border instead.
 
 ## 3. Save, resume and export
 
 - Matches are kept in your browser, so you can stop and finish a match later. **Save backup** downloads a file you can import again. To carry on a saved match, open **New match** and use **Continue a saved match** at the top of the setup page: choose the backup file (.json or .csv) and tracking opens with the clock where it stopped. The Import box under the event log does the same.
-- **Export** gives the event log as CSV or JSON. Choose the format, then read it in the box, copy it, or save it as a file with the button beside the choice (Save CSV file or Save backup file). Korf Log and Korf Lab both read JSON and CSV. A JSON backup is exact; a CSV rebuilds the match from its events, so players who never shot, collected a rebound or were named in a substitution are missing from the player buttons. Both formats record the team, court and circle colours, so Korf Lab can use them.
+- **Export** gives the event log as CSV or JSON. Choose the format, then read it in the box, copy it, or save it as a file with the button beside the choice (Save CSV file or Save backup file). Korf Log and Korf Lab both read JSON and CSV. A JSON backup is exact; a CSV rebuilds the match from its events, so players who never shot, collected a rebound or were named in a substitution are missing from the player buttons. Both formats record the team, court and circle colours, so Korf Lab can use them. Events logged in overtime show as 30:00 +mm:ss in the time column; the overtime seconds are in an extra overtime_s column.
 - **Maximise** hides everything except the clock and speed buttons, score, tracking buttons, a one-line log of the last event (with a delete button) and the court. **Match setup** edits the current match. **New match** starts another, keeping the teams and colours.
 
 *Korf Log is created by Eric Van Looy.*

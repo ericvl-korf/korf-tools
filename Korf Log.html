@@ -419,6 +419,7 @@ details>summary{transition:color .16s var(--ease)}
           <button class="btn" id="clkBack" type="button" title="Go back 5 seconds. Events after that time are removed.">−5 s</button>
           <button class="btn primary" id="clkToggle" type="button" title="Start or pause the clock (Space bar)">Start</button>
           <button class="btn" id="clkFwd" type="button" title="Go forward 5 seconds">+5 s</button>
+          <button class="btn primary" id="clkNext" type="button" title="Start the next half" hidden>Start 2nd half</button>
         </div>
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
@@ -786,6 +787,7 @@ function normEvent(e,cfg,i,fresh){
   var L=cfg.court.len,H=L/2,ty=e.type,t=Math.floor(Number(e.t));
   if(!isFinite(t)||t<0) t=i*10;
   var o={id:(fresh||!e.id)?uid():String(e.id),t:t,ts:Number(e.ts)||Date.now(),team:(e.team==='H'||e.team==='A')?e.team:null};
+  if(e.ot!=null&&e.ot!==''&&isFinite(Number(e.ot))&&Number(e.ot)>=0) o.ot=Math.floor(Number(e.ot));
   function xy(k1,k2){var x=Number(e[k1]),y=Number(e[k2]);if(!isFinite(x)||!isFinite(y)) return null;return [rd2(clamp(x,0,L)),rd2(clamp(y,0,H))];}
   if(ty==='pass'){
     var a=xy('x','y'),b=xy('x2','y2');if(!a||!b) return null;
@@ -896,7 +898,7 @@ function fixDb(d,fromOld){
     var evs=Array.isArray(m.events)?m.events:[];
     m.events=evs.map(function(e,i){return normEvent(e,m.config,i,false);}).filter(Boolean);
     var last=m.events.length?m.events[m.events.length-1].t:0;
-    m.clock={t:Number(m.clock&&m.clock.t)||last,running:false};
+    var oc=m.clock||{};m.clock={t:Number(oc.t)||last,running:false,speed:oc.speed,go:oc.go,ot:oc.ot};
     delete m.period;
     return m;
   });
@@ -949,29 +951,39 @@ function onCourt(m,R,team,role){
 function snap(p){return p?{id:p.id,name:p.name,no:p.no,div:p.div||null,g:p.g,sub:!!p.sub}:null;}
 function plLabel(p){return (p.no?'#'+p.no+' ':'')+p.name;}
 /* ---------- match clock ---------- */
-var clk={base:0,since:null,lastSave:0,speed:1,go:1};
+var clk={base:0,since:null,lastSave:0,speed:1,go:1,ot:0,otSince:null};
+/* Overtime: once the clock has stopped at the end of a period, tracking carries on. Events then keep the stopped time and record how many seconds of overtime had passed on a separate stopwatch (e.ot), shown as 30:00 +mm:ss. */
+function otRaw(){return clk.ot+(clk.otSince?(Date.now()-clk.otSince)/1000*clk.speed:0);}
+function otNow(){return atCap()?Math.floor(otRaw()+1e-6):undefined;}
+function evClock(e){return (e.ot!=null)?fmtClock(Math.round(e.t+1))+' +'+fmtClock(e.ot):fmtClock(e.t);}
 /* The clock never runs past the end of the period that has been started (the half, or the quarter). At that point it stops until the user starts the next period; clk.go is the number of periods started so far. */
 function capT(){var m=cur(),cfg=m&&m.config;if(!cfg) return Infinity;return periodSec(cfg)*Math.min(Math.max(clk.go,1),cfg.periods)-0.001;}
 function nowT(){return Math.min(clk.base+(clk.since?(Date.now()-clk.since)/1000*clk.speed:0),capT());}
 function atCap(){return nowT()>=capT()-1e-6;}
 function lastPeriod(){var m=cur();return clk.go>=m.config.periods;}
 function nowSec(){return Math.floor(nowT()+1e-6);}
-function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
-function persistClock(){cur().clock={t:rd2(nowT()),running:!!clk.since,speed:clk.speed,go:clk.go};save();}
-function setSpeed(v){v=Number(v);if([0.5,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}clk.speed=v;persistClock();renderClock();}
+function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otSince=null;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
+function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw())};save();}
+function setSpeed(v){v=Number(v);if([0.5,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}if(clk.otSince){clk.ot=otRaw();clk.otSince=Date.now();}clk.speed=v;persistClock();renderClock();}
 function setClock(nt){clk.base=nt;if(clk.since) clk.since=Date.now();}
-function pauseQuiet(){if(clk.since){clk.base=nowT();clk.since=null;persistClock();}}
-function toggleClock(fromKey){
+function pauseQuiet(){if(clk.since||clk.otSince){if(clk.since){clk.base=nowT();clk.since=null;}if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}persistClock();}}
+function toggleClock(){
   if(atCap()){
-    /* Half time or full time: only the button starts the next period, never the space bar. */
-    if(fromKey===true||lastPeriod()) return;
-    clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.since=Date.now();ui.popup=null;
-    persistClock();render();return;
+    /* Half time or full time: the button runs or pauses the overtime stopwatch. */
+    if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}else clk.otSince=Date.now();
+    persistClock();renderClock();render();return;
   }
   if(clk.since){clk.base=nowT();clk.since=null;}else{clk.since=Date.now();}
   persistClock();renderClock();
 }
+/* Only this button starts the next half or quarter, never the space bar. */
+function startNextPeriod(){
+  if(!atCap()||lastPeriod()) return;
+  clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otSince=null;clk.since=Date.now();ui.popup=null;
+  persistClock();render();
+}
 function adjustClock(delta){
+  if(atCap()&&(clk.ot>0||clk.otSince)) return;
   var m=cur(),t=nowT(),nt=Math.max(0,Math.floor(t)+delta);
   var wiped=[];
   if(delta<0){
@@ -991,14 +1003,16 @@ function restoreWiped(){
   var m=cur();m.events=m.events.concat(r.events);setClock(r.t);ui.restore=null;persistClock();render();
 }
 function renderClock(){
-  var t=nowT();
-  var cfg=cur().config,cap=atCap(),last=lastPeriod();
-  $('#clock').textContent=fmtClock(cap?Math.ceil(t):t);
-  $('#clock').classList.toggle('paused',!clk.since);
-  $('#clkToggle').textContent=cap?(last?'Full time':'Start '+pBtn(cfg,clk.go+1)):(clk.since?'Pause':(t>0?'Resume':'Start'));
-  $('#clkToggle').disabled=cap&&last;
+  var t=nowT(),cfg=cur().config,cap=atCap(),last=lastPeriod(),otOn=cap&&(clk.ot>0||!!clk.otSince),o=otRaw();
+  $('#clock').textContent=fmtClock(cap?Math.ceil(t):t)+(otOn?' +'+fmtClock(o):'');
+  $('#clock').classList.toggle('paused',cap?!clk.otSince:!clk.since);
+  $('#clkToggle').textContent=cap?(clk.otSince?'Pause overtime':(clk.ot>0?'Resume overtime':'Start overtime')):(clk.since?'Pause':(t>0?'Resume':'Start'));
+  $('#clkToggle').title=cap?'Run or pause the overtime stopwatch (Space bar). Events are logged as '+fmtClock(Math.ceil(t))+' + overtime.':'Start or pause the clock (Space bar)';
+  $('#clkNext').hidden=!(cap&&!last);
+  $('#clkNext').textContent='Start '+pBtn(cfg,clk.go+1);
   $('#clkFwd').disabled=cap;
-  $('#perLabel').textContent=cap?(last?'Full time':(cfg.periods===4?'End of Q'+clk.go:'Half time')):pLong(cfg,periodOf(cfg,Math.floor(t)));
+  $('#clkBack').disabled=otOn;
+  $('#perLabel').textContent=cap?((last?'Full time':(cfg.periods===4?'End of Q'+clk.go:'Half time'))+(otOn?' · overtime':'')):pLong(cfg,periodOf(cfg,Math.floor(t)));
   var sb=document.querySelectorAll('#cspeed [data-spd]');for(var i=0;i<sb.length;i++) sb[i].setAttribute('aria-pressed',String(Number(sb[i].dataset.spd)===clk.speed));
 }
 
@@ -1007,9 +1021,9 @@ function flashMsg(t){
   ui.msg=t;clearTimeout(msgTimer);
   msgTimer=setTimeout(function(){ui.msg='';if(ui.view==='track') renderHint(cur(),ui.R);},4000);
 }
-function canAct(R){return ui.view==='track'&&!ui.popup&&!ui.review&&!atCap()&&R&&R.st.phase==='attack';}
+function canAct(R){return ui.view==='track'&&!ui.popup&&!ui.review&&R&&R.st.phase==='attack';}
 function addEvent(part,msg){
-  var m=cur(),e={id:uid(),t:nowSec(),ts:Date.now()};
+  var m=cur(),e={id:uid(),t:nowSec(),ts:Date.now(),ot:otNow()};
   for(var k in part){e[k]=part[k];}
   m.events.push(e);ui.restore=null;ui.pending=null;
   if(msg) flashMsg(msg);
@@ -1033,24 +1047,24 @@ function addPass(a,b){
 }
 function openShot(p){
   var R=ui.R,V=ui.V,m=cur(),team=R.st.team,post=postOf(m.config,V.right),lo=polar(post,V.right,p.x,p.y);
-  ui.popup={kind:R.st.fp?'freepass':'shot',team:team,x:p.x,y:p.y,r:lo.r,a:lo.a,t:nowSec(),shooter:null,fp:true,stype:null,warn:false,stage:'type'};
+  ui.popup={kind:R.st.fp?'freepass':'shot',team:team,x:p.x,y:p.y,r:lo.r,a:lo.a,t:nowSec(),shooter:null,fp:true,stype:null,warn:false,stage:'type',ot:otNow()};
   ui.popup.stype=needsType(ui.popup)?'distance':null;setStage(ui.popup);
   render();
 }
 function openPenalty(){
   var R=ui.R,V=ui.V,m=cur(),team=R.st.team,post=postOf(m.config,V.right),pt=fromPolar(post,V.right,2.5,0);
-  ui.popup={kind:'penalty',team:team,x:rd2(pt.x),y:rd2(pt.y),r:2.5,a:0,t:nowSec(),shooter:null,fp:false,stype:null,warn:false,stage:'type'};
+  ui.popup={kind:'penalty',team:team,x:rd2(pt.x),y:rd2(pt.y),r:2.5,a:0,t:nowSec(),ot:otNow(),shooter:null,fp:false,stype:null,warn:false,stage:'type'};
   setStage(ui.popup);
   render();
 }
 function openSubs(){
   var R=ui.R;if(ui.popup||ui.review||!R) return;
-  ui.popup={kind:'sub',team:R.st.team,out:null,inn:null,t:nowSec()};render();
+  ui.popup={kind:'sub',team:R.st.team,out:null,inn:null,t:nowSec(),ot:otNow()};render();
 }
 function commitSub(){
   var p=ui.popup,m=cur();if(!p||p.kind!=='sub'||!p.out||!p.inn) return;
   var o=findPerson(m,p.team,p.out),n=findPerson(m,p.team,p.inn);if(!o||!n) return;
-  var e={id:uid(),t:nowSec(),ts:Date.now(),team:p.team,type:'sub',out:snap(o),in:snap(n)};
+  var e={id:uid(),t:nowSec(),ot:otNow(),ts:Date.now(),team:p.team,type:'sub',out:snap(o),in:snap(n)};
   m.events.push(e);ui.popup=null;ui.restore=null;
   flashMsg(teamName(p.team)+': '+n.name+' on for '+o.name+'.');save();render();
 }
@@ -1060,7 +1074,7 @@ function commitShot(k,by){
   var needType=(p.kind==='shot')||(p.kind==='freepass'&&!p.fp);
   if(needType&&!p.stype){p.stage='type';p.warn=true;renderModal(m,ui.R);return;}
   var shooter=p.shooter?snap(findPerson(m,p.team,p.shooter)):null;
-  var e={id:uid(),t:p.t,ts:Date.now(),team:p.team,type:'shot',x:p.x,y:p.y,r:p.r,a:p.a,
+  var e={id:uid(),t:p.t,ot:p.ot,ts:Date.now(),team:p.team,type:'shot',x:p.x,y:p.y,r:p.r,a:p.a,
     kind:p.kind==='freepass'?(p.fp?'freepass':'shot'):p.kind,stype:needType?p.stype:null,shooter:shooter,out:{k:k}};
   if(k==='rebound'){
     e.out.by={team:by.team,pl:by.id?snap(findPerson(m,by.team,by.id)):null};
@@ -1127,16 +1141,16 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','overtime_s'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
     var reb=(o&&o.k==='rebound'&&o.by)?o.by:null;
     var detail=e.type==='turnover'?e.sub:(e.type==='shot'?e.kind:(e.type==='transfer'?e.res:(e.type==='sub'?plLabel(e.out)+' -> '+plLabel(e.in):'')));
-    return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,fmtClock(e.t),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
+    return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,evClock(e),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:'',reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone];
+      o?o.k:'',reb&&reb.pl?reb.pl.name:'',reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot];
   });
   return [head].concat(rows).map(function(r){return r.map(q).join(',');}).join('\n');
 }
@@ -1190,7 +1204,7 @@ function csvToBackup(txt){
   var evs=[],goals=0,firstDiv={H:null,A:null},first=null;
   recs.forEach(function(o,i){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
-    var e={t:t,ts:ts,type:o.event,team:team};
+    var e={t:t,ts:ts,type:o.event,team:team};if(o.overtime_s!==undefined&&o.overtime_s!=='') e.ot=num(o.overtime_s,undefined);
     if(o.event!=='timeout'&&!team) return;
     if(!first&&team) first={team:team,o:o};
     if(o.event==='pass'){e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.x2=num(o.x2_m,NaN);e.y2=num(o.y2_m,NaN);}
@@ -1241,7 +1255,8 @@ function parseImport(txt){
   var evs=src.events.map(function(e,i){return normEvent(e,cfg,i,true);}).filter(Boolean);
   if(!evs.length) throw new Error('No valid events found in that text.');
   var last=evs.reduce(function(a,e){return Math.max(a,e.t);},0);
-  return {id:uid(),home:cfg.home.name,away:cfg.away.name,created:Number(src.created)||Date.now(),events:evs,config:cfg,clock:{t:last,running:false}};
+  var lastEv=evs[evs.length-1],inOt=lastEv&&lastEv.ot!=null&&lastEv.t===last;
+  return {id:uid(),home:cfg.home.name,away:cfg.away.name,created:Number(src.created)||Date.now(),events:evs,config:cfg,clock:{t:inOt?last+0.999:last,running:false,ot:inOt?lastEv.ot:0}};
 }
 function updateExport(){
   if(!$('#exp').open) return;
@@ -1337,7 +1352,7 @@ function hintText(m,R){
   if(ui.msg) return ui.msg;
   var ev=m.config.events;
   if(ui.review) return 'Review mode. Press Back to live to carry on tracking.';
-  if(atCap()) return lastPeriod()?'Full time. The clock has stopped at the end of the match. Use −5 s if the time needs correcting.':(m.config.periods===4?'End of quarter '+clk.go+'. The clock is stopped.':'Half time. The clock is stopped.')+' Press Start '+pBtn(m.config,clk.go+1)+' when play restarts.';
+  if(atCap()){var tm=fmtClock(Math.ceil(nowT()));return (lastPeriod()?'Full time.':(m.config.periods===4?'End of quarter '+clk.go+'.':'Half time.'))+' The clock is stopped at '+tm+'. You can keep tracking: events are logged as '+tm+' + overtime. Use Start overtime to run the overtime stopwatch'+(lastPeriod()?'.':', and Start '+pBtn(m.config,clk.go+1)+' when play restarts.');}
   if(R.st.phase==='transfer') return 'Choose Transfer to attack once the ball is in their attacking half.';
   var parts=[];
   if(ev.pass) parts.push(chainStart()?'Click where the pass is received; that spot starts the next pass.':'Click where the ball is first held to set the start of the pass.');
@@ -1391,7 +1406,7 @@ function buildItems(m,R){
 }
 function rowHTML(m,R,e,idx){
   var n=idx[e.id],a=R.ann[e.id]?R.ann[e.id].att:'';
-  var meta=fmtClock(e.t)+' · '+pLabel(m.config,periodOf(m.config,e.t))+((e.type==='transfer'||e.type==='sub'||e.type==='timeout')?'':' · Attack '+a);
+  var meta=evClock(e)+' · '+pLabel(m.config,periodOf(m.config,e.t))+((e.type==='transfer'||e.type==='sub'||e.type==='timeout')?'':' · Attack '+a);
   var d=evDetail(m,e);if(d) meta+=' · '+d;
   var inner='<span class="n">#'+n+'</span><span class="ev"><i class="dot '+(e.team==='H'?'home':(e.team==='A'?'away':'none'))+'"></i>'+esc(evLabel(m,e))+'</span><span class="det">'+esc(meta)+'</span>';
   var sel=ui.review&&ui.review.hl===e.id;
@@ -1405,7 +1420,7 @@ function renderLastEv(m,R){
   if(!e){el.innerHTML='<span class="det">No events logged yet</span>';return;}
   var idx={};idx[e.id]=m.events.length;
   var a=R.ann[e.id]?R.ann[e.id].att:'';
-  var meta=fmtClock(e.t)+' · '+pLabel(m.config,periodOf(m.config,e.t))+((e.type==='transfer'||e.type==='sub'||e.type==='timeout')?'':' · Attack '+a);
+  var meta=evClock(e)+' · '+pLabel(m.config,periodOf(m.config,e.t))+((e.type==='transfer'||e.type==='sub'||e.type==='timeout')?'':' · Attack '+a);
   var d=evDetail(m,e);if(d) meta+=' · '+d;
   el.innerHTML='<span class="n">#'+idx[e.id]+'</span><span class="ev"><i class="dot '+(e.team==='H'?'home':(e.team==='A'?'away':'none'))+'"></i>'+esc(evLabel(m,e))+'</span><span class="det">'+esc(meta)+'</span>'+(ui.delArm===e.id?'<button type="button" class="rowdel armed" data-del="'+e.id+'" aria-label="Confirm delete of the last event">Delete?</button>':'<button type="button" class="rowdel" data-del="'+e.id+'" aria-label="Delete the last event" title="Delete this event">✕</button>');
 }
@@ -1459,7 +1474,7 @@ function renderSubModal(m,R,p){
   $('#mFp').hidden=true;
   var r=rosterOf(m,p.team),ad=attDiv(m.config,R.st,p.team);
   var o=p.out?findPerson(m,p.team,p.out):null,n=p.inn?findPerson(m,p.team,p.inn):null;
-  $('#mMeta').textContent=fmtClock(p.t)+' · pick the player coming off and the substitute coming on';
+  $('#mMeta').textContent=evClock(p)+' · pick the player coming off and the substitute coming on';
   var h='<div class="msec"><h3>Team</h3><div class="seg" role="group" aria-label="Team">'+
     ['H','A'].map(function(t){return '<button type="button" class="'+(t==='H'?'t-home':'t-away')+'" data-subteam="'+t+'" aria-pressed="'+(p.team===t)+'">'+esc(teamName(t))+'</button>';}).join('')+'</div></div>';
   h+='<div class="msec"><h3>Player coming off</h3>';
@@ -1496,13 +1511,13 @@ function renderModal(m,R){
   if(p.kind==='sub'){renderSubModal(m,R,p);return;}
   var at=p.team,df=other(at),pen=p.kind==='penalty';
   $('#mTitle').textContent=(pen?'Penalty':(p.kind==='freepass'?'Free pass shot':'Shot'))+' · '+teamName(at);
-  $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+fmtClock(p.t)+(pen?' · placed automatically, 2.5 m straight in front of the post':'');
+  $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p)+(pen?' · placed automatically, 2.5 m straight in front of the post':'');
   $('#mFp').hidden=p.kind!=='freepass';
   $('#mFpTick').checked=!!p.fp;
   md.querySelector('.sheet').classList.add('cmp');md.querySelector('.sheet').classList.toggle('cmp2',p.stage!=='type');
   var showTypes=needsType(p),sl=onCourt(m,R,at,'att'),named=sl.people.length>0,h='';
   if(p.stage==='type'){
-    $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+fmtClock(p.t)+' · step 1 of 2';
+    $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p)+' · step 1 of 2';
     if(showTypes){
       h+='<div class="msec"><h3>Shot type</h3><div class="typerow">'+STYPES.map(function(t,i){
         return '<button type="button" class="tile" data-stype="'+t[0]+'" aria-pressed="'+(p.stype===t[0])+'"><span class="kb">'+(i+1)+'</span> '+t[1]+'</button>';}).join('')+'</div></div>';
@@ -1515,7 +1530,7 @@ function renderModal(m,R){
     }
   }else{
     var who=p.shooter&&findPerson(m,at,p.shooter);
-    $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+fmtClock(p.t)+(p.stype&&showTypes?' · '+stypeLabel(p.stype):'')+(who?' · '+who.name:'')+' · step 2 of 2';
+    $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p)+(p.stype&&showTypes?' · '+stypeLabel(p.stype):'')+(who?' · '+who.name:'')+' · step 2 of 2';
     h+='<div class="cols two">';
     function rebCol(team,role,label){
       var ol=onCourt(m,R,team,role),o='<div class="grouplbl">'+esc(teamName(team))+' · '+label+' rebound'+(ol.people.length?' · Division '+ol.div:'')+'</div>';
@@ -2110,6 +2125,7 @@ $('#trackView').addEventListener('click',function(e){
 $('#backLive').addEventListener('click',function(){ui.review=null;render();});
 $('#restoreBtn').addEventListener('click',restoreWiped);
 $('#clkToggle').addEventListener('click',function(){toggleClock();});
+$('#clkNext').addEventListener('click',startNextPeriod);
 $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-spd]');if(b) setSpeed(b.dataset.spd);});
 $('#clkBack').addEventListener('click',function(){adjustClock(-5);});
 $('#clkFwd').addEventListener('click',function(){adjustClock(5);});
@@ -2233,7 +2249,7 @@ document.addEventListener('keydown',function(e){
       e.preventDefault();if(pp.stage!=='type') return;var same=pp.stype===STYPES[ti][0];pp.stype=STYPES[ti][0];pp.warn=false;if(same||!hasShooters(cur(),ui.R,pp)) goOut();else renderModal(cur(),ui.R);return;
     }
   } else if((e.key===' '||e.code==='Space')&&!ui.review&&!document.querySelector('dialog[open]')){
-    e.preventDefault();if(!e.repeat) toggleClock(true);return;
+    e.preventDefault();if(!e.repeat) toggleClock();return;
   }
   if((e.ctrlKey||e.metaKey)&&String(e.key).toLowerCase()==='z'){e.preventDefault();undo();}
 });
@@ -2244,7 +2260,7 @@ setInterval(function(){
   renderClock();
   var p=periodOf(cur().config,nowSec());
   if(p!==ui.per){render();return;}
-  if(clk.since&&Date.now()-clk.lastSave>3000){clk.lastSave=Date.now();persistClock();}
+  if((clk.since||clk.otSince)&&Date.now()-clk.lastSave>3000){clk.lastSave=Date.now();persistClock();}
 },250);
 
 if(window.ResizeObserver){new ResizeObserver(resize).observe(canvas);}

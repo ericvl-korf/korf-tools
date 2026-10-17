@@ -412,7 +412,7 @@ function jsonToCsv(txt){
   function pLong(p){return per===4?'Quarter '+p:(p===1?'1st half':'2nd half');}
   function lab(p){return (p&&p.no?'#'+p.no+' ':'')+(p?p.name:'');}
   var att={H:0,A:0},cur=startTeam;att[startTeam]=1;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','overtime_s'];
   var name=hn+' v '+an,origin=null,rows=[];
   m.events.forEach(function(e){
     var a=att[e.team];
@@ -421,10 +421,10 @@ function jsonToCsv(txt){
     var tn=e.team==='H'?hn:(e.team==='A'?an:'');
     var t=Number(e.t)||0,r=Number(e.r),zone=!shot||!isFinite(r)?'':(r<=2.5?'close':(r<=5?'mid':'long'));
     var ts=new Date(Number(e.ts)||Date.now());
-    rows.push([name,meta.league||'',meta.date||'',meta.week||'',clock(t),t,pOf(t)&&pLong(pOf(t)),tn,a==null?'':a,e.type,detail,
+    rows.push([name,meta.league||'',meta.date||'',meta.week||'',e.ot!=null?clock(t+1)+' +'+clock(e.ot):clock(t),t,pOf(t)&&pLong(pOf(t)),tn,a==null?'':a,e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot&&e.r!=null?e.r:'',shot&&e.a!=null?e.a:'',zone,shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:'',reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'']);
+      o?o.k:'',reb&&reb.pl?reb.pl.name:'',reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'',e.ot!=null?e.ot:'']);
     var oth=function(x){return x==='H'?'A':'H';};
     if(e.type==='turnover'){origin=e.team;cur=oth(e.team);}
     else if(shot){
