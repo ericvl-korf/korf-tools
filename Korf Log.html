@@ -479,10 +479,10 @@ details>summary{transition:color .16s var(--ease)}
             </div>
             <label class="sr" for="exText">Export text</label>
             <textarea id="exText" readonly></textarea>
-            <span class="lbl">Import a match (backup file or pasted JSON)</span>
-            <input type="file" id="imFile" accept=".json,application/json" aria-label="Import a backup file">
+            <span class="lbl">Import a match (backup file or pasted JSON or CSV)</span>
+            <input type="file" id="imFile" accept=".json,.csv,application/json,text/csv" aria-label="Import a backup file">
             <label class="sr" for="imText">Import text</label>
-            <textarea id="imText" placeholder="Paste JSON exported from this tracker"></textarea>
+            <textarea id="imText" placeholder="Paste JSON or CSV exported from this tracker"></textarea>
             <div class="row-actions"><button class="btn" id="importBtn" type="button">Import match</button><span id="imMsg"></span></div>
           </div>
         </details>
@@ -498,6 +498,11 @@ details>summary{transition:color .16s var(--ease)}
     </div>
 
     <div id="setupStep1">
+      <section class="card" id="setupImport" aria-label="Continue a saved match">
+        <div class="card-head"><h2>Continue a saved match</h2><span class="sub">Optional</span></div>
+        <p class="note">Already tracked part of a match? Import its backup file (.json or .csv) to carry on where you stopped. Skip this to set up a new match below.</p>
+        <div class="row-actions"><input type="file" id="setupImFile" accept=".json,.csv,application/json,text/csv" aria-label="Import a backup file and continue tracking"><span id="setupImMsg" role="status"></span></div>
+      </section>
       <section class="card" aria-label="Fixture">
         <div class="card-head"><h2>Fixture</h2><span class="sub">League and date are required</span></div>
         <div class="fixgrid">
@@ -1138,8 +1143,99 @@ function toCSV(m){
 function toJSON(m){
   return JSON.stringify({app:'korfball-tracker',version:3,match:{home:m.home,away:m.away,created:m.created,colors:{home_team:m.config.home.color,away_team:m.config.away.color,court:m.config.look.court,zone_circles:m.config.look.zone},config:m.config,events:m.events}},null,2);
 }
+/* CSV backups: the CSV export holds one row per event, so the match is rebuilt from it. It carries no full player lists, so players who never shot (and were not named in a substitution) are only known by name when they collected a rebound. JSON backups are exact. */
+function parseCsvRows(txt){
+  var rows=[],row=[],f='',inq=false,i=0,c;
+  txt=String(txt).replace(/^﻿/,'');
+  for(;i<txt.length;i++){
+    c=txt.charAt(i);
+    if(inq){if(c==='"'){if(txt.charAt(i+1)==='"'){f+='"';i++;}else inq=false;}else f+=c;}
+    else if(c==='"') inq=true;
+    else if(c===','){row.push(f);f='';}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&txt.charAt(i+1)==='\n') i++;row.push(f);f='';if(row.length>1||row[0]!=='') rows.push(row);row=[];}
+    else f+=c;
+  }
+  if(f!==''||row.length){row.push(f);rows.push(row);}
+  return rows;
+}
+function csvToBackup(txt){
+  var rows=parseCsvRows(txt);
+  if(rows.length<2) throw new Error('No events found in that file.');
+  var h={};rows[0].forEach(function(n,i){h[String(n).trim()]=i;});
+  if(h.event===undefined||h.seconds===undefined||h.team===undefined) throw new Error('That CSV is not a Korf Log export.');
+  var recs=rows.slice(1).map(function(r){var o={};for(var k in h) o[k]=(r[h[k]]===undefined?'':String(r[h[k]]).trim());return o;}).filter(function(o){return o.event;});
+  if(!recs.length) throw new Error('No events found in that file.');
+  var r0=recs[0],names=[];
+  recs.forEach(function(o){if(o.team&&names.indexOf(o.team)<0) names.push(o.team);});
+  var home='',away='',mn=String(r0.match||''),cut=-1;
+  for(var pos=mn.indexOf(' v ');pos>=0;pos=mn.indexOf(' v ',pos+1)){
+    var l=mn.slice(0,pos),r=mn.slice(pos+3);
+    if(names.every(function(n){return n===l||n===r;})){cut=pos;break;}
+  }
+  if(cut>=0){home=mn.slice(0,cut);away=mn.slice(cut+3);}else{home=names[0]||'Home';away=names[1]||(names[0]===mn?'Away':mn)||'Away';}
+  if(home===away) away=away+' 2';
+  var tk=function(n){return n===home?'H':(n===away?'A':null);};
+  var col={H:'',A:''};
+  recs.forEach(function(o){var t=tk(o.team);if(t&&!col[t]&&/^#[0-9a-fA-F]{6}$/.test(o.team_color)) col[t]=o.team_color;});
+  var num=function(v,d){var n=Number(v);return v!==''&&isFinite(n)?n:d;};
+  var L=num(r0.court_length_m,40),mins=num(r0.match_minutes,60),per=num(r0.periods,2),ps=mins*60/(per===4?4:2);
+  var roster={H:{players:[],subs:[]},A:{players:[],subs:[]}},byName={H:{},A:{}};
+  function person(team,name,info){
+    name=String(name||'').replace(/^#\d+\s+/,'').trim();if(!name) return null;
+    var p=byName[team][name];
+    if(!p){p={id:uid(),name:name,no:'',div:null,g:null,sub:!!(info&&info.sub)};byName[team][name]=p;roster[team].players.push(p);}
+    if(info){if(info.no&&!p.no) p.no=info.no;if(info.div&&!p.div) p.div=info.div;if(info.g&&!p.g) p.g=info.g;}
+    return p;
+  }
+  var evs=[],goals=0,firstDiv={H:null,A:null},first=null;
+  recs.forEach(function(o,i){
+    var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
+    var e={t:t,ts:ts,type:o.event,team:team};
+    if(o.event!=='timeout'&&!team) return;
+    if(!first&&team) first={team:team,o:o};
+    if(o.event==='pass'){e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.x2=num(o.x2_m,NaN);e.y2=num(o.y2_m,NaN);}
+    else if(o.event==='shot'){
+      e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.r=num(o.distance_from_post_m,null);e.a=num(o.angle_deg,null);
+      e.kind=o.detail||'shot';e.stype=o.shot_type||null;
+      var pl=o.player?person(team,o.player,{no:o.player_no,div:Number(o.division)||null,g:o.gender,sub:o.role==='substitute'}):null;
+      e.shooter=pl?Object.assign({},pl,{sub:o.role==='substitute'}):null;
+      if(pl&&pl.div&&!firstDiv[team]) firstDiv[team]={div:pl.div,goals:goals};
+      var k=o.outcome||'defended';e.out={k:k};
+      if(k==='rebound'){var rt=tk(o.rebounder_team)||team;e.out.by={team:rt,pl:o.rebounder?person(rt,o.rebounder):null};}
+      if(k==='goal') goals++;
+    }
+    else if(o.event==='turnover') e.sub=o.detail||'general';
+    else if(o.event==='transfer') e.res=o.detail==='turnover'?'turnover':'attack';
+    else if(o.event==='sub'){
+      var pr=String(o.detail||'').split(' -> ');
+      e.out=person(team,pr[0]);e.in=person(team,pr[1],{sub:true});
+    }
+    evs.push(e);
+  });
+  if(!evs.length) throw new Error('No valid events found in that file.');
+  var dir='right';
+  if(first){
+    var xs=recs.filter(function(o){return tk(o.team)===first.team&&num(o.seconds,0)<ps&&o.x_m!=='';}).map(function(o){return num(o.x_m,L/2);});
+    if(xs.length) dir=(xs.reduce(function(a,b){return a+b;},0)/xs.length)<L/2?'left':'right';
+  }
+  var divs={H:1,A:2};
+  ['H','A'].forEach(function(t){var f=firstDiv[t];if(f) divs[t]=(Math.floor(f.goals/2)%2)?3-f.div:f.div;});
+  if(divs.H===divs.A) divs.A=3-divs.H;
+  var has=function(ty){return recs.some(function(o){return o.event===ty;});};
+  var cfg={home:{name:home,color:col.H||undefined},away:{name:away,color:col.A||undefined},length:mins,periods:per,court:{len:L},
+    look:{court:r0.court_color,zone:r0.zone_color},events:{to:{}},start:{team:first?first.team:'H',divs:divs,dir:dir},
+    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week}};
+  ['H','A'].forEach(function(t){
+    var nm=t==='H'?'home':'away';
+    cfg[nm].players=roster[t].players.filter(function(p){return !p.sub;});
+    cfg[nm].subs=roster[t].players.filter(function(p){return p.sub;});
+  });
+  if(has('pass')===false) cfg.events.pass=false;
+  recs.forEach(function(o){if(o.event==='turnover'&&o.detail) cfg.events.to[o.detail]=true;});
+  return {app:'korfball-tracker',version:3,match:{home:home,away:away,created:Date.parse(r0.time_iso)||Date.now(),config:cfg,events:evs}};
+}
 function parseImport(txt){
-  var d=JSON.parse(txt),src=d&&d.match?d.match:d;
+  var d=(typeof txt==='string'&&txt.replace(/^﻿/,'').trim().charAt(0)!=='{'&&txt.replace(/^﻿/,'').trim().charAt(0)!=='[')?csvToBackup(txt):(typeof txt==='string'?JSON.parse(txt):txt),src=d&&d.match?d.match:d;
   if(!src||!Array.isArray(src.events)) throw new Error('No events found in that text.');
   var cfg=normCfg(src.config||{home:{name:src.home},away:{name:src.away}});
   var evs=src.events.map(function(e,i){return normEvent(e,cfg,i,true);}).filter(Boolean);
@@ -1837,6 +1933,7 @@ function buildSetup(){
   $('#lookRow').innerHTML=lookHTML();
   $('#teamsGrid').innerHTML=teamCardHTML('home')+teamCardHTML('away');
   $('#setupTitle').textContent=setupTarget==='new'?'New match setup':'Match setup';
+  $('#setupImport').hidden=setupTarget!=='new';$('#setupImMsg').textContent='';
   $('#setupStart').textContent=setupTarget==='new'?'Start match':'Save setup';
   $('#setupCancel').textContent=(setupTarget==='new'&&cur().sample)?'Look at the sample match':'Cancel';
   showStep(setupStep);
@@ -1947,7 +2044,8 @@ sv.addEventListener('input',function(e){
   syncCounts();syncIssues();persistDraft();
 });
 sv.addEventListener('change',function(e){
-  var t=e.target,ev=draft.events;
+  var t=e.target;if(!draft||t.type==='file') return;
+  var ev=draft.events;
   if(t.dataset.ev){
     ev[t.dataset.ev]=t.checked;
     if(t.dataset.ev==='referee'&&t.checked&&!ev.penalty&&!ev.freepass){ev.penalty=true;ev.freepass=true;}
@@ -2077,21 +2175,32 @@ function saveBackup(fmt){
 $('#backupBtn').addEventListener('click',function(){saveBackup('json');});
 $('#backupBtn2').addEventListener('click',function(){saveBackup(ui.fmt);});
 $('#maxBackup').addEventListener('click',function(){saveBackup('json');});
-$('#imFile').addEventListener('change',function(e){
-  var f=e.target.files&&e.target.files[0],msg=$('#imMsg');if(!f) return;
+/* Import a backup (JSON) and make it the current match. From the setup page it also leaves setup and goes straight to tracking, with the clock where the file stopped. */
+function importMatchText(text,fromSetup){
+  var nm=parseImport(String(text));
+  pauseQuiet();
+  db.matches.unshift(nm);db.current=nm.id;ui.review=null;ui.popup=null;ui.restore=null;resetFilters();loadClock();
+  if(fromSetup){draft=null;delete db.draft;ui.view='track';}
+  save();
+  return nm;
+}
+function readBackupFile(inp,msg,fromSetup){
+  var f=inp.files&&inp.files[0];if(!f) return;
   var rd=new FileReader();
   rd.onload=function(){
     try{
-      var nm=parseImport(String(rd.result));
-      pauseQuiet();
-      db.matches.unshift(nm);db.current=nm.id;ui.review=null;ui.popup=null;ui.restore=null;resetFilters();loadClock();save();
-      msg.textContent='Imported '+nm.events.length+' events from '+f.name+'.';render();
+      var nm=importMatchText(rd.result,fromSetup);
+      var txt='Imported '+nm.events.length+' events from '+f.name+'.';
+      if(fromSetup){flashMsg(txt+(atCap()?(lastPeriod()?' The match is at full time.':' Press Start '+pBtn(nm.config,clk.go+1)+' on the clock to carry on tracking.'):' Press Resume on the clock to carry on tracking.'));render();}
+      else{msg.textContent=txt;render();}
     }catch(err){msg.textContent=(err&&err.message)?err.message:'Could not read that file.';}
-    e.target.value='';
+    inp.value='';
   };
   rd.onerror=function(){msg.textContent='Could not read that file.';};
   rd.readAsText(f);
-});
+}
+$('#imFile').addEventListener('change',function(e){readBackupFile(e.target,$('#imMsg'),false);});
+$('#setupImFile').addEventListener('change',function(e){readBackupFile(e.target,$('#setupImMsg'),true);});
 $('#copyBtn').addEventListener('click',function(){
   var ta=$('#exText'),msg=$('#exMsg');
   if(!$('#exp').open) return;
@@ -2102,9 +2211,7 @@ $('#copyBtn').addEventListener('click',function(){
 $('#importBtn').addEventListener('click',function(){
   var msg=$('#imMsg');
   try{
-    var nm=parseImport($('#imText').value);
-    pauseQuiet();
-    db.matches.unshift(nm);db.current=nm.id;ui.review=null;ui.popup=null;ui.restore=null;resetFilters();loadClock();save();$('#imText').value='';
+    var nm=importMatchText($('#imText').value,false);$('#imText').value='';
     msg.textContent='Imported '+nm.events.length+' events.';render();
   }catch(err){msg.textContent=(err&&err.message)?err.message:'Could not read that text.';}
 });
