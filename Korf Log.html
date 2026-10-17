@@ -419,7 +419,7 @@ details>summary{transition:color .16s var(--ease)}
           <button class="btn" id="clkBack" type="button" title="Go back 5 seconds. Events after that time are removed.">−5 s</button>
           <button class="btn primary" id="clkToggle" type="button" title="Start or pause the clock (Space bar)">Start</button>
           <button class="btn" id="clkFwd" type="button" title="Go forward 5 seconds">+5 s</button>
-          <button class="btn primary" id="clkNext" type="button" title="Start the next half" hidden>Start 2nd half</button>
+          <button class="btn primary" id="clkNext" type="button" title="Set up the next half. The clock stays stopped until you press Start." hidden>Start 2nd half</button>
         </div>
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
@@ -898,7 +898,7 @@ function fixDb(d,fromOld){
     var evs=Array.isArray(m.events)?m.events:[];
     m.events=evs.map(function(e,i){return normEvent(e,m.config,i,false);}).filter(Boolean);
     var last=m.events.length?m.events[m.events.length-1].t:0;
-    var oc=m.clock||{};m.clock={t:Number(oc.t)||last,running:false,speed:oc.speed,go:oc.go,ot:oc.ot};
+    var oc=m.clock||{};m.clock={t:Number(oc.t)||last,running:false,speed:oc.speed,go:oc.go,ot:oc.ot,otOn:oc.otOn};
     delete m.period;
     return m;
   });
@@ -951,7 +951,9 @@ function onCourt(m,R,team,role){
 function snap(p){return p?{id:p.id,name:p.name,no:p.no,div:p.div||null,g:p.g,sub:!!p.sub}:null;}
 function plLabel(p){return (p.no?'#'+p.no+' ':'')+p.name;}
 /* ---------- match clock ---------- */
-var clk={base:0,since:null,lastSave:0,speed:1,go:1,ot:0,otSince:null};
+var clk={base:0,since:null,lastSave:0,speed:1,go:1,ot:0,otSince:null,otOn:false};
+function otFlag(){return clk.otOn||clk.ot>0||!!clk.otSince;}
+function periodStart(){return periodSec(cur().config)*(Math.max(clk.go,1)-1);}
 /* Overtime: once the clock has stopped at the end of a period, tracking carries on. Events then keep the stopped time and record how many seconds of overtime had passed on a separate stopwatch (e.ot), shown as 30:00 +mm:ss. */
 function otRaw(){return clk.ot+(clk.otSince?(Date.now()-clk.otSince)/1000*clk.speed:0);}
 function otNow(){return atCap()?Math.floor(otRaw()+1e-6):undefined;}
@@ -962,15 +964,15 @@ function nowT(){return Math.min(clk.base+(clk.since?(Date.now()-clk.since)/1000*
 function atCap(){return nowT()>=capT()-1e-6;}
 function lastPeriod(){var m=cur();return clk.go>=m.config.periods;}
 function nowSec(){return Math.floor(nowT()+1e-6);}
-function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otSince=null;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
-function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw())};save();}
+function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
+function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw()),otOn:otFlag()};save();}
 function setSpeed(v){v=Number(v);if([0.5,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}if(clk.otSince){clk.ot=otRaw();clk.otSince=Date.now();}clk.speed=v;persistClock();renderClock();}
 function setClock(nt){clk.base=nt;if(clk.since) clk.since=Date.now();}
 function pauseQuiet(){if(clk.since||clk.otSince){if(clk.since){clk.base=nowT();clk.since=null;}if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}persistClock();}}
 function toggleClock(){
   if(atCap()){
     /* Half time or full time: the button runs or pauses the overtime stopwatch. */
-    if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}else clk.otSince=Date.now();
+    if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}else{clk.otOn=true;clk.otSince=Date.now();}
     persistClock();renderClock();render();return;
   }
   if(clk.since){clk.base=nowT();clk.since=null;}else{clk.since=Date.now();}
@@ -979,13 +981,29 @@ function toggleClock(){
 /* Only this button starts the next half or quarter, never the space bar. */
 function startNextPeriod(){
   if(!atCap()||lastPeriod()) return;
-  clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otSince=null;clk.since=Date.now();ui.popup=null;
+  clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otOn=false;clk.otSince=null;clk.since=null;ui.popup=null;ui.restore=null;
   persistClock();render();
 }
 function adjustClock(delta){
-  if(atCap()&&(clk.ot>0||clk.otSince)) return;
-  var m=cur(),t=nowT(),nt=Math.max(0,Math.floor(t)+delta);
-  var wiped=[];
+  var m=cur(),t=nowT(),wiped=[];
+  if(atCap()&&otFlag()){
+    /* In overtime the buttons only move the overtime stopwatch, never back into regular time. */
+    if(delta>0) return;
+    var was=Math.floor(otRaw()+1e-6),no=Math.max(0,was+delta);
+    if(no===was) return;
+    var capS=Math.floor(t+1e-6);
+    wiped=m.events.filter(function(e){return e.ot!=null&&e.t===capS&&e.ot>no;});
+    if(wiped.length) m.events=m.events.filter(function(e){return wiped.indexOf(e)<0;});
+    clk.ot=no;if(clk.otSince) clk.otSince=Date.now();
+    ui.popup=null;ui.review=null;
+    if(wiped.length){
+      var pv=ui.restore;
+      ui.restore={events:(pv?wiped.concat(pv.events):wiped),t:pv?pv.t:t,at:no,ot:(pv&&pv.ot!=null)?pv.ot:was};
+    }else if(ui.restore&&ui.restore.ot!=null){ui.restore.at=no;}
+    persistClock();render();return;
+  }
+  /* In regular time the clock cannot go back past the start of the current half (or quarter). */
+  var nt=Math.max(periodStart(),Math.floor(t)+delta);
   if(delta<0){
     wiped=m.events.filter(function(e){return e.t>nt;});
     if(wiped.length) m.events=m.events.filter(function(e){return e.t<=nt;});
@@ -1000,18 +1018,20 @@ function adjustClock(delta){
 }
 function restoreWiped(){
   var r=ui.restore;if(!r) return;
-  var m=cur();m.events=m.events.concat(r.events);setClock(r.t);ui.restore=null;persistClock();render();
+  var m=cur();m.events=m.events.concat(r.events);
+  if(r.ot!=null){clk.ot=r.ot;if(clk.otSince) clk.otSince=Date.now();}else setClock(r.t);
+  ui.restore=null;persistClock();render();
 }
 function renderClock(){
-  var t=nowT(),cfg=cur().config,cap=atCap(),last=lastPeriod(),otOn=cap&&(clk.ot>0||!!clk.otSince),o=otRaw();
+  var t=nowT(),cfg=cur().config,cap=atCap(),last=lastPeriod(),otOn=cap&&otFlag(),o=otRaw();
   $('#clock').textContent=fmtClock(cap?Math.ceil(t):t)+(otOn?' +'+fmtClock(o):'');
   $('#clock').classList.toggle('paused',cap?!clk.otSince:!clk.since);
-  $('#clkToggle').textContent=cap?(clk.otSince?'Pause overtime':(clk.ot>0?'Resume overtime':'Start overtime')):(clk.since?'Pause':(t>0?'Resume':'Start'));
+  $('#clkToggle').textContent=cap?(clk.otSince?'Pause overtime':(clk.ot>0?'Resume overtime':'Start overtime')):(clk.since?'Pause':(t>periodStart()+0.5?'Resume':'Start'));
   $('#clkToggle').title=cap?'Run or pause the overtime stopwatch (Space bar). Events are logged as '+fmtClock(Math.ceil(t))+' + overtime.':'Start or pause the clock (Space bar)';
   $('#clkNext').hidden=!(cap&&!last);
   $('#clkNext').textContent='Start '+pBtn(cfg,clk.go+1);
   $('#clkFwd').disabled=cap;
-  $('#clkBack').disabled=otOn;
+  $('#clkBack').disabled=otOn?(Math.floor(o+1e-6)<1):(Math.floor(t)<=periodStart());
   $('#perLabel').textContent=cap?((last?'Full time':(cfg.periods===4?'End of Q'+clk.go:'Half time'))+(otOn?' · overtime':'')):pLong(cfg,periodOf(cfg,Math.floor(t)));
   var sb=document.querySelectorAll('#cspeed [data-spd]');for(var i=0;i<sb.length;i++) sb[i].setAttribute('aria-pressed',String(Number(sb[i].dataset.spd)===clk.speed));
 }
@@ -1256,7 +1276,7 @@ function parseImport(txt){
   if(!evs.length) throw new Error('No valid events found in that text.');
   var last=evs.reduce(function(a,e){return Math.max(a,e.t);},0);
   var lastEv=evs[evs.length-1],inOt=lastEv&&lastEv.ot!=null&&lastEv.t===last;
-  return {id:uid(),home:cfg.home.name,away:cfg.away.name,created:Number(src.created)||Date.now(),events:evs,config:cfg,clock:{t:inOt?last+0.999:last,running:false,ot:inOt?lastEv.ot:0}};
+  return {id:uid(),home:cfg.home.name,away:cfg.away.name,created:Number(src.created)||Date.now(),events:evs,config:cfg,clock:{t:inOt?last+0.999:last,running:false,ot:inOt?lastEv.ot:0,otOn:!!inOt}};
 }
 function updateExport(){
   if(!$('#exp').open) return;
@@ -1346,7 +1366,7 @@ function renderPanels(m,R){
   if(rv) $('#reviewMsg').textContent='Reviewing '+teamName(rv.team)+' attack '+rv.att+' · '+pLong(m.config,rv.period);
   var rs=ui.restore;
   $('#restoreBar').hidden=!rs;
-  if(rs) $('#restoreMsg').textContent='Rewound to '+fmtClock(rs.at)+' and removed '+rs.events.length+(rs.events.length===1?' event.':' events.');
+  if(rs) $('#restoreMsg').textContent=(rs.ot!=null?'Rewound overtime to +'+fmtClock(rs.at):'Rewound to '+fmtClock(rs.at))+' and removed '+rs.events.length+(rs.events.length===1?' event.':' events.');
 }
 function hintText(m,R){
   if(ui.msg) return ui.msg;
