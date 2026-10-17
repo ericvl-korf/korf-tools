@@ -944,15 +944,25 @@ function onCourt(m,R,team,role){
 function snap(p){return p?{id:p.id,name:p.name,no:p.no,div:p.div||null,g:p.g,sub:!!p.sub}:null;}
 function plLabel(p){return (p.no?'#'+p.no+' ':'')+p.name;}
 /* ---------- match clock ---------- */
-var clk={base:0,since:null,lastSave:0,speed:1};
-function nowT(){return clk.base+(clk.since?(Date.now()-clk.since)/1000*clk.speed:0);}
+var clk={base:0,since:null,lastSave:0,speed:1,go:1};
+/* The clock never runs past the end of the period that has been started (the half, or the quarter). At that point it stops until the user starts the next period; clk.go is the number of periods started so far. */
+function capT(){var m=cur(),cfg=m&&m.config;if(!cfg) return Infinity;return periodSec(cfg)*Math.min(Math.max(clk.go,1),cfg.periods)-0.001;}
+function nowT(){return Math.min(clk.base+(clk.since?(Date.now()-clk.since)/1000*clk.speed:0),capT());}
+function atCap(){return nowT()>=capT()-1e-6;}
+function lastPeriod(){var m=cur();return clk.go>=m.config.periods;}
 function nowSec(){return Math.floor(nowT()+1e-6);}
-function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;}
-function persistClock(){cur().clock={t:rd2(nowT()),running:!!clk.since,speed:clk.speed};save();}
+function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
+function persistClock(){cur().clock={t:rd2(nowT()),running:!!clk.since,speed:clk.speed,go:clk.go};save();}
 function setSpeed(v){v=Number(v);if([0.5,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}clk.speed=v;persistClock();renderClock();}
 function setClock(nt){clk.base=nt;if(clk.since) clk.since=Date.now();}
 function pauseQuiet(){if(clk.since){clk.base=nowT();clk.since=null;persistClock();}}
-function toggleClock(){
+function toggleClock(fromKey){
+  if(atCap()){
+    /* Half time or full time: only the button starts the next period, never the space bar. */
+    if(fromKey===true||lastPeriod()) return;
+    clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.since=Date.now();ui.popup=null;
+    persistClock();render();return;
+  }
   if(clk.since){clk.base=nowT();clk.since=null;}else{clk.since=Date.now();}
   persistClock();renderClock();
 }
@@ -977,10 +987,13 @@ function restoreWiped(){
 }
 function renderClock(){
   var t=nowT();
-  $('#clock').textContent=fmtClock(t);
+  var cfg=cur().config,cap=atCap(),last=lastPeriod();
+  $('#clock').textContent=fmtClock(cap?Math.ceil(t):t);
   $('#clock').classList.toggle('paused',!clk.since);
-  $('#clkToggle').textContent=clk.since?'Pause':(t>0?'Resume':'Start');
-  $('#perLabel').textContent=pLong(cur().config,periodOf(cur().config,Math.floor(t)));
+  $('#clkToggle').textContent=cap?(last?'Full time':'Start '+pBtn(cfg,clk.go+1)):(clk.since?'Pause':(t>0?'Resume':'Start'));
+  $('#clkToggle').disabled=cap&&last;
+  $('#clkFwd').disabled=cap;
+  $('#perLabel').textContent=cap?(last?'Full time':(cfg.periods===4?'End of Q'+clk.go:'Half time')):pLong(cfg,periodOf(cfg,Math.floor(t)));
   var sb=document.querySelectorAll('#cspeed [data-spd]');for(var i=0;i<sb.length;i++) sb[i].setAttribute('aria-pressed',String(Number(sb[i].dataset.spd)===clk.speed));
 }
 
@@ -989,7 +1002,7 @@ function flashMsg(t){
   ui.msg=t;clearTimeout(msgTimer);
   msgTimer=setTimeout(function(){ui.msg='';if(ui.view==='track') renderHint(cur(),ui.R);},4000);
 }
-function canAct(R){return ui.view==='track'&&!ui.popup&&!ui.review&&R&&R.st.phase==='attack';}
+function canAct(R){return ui.view==='track'&&!ui.popup&&!ui.review&&!atCap()&&R&&R.st.phase==='attack';}
 function addEvent(part,msg){
   var m=cur(),e={id:uid(),t:nowSec(),ts:Date.now()};
   for(var k in part){e[k]=part[k];}
@@ -1228,6 +1241,7 @@ function hintText(m,R){
   if(ui.msg) return ui.msg;
   var ev=m.config.events;
   if(ui.review) return 'Review mode. Press Back to live to carry on tracking.';
+  if(atCap()) return lastPeriod()?'Full time. The clock has stopped at the end of the match. Use −5 s if the time needs correcting.':(m.config.periods===4?'End of quarter '+clk.go+'. The clock is stopped.':'Half time. The clock is stopped.')+' Press Start '+pBtn(m.config,clk.go+1)+' when play restarts.';
   if(R.st.phase==='transfer') return 'Choose Transfer to attack once the ball is in their attacking half.';
   var parts=[];
   if(ev.pass) parts.push(chainStart()?'Click where the pass is received; that spot starts the next pass.':'Click where the ball is first held to set the start of the pass.');
@@ -1997,7 +2011,7 @@ $('#trackView').addEventListener('click',function(e){
 });
 $('#backLive').addEventListener('click',function(){ui.review=null;render();});
 $('#restoreBtn').addEventListener('click',restoreWiped);
-$('#clkToggle').addEventListener('click',toggleClock);
+$('#clkToggle').addEventListener('click',function(){toggleClock();});
 $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-spd]');if(b) setSpeed(b.dataset.spd);});
 $('#clkBack').addEventListener('click',function(){adjustClock(-5);});
 $('#clkFwd').addEventListener('click',function(){adjustClock(5);});
@@ -2112,13 +2126,14 @@ document.addEventListener('keydown',function(e){
       e.preventDefault();if(pp.stage!=='type') return;var same=pp.stype===STYPES[ti][0];pp.stype=STYPES[ti][0];pp.warn=false;if(same||!hasShooters(cur(),ui.R,pp)) goOut();else renderModal(cur(),ui.R);return;
     }
   } else if((e.key===' '||e.code==='Space')&&!ui.review&&!document.querySelector('dialog[open]')){
-    e.preventDefault();if(!e.repeat) toggleClock();return;
+    e.preventDefault();if(!e.repeat) toggleClock(true);return;
   }
   if((e.ctrlKey||e.metaKey)&&String(e.key).toLowerCase()==='z'){e.preventDefault();undo();}
 });
 
 setInterval(function(){
   if(ui.view!=='track') return;
+  if(clk.since&&atCap()){clk.base=nowT();clk.since=null;ui.popup=null;persistClock();render();}
   renderClock();
   var p=periodOf(cur().config,nowSec());
   if(p!==ui.per){render();return;}

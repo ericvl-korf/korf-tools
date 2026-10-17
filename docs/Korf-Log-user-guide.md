@@ -16,7 +16,7 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 
 | To log | Do this |
 | --- | --- |
-| Clock | Start or pause with the clock button or the space bar. The −5 s and +5 s buttons correct the time. Under them, the Speed buttons run the clock at 0.5× (slower), 1× (normal) or 1.25× (faster). The speed is saved with the match. |
+| Clock | Start or pause with the clock button or the space bar. The −5 s and +5 s buttons correct the time. Under them, the Speed buttons run the clock at 0.5× (slower), 1× (normal) or 1.25× (faster). The speed is saved with the match. The clock stops at the end of each half (30:00 in a 60-minute match) and shows Half time: the court is locked and the clock button becomes Start 2nd half. Press that button when play restarts; the space bar does not start the next half. At full time the clock stops for good (use −5 s if the time needs correcting). |
 | Passes | Click the court for the start of the first pass. Each next click ends one pass and starts the next. |
 | Shot | Double-click where it was taken. **Step 1:** pick the shot type (Distance shot is pre-selected; press 1 for Distance shot or 2 for Runner) and, if names are logged, the shooter. Click the selected type again, or press Enter, to continue with the shooter unknown. **Step 2:** Goal, a rebound, Ball out, or Defended shot. Attack options sit in the left column, defence in the right. |
 | Other events | Penalty, Free pass, turnover tiles, Time out and Subs sit above the court. |
@@ -27,6 +27,8 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 ![Figure 3. Shot popup, step 1: shot type, then the four players of the attacking team.](images/log-3.png)
 
 ![Figure 4. Shot popup, step 2: attack outcomes and four rebounders on the left, defence on the right, in team colours.](images/log-4.png)
+
+![Figure 5. Half time: the clock stops at 30:00 and waits for Start 2nd half.](images/log-5.png)
 
 Team colours fill each team's buttons. Where names are logged, player buttons get a coloured border instead.
 
