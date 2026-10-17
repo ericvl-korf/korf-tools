@@ -830,8 +830,9 @@ function applySub(ros,e){
   r.players[oi]=Object.assign({},n,{div:o.div,sub:false});
   r.subs[ii]=Object.assign({},o,{div:null,sub:true});
 }
-function replay(m){
-  var cfg=m.config,s=cfg.start;
+/* At the start of the 2nd half (the 3rd quarter in a four-quarter match) the team that did not have the opening attack gets the first attack. Divisions keep their attack or defence role across the break: they only switch after every second goal of the two teams combined (see attDiv). */
+function replay(m,curP){
+  var cfg=m.config,s=cfg.start,lastP=1,halfP=cfg.periods===4?3:2;
   var st={phase:'attack',team:s.team,origin:null,att:{H:0,A:0},fp:false,gH:0,gA:0,ros:{}};
   ['H','A'].forEach(function(t){
     var c=cfg[t==='H'?'home':'away'];
@@ -840,7 +841,12 @@ function replay(m){
   });
   st.att[s.team]=1;
   var ann={};
+  function toPeriod(p){
+    for(var q=lastP+1;q<=p;q++){if(q===halfP){st.phase='attack';st.origin=null;st.fp=false;st.team=other(s.team);st.att[st.team]++;}}
+    if(p>lastP) lastP=p;
+  }
   m.events.forEach(function(e){
+    toPeriod(periodOf(cfg,e.t));
     ann[e.id]={att:st.att[e.team]};
     if(e.type==='sub'){applySub(st.ros,e);}
     else if(e.type==='freepass'){st.fp=true;}
@@ -862,6 +868,7 @@ function replay(m){
       st.phase='attack';st.origin=null;st.att[st.team]++;
     }
   });
+  if(curP) toPeriod(curP);
   return {st:st,ann:ann};
 }
 
@@ -1478,7 +1485,7 @@ function render(){
   $('#matchbar').hidden=ui.view!=='track';
   if(ui.view!=='track'){$('#modal').hidden=true;$('#fixLine').hidden=true;$('#fixLine').textContent='';return;}
   var m=cur();setGeom();
-  var R=replay(m);ui.R=R;ui.per=periodOf(m.config,nowSec());ui.V=currentView(m,R);
+  var R=replay(m,periodOf(m.config,nowSec()));ui.R=R;ui.per=periodOf(m.config,nowSec());ui.V=currentView(m,R);
   renderMatchBar();renderScore(m,R);renderPoss(m,R);renderTiles(m,R);renderPanels(m,R);
   renderFilters(m);renderLog(m,R);renderLastEv(m,R);renderHint(m,R);updateExport();renderModal(m,R);
   resize();

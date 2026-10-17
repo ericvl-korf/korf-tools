@@ -8,7 +8,7 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 - **Players (optional):** add name, number, division and gender, plus substitutes. Without names you still log every shot and pass.
 - **Match format:** 60 min is the default; other lengths and halves or quarters are available. Set the court size and choose the court and *Free pass & penalty circles* colours.
 - **Events to track:** tick passes, shots, referee calls and turnovers.
-- **Opening attack:** choose the team in possession first and its attacking direction. When names are logged, also choose the division attacking first.
+- **Opening attack:** choose the team in possession first and its attacking direction. When names are logged, also choose the division attacking first. In the 2nd half the teams swap ends and the team that did not have the opening attack attacks first. The divisions that were attacking stay in attack; divisions only switch after every second goal of the two teams combined.
 
 ![Figure 1. Match setup, top section: the league, fixture date and fixture week, then team names, colours and players.](images/log-1.png)
 
