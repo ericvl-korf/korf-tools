@@ -157,11 +157,27 @@ body.max .hintrow{grid-column:2;grid-row:6;font-size:.82rem}
 body.max .pts{font-size:clamp(1.8rem,5vw,2.6rem)}
 body.max .team input{font-size:1rem}
 body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
+/* Match video under the court. In the maximised view the court gives up a little height so the video fits beneath it. */
+.vidbox{margin:12px auto 0;width:min(100%,max(340px,calc(100vh - 215px)))}
+.vidadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.vidadd label{font-weight:600;font-size:.85rem;color:var(--muted)}.vidadd input{flex:1 1 14rem;min-width:0}
+.vidmsg{margin:6px 0 0;font-size:.85rem;color:var(--muted)}
+.vidframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vidnote{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:flex-start;justify-content:center;padding:12px;background:var(--surface,#fff);color:var(--fg,#1c2a26);font-size:.8rem;overflow:auto}.vidnote p{margin:0}.vidnote a.btn{text-decoration:none}
+.vidtools a{color:var(--accent,#1f6f5a);font-weight:600}
+.vidtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:.85rem}
+body.max .vidbox:not(.has){display:none}
+body.max.hasvid .court-box{width:min(100%,calc(.78*(100vh - 84px)),calc(.78*(100dvh - 84px)))}
+body.max .vidbox.has{grid-column:1;grid-row:2/-1;align-self:end;justify-self:center;margin:0;height:calc(.21*(100vh - 84px));height:calc(.21*(100dvh - 84px));width:auto;aspect-ratio:16/9;max-width:100%}
+body.max .vidbox.has .vidplay,body.max .vidbox.has .vidframe{height:100%}
+body.max .vidbox.has .vidtools{display:none}
 @media (max-aspect-ratio:1/1){
   body.max{overflow:auto;padding:6px;margin:0}
   body.max .main{grid-template-columns:minmax(0,1fr);grid-template-rows:none;height:auto}
   body.max .maxbar,body.max .main>.score,body.max #poss,body.max #tilebar,body.max #restoreBar,body.max #reviewBar,body.max .hintrow{grid-column:1;grid-row:auto}
   body.max .maxbar{order:0}body.max .main>.score{order:1}body.max #poss{order:2}body.max #tilebar{order:3}body.max #restoreBar,body.max #reviewBar{order:4}body.max .lastev{order:5;grid-column:1;grid-row:auto;width:100%}body.max .court-box{order:6;grid-column:1;grid-row:auto;width:min(100%,calc(100dvh - 84px))}body.max .hintrow{order:7}
+  body.max.hasvid .court-box{width:min(100%,calc(100dvh - 84px))}
+  body.max .vidbox.has{order:8;grid-column:1;grid-row:auto;height:auto;width:min(100%,calc(100dvh - 84px));margin-top:8px;aspect-ratio:auto}
+  body.max .vidbox.has .vidplay,body.max .vidbox.has .vidframe{height:auto}
 }
 
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -450,6 +466,14 @@ details>summary{transition:color .16s var(--ease)}
           </div>
         </div>
         <div class="hintrow"><span id="hint" aria-live="polite"></span><span id="readout"></span></div>
+        <div class="vidbox" id="vidBox">
+          <div class="vidadd" id="vidAdd"><label for="vidUrl">Match video</label><input id="vidUrl" type="url" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link (optional)"><button class="btn sm" id="vidSet" type="button">Show video</button></div>
+          <p class="vidmsg" id="vidMsg" role="status" hidden></p>
+          <div class="vidplay" id="vidPlay" hidden>
+            <div class="vidframe" id="vidFrame"></div>
+            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
+          </div>
+        </div>
       </div>
 
       <div class="col rest">
@@ -702,7 +726,7 @@ function defaultConfig(){
     events:{pass:true,shot:true,referee:true,turnover:true,penalty:true,freepass:true,
       to:{general:true,attack:false,forced:false,unforced:false,attfoul:false,shotclock:false}},
     start:{team:'H',divs:{H:1,A:2},dir:'right'},
-    meta:{league:'',date:'',week:''}
+    meta:{league:'',date:'',week:'',video:''}
   };
 }
 function cloneCfg(c){return JSON.parse(JSON.stringify(c));}
@@ -744,6 +768,7 @@ function normCfg(c){
     d.meta.league=String(mt.league||'').slice(0,60);
     if(/^\d{4}-\d{2}-\d{2}$/.test(String(mt.date||''))) d.meta.date=String(mt.date);
     var wk=parseInt(mt.week,10);d.meta.week=(isFinite(wk)&&wk>0&&wk<100)?String(wk):'';
+    var yv=ytParse(mt.video);d.meta.video=yv?yv.url:'';
   }
   return d;
 }
@@ -1170,7 +1195,7 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
@@ -1179,7 +1204,7 @@ function toCSV(m){
     return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,evClock(e),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:'',reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot];
+      o?o.k:'',reb&&reb.pl?reb.pl.name:'',reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''];
   });
   return [head].concat(rows).map(function(r){return r.map(q).join(',');}).join('\n');
 }
@@ -1267,7 +1292,7 @@ function csvToBackup(txt){
   var has=function(ty){return recs.some(function(o){return o.event===ty;});};
   var cfg={home:{name:home,color:col.H||undefined},away:{name:away,color:col.A||undefined},length:mins,periods:per,court:{len:L},
     look:{court:r0.court_color,zone:r0.zone_color},events:{to:{}},start:{team:first?first.team:'H',divs:divs,dir:dir},
-    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week}};
+    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week,video:r0.video_url||''}};
   ['H','A'].forEach(function(t){
     var nm=t==='H'?'home':'away';
     cfg[nm].players=roster[t].players.filter(function(p){return !p.sub;});
@@ -1480,6 +1505,44 @@ function currentView(m,R){
   var team=st.phase==='transfer'?st.origin:st.team,p=periodOf(cfg,nowSec());
   return {team:team,att:st.att[team],right:attackRight(cfg,team,p),period:p,hl:null,review:false};
 }
+/* ---------- match video (YouTube) ---------- */
+function ytParse(s){
+  s=String(s||'').trim();if(!s||s.length>300) return null;
+  var u;try{u=new URL(/^https?:\/\//i.test(s)?s:'https://'+s);}catch(e){return null;}
+  var h=u.hostname.replace(/^(www\.|m\.|music\.)/,''),id='',mm;
+  if(h==='youtu.be') id=u.pathname.slice(1).split('/')[0];
+  else if(h==='youtube.com'||h==='youtube-nocookie.com'){
+    if(u.pathname==='/watch') id=u.searchParams.get('v')||'';
+    else{mm=/^\/(embed|shorts|live|v)\/([\w-]{11})/.exec(u.pathname);if(mm) id=mm[2];}
+  }
+  if(!/^[\w-]{11}$/.test(id)) return null;
+  var t=u.searchParams.get('t')||u.searchParams.get('start')||'',sec=0;
+  mm=t?/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/.exec(t):null;
+  if(mm) sec=(+mm[1]||0)*3600+(+mm[2]||0)*60+(+mm[3]||0);
+  return {id:id,start:sec,url:'https://www.youtube.com/watch?v='+id+(sec?'&t='+sec+'s':'')};
+}
+function renderVideo(){
+  var m=cur(),box=$('#vidBox');if(!m||!box) return;
+  var v=ytParse(m.config.meta&&m.config.meta.video),editing=!!ui.vidEdit,show=!!v&&!editing;
+  box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);
+  $('#vidAdd').hidden=show;$('#vidPlay').hidden=!v;
+  if(editing&&v) $('#vidPlay').hidden=true;
+  var fr=$('#vidFrame'),key=v?v.url:'';
+  if(box.dataset.vid!==key){
+    box.dataset.vid=key;
+    var local=!/^https?:$/.test(location.protocol);
+    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1'+(v.start?'&start='+v.start:'')+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
+    $('#vidLink').href=v?v.url:'#';
+  }
+  var inp=$('#vidUrl');if(inp&&document.activeElement!==inp&&!editing) inp.value=v?v.url:'';
+}
+function setVideo(){
+  var m=cur(),raw=$('#vidUrl').value.trim(),msg=$('#vidMsg');
+  if(!raw){msg.hidden=true;ui.vidEdit=false;m.config.meta=m.config.meta||{};m.config.meta.video='';save();renderVideo();return;}
+  var v=ytParse(raw);
+  if(!v){msg.textContent='That does not look like a YouTube link. Paste the address from the YouTube share button or the browser address bar.';msg.hidden=false;return;}
+  msg.hidden=true;ui.vidEdit=false;m.config.meta=m.config.meta||{};m.config.meta.video=v.url;save();renderVideo();
+}
 function render(){
   var cc=(draft&&ui.view==='setup')?draft:(cur()&&cur().config);applyTeamColor(cc&&cc.home.color,cc&&cc.away.color);applyLook(cc&&cc.look);
   $('#setupView').hidden=ui.view!=='setup';
@@ -1489,7 +1552,7 @@ function render(){
   var m=cur();setGeom();
   var R=replay(m,periodOf(m.config,nowSec()));ui.R=R;ui.per=periodOf(m.config,nowSec());ui.V=currentView(m,R);
   renderMatchBar();renderScore(m,R);renderPoss(m,R);renderTiles(m,R);renderPanels(m,R);
-  renderFilters(m);renderLog(m,R);renderLastEv(m,R);renderHint(m,R);updateExport();renderModal(m,R);
+  renderFilters(m);renderLog(m,R);renderLastEv(m,R);renderHint(m,R);updateExport();renderModal(m,R);renderVideo();
   resize();
 }
 
@@ -2155,6 +2218,10 @@ $('#backLive').addEventListener('click',function(){ui.review=null;render();});
 $('#restoreBtn').addEventListener('click',restoreWiped);
 $('#clkToggle').addEventListener('click',function(){toggleClock();});
 $('#clkNext').addEventListener('click',startNextPeriod);
+$('#vidSet').addEventListener('click',setVideo);
+$('#vidUrl').addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();setVideo();}});
+$('#vidChange').addEventListener('click',function(){ui.vidEdit=true;$('#vidUrl').value=(cur().config.meta||{}).video||'';renderVideo();$('#vidUrl').focus();});
+$('#vidHide').addEventListener('click',function(){var m=cur();m.config.meta=m.config.meta||{};m.config.meta.video='';ui.vidEdit=false;$('#vidUrl').value='';$('#vidMsg').hidden=true;save();renderVideo();});
 $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-spd]');if(b) setSpeed(b.dataset.spd);});
 $('#clkBack').addEventListener('click',function(){adjustClock(-5);});
 $('#clkFwd').addEventListener('click',function(){adjustClock(5);});
