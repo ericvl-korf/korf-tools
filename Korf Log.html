@@ -127,9 +127,6 @@ body.max .cspeed{margin-top:0}
 #court{display:block;width:100%;aspect-ratio:1/1;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none;border:1px solid var(--line);border-radius:12px;background:var(--court-edge)}
 .court-box.dim #court{filter:brightness(.55)}
 /* Count tracking: the Pass button sits in the strip above the court, in line with the zone label */
-.cpass{position:absolute;top:.5%;right:2%;height:3.1%;min-height:0;padding:0 .9em;border:0;border-radius:999px;background:#f4c20d;color:#14231e;font:700 11px/1 var(--f-body);letter-spacing:.02em;cursor:pointer;white-space:nowrap;box-shadow:0 1px 3px rgba(0,0,0,.35)}
-.cpass:hover:not(:disabled){background:#ffd43b}.cpass:disabled{opacity:.4;cursor:default}.cpass[hidden]{display:none}
-.court-box.dim .cpass{opacity:.4}
 .tpanel{position:absolute;left:12px;right:12px;top:50%;transform:translateY(-50%);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.28)}
 .tpanel h3{margin:0;font:700 1.25rem var(--f-display);letter-spacing:.04em;text-transform:uppercase}
 .tpanel p{margin:0;color:var(--muted);font-size:.9rem}
@@ -467,7 +464,6 @@ details>summary{transition:color .16s var(--ease)}
         <div class="lastev" id="lastEv" aria-live="polite" aria-label="Last logged event"></div>
         <div class="court-box" id="courtBox">
           <canvas id="court" role="img" aria-label="Half court"></canvas>
-          <button type="button" class="cpass" id="cpass" data-cpass="1" hidden title="Add a pass to this attack (P key)">Pass</button>
           <div class="tpanel" id="tpanel" hidden>
             <h3 id="tpTitle"></h3>
             <p id="tpText"></p>
@@ -600,7 +596,7 @@ details>summary{transition:color .16s var(--ease)}
             <label class="cb"><input type="checkbox" data-ev="pass"><span>Passes<small>Choose how passes are tracked</small></span></label>
             <div class="subs" id="subPass" role="radiogroup" aria-label="Pass tracking">
               <label class="cb"><input type="radio" name="passmode" data-pm="full"><span>Full tracking<small>One click per pass on the court. Logs pass location and pass count</small></span></label>
-              <label class="cb"><input type="radio" name="passmode" data-pm="count"><span>Count tracking<small>Press the Pass button next to the court to add a pass to the attack. Logs pass count only</small></span></label>
+              <label class="cb"><input type="radio" name="passmode" data-pm="count"><span>Count tracking<small>Click anywhere on the court to add a pass to the attack. Logs pass count only, not location</small></span></label>
             </div>
           </div>
           <div class="evgroup">
@@ -1124,6 +1120,7 @@ function addCountPass(){
   var R=ui.R,m=cur();
   if(!canAct(R)||passMode(m.config)!=='count') return;
   addEvent({type:'pass',team:R.st.team,count:true});
+  var ev=cur().events;ui.lastCountId=ev.length?ev[ev.length-1].id:null;
   renderHint(cur(),ui.R);
 }
 function attackPasses(m,R){
@@ -1415,8 +1412,6 @@ function renderTiles(m,R){
   }
   if(ev.referee){if(ev.penalty) ref.push(['penalty','Penalty']);if(ev.freepass) ref.push(['freepass','Free pass']);}
   var h='';
-  var cb=$('#cpass');
-  if(cb){var cm=passMode(m.config)==='count',np=(cm&&can)?attackPasses(m,R):0;cb.hidden=!cm;cb.disabled=!can;cb.textContent='Pass'+(np?' · '+np:'');}
   if(turn.length) h+='<div class="tgrp" role="group" aria-label="Turnovers">'+turn.map(function(t){
     return '<button type="button" class="tile" data-turn="'+t[0]+'"'+(can?'':' disabled')+'>'+esc(t[1])+'</button>';}).join('')+'</div>';
   if(ref.length) h+='<div class="tgrp" role="group" aria-label="Referee calls">'+ref.map(function(t){
@@ -1454,7 +1449,7 @@ function hintText(m,R){
   if(atCap()){var tm=fmtClock(Math.ceil(nowT()));return (lastPeriod()?'Full time.':(m.config.periods===4?'End of quarter '+clk.go+'.':'Half time.'))+' Regular time is over and the clock runs on in extra time. Events are logged as '+tm+' + extra time. Press '+(lastPeriod()?'End match when play stops.':'End '+pBtn(m.config,clk.go)+' when the half is over, then Start when play restarts.');}
   if(R.st.phase==='transfer') return 'Choose Transfer to attack once the ball is in their attacking half.';
   var parts=[];
-  if(ev.pass&&passMode(m.config)==='count') parts.push('Press Pass (or P) for each pass in this attack.');
+  if(ev.pass&&passMode(m.config)==='count') parts.push('Click anywhere on the court for each pass in this attack'+(canAct(R)?' (passes so far: '+attackPasses(m,R)+').':'.'));
   else if(ev.pass) parts.push(chainStart()?'Click where the pass is received; that spot starts the next pass.':'Click where the ball is first held to set the start of the pass.');
   if(ev.shot) parts.push('Double-click (or double-tap) to log a shot.');
   if(!parts.length) parts.push('Use the tiles above the court to log turnovers and referee calls.');
@@ -1540,7 +1535,7 @@ function renderLog(m,R){
       (open?'<ul class="kids">'+evs.slice().reverse().map(function(e){return rowHTML(m,R,e,idx);}).join('')+'</ul>':'')+'</li>';
   });
   $('#logCount').textContent=shown+' of '+m.events.length;
-  list.innerHTML=shown?html:'<li class="empty">Nothing to show yet. '+(passMode(m.config)==='count'?'Press Pass to count the first pass.':'Click on the court to set where the first pass starts.')+'</li>';
+  list.innerHTML=shown?html:'<li class="empty">Nothing to show yet. '+(passMode(m.config)==='count'?'Click on the court to count the first pass.':'Click on the court to set where the first pass starts.')+'</li>';
 }
 function currentView(m,R){
   var st=R.st,cfg=m.config;
@@ -1774,7 +1769,6 @@ function draw(){
   ctx.fillStyle=C.court;ctx.fillRect(X(x0),Y(0),hw*s,G.Wd*s);
 
   var lf=Math.max(9,s*0.55);
-  var cpb=document.getElementById('cpass');if(cpb) cpb.style.fontSize=Math.max(8,s*0.5)+'px';
   ctx.save();ctx.font='600 '+lf+'px "Barlow",sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillStyle='rgba(255,255,255,0.65)';if('letterSpacing' in ctx) ctx.letterSpacing='1.5px';
   ctx.fillText(V.right?'ZONE B':'ZONE A',X(x0+hw/2),M*s*0.5);
@@ -1866,12 +1860,15 @@ canvas.addEventListener('pointerup',function(ev){
   if(lt&&now-lt.at<450&&Math.hypot(ev.clientX-lt.cx,ev.clientY-lt.cy)<34){
     /* second click of a double-click: the shot is taken from where the last pass was received */
     ui.lastTap=null;
+    /* Count tracking: the first click of a double-click was only the start of a shot, so take its pass count back */
+    if(passMode(cur().config)==='count'&&ui.lastCountId){var mm=cur(),le=mm.events[mm.events.length-1];if(le&&le.id===ui.lastCountId&&le.type==='pass'&&le.count&&ev2.shot){mm.events.pop();save();render();}}
+    ui.lastCountId=null;
     if(!ev2.shot){flashMsg('Shots are switched off in the setup.');renderHint(cur(),ui.R);redraw();return;}
     openShot(p);return;
   }
   ui.lastTap={at:now,cx:ev.clientX,cy:ev.clientY,p:p};
   if(!ev2.pass){flashMsg('Passes are switched off in the setup.');renderHint(cur(),ui.R);redraw();setTimeout(redraw,470);return;}
-  if(passMode(cur().config)==='count'){redraw();setTimeout(redraw,470);return;}
+  if(passMode(cur().config)==='count'){addCountPass();redraw();setTimeout(redraw,470);return;}
   var c=chainStart();
   if(c){
     if(Math.hypot(p.x-c.x,p.y-c.y)<0.3){redraw();setTimeout(redraw,470);return;}
@@ -2232,7 +2229,6 @@ $('#setupCancel').addEventListener('click',closeSetup);
 $('#trackView').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b||b.disabled) return;
   var d=b.dataset,R=ui.R,m=cur();
-  if(d.cpass!==undefined){addCountPass();return;}
   if(d.subs!==undefined){openSubs();return;}
   if(d.timeout!==undefined){
     if(ui.popup||ui.review) return;
@@ -2447,5 +2443,4 @@ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(draw);}
 </script>
 <style>.credit{max-width:1100px;margin:28px auto 22px;padding:0 16px;text-align:center;font-size:.8rem;color:var(--muted,#5b6b66);letter-spacing:.01em}.credit b{font-weight:600;color:var(--fg,#1c2a26)}@media print{.credit{display:none!important}}body.max .credit{display:none}</style>
 <footer class="credit">Korf Log · created by <b>Eric Van Looy</b></footer>
-
 </body></html>
