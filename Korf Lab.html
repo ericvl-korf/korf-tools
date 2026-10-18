@@ -517,13 +517,25 @@ function teamsOf(){
   });
   return out.sort();
 }
+function matchLabel(l){var r0=l.rows[0]||{};return (r0.match||l.name)+(r0.fixture_week?' · Week '+r0.fixture_week:'')+(r0.fixture_date?' · '+r0.fixture_date:'');}
+/* PDF file name of a printed report (the browser takes it from the page title): the match as shown in the Match box for one match, otherwise the team name followed by "season report". Coach and player versions add _Coach or _[player name]. */
+function reportBase(){
+  var ld=loaded(),m=view.match?ld.filter(function(l){return l.id===view.match;})[0]:(ld.length===1?ld[0]:null);
+  return (m?matchLabel(m):(view.team||'All teams')+' season report').replace(/[\\\/:*?"<>|]+/g,'-');
+}
+function printTitle(t){
+  var old=document.title;document.title=t;
+  function back(){document.title=old;window.removeEventListener('afterprint',back);}
+  window.addEventListener('afterprint',back);
+  return back;
+}
 function renderSlicer(){
   var ld=loaded(),sel=$('#matchSel');
   if(view.match&&!ld.some(function(l){return l.id===view.match;})) view.match='';
   var ldS=ld.slice().sort(function(a,b){var ra=a.rows[0]||{},rb=b.rows[0]||{},wa=num(ra.fixture_week),wb=num(rb.fixture_week),both=ra.fixture_week&&rb.fixture_week;
     return (both?(wa-wb):0)||(ra.fixture_date||'').localeCompare(rb.fixture_date||'')||String(ra.match||a.name).localeCompare(String(rb.match||b.name));});
   sel.innerHTML='<option value="">All matches</option>'+ldS.map(function(l){
-    var r0=l.rows[0]||{},lab=(r0.match||l.name)+(r0.fixture_week?' · Week '+r0.fixture_week:'')+(r0.fixture_date?' · '+r0.fixture_date:'');
+    var lab=matchLabel(l);
     return '<option value="'+esc(l.id)+'"'+(l.id===view.match?' selected':'')+'>'+esc(lab)+'</option>';}).join('');
   var teams=teamsOf();
   if(view.team&&teams.indexOf(view.team)<0) view.team='';
@@ -581,6 +593,7 @@ var TKEYS=['open','distance','runner','freepass','penalty'];var CKEYS=TKEYS.slic
 var TCOL=CCOL.slice();
 var OUT5=[['goal','Goal','var(--o1)'],['rebound_att','Rebound by attack','var(--o2)'],['rebound_def','Rebound by defence','var(--o5)'],['defended','Defended','var(--o3)'],['out','Out of bounds','var(--o4)']];
 var OUT=[['goal','Goal','var(--o1)'],['rebound','Rebound','var(--o2)'],['defended','Defended','var(--o3)'],['out','Out of bounds','var(--o4)']];
+function typeCol(k){var i=TKEYS.indexOf(k);return i<0?'var(--opp)':TCOL[i];}
 function shotKey(r){return r.detail==='penalty'?'penalty':(r.detail==='freepass'?'freepass':(r.shot_type==='dropoff'?'open':(r.shot_type||'open')));}
 function outKey(o){return o==='goal'?'goal':o==='rebound'?'rebound':o==='defended'?'defended':'out';}
 function halfOf(p){p=String(p||'').toLowerCase();return (/^1st|quarter\s*[12]\b/.test(p))?1:2;}
@@ -945,6 +958,7 @@ function teamPage(ms){
     if(view.div&&q.div!==view.div) return;
     if(view.gen&&q.g!==view.gen) return;
     if(view.half&&q.half!==view.half) return;
+    if(view.type&&q.k!==view.type) return;
     pts.push(q);
   });});
   var nG=pts.filter(function(q){return q.goal;}).length;
@@ -953,20 +967,23 @@ function teamPage(ms){
     if(cb==='gender') return q.g==='F'?'var(--gF)':(q.g==='M'?'var(--gM)':'var(--opp)');
     if(cb==='division') return q.div==='1'?'var(--s0)':(q.div==='2'?'var(--s1)':'var(--opp)');
     if(cb==='half') return q.half===1?'var(--s2)':'var(--s3)';
+    if(cb==='type') return typeCol(q.k);
     return mapCol(q.team);
   }
   function catOfPt(q){
     if(cb==='gender') return q.g==='F'?'Female':(q.g==='M'?'Male':'Gender not recorded');
     if(cb==='division') return q.div?'Division '+q.div:'Division not recorded';
     if(cb==='half') return q.half===1?'1st half':'2nd half';
+    if(cb==='type') return TYPE_LABEL[q.k]||q.k;
     return q.team;
   }
   var single=!!(view.match&&view.team),ss=single?(view.shotSide||''):'';
   var mapBar='<div class="bar"><div class="grp"><label class="lbl" for="markSz">Mark size</label><input id="markSz" type="range" min="0.5" max="3" step="0.1" value="'+(view.markScale||1)+'" aria-label="Size of the shot marks" style="width:140px;accent-color:var(--accent)"></div>'+(single?'<div class="grp"><span class="lbl">Shots by</span><div class="chips" role="group" aria-label="Shots by">'+[['',view.team],['opp','Opponent'],['both','Both']].map(function(d){return '<button type="button" class="chip" data-ss="'+d[0]+'" aria-pressed="'+(ss===d[0])+'">'+esc(d[1])+'</button>';}).join('')+'</div></div>':'')+'<div class="grp"><span class="lbl">View</span><div class="chips" role="group" aria-label="Map view"><button type="button" class="chip" data-mode="dots" aria-pressed="'+(view.mapMode!=='heat')+'">Shots</button><button type="button" class="chip" data-mode="heat" aria-pressed="'+(view.mapMode==='heat')+'">Density</button></div></div>'+
     (!HAS.div?'':'<div class="grp"><span class="lbl">Division (shooter)</span><div class="chips" role="group" aria-label="Division">'+[['','All'],['1','Division 1'],['2','Division 2']].map(function(d){return '<button type="button" class="chip" data-div="'+d[0]+'" aria-pressed="'+(view.div===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>')+
+    (TKEYS.length<2?'':'<div class="grp"><span class="lbl">Shot type</span><div class="chips" role="group" aria-label="Shot type">'+[['','All']].concat(TKEYS.map(function(k){return [k,TYPE_LABEL[k]];})).map(function(d){return '<button type="button" class="chip" data-type="'+d[0]+'" aria-pressed="'+((view.type||'')===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>')+
     '<div class="grp"><span class="lbl">Match half</span><div class="chips" role="group" aria-label="Match half">'+[[0,'Whole match'],[1,'1st half'],[2,'2nd half']].map(function(d){return '<button type="button" class="chip" data-half="'+d[0]+'" aria-pressed="'+(view.half===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>'+
     (!HAS.gen?'':'<div class="grp"><span class="lbl">Gender (shooter)</span><div class="chips" role="group" aria-label="Gender">'+[['','All'],['F','Female'],['M','Male']].map(function(d){return '<button type="button" class="chip" data-gen="'+d[0]+'" aria-pressed="'+((view.gen||'')===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>')+
-    '<div class="grp"><span class="lbl">Colour by</span><div class="chips" role="group" aria-label="Colour by">'+[['team','Team'],['gender','Gender'],['division','Division'],['half','Half']].filter(function(d){return d[0]==='team'||d[0]==='half'||(d[0]==='gender'&&HAS.gen)||(d[0]==='division'&&HAS.div);}).map(function(d){return '<button type="button" class="chip" data-cb="'+d[0]+'" aria-pressed="'+(cb===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div></div>';
+    '<div class="grp"><span class="lbl">Colour by</span><div class="chips" role="group" aria-label="Colour by">'+[['team','Team'],['type','Shot type'],['gender','Gender'],['division','Division'],['half','Half']].filter(function(d){return d[0]==='team'||d[0]==='half'||(d[0]==='type'&&TKEYS.length>1)||(d[0]==='gender'&&HAS.gen)||(d[0]==='division'&&HAS.div);}).map(function(d){return '<button type="button" class="chip" data-cb="'+d[0]+'" aria-pressed="'+(cb===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div></div>';
   var cats={};pts.forEach(function(q){cats[catOfPt(q)]=colOf(q);});
   var mapLeg='<div class="legend">'+Object.keys(cats).sort().map(function(k){return '<div class="it"><i style="background:'+cats[k]+';border:2px solid #fff"></i>'+esc(k)+'</div>';}).join('')+
     '<div class="it"><i style="background:#ccc;border:2px solid #fff"></i>Filled dot: goal</div><div class="it"><i style="border:2px solid #ccc;background:rgba(8,28,22,.55)"></i>Hollow dot: no goal</div>'+
@@ -984,15 +1001,17 @@ function teamPage(ms){
       if(cb==='gender') return q.g==='F'?'var(--gF)':(q.g==='M'?'var(--gM)':'var(--opp)');
       if(cb==='division') return q.div==='1'?'var(--s0)':(q.div==='2'?'var(--s1)':'var(--opp)');
       if(cb==='half') return q.half===1?'var(--s2)':'var(--s3)';
+      if(cb==='type') return typeCol(q.k);
       return mapCol(q.team);
     }
     function pCat(cb,q){
       if(cb==='gender') return q.g==='F'?'Female':(q.g==='M'?'Male':'Not recorded');
       if(cb==='division') return q.div?'Division '+q.div:'Not recorded';
       if(cb==='half') return q.half===1?'1st half':'2nd half';
+      if(cb==='type') return TYPE_LABEL[q.k]||q.k;
       return q.team;
     }
-    var CBL={team:'Coloured by team',gender:'Coloured by gender',division:'Coloured by division',half:'Coloured by half'};
+    var CBL={team:'Coloured by team',gender:'Coloured by gender',division:'Coloured by division',half:'Coloured by half',type:'Coloured by shot type'};
     function group(id,title,pred,cbs,note){
       var pp=[];ms.forEach(function(m){m.shots.forEach(function(q){if(q.d!=null&&q.a!=null&&pred(q)) pp.push(q);});});
       var gg=pp.filter(function(q){return q.goal;}).length;
@@ -1003,12 +1022,12 @@ function teamPage(ms){
       }).join('');
       out+=card(id,title,pp.length+' shots · '+gg+' goals','<div class="pmgrid">'+cells+'</div><p class="note">Filled dot: goal. Hollow dot: no goal. '+note+' Shots are folded onto one half court; 0° is straight in front of the post.</p>',{wide:true});
     }
-    var cb4=['team'].concat(HAS.gen?['gender']:[],HAS.div?['division']:[],['half']);
+    var cb4=['team'].concat(TKEYS.length>1?['type']:[],HAS.gen?['gender']:[],HAS.div?['division']:[],['half']);
     if(view.team){
       group('mapT',view.team+' shot maps',function(q){return q.team===view.team;},cb4,'All shots of the whole selection, whatever filter is set on screen.');
       var oppPts=[];ms.forEach(function(m){m.shots.forEach(function(q){if(q.team!==view.team) oppPts.push(q);});});
       var oG=oppPts.some(function(q){return q.g;}),oD=oppPts.some(function(q){return q.div;});
-      group('mapO','Opponent shot maps',function(q){return q.team!==view.team;},['team'].concat(oG?['gender']:[],oD?['division']:[],['half']),'All opponent shots of the whole selection.'+((oG&&oD)?'':' Gender and division are shown when the opponent\'s players are named in the log.'));
+      group('mapO','Opponent shot maps',function(q){return q.team!==view.team;},['team'].concat(TKEYS.length>1?['type']:[],oG?['gender']:[],oD?['division']:[],['half']),'All opponent shots of the whole selection.'+((oG&&oD)?'':' Gender and division are shown when the opponent\'s players are named in the log.'));
     }else group('mapT','Shot maps, all teams',function(){return true;},cb4,'All shots of the whole selection, whatever filter is set on screen.');
   })();
 
@@ -1256,6 +1275,8 @@ function renderOverview(){
     if(view.colorBy==='division'&&!h.div) view.colorBy='team';
     if(view.div&&!h.div) view.div='';
     if(view.gen&&!h.gen) view.gen='';
+    if(view.type&&TKEYS.indexOf(view.type)<0) view.type='';
+    if(view.colorBy==='type'&&TKEYS.length<2) view.colorBy='team';
   })();
   $('#ovSub').textContent=ms.length?ms.length+(ms.length===1?' match':' matches')+(view.team?' · '+view.team:' loaded'):(view.team?'No matches for '+view.team:'Load a file to see numbers');
   if(!ms.length){
@@ -1271,9 +1292,10 @@ function printCoachReport(){
   setPage('overview');
   $('#printSub').textContent=(view.team||'All teams')+' · coach report: team and all players · '+(view.match?'selected match':'all loaded matches')+' · '+new Date().toLocaleDateString();
   pp.hidden=false;document.body.classList.add('pc');
+  var back=printTitle(reportBase()+'_Coach');
   function done(){document.body.classList.remove('pc');pp.hidden=view.page!=='players';window.removeEventListener('afterprint',done);}
   window.addEventListener('afterprint',done);
-  try{window.print();}catch(e){alert('Printing is blocked here. Open the page in its own tab and try again.');done();}
+  try{window.print();}catch(e){alert('Printing is blocked here. Open the page in its own tab and try again.');back();done();}
 }
 /* ---------- batch print: one team + player report per player ---------- */
 var batch=null;
@@ -1316,7 +1338,7 @@ function batchNext(){
   view.team=team;view.player=id;renderOverview();setPage('overview');
   $('#printSub').textContent=team+' · team report and player page for '+name+' · '+new Date().toLocaleDateString();
   var pp=$('#pagePlayers');pp.hidden=false;document.body.classList.add('pp');
-  document.title=team+' - '+name+' - team and player report';
+  document.title=(reportBase()+'_'+name).replace(/[\\/:*?"<>|]+/g,'-');
   batchBar('Report '+batch.i+' of '+batch.ids.length+': '+team+' · '+name+'. Choose Save as PDF in the print window.',false);
   var cur=batch;
   function after(){
@@ -1351,7 +1373,8 @@ function printReport(){
   var prev=view.page;setPage('overview');
   var sub=(view.team||'All teams')+' · '+(view.match?'selected match':'all loaded matches')+' · '+new Date().toLocaleDateString();
   $('#printSub').textContent=sub;
-  try{window.print();}catch(e){alert('Printing is blocked here. Open the page in its own tab and try again.');}
+  var back=printTitle(reportBase());
+  try{window.print();}catch(e){back();alert('Printing is blocked here. Open the page in its own tab and try again.');}
   setPage(prev);
 }
 function setPage(p){
@@ -1394,11 +1417,12 @@ document.addEventListener('click',function(e){
   var b=e.target.closest('button[data-team],button[data-page]');
   if(b&&b.dataset.page){setPage(b.dataset.page);return;}
   if(b&&b.hasAttribute('data-team')){view.team=b.dataset.team;renderOverview();return;}
-  var c=e.target.closest('button[data-div],button[data-half],button[data-gen],button[data-cb],button[data-mode]:not([data-tv]),button[data-hm],button[data-ss]');
+  var c=e.target.closest('button[data-div],button[data-half],button[data-gen],button[data-type],button[data-cb],button[data-mode]:not([data-tv]),button[data-hm],button[data-ss]');
   if(c){
     if(c.hasAttribute('data-div')) view.div=c.dataset.div;
     else if(c.hasAttribute('data-half')) view.half=Number(c.dataset.half);
     else if(c.hasAttribute('data-gen')) view.gen=c.dataset.gen;
+    else if(c.hasAttribute('data-type')) view.type=c.dataset.type;
     else if(c.hasAttribute('data-cb')) view.colorBy=c.dataset.cb;
     else if(c.hasAttribute('data-hm')) view.hm=c.dataset.hm;
     else if(c.hasAttribute('data-ss')) view.shotSide=c.dataset.ss;
