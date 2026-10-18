@@ -246,25 +246,30 @@ details.card summary{cursor:pointer;font:700 1.15rem var(--f-display);letter-spa
 .sheet .tiles{display:flex;flex-wrap:wrap;gap:6px}
 .sheet .tile{min-height:46px}
 .typerow{display:flex;gap:8px}
-.sheet.cmp2{width:min(100%,440px)!important}
-.sheet.cmp .cols .grouplbl,.sheet.cmp .cols h3{display:none}
-.sheet.cmp .cols{gap:8px}
-.sheet.cmp .colv{gap:5px}
-.sheet.cmp{width:min(100%,260px);padding:10px;gap:6px}
-.sheet.cmp #mTitle,.sheet.cmp #mMeta{display:none}
-.sheet.cmp .sheet-head{justify-content:flex-end}
-.sheet.cmp .typerow,.sheet.cmp .tiles{flex-direction:column}
-.sheet.cmp .typerow .tile,.sheet.cmp .tiles .tile{width:100%;text-align:left}
-.sheet.cmp .msec{gap:4px}
-.sheet.cmp .msec h3{display:none}
-.sheet.cmp .grouplbl{margin:0}
-.sheet.cmp .tile{min-height:34px;padding:.2rem .6rem;font-size:.92rem}
-.sheet.cmp .tile .sub{display:none}
-.sheet.cmp .typerow{gap:6px}
-.sheet.cmp .typerow .tile{min-height:40px;font-size:.92rem}
-.sheet.cmp .tiles{gap:5px}
-.sheet.cmp .row-actions{margin:0}
-.sheet.cmp .btn{min-height:34px;padding:.2rem .7rem}
+.sheet.big{position:fixed;max-height:none;margin:0;padding:10px;gap:6px;overflow:hidden;box-sizing:border-box;border-radius:12px;font-size:clamp(14px,calc(var(--mh,600px)*.034),26px)}
+.sheet.big .sheet-head{flex:none;gap:8px;justify-content:flex-start}.hspace{flex:1}
+.sheet.big #mTitle{margin:0;font-size:1.05em}
+.sheet.big #mMeta{flex:none;font-size:.62em}
+.sheet.big .cb{flex:none;margin:0;padding:4px 8px;min-height:0}
+.sheet.big #mBody{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+.sheet.big .bigcol,.sheet.big .cols{flex:1;min-height:0}
+.sheet.big .bigcol{display:flex;flex-direction:column;gap:6px}
+.sheet.big .cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch}
+.sheet.big .colv{display:flex;flex-direction:column;gap:6px;min-width:0;min-height:0}
+.sheet.big .colv h3{flex:none;margin:0;font-size:.62em}
+.sheet.big .grouplbl{flex:none;margin:2px 0 0;min-height:0;font-size:.62em}
+.sheet.big .tile{flex:1 1 0;min-height:0;width:100%;padding:.15em .7em;display:flex;flex-direction:column;justify-content:center;font-size:1em;line-height:1.15}
+.sheet.big .tile .sub{font-size:.62em}
+.sheet.big .tile .kb{display:inline-block;min-width:1.4em;opacity:.7}
+.sheet.big .tile.skip{flex:.45 1 0}
+.sheet.big .tile.ref{border-width:2px}
+.sheet.big .row-actions{display:none}
+.sheet.big.tiny{padding:6px;gap:4px;font-size:13px}
+.sheet.big.tiny #mTitle{font-size:.95em}
+.sheet.big.tiny #mMeta,.sheet.big.tiny .tile .sub,.sheet.big.tiny .colv h3{display:none}
+.sheet.big.tiny .tile{padding:.1em .45em}
+.sheet.big.tiny .grouplbl{font-size:.8em}
+.sheet.big.tiny .btn{min-height:30px;padding:.1rem .6rem}
 .typerow .tile{flex:1 1 0;min-height:54px;text-align:center;font-size:1rem}
 .cols.two{grid-template-columns:repeat(2,minmax(0,1fr))!important}
 .cols.two .grouplbl{min-height:0;margin-top:6px}
@@ -683,7 +688,7 @@ details>summary{transition:color .16s var(--ease)}
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="sheet">
-    <div class="sheet-head"><h2 id="mTitle">Shot</h2><button class="btn sm" type="button" data-cancel="1">Cancel</button></div>
+    <div class="sheet-head"><h2 id="mTitle">Shot</h2><span class="hspace"></span><button class="btn sm" type="button" id="mBack" data-back="1" hidden>‹ Back</button><button class="btn sm" type="button" data-cancel="1">Cancel</button></div>
     <p class="mmeta" id="mMeta"></p>
     <label class="cb" id="mFp" hidden><input type="checkbox" id="mFpTick"><span>This shot was the free pass<small>Untick it to log a standard shot</small></span></label>
     <div id="mBody"></div>
@@ -1646,47 +1651,77 @@ function renderModal(m,R){
   var md=$('#modal'),p=ui.popup;
   if(!p){md.hidden=true;return;}
   md.hidden=false;
-  md.querySelector('.sheet').classList.remove('cmp','cmp2');
-  if(p.kind==='sub'){renderSubModal(m,R,p);return;}
+  var sh=md.querySelector('.sheet');
+  sh.classList.remove('big');
+  if(p.kind==='sub'){sh.removeAttribute('style');renderSubModal(m,R,p);return;}
+  sh.classList.add('big');
   var at=p.team,df=other(at),pen=p.kind==='penalty';
   $('#mTitle').textContent=(pen?'Penalty':(p.kind==='freepass'?'Free pass shot':'Shot'))+' · '+teamName(at);
-  $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p)+(pen?' · placed automatically, 2.5 m straight in front of the post':'');
   $('#mFp').hidden=p.kind!=='freepass';
   $('#mFpTick').checked=!!p.fp;
-  md.querySelector('.sheet').classList.add('cmp');md.querySelector('.sheet').classList.toggle('cmp2',p.stage!=='type');
-  var showTypes=needsType(p),sl=onCourt(m,R,at,'att'),named=sl.people.length>0,h='';
+  var showTypes=needsType(p),sl=onCourt(m,R,at,'att'),named=sl.people.length>0,h='',base=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p);
   if(p.stage==='type'){
-    $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p)+' · step 1 of 2';
+    $('#mMeta').textContent=base+' · step 1 of 2'+((pen)?' · placed automatically, 2.5 m in front of the post':'');
+    h+='<div class="bigcol">';
     if(showTypes){
-      h+='<div class="msec"><h3>Shot type</h3><div class="typerow">'+STYPES.map(function(t,i){
-        return '<button type="button" class="tile" data-stype="'+t[0]+'" aria-pressed="'+(p.stype===t[0])+'"><span class="kb">'+(i+1)+'</span> '+t[1]+'</button>';}).join('')+'</div></div>';
-    }else{
-      if(pen||(p.kind==='freepass'&&p.fp)) h+='<p class="mmeta">Logged automatically as a '+(pen?'penalty':'free pass shot')+((p.kind==='freepass'&&typesOn(m))?'. Untick the box above to log a standard shot and choose a shot type.':'.')+'</p>';
+      h+='<div class="grouplbl">Shot type</div>'+STYPES.map(function(t,i){
+        return '<button type="button" class="tile" data-stype="'+t[0]+'" aria-pressed="'+(p.stype===t[0])+'"><span><span class="kb">'+(i+1)+'</span> '+t[1]+'</span></button>';}).join('');
+    }else if(pen||(p.kind==='freepass'&&p.fp)){
+      h+='<div class="grouplbl">Logged automatically as a '+(pen?'penalty':'free pass shot')+((p.kind==='freepass'&&typesOn(m))?'. Untick the box above to log a standard shot and choose a shot type.':'.')+'</div>';
     }
     if(named){
-      h+='<div class="msec"><h3>'+(pen?'Penalty taker':'Shooter')+'</h3><div class="grouplbl">'+esc(teamName(at))+' · Division '+sl.div+'</div><div class="tiles">'+
-        sl.people.map(function(x){return tileHTML('data-shooter="'+x.id+'"',x,p.shooter===x.id,at);}).join('')+'</div></div>'+(showTypes?'':'<div class="row-actions"><button type="button" class="btn" data-next="1">Skip ›</button></div>');
+      h+='<div class="grouplbl">'+(pen?'Penalty taker':'Shooter')+' · '+esc(teamName(at))+' · Division '+sl.div+'</div>'+
+        sl.people.map(function(x){return tileHTML('data-shooter="'+x.id+'"',x,p.shooter===x.id,at);}).join('')+
+        (showTypes?'':'<button type="button" class="tile skip" data-next="1"><span>Skip ›</span></button>');
     }
+    h+='</div>';
   }else{
-    var who=p.shooter&&findPerson(m,at,p.shooter);
-    $('#mMeta').textContent=fmtN(p.r)+' m from the post · '+p.a+'° · '+evClock(p)+(p.stype&&showTypes?' · '+stypeLabel(p.stype):'')+(who?' · '+who.name:'')+' · step 2 of 2';
-    h+='<div class="cols two">';
+    var who=p.shooter&&findPerson(m,at,p.shooter),ev=m.config.events;
+    $('#mMeta').textContent=base+(p.stype&&showTypes?' · '+stypeLabel(p.stype):'')+(who?' · '+who.name:'')+' · '+(needsStage1(m,R,p)?'step 2 of 2':'outcome');
     function rebCol(team,role,label){
       var ol=onCourt(m,R,team,role),o='<div class="grouplbl">'+esc(teamName(team))+' · '+label+' rebound'+(ol.people.length?' · Division '+ol.div:'')+'</div>';
       if(ol.people.length) o+=ol.people.map(function(y){return tileHTML('data-reb="'+team+'" data-rid="'+y.id+'"',y,false,team,'Rebound - ');}).join('');
-      else o+='<button type="button" class="tile f'+(team==='A'?'A':'H')+'" data-reb="'+team+'" data-rid="">Rebound - '+esc(teamName(team))+'</button>';
+      else o+='<button type="button" class="tile f'+(team==='A'?'A':'H')+'" data-reb="'+team+'" data-rid=""><span>Rebound - '+esc(teamName(team))+'</span></button>';
       return o;
     }
-    h+='<div class="colv"><h3>Attack</h3><button type="button" class="tile goal" data-out="goal">Goal<span class="sub">Defence gets the ball</span></button>'+
+    var canPen=ev.referee&&ev.penalty,canFp=ev.referee&&ev.freepass,canAf=ev.turnover&&!(ev.to&&ev.to.general)&&ev.to&&ev.to.attfoul;
+    h+='<div class="cols">';
+    h+='<div class="colv"><h3>Attack</h3><button type="button" class="tile goal" data-out="goal"><span>Goal</span><span class="sub">Defence gets the ball</span></button>'+
       rebCol(at,'att','attacking')+
-      '<button type="button" class="tile f'+(at==='A'?'A':'H')+'" data-out="oobA">Ball out · attack<span class="sub">Attack keeps the ball</span></button></div>';
+      '<button type="button" class="tile f'+(at==='A'?'A':'H')+'" data-out="oobA"><span>Ball out · attack</span><span class="sub">Attack keeps the ball</span></button>'+
+      (canPen?'<button type="button" class="tile ref" data-rcall="penalty"><span>Penalty</span><span class="sub">Awarded to '+esc(teamName(at))+'</span></button>':'')+
+      (canFp?'<button type="button" class="tile ref" data-rcall="freepass"><span>Free pass</span><span class="sub">Awarded to '+esc(teamName(at))+'</span></button>':'')+
+      '</div>';
     h+='<div class="colv"><h3>Defence</h3>'+
-      (pen?'':'<button type="button" class="tile f'+(df==='A'?'A':'H')+'" data-out="defended">Defended shot<span class="sub">Defence gets the ball</span></button>')+
+      (pen?'':'<button type="button" class="tile f'+(df==='A'?'A':'H')+'" data-out="defended"><span>Defended shot</span><span class="sub">Defence gets the ball</span></button>')+
       rebCol(df,'def','defensive')+
-      '<button type="button" class="tile f'+(df==='A'?'A':'H')+'" data-out="oobD">Ball out · defence<span class="sub">Defence gets the ball</span></button></div></div>';
-    if(needsStage1(m,R,p)) h+='<div class="row-actions"><button type="button" class="btn" data-back="1">‹ Back</button></div>';
+      '<button type="button" class="tile f'+(df==='A'?'A':'H')+'" data-out="oobD"><span>Ball out · defence</span><span class="sub">Defence gets the ball</span></button>'+
+      (canAf?'<button type="button" class="tile ref" data-rcall="attfoul"><span>Turnover · attacking foul</span><span class="sub">Defence gets the ball</span></button>':'')+
+      '</div></div>';
   }
   setHTML($('#mBody'),h);
+  var bk=$('#mBack');if(bk) bk.hidden=!(p.stage!=='type'&&needsStage1(m,R,p));
+  placeSheet();
+}
+/* The shot popups cover the court: the sheet is fitted over the canvas (or, when the canvas is scrolled out of view, a canvas-sized box centred in the window). */
+function placeSheet(){
+  var sh=$('#modal .sheet');if(!sh||!ui.popup||ui.popup.kind==='sub'||$('#modal').hidden) return;
+  var rc=canvas.getBoundingClientRect(),vw=window.innerWidth,vh=window.innerHeight,g=6,l,t,w,h;
+  var vis=Math.min(vh-g,rc.bottom)-Math.max(g,rc.top);
+  if(rc.width>0&&vis>=Math.min(rc.height*0.85,vh-2*g-1)){l=Math.max(g,rc.left);t=Math.max(g,rc.top);w=Math.min(vw-g,rc.right)-l;h=Math.min(vh-g,rc.bottom)-t;}
+  else{w=Math.min(rc.width||vw-2*g,vw-2*g);h=Math.min(rc.height||vh-2*g,vh-2*g);l=(vw-w)/2;t=(vh-h)/2;}
+  sh.classList.toggle('tiny',h<480||w<480);sh.style.cssText='left:'+l+'px;top:'+t+'px;width:'+w+'px;height:'+h+'px;--mh:'+h+'px';
+}
+window.addEventListener('resize',placeSheet);window.addEventListener('scroll',placeSheet,true);
+/* Referee calls made while the ball is still loose after a shot: the shot is logged as a rebound for the side that gets the ball, then the call is logged as its own event. */
+function rebCall(kind){
+  var p=ui.popup;if(!p) return;
+  var at=p.team,df=other(at);
+  commitShot('rebound',{team:kind==='attfoul'?df:at,id:''});
+  if(ui.popup) return;
+  if(kind==='penalty'){openPenalty();return;}
+  if(kind==='freepass'){addEvent({type:'freepass',team:at},'Free pass awarded to '+teamName(at)+'. Log the passes, then double-click the shot.');return;}
+  addEvent({type:'turnover',team:at,sub:'attfoul'},teamName(at)+' attacking foul turnover.');
 }
 $('#modal').addEventListener('click',function(e){
   if(e.target.id==='modal'){cancelPopup();return;}
@@ -1701,6 +1736,7 @@ $('#modal').addEventListener('click',function(e){
   if(d.subout!==undefined){ui.popup.out=(ui.popup.out===d.subout)?null:d.subout;renderModal(cur(),ui.R);return;}
   if(d.subin!==undefined){ui.popup.inn=(ui.popup.inn===d.subin)?null:d.subin;renderModal(cur(),ui.R);return;}
   if(d.subok!==undefined){commitSub();return;}
+  if(d.rcall){rebCall(d.rcall);return;}
   if(d.out){commitShot(d.out,null);return;}
   if(d.reb){commitShot('rebound',{team:d.reb,id:d.rid||''});return;}
 });
