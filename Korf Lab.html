@@ -412,7 +412,7 @@ function jsonToCsv(txt){
   function pLong(p){return per===4?'Quarter '+p:(p===1?'1st half':'2nd half');}
   function lab(p){return (p&&p.no?'#'+p.no+' ':'')+(p?p.name:'');}
   var att={H:0,A:0},cur=startTeam,lastP=1,halfP=per===4?3:2;att[startTeam]=1;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','overtime_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s'];
   var name=hn+' v '+an,origin=null,rows=[];
   m.events.forEach(function(e){
     var pe=pOf(Number(e.t)||0);

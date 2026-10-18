@@ -419,7 +419,7 @@ details>summary{transition:color .16s var(--ease)}
           <button class="btn" id="clkBack" type="button" title="Go back 5 seconds. Events after that time are removed.">−5 s</button>
           <button class="btn primary" id="clkToggle" type="button" title="Start or pause the clock (Space bar)">Start</button>
           <button class="btn" id="clkFwd" type="button" title="Go forward 5 seconds">+5 s</button>
-          <button class="btn primary" id="clkNext" type="button" title="Set up the next half. The clock stays stopped until you press Start." hidden>Start 2nd half</button>
+          <button class="btn primary" id="clkNext" type="button" title="End this half. The next half is set up with the clock stopped until you press Start." hidden>End 1st half</button>
         </div>
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
@@ -958,10 +958,11 @@ function onCourt(m,R,team,role){
 function snap(p){return p?{id:p.id,name:p.name,no:p.no,div:p.div||null,g:p.g,sub:!!p.sub}:null;}
 function plLabel(p){return (p.no?'#'+p.no+' ':'')+p.name;}
 /* ---------- match clock ---------- */
-var clk={base:0,since:null,lastSave:0,speed:1,go:1,ot:0,otSince:null,otOn:false};
+var clk={base:0,since:null,lastSave:0,speed:1,go:1,ot:0,otSince:null,otOn:false,done:false};
 function otFlag(){return clk.otOn||clk.ot>0||!!clk.otSince;}
+function goExtra(over){clk.otOn=true;clk.ot=0;clk.otSince=Date.now()-Math.max(0,over||0)*1000/clk.speed;}
 function periodStart(){return periodSec(cur().config)*(Math.max(clk.go,1)-1);}
-/* Overtime: once the clock has stopped at the end of a period, tracking carries on. Events then keep the stopped time and record how many seconds of overtime had passed on a separate stopwatch (e.ot), shown as 30:00 +mm:ss. */
+/* Extra time: when regular time of a period ends the clock runs straight on into extra time, with no action from the user. The user ends the half or the match with the End button. Events then keep the stopped time and record how many seconds of extra time had passed on a separate stopwatch (e.ot), shown as 30:00 +mm:ss. */
 function otRaw(){return clk.ot+(clk.otSince?(Date.now()-clk.otSince)/1000*clk.speed:0);}
 function otNow(){return atCap()?Math.floor(otRaw()+1e-6):undefined;}
 function evClock(e){return (e.ot!=null)?fmtClock(Math.round(e.t+1))+' +'+fmtClock(e.ot):fmtClock(e.t);}
@@ -971,30 +972,31 @@ function nowT(){return Math.min(clk.base+(clk.since?(Date.now()-clk.since)/1000*
 function atCap(){return nowT()>=capT()-1e-6;}
 function lastPeriod(){var m=cur();return clk.go>=m.config.periods;}
 function nowSec(){return Math.floor(nowT()+1e-6);}
-function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
-function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw()),otOn:otFlag()};save();}
+function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.done=!!c.done;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
+function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw()),otOn:otFlag(),done:!!clk.done};save();}
 function setSpeed(v){v=Number(v);if([0.5,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}if(clk.otSince){clk.ot=otRaw();clk.otSince=Date.now();}clk.speed=v;persistClock();renderClock();}
 function setClock(nt){clk.base=nt;if(clk.since) clk.since=Date.now();}
 function pauseQuiet(){if(clk.since||clk.otSince){if(clk.since){clk.base=nowT();clk.since=null;}if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}persistClock();}}
 function toggleClock(){
   if(atCap()){
-    /* Half time or full time: the button runs or pauses the overtime stopwatch. */
-    if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}else{clk.otOn=true;clk.otSince=Date.now();}
+    /* In extra time the button pauses or resumes the extra time stopwatch. */
+    if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}else{clk.done=false;clk.otOn=true;clk.otSince=Date.now();}
     persistClock();renderClock();render();return;
   }
   if(clk.since){clk.base=nowT();clk.since=null;}else{clk.since=Date.now();}
   persistClock();renderClock();
 }
-/* Only this button starts the next half or quarter, never the space bar. */
+/* The End button ends the half (or quarter) and sets up the next one with the clock stopped, or at the end of the match stops extra time. The next period only starts when the user presses Start. */
 function startNextPeriod(){
-  if(!atCap()||lastPeriod()) return;
-  clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otOn=false;clk.otSince=null;clk.since=null;ui.popup=null;ui.restore=null;
+  if(!atCap()) return;
+  if(lastPeriod()){if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}clk.done=true;ui.popup=null;persistClock();render();return;}
+  clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otOn=false;clk.otSince=null;clk.since=null;clk.done=false;ui.popup=null;ui.restore=null;
   persistClock();render();
 }
 function adjustClock(delta){
   var m=cur(),t=nowT(),wiped=[];
   if(atCap()&&otFlag()){
-    /* In overtime the buttons only move the overtime stopwatch, never back into regular time. */
+    /* In extra time the buttons only move the extra time stopwatch, never back into regular time. */
     if(delta>0) return;
     var was=Math.floor(otRaw()+1e-6),no=Math.max(0,was+delta);
     if(no===was) return;
@@ -1033,13 +1035,13 @@ function renderClock(){
   var t=nowT(),cfg=cur().config,cap=atCap(),last=lastPeriod(),otOn=cap&&otFlag(),o=otRaw();
   $('#clock').textContent=fmtClock(cap?Math.ceil(t):t)+(otOn?' +'+fmtClock(o):'');
   $('#clock').classList.toggle('paused',cap?!clk.otSince:!clk.since);
-  $('#clkToggle').textContent=cap?(clk.otSince?'Pause overtime':(clk.ot>0?'Resume overtime':'Start overtime')):(clk.since?'Pause':(t>periodStart()+0.5?'Resume':'Start'));
-  $('#clkToggle').title=cap?'Run or pause the overtime stopwatch (Space bar). Events are logged as '+fmtClock(Math.ceil(t))+' + overtime.':'Start or pause the clock (Space bar)';
-  $('#clkNext').hidden=!(cap&&!last);
-  $('#clkNext').textContent='Start '+pBtn(cfg,clk.go+1);
+  $('#clkToggle').textContent=cap?(clk.otSince?'Pause':(otFlag()?'Resume':'Start extra time')):(clk.since?'Pause':(t>periodStart()+0.5?'Resume':'Start'));
+  $('#clkToggle').title=cap?'Pause or resume the extra time stopwatch (Space bar). Events are logged as '+fmtClock(Math.ceil(t))+' + extra time.':'Start or pause the clock (Space bar)';
+  $('#clkNext').hidden=!(cap&&!(last&&clk.done));
+  $('#clkNext').textContent=last?'End match':'End '+pBtn(cfg,clk.go);
   $('#clkFwd').disabled=cap;
   $('#clkBack').disabled=otOn?(Math.floor(o+1e-6)<1):(Math.floor(t)<=periodStart());
-  $('#perLabel').textContent=cap?((last?'Full time':(cfg.periods===4?'End of Q'+clk.go:'Half time'))+(otOn?' · overtime':'')):pLong(cfg,periodOf(cfg,Math.floor(t)));
+  $('#perLabel').textContent=cap?((last?(clk.done?'Match ended':'Full time'):(cfg.periods===4?'End of Q'+clk.go:'Half time'))+(otOn?' · extra time':'')):pLong(cfg,periodOf(cfg,Math.floor(t)));
   var sb=document.querySelectorAll('#cspeed [data-spd]');for(var i=0;i<sb.length;i++) sb[i].setAttribute('aria-pressed',String(Number(sb[i].dataset.spd)===clk.speed));
 }
 
@@ -1168,7 +1170,7 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','overtime_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
@@ -1231,7 +1233,7 @@ function csvToBackup(txt){
   var evs=[],goals=0,firstDiv={H:null,A:null},first=null;
   recs.forEach(function(o,i){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
-    var e={t:t,ts:ts,type:o.event,team:team};if(o.overtime_s!==undefined&&o.overtime_s!=='') e.ot=num(o.overtime_s,undefined);
+    var e={t:t,ts:ts,type:o.event,team:team};if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
     if(o.event!=='timeout'&&!team) return;
     if(!first&&team) first={team:team,o:o};
     if(o.event==='pass'){e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.x2=num(o.x2_m,NaN);e.y2=num(o.y2_m,NaN);}
@@ -1373,13 +1375,13 @@ function renderPanels(m,R){
   if(rv) $('#reviewMsg').textContent='Reviewing '+teamName(rv.team)+' attack '+rv.att+' · '+pLong(m.config,rv.period);
   var rs=ui.restore;
   $('#restoreBar').hidden=!rs;
-  if(rs) $('#restoreMsg').textContent=(rs.ot!=null?'Rewound overtime to +'+fmtClock(rs.at):'Rewound to '+fmtClock(rs.at))+' and removed '+rs.events.length+(rs.events.length===1?' event.':' events.');
+  if(rs) $('#restoreMsg').textContent=(rs.ot!=null?'Rewound extra time to +'+fmtClock(rs.at):'Rewound to '+fmtClock(rs.at))+' and removed '+rs.events.length+(rs.events.length===1?' event.':' events.');
 }
 function hintText(m,R){
   if(ui.msg) return ui.msg;
   var ev=m.config.events;
   if(ui.review) return 'Review mode. Press Back to live to carry on tracking.';
-  if(atCap()){var tm=fmtClock(Math.ceil(nowT()));return (lastPeriod()?'Full time.':(m.config.periods===4?'End of quarter '+clk.go+'.':'Half time.'))+' The clock is stopped at '+tm+'. You can keep tracking: events are logged as '+tm+' + overtime. Use Start overtime to run the overtime stopwatch'+(lastPeriod()?'.':', and Start '+pBtn(m.config,clk.go+1)+' when play restarts.');}
+  if(atCap()){var tm=fmtClock(Math.ceil(nowT()));return (lastPeriod()?'Full time.':(m.config.periods===4?'End of quarter '+clk.go+'.':'Half time.'))+' Regular time is over and the clock runs on in extra time. Events are logged as '+tm+' + extra time. Press '+(lastPeriod()?'End match when play stops.':'End '+pBtn(m.config,clk.go)+' when the half is over, then Start when play restarts.');}
   if(R.st.phase==='transfer') return 'Choose Transfer to attack once the ball is in their attacking half.';
   var parts=[];
   if(ev.pass) parts.push(chainStart()?'Click where the pass is received; that spot starts the next pass.':'Click where the ball is first held to set the start of the pass.');
@@ -2234,7 +2236,7 @@ function readBackupFile(inp,msg,fromSetup){
     try{
       var nm=importMatchText(rd.result,fromSetup);
       var txt='Imported '+nm.events.length+' events from '+f.name+'.';
-      if(fromSetup){flashMsg(txt+(atCap()?(lastPeriod()?' The match is at full time.':' Press Start '+pBtn(nm.config,clk.go+1)+' on the clock to carry on tracking.'):' Press Resume on the clock to carry on tracking.'));render();}
+      if(fromSetup){flashMsg(txt+(atCap()?(lastPeriod()?' The match is at full time.':' Press Resume on the clock to carry on, or End '+pBtn(nm.config,clk.go)+' to set up the next half.'):' Press Resume on the clock to carry on tracking.'));render();}
       else{msg.textContent=txt;render();}
     }catch(err){msg.textContent=(err&&err.message)?err.message:'Could not read that file.';}
     inp.value='';
@@ -2283,7 +2285,7 @@ document.addEventListener('keydown',function(e){
 
 setInterval(function(){
   if(ui.view!=='track') return;
-  if(clk.since&&atCap()){clk.base=nowT();clk.since=null;ui.popup=null;persistClock();render();}
+  if(clk.since&&atCap()){var ov=(Date.now()-clk.since)/1000*clk.speed-(capT()-clk.base);clk.base=nowT();clk.since=null;goExtra(ov/clk.speed);ui.popup=null;persistClock();render();}
   renderClock();
   var p=periodOf(cur().config,nowSec());
   if(p!==ui.per){render();return;}
