@@ -1192,14 +1192,14 @@ var GCOL={F:'var(--gF)',M:'var(--gM)','':'var(--opp)'};
 var GLAB={F:'Female',M:'Male','':'Unknown'};
 function pid(p){return p.team+'|'+p.name;}
 function board(list,key,title,sub,fn,o){
-  var rows=list.map(function(p){return {p:p,v:fn(p)};}).filter(function(x){return x.v>0;}).sort(function(a,b){return b.v-a.v||b.p.shots-a.p.shots;}).slice(0,8);
+  var rows=list.map(function(p){return {p:p,v:fn(p)};}).filter(function(x){return o.all?x.v>=0:x.v>0;}).sort(function(a,b){return b.v-a.v||b.p.shots-a.p.shots||(a.p.name<b.p.name?-1:1);});if(!o.all) rows=rows.slice(0,8);
   if(!rows.length) return card(key,title,sub,'<p class="note">Nothing to show yet.</p>');
   var multi=Object.keys(list.reduce(function(a,p){a[p.team]=1;return a;},{})).length>1,mx=rows[0].v;
   var hb=hbars(rows.map(function(x){
     var p=x.p;
     return {label:p.name+(multi?' · '+p.team:''),pl:pid(p),val:'<tspan style="font-weight:600">'+(o.fmt?o.fmt(x):x.v)+'</tspan>',segs:o.segs(p)};
   }),{max:o.pct?100:mx,lw:132,cut:20,aria:title,hl:view.player});
-  return card(key,title,sub,hb,{legend:o.legend||'',table:tbl(['Player','Team',title],list.map(function(p){return [esc(p.name),esc(p.team),o.fmt?o.fmt({p:p,v:fn(p)}):fn(p)];}).slice(0,50))});
+  return card(key,title,sub,hb,{legend:o.legend||'',table:tbl(['Player','Team',title],list.map(function(p){return [esc(p.name),esc(p.team),o.fmt?o.fmt({p:p,v:fn(p)}):fn(p)];}).slice(0,o.all?500:50))});
 }
 function playersPage(ms){
   var list=buildPlayers(ms);
@@ -1237,17 +1237,17 @@ function playersPage(ms){
 
   /* leaderboards */
   var tl=leg(TKEYS.map(function(k,i){return {c:TCOL[i],l:TYPE_LABEL[k]};}));
-  out+=board(list,'b-goals','Goals','Top scorers, split by shot type',function(p){return p.goals;},{legend:tl,segs:function(p){return TKEYS.map(function(k,i){return {v:p.gl[k],c:TCOL[i],tip:[p.name+' · '+TYPE_LABEL[k],p.gl[k]+' goals']};});}});
-  out+=board(list,'b-shots','Shots','Most shots taken, split by shot type',function(p){return p.shots;},{legend:tl,segs:function(p){return TKEYS.map(function(k,i){return {v:p.st[k],c:TCOL[i],tip:[p.name+' · '+TYPE_LABEL[k],p.st[k]+' shots']};});}});
+  out+=board(list,'b-goals','Goals','All players, split by shot type',function(p){return p.goals;},{all:true,legend:tl,segs:function(p){return TKEYS.map(function(k,i){return {v:p.gl[k],c:TCOL[i],tip:[p.name+' · '+TYPE_LABEL[k],p.gl[k]+' goals']};});}});
+  out+=board(list,'b-shots','Shots','All players, split by shot type',function(p){return p.shots;},{all:true,legend:tl,segs:function(p){return TKEYS.map(function(k,i){return {v:p.st[k],c:TCOL[i],tip:[p.name+' · '+TYPE_LABEL[k],p.st[k]+' shots']};});}});
   var minShots=Math.min(5,Math.max(1,Math.round(list[0].shots/3)));
-  out+=board(list.filter(function(p){return p.shots>=minShots;}),'b-pct','Shot %','Players with at least '+minShots+' shots',function(p){return p.shots?Math.round(100*p.goals/p.shots):0;},{pct:true,fmt:function(x){return x.v+'% <tspan class="m">'+x.p.goals+'/'+x.p.shots+'</tspan>';},segs:function(p){return [{v:p.goals/p.shots*100,c:'var(--accent)',tip:[p.name,p.goals+' goals from '+p.shots+' shots']}];}});
-  if(HAS.reb) out+=board(list,'b-reb','Rebounds','Attacking and defensive rebounds collected',function(p){return p.att+p.def;},{legend:leg([{c:'var(--o1)',l:'Attacking'},{c:'var(--o3)',l:'Defensive'}]),segs:function(p){return [{v:p.att,c:'var(--o1)',tip:[p.name,p.att+' attacking rebounds']},{v:p.def,c:'var(--o3)',tip:[p.name,p.def+' defensive rebounds']}];}});
+  out+=board(list.filter(function(p){return p.shots>0;}),'b-pct','Shot %','All players with at least 1 shot',function(p){return p.shots?Math.round(100*p.goals/p.shots):0;},{all:true,pct:true,fmt:function(x){return x.v+'% <tspan class="m">'+x.p.goals+'/'+x.p.shots+'</tspan>';},segs:function(p){return [{v:p.goals/p.shots*100,c:'var(--accent)',tip:[p.name,p.goals+' goals from '+p.shots+' shots']}];}});
+  if(HAS.reb) out+=board(list,'b-reb','Rebounds','Attacking and defensive rebounds collected',function(p){return p.att+p.def;},{all:true,legend:leg([{c:'var(--o1)',l:'Attacking'},{c:'var(--o3)',l:'Defensive'}]),segs:function(p){return [{v:p.att,c:'var(--o1)',tip:[p.name,p.att+' attacking rebounds']},{v:p.def,c:'var(--o3)',tip:[p.name,p.def+' defensive rebounds']}];}});
 
   if(HAS.min){
     var pm=list.filter(function(p){return p.hasMin;}),mxA=Math.max.apply(null,pm.map(function(p){return p.minA;}).concat([0])),minThr=Math.min(15,Math.max(1,Math.round(mxA/3)));
-    out+=board(pm,'b-min','Minutes played','Time in the attacking and defending zones',function(p){return p.minA+p.minD;},{legend:leg([{c:'var(--s0)',l:'In attack'},{c:'var(--o4)',l:'In defence'}]),fmt:function(x){return fmtMin(x.v);},segs:function(p){return [{v:p.minA,c:'var(--s0)',tip:[p.name+' · in attack',fmtMin(p.minA)]},{v:p.minD,c:'var(--o4)',tip:[p.name+' · in defence',fmtMin(p.minD)]}];}});
-    out+=board(pm.filter(function(p){return p.minA>=minThr;}),'b-spm','Shots per minute in attack','Players with at least '+minThr+' minutes in attack',function(p){return p.shotsL/p.minA;},{fmt:function(x){return x.v.toFixed(2)+'/min';},segs:function(p){return [{v:p.shotsL/p.minA,c:'var(--s0)',tip:[p.name,perMin(p.shotsL,p.minA)+' ('+p.shotsL+' shots in '+fmtMin(p.minA)+')']}];}});
-    out+=board(pm.filter(function(p){return p.minA>=minThr;}),'b-gpm','Goals per minute in attack','Players with at least '+minThr+' minutes in attack',function(p){return p.goalsL/p.minA;},{fmt:function(x){return x.v.toFixed(2)+'/min';},segs:function(p){return [{v:p.goalsL/p.minA,c:'var(--o1)',tip:[p.name,perMin(p.goalsL,p.minA)+' ('+p.goalsL+' goals in '+fmtMin(p.minA)+')']}];}});
+    out+=board(pm,'b-min','Minutes played','All players: time in the attacking and defending zones',function(p){return p.minA+p.minD;},{all:true,legend:leg([{c:'var(--s0)',l:'In attack'},{c:'var(--o4)',l:'In defence'}]),fmt:function(x){return fmtMin(x.v);},segs:function(p){return [{v:p.minA,c:'var(--s0)',tip:[p.name+' · in attack',fmtMin(p.minA)]},{v:p.minD,c:'var(--o4)',tip:[p.name+' · in defence',fmtMin(p.minD)]}];}});
+    out+=board(pm.filter(function(p){return p.minA>0;}),'b-spm','Shots per minute in attack','All players with time in attack',function(p){return p.shotsL/p.minA;},{all:true,fmt:function(x){return x.v.toFixed(2)+'/min';},segs:function(p){return [{v:p.shotsL/p.minA,c:'var(--s0)',tip:[p.name,perMin(p.shotsL,p.minA)+' ('+p.shotsL+' shots in '+fmtMin(p.minA)+')']}];}});
+    out+=board(pm.filter(function(p){return p.minA>0;}),'b-gpm','Goals per minute in attack','All players with time in attack',function(p){return p.goalsL/p.minA;},{all:true,fmt:function(x){return x.v.toFixed(2)+'/min';},segs:function(p){return [{v:p.goalsL/p.minA,c:'var(--o1)',tip:[p.name,perMin(p.goalsL,p.minA)+' ('+p.goalsL+' goals in '+fmtMin(p.minA)+')']}];}});
   }
 
   /* scatter */
