@@ -30,3 +30,5 @@ Then double-click the saved file to open it. Matches are stored per browser and 
 - Everything runs in your browser; nothing is uploaded. Matches are stored in the browser on the page's address, so export a backup before switching address or device.
 - Korf Lab has a **Load a sample match** button to try it without data.
 - Both apps are plain HTML files: save the file and open it locally if you prefer.
+
+**Privacy.** This site counts anonymous page visits and file downloads (no cookies, no personal data). Your match data never leaves your browser.
