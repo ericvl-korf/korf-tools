@@ -1,4 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<script data-goatcounter="https://ericvl-korf.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>function gcEvent(n){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:n,title:n,event:true});}catch(e){}}</script>
 <title>Korf Log</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="256" height="256" rx="58" fill="%231a5a46"/%3E%3Cpath d="M52 206 C 56 150%2C 80 96%2C 114 66" fill="none" stroke="%23fff" stroke-width="8" stroke-dasharray="1 17" stroke-linecap="round"/%3E%3Ccircle cx="52" cy="206" r="10" fill="%23fff"/%3E%3Ccircle cx="64" cy="150" r="7" fill="%23fff" opacity=".8"/%3E%3Ccircle cx="76" cy="108" r="7" fill="%23fff" opacity=".8"/%3E%3Cline x1="140" y1="150" x2="140" y2="240" stroke="%23fff" stroke-width="7" stroke-linecap="round"/%3E%3Cpath d="M92 104 L92 160 Q140 184 188 160 L188 104 Z" fill="%23f4c20d"/%3E%3Cpath d="M92 130 Q140 154 188 130" fill="none" stroke="%231a5a46" stroke-width="4" opacity=".35"/%3E%3Cellipse cx="140" cy="104" rx="48" ry="14" fill="%231a5a46" stroke="%23f4c20d" stroke-width="9"/%3E%3Ccircle cx="140" cy="50" r="22" fill="%23fff"/%3E%3Cg fill="none" stroke="%231a5a46" stroke-width="4" stroke-linecap="round"%3E%3Cpath d="M118 50 Q140 39 162 50"/%3E%3Cpath d="M140 28 Q151 50 140 72"/%3E%3C/g%3E%3C/svg%3E">
 
@@ -2313,7 +2315,7 @@ function saveBackup(fmt){
   var viaLink=function(){
     try{
       var url=URL.createObjectURL(new Blob([txt],{type:isCsv?'text/csv':'application/json'})),a=document.createElement('a');
-      a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();
+      a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();gcEvent(isCsv?'download-log-csv':'download-log-backup');
       setTimeout(function(){URL.revokeObjectURL(url);},4000);
       flashMsg(what+' saved as '+fn+' ('+m.events.length+' events). If no file appeared, use Export, Copy instead.');
     }catch(err){fallbackBox();}
