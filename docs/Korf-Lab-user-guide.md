@@ -1,3 +1,5 @@
+<img src="images/banner-lab.png" alt="Korf Lab" width="500">
+
 # Korf Lab: user guide
 
 Korf Lab reads the event logs exported by Korf Log and builds team and player dashboards that you can print as PDF reports.

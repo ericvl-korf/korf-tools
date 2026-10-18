@@ -1,3 +1,5 @@
+<img src="images/banner-log.png" alt="Korf Log" width="500">
+
 # Korf Log: user guide
 
 Korf Log records a korfball match as it is played, one click at a time, and exports an event log that Korf Lab turns into team and player reports.
