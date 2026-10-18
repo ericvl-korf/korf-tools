@@ -1,5 +1,7 @@
 # Korf tools
 
+<img src="logos/korf-log.svg" alt="Korf Log logo" width="96"> <img src="logos/korf-lab.svg" alt="Korf Lab logo" width="96">
+
 Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 | App | What it does | Open |
