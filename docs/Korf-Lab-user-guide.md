@@ -80,4 +80,6 @@ If you track shots in Yellow Bucket, you can turn its Shot Location export (a CS
 
 **Simulated court.** Markers on the shot map are plotted on a simulated 40 × 20 m court, using each shot's distance and angle from the post, so treat positions as approximate.
 
+**Privacy.** This site counts anonymous page visits and file downloads (no cookies, no personal data). Your match data never leaves your browser.
+
 *Korf Lab is created by Eric Van Looy.*

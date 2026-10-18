@@ -41,4 +41,6 @@ Team colours fill each team's buttons. Where names are logged, player buttons ge
 - **Export** gives the event log as CSV or JSON. Choose the format, then read it in the box, copy it, or save it as a file with the button beside the choice (Save CSV file or Save backup file). Korf Log and Korf Lab both read JSON and CSV. A JSON backup is exact; a CSV rebuilds the match from its events, so players who never shot, collected a rebound or were named in a substitution are missing from the player buttons. Both formats record the team, court and circle colours, so Korf Lab can use them. Events logged in extra time show as 30:00 +mm:ss in the time column; the extra time seconds are in an extra extra_time_s column.
 - **Maximise** hides everything except the clock and speed buttons, score, tracking buttons, a one-line log of the last event (with a delete button) and the court. **Match setup** edits the current match. **New match** starts another, keeping the teams and colours.
 
+**Privacy.** This site counts anonymous page visits and file downloads (no cookies, no personal data). Your match data never leaves your browser.
+
 *Korf Log is created by Eric Van Looy.*
