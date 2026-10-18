@@ -21,6 +21,7 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 | Shot | Double-click where it was taken. **Step 1:** pick the shot type (Distance shot is pre-selected; press 1 for Distance shot or 2 for Runner) and, if names are logged, the shooter. Click the selected type again, or press Enter, to continue with the shooter unknown. **Step 2:** Goal, a rebound, Ball out, or Defended shot. Attack options sit in the left column, defence in the right. |
 | Other events | Penalty, Free pass, turnover tiles, Time out and Subs sit above the court. |
 | Mistakes | Press Ctrl+Z (Cmd+Z on a Mac) to undo the last event. Esc closes a popup. |
+| Match video | Under the court, paste a YouTube link into Match video and press Show video. The player appears under the court, and in Maximise the court gets a little smaller to make room for it. Open on YouTube, Change link and Remove video sit under the player. The link is saved with the match, in the JSON backup and in the CSV export (video_url column). The player only works when Korf Log is opened from a web address, such as the GitHub Pages link. In a file opened from your computer, or inside the Claude page, YouTube refuses to play it, so use the Open on YouTube link there. |
 
 ![Figure 2. Tracking screen: fixture line and match list at the top, clock with its speed buttons, and passes drawn as numbered arrows.](images/log-2.png)
 
