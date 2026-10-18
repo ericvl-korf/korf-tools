@@ -603,7 +603,13 @@ details>summary{transition:color .16s var(--ease)}
               <label class="cb"><input type="radio" name="passmode" data-pm="count"><span>Count tracking<small>Press the Pass button next to the court to add a pass to the attack. Logs pass count only</small></span></label>
             </div>
           </div>
-          <label class="cb"><input type="checkbox" data-ev="shot"><span>Shots<small>Double-click on the court</small></span></label>
+          <div class="evgroup">
+            <label class="cb"><input type="checkbox" data-ev="shot"><span>Shots<small>Double-click on the court</small></span></label>
+            <div class="subs" id="subShot" role="radiogroup" aria-label="Shot types">
+              <label class="cb"><input type="radio" name="shottypes" data-st="log"><span>Log separate shot types<small>Distance shots or runners</small></span></label>
+              <label class="cb"><input type="radio" name="shottypes" data-st="none"><span>Do not log separate shot types</span></label>
+            </div>
+          </div>
           <div class="evgroup">
             <label class="cb"><input type="checkbox" data-ev="referee"><span>Referee calls<small>Tiles above the court</small></span></label>
             <div class="subs" id="subRef">
@@ -738,7 +744,7 @@ function defaultConfig(){
     home:{name:'Home',players:[],subs:[],color:'#ff8a1f'},
     away:{name:'Away',players:[],subs:[],color:'#4fb3f6'},
     length:60,periods:2,court:{len:40},look:{court:'#2a6b58',zone:'#1f56c4'},
-    events:{pass:true,passMode:'full',shot:true,referee:true,turnover:true,penalty:true,freepass:true,
+    events:{pass:true,passMode:'full',shot:true,shotTypes:'log',referee:true,turnover:true,penalty:true,freepass:true,
       to:{general:true,attack:false,forced:false,unforced:false,attfoul:false,shotclock:false}},
     start:{team:'H',divs:{H:1,A:2},dir:'right'},
     meta:{league:'',date:'',week:'',video:''}
@@ -769,6 +775,7 @@ function normCfg(c){
   if(ev&&typeof ev==='object'){
     ['pass','shot','referee','turnover','penalty','freepass'].forEach(function(k){if(typeof ev[k]==='boolean') d.events[k]=ev[k];});
     d.events.passMode=(ev.passMode==='count')?'count':'full';
+    d.events.shotTypes=(ev.shotTypes==='none')?'none':'log';
     if(ev.to&&typeof ev.to==='object'){Object.keys(d.events.to).forEach(function(k){if(typeof ev.to[k]==='boolean') d.events.to[k]=ev.to[k];});}
   }
   var st=c.start;
@@ -1154,7 +1161,7 @@ function commitSub(){
 function cancelPopup(){ui.popup=null;render();}
 function commitShot(k,by){
   var p=ui.popup,m=cur();if(!p) return;
-  var needType=(p.kind==='shot')||(p.kind==='freepass'&&!p.fp);
+  var needType=needsType(p);
   if(needType&&!p.stype){p.stage='type';p.warn=true;renderModal(m,ui.R);return;}
   var shooter=p.shooter?snap(findPerson(m,p.team,p.shooter)):null;
   var e={id:uid(),t:p.t,ot:p.ot,ts:Date.now(),team:p.team,type:'shot',x:p.x,y:p.y,r:p.r,a:p.a,
@@ -1333,6 +1340,8 @@ function csvToBackup(txt){
   });
   if(has('pass')===false) cfg.events.pass=false;
   if(countPass) cfg.events.passMode='count';
+  var shs=recs.filter(function(o){return o.event==='shot'&&(o.detail||'shot')==='shot';});
+  if(shs.length&&!shs.some(function(o){return o.shot_type;})) cfg.events.shotTypes='none';
   recs.forEach(function(o){if(o.event==='turnover'&&o.detail) cfg.events.to[o.detail]=true;});
   return {app:'korfball-tracker',version:3,match:{home:home,away:away,created:Date.parse(r0.time_iso)||Date.now(),config:cfg,events:evs}};
 }
@@ -1627,7 +1636,9 @@ function renderSubModal(m,R,p){
   h+='<button type="button" class="btn primary" data-subok="1"'+(ok?'':' disabled')+'>Confirm swap</button></div>';
   setHTML($('#mBody'),h);
 }
-function needsType(p){return (p.kind==='shot')||(p.kind==='freepass'&&!p.fp);}
+/* Shot types (distance shot or runner) are only asked for when the match setup has them switched on. */
+function typesOn(m){var e=m&&m.config&&m.config.events;return !(e&&e.shotTypes==='none');}
+function needsType(p){return ((p.kind==='shot')||(p.kind==='freepass'&&!p.fp))&&typesOn(cur());}
 function hasShooters(m,R,p){return onCourt(m,R,p.team,'att').people.length>0;}
 function needsStage1(m,R,p){return needsType(p)||hasShooters(m,R,p);}
 function setStage(p){p.stage=needsStage1(cur(),ui.R,p)?'type':'out';}
@@ -1651,7 +1662,7 @@ function renderModal(m,R){
       h+='<div class="msec"><h3>Shot type</h3><div class="typerow">'+STYPES.map(function(t,i){
         return '<button type="button" class="tile" data-stype="'+t[0]+'" aria-pressed="'+(p.stype===t[0])+'"><span class="kb">'+(i+1)+'</span> '+t[1]+'</button>';}).join('')+'</div></div>';
     }else{
-      h+='<p class="mmeta">Logged automatically as a '+(pen?'penalty':'free pass shot')+(p.kind==='freepass'?'. Untick the box above to log a standard shot and choose a shot type.':'.')+'</p>';
+      if(pen||(p.kind==='freepass'&&p.fp)) h+='<p class="mmeta">Logged automatically as a '+(pen?'penalty':'free pass shot')+((p.kind==='freepass'&&typesOn(m))?'. Untick the box above to log a standard shot and choose a shot type.':'.')+'</p>';
     }
     if(named){
       h+='<div class="msec"><h3>'+(pen?'Penalty taker':'Shooter')+'</h3><div class="grouplbl">'+esc(teamName(at))+' · Division '+sl.div+'</div><div class="tiles">'+
@@ -1694,7 +1705,7 @@ $('#modal').addEventListener('click',function(e){
   if(d.out){commitShot(d.out,null);return;}
   if(d.reb){commitShot('rebound',{team:d.reb,id:d.rid||''});return;}
 });
-$('#mFpTick').addEventListener('change',function(e){if(ui.popup){ui.popup.fp=e.target.checked;if(!ui.popup.fp&&!ui.popup.stype) ui.popup.stype='distance';ui.popup.warn=false;setStage(ui.popup);renderModal(cur(),ui.R);}});
+$('#mFpTick').addEventListener('change',function(e){if(ui.popup){ui.popup.fp=e.target.checked;if(!ui.popup.fp&&needsType(ui.popup)&&!ui.popup.stype) ui.popup.stype='distance';ui.popup.warn=false;setStage(ui.popup);renderModal(cur(),ui.R);}});
 
 /* ---------- canvas ---------- */
 var canvas=$('#court'),ctx=canvas.getContext('2d');
@@ -1999,9 +2010,10 @@ function syncCourt(){
 function syncEvents(){
   var ev=draft.events;
   qa('[data-ev]').forEach(function(i){i.checked=!!ev[i.dataset.ev];});
+  qa('[data-st]').forEach(function(i){i.checked=(ev.shotTypes==='none'?'none':'log')===i.dataset.st;});
   qa('[data-pm]').forEach(function(i){i.checked=(ev.passMode==='count'?'count':'full')===i.dataset.pm;});
   qa('[data-to]').forEach(function(i){i.checked=!!ev.to[i.dataset.to];});
-  [['#subPass',!ev.pass],['#subRef',!ev.referee],['#subTo',!ev.turnover]].forEach(function(x){
+  [['#subPass',!ev.pass],['#subShot',!ev.shot],['#subRef',!ev.referee],['#subTo',!ev.turnover]].forEach(function(x){
     qa(x[0]+' input').forEach(function(i){i.disabled=x[1];i.closest('.cb').classList.toggle('dis',x[1]);});
   });
 }
@@ -2199,6 +2211,8 @@ sv.addEventListener('change',function(e){
     if(t.dataset.ev==='turnover'&&t.checked&&!anyTo()){ev.to.general=true;}
   }else if(t.dataset.pm){
     ev.passMode=t.dataset.pm==='count'?'count':'full';
+  }else if(t.dataset.st){
+    ev.shotTypes=t.dataset.st==='none'?'none':'log';
   }else if(t.dataset.to){
     var k=t.dataset.to;
     if(t.checked){
@@ -2384,7 +2398,7 @@ document.addEventListener('keydown',function(e){
     var pp=ui.popup;
     if(e.key==='Enter'&&pp.stage==='type'&&pp.kind!=='sub'){e.preventDefault();goOut();return;}
     var ti=['1','2'].indexOf(e.key);
-    if(ti>=0&&((pp.kind==='shot')||(pp.kind==='freepass'&&!pp.fp))){
+    if(ti>=0&&needsType(pp)){
       e.preventDefault();if(pp.stage!=='type') return;var same=pp.stype===STYPES[ti][0];pp.stype=STYPES[ti][0];pp.warn=false;if(same||!hasShooters(cur(),ui.R,pp)) goOut();else renderModal(cur(),ui.R);return;
     }
   } else if((e.key===' '||e.code==='Space')&&!ui.review&&!document.querySelector('dialog[open]')){
