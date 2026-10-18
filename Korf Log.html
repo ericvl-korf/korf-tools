@@ -74,7 +74,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 .clock.paused{opacity:.55}
 .cctl{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
 .cctl .btn{min-width:3.6rem}
-.cspeed{display:flex;align-items:center;gap:4px;margin-top:2px}.cspeed .lbl{margin-right:2px}.cspeed button{font:600 .8rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.15rem .6rem;min-height:30px;cursor:pointer}.cspeed button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.cspeed{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:2px}.cspeed .lbl{margin-right:2px}.cspeed button{font:600 .8rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.15rem .6rem;min-height:30px;cursor:pointer}.cspeed button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 body.max .cspeed{margin-top:0}
 @media (max-width:640px){
   .score{grid-template-columns:1fr 1fr;padding:12px}
@@ -437,7 +437,7 @@ details>summary{transition:color .16s var(--ease)}
           <button class="btn" id="clkFwd" type="button" title="Go forward 5 seconds">+5 s</button>
           <button class="btn primary" id="clkNext" type="button" title="End this half. The next half is set up with the clock stopped until you press Start." hidden>End 1st half</button>
         </div>
-        <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
+        <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="0.75" aria-pressed="false" title="Run the clock at three quarters speed">0.75×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
       <div class="team away">
         <input id="awayName" type="text" maxlength="24" aria-label="Away team name" autocomplete="off">
@@ -997,9 +997,9 @@ function nowT(){return Math.min(clk.base+(clk.since?(Date.now()-clk.since)/1000*
 function atCap(){return nowT()>=capT()-1e-6;}
 function lastPeriod(){var m=cur();return clk.go>=m.config.periods;}
 function nowSec(){return Math.floor(nowT()+1e-6);}
-function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.done=!!c.done;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
+function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,0.75,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.done=!!c.done;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
 function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw()),otOn:otFlag(),done:!!clk.done};save();}
-function setSpeed(v){v=Number(v);if([0.5,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}if(clk.otSince){clk.ot=otRaw();clk.otSince=Date.now();}clk.speed=v;persistClock();renderClock();}
+function setSpeed(v){v=Number(v);if([0.5,0.75,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}if(clk.otSince){clk.ot=otRaw();clk.otSince=Date.now();}clk.speed=v;persistClock();renderClock();}
 function setClock(nt){clk.base=nt;if(clk.since) clk.since=Date.now();}
 function pauseQuiet(){if(clk.since||clk.otSince){if(clk.since){clk.base=nowT();clk.since=null;}if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}persistClock();}}
 function toggleClock(){
