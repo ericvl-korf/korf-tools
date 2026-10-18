@@ -447,7 +447,17 @@ function jsonToCsv(txt){
       var og=origin||oth(e.team);cur=(e.res==='attack')?e.team:og;origin=null;att[cur]++;
     }
   });
-  return [head].concat(rows).map(function(r){return r.map(qv).join(',');}).join('\n');
+  /* starting line-up rows, from the squads saved in the backup */
+  var lrows=[],sd=(cfg.start&&cfg.start.divs)||{};
+  ['H','A'].forEach(function(t){
+    var tm=(t==='H'?cfg.home:cfg.away)||{},tn=t==='H'?hn:an,list=(tm.players||[]).concat(tm.subs||[]),np=(tm.players||[]).length;
+    list.forEach(function(p,i){
+      if(!p||!p.name) return;
+      var bench=i>=np;
+      lrows.push([name,meta.league||'',meta.date||'',meta.week||'',clock(0),0,pLong(1),tn,'','lineup',bench?'bench':(p.div===sd[t]?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player','','','','','','','','','','','',new Date(Number(m.created)||Date.now()).toISOString(),L,len,per,t==='H'?hc:ac,look.court||'',look.zone||'','']);
+    });
+  });
+  return [head].concat(lrows,rows).map(function(r){return r.map(qv).join(',');}).join('\n');
 }
 function isJsonText(t){return /^\s*[\[{]/.test(String(t||'').slice(0,50));}
 async function loadSource(s){
@@ -1107,16 +1117,18 @@ function teamPage(ms){
 
 
 /* ---------- players ---------- */
-function emptyP(name,team){var o={name:name,team:team,shots:0,goals:0,st:{},gl:{},oc:{goal:0,rebound_att:0,rebound_def:0,defended:0,out:0},d:0,dn:0,att:0,def:0,divs:{},gens:{},bm:{},pts:[]};TKEYS.forEach(function(k){o.st[k]=0;o.gl[k]=0;});return o;}
+function emptyP(name,team){var o={name:name,team:team,shots:0,goals:0,st:{},gl:{},oc:{goal:0,rebound_att:0,rebound_def:0,defended:0,out:0},d:0,dn:0,att:0,def:0,minA:0,minD:0,shotsL:0,goalsL:0,hasMin:false,divs:{},gens:{},bm:{},pts:[]};TKEYS.forEach(function(k){o.st[k]=0;o.gl[k]=0;});return o;}
 function topKey(o){var b='',n=0;Object.keys(o).forEach(function(k){if(o[k]>n){n=o[k];b=k;}});return b;}
 function buildPlayers(ms){
   var P={};
   function get(name,team){var k=team+'|'+name;return P[k]||(P[k]=emptyP(name,team));}
   ms.forEach(function(m){
+    var mt=matchTime(m);
     m.shots.forEach(function(s){
       var r=s.r;
       if(s.player){
         var p=get(s.player,s.team);
+        if(mt){p.shotsL++;if(s.goal) p.goalsL++;}
         p.shots++;p.st[s.k]=(p.st[s.k]||0)+1;p.oc[s.rb]++;
         if(s.goal){p.goals++;p.gl[s.k]=(p.gl[s.k]||0)+1;}
         if(s.d!=null){p.d+=s.d;p.dn++;}
@@ -1130,9 +1142,50 @@ function buildPlayers(ms){
         if(r.rebounder_team===s.team) q.att++;else q.def++;
       }
     });
+    if(mt) Object.keys(mt).forEach(function(k){
+      var v=mt[k];if(!(v.a+v.d>0)) return;
+      var i=k.indexOf('|'),p=get(k.slice(i+1),k.slice(0,i)),b=p.bm[m.id]||(p.bm[m.id]={shots:0,goals:0});
+      p.minA+=v.a;p.minD+=v.d;p.hasMin=true;b.minA=v.a;b.minD=v.d;
+    });
   });
   return Object.keys(P).map(function(k){var p=P[k];p.div=topKey(p.divs);p.gen=topKey(p.gens);return p;}).filter(function(p){return !view.team||p.team===view.team;})
     .sort(function(a,b){return b.shots-a.shots||b.goals-a.goals||a.name.localeCompare(b.name);});
+}
+function fmtMin(x){return x>=10?Math.round(x)+' min':(Math.round(x*10)/10)+' min';}
+function perMin(n,mn){return mn>0?(n===0?'0':(n/mn).toFixed(2))+'/min':'–';}
+/* Minutes in attack and in defence, from the starting line-up, the substitutions and the goals. A player is "in attack" while their division is the attacking division of their team; the divisions swap after every second goal of the match. Needs the line-up rows of a newer event log. */
+function subNames(raw){var pr=String(raw||'').split(/\s*(?:->|→)\s*/);function nm(x){return String(x||'').replace(/^#\d+\s+/,'').trim();}return pr.length>=2?{out:nm(pr[0]),inn:nm(pr.slice(1).join(' -> '))}:null;}
+function matchTime(m){
+  var L=m.rows.filter(function(r){return r.event==='lineup';});
+  if(!L.length) return null;
+  var D=Math.max(m.minutes*60,m.maxS||0),base={},on={};
+  L.forEach(function(r){
+    var tm=r.team,nm=String(r.player||'').trim(),dv=Number(r.division)||0;if(!nm) return;
+    if(r.detail==='attack'&&dv) base[tm]=dv;else if(r.detail==='defence'&&dv&&!base[tm]) base[tm]=3-dv;
+    if(r.role!=='substitute'&&dv){(on[tm]=on[tm]||{})[nm]=dv;}
+  });
+  var evs=[];
+  m.shots.forEach(function(s){if(s.goal) evs.push({t:s.t,k:'goal'});});
+  m.subs.forEach(function(sb){var q=subNames(sb.raw);if(q) evs.push({t:sb.t,k:'sub',team:sb.team,q:q});});
+  evs.sort(function(a,b){return a.t-b.t;});
+  var res={},goals=0,cur=0;
+  function seg(to){
+    var d=to-cur;if(d<=0) return;
+    Object.keys(on).forEach(function(tm){
+      if(!base[tm]) return;
+      var ad=(Math.floor(goals/2)%2)?3-base[tm]:base[tm];
+      Object.keys(on[tm]).forEach(function(nm){var k=tm+'|'+nm,r=res[k]||(res[k]={a:0,d:0});if(on[tm][nm]===ad) r.a+=d;else r.d+=d;});
+    });
+    cur=to;
+  }
+  evs.forEach(function(e){
+    seg(e.t);
+    if(e.k==='goal') goals++;
+    else{var o=on[e.team]=on[e.team]||{},dv=o[e.q.out];if(dv!==undefined){delete o[e.q.out];if(e.q.inn) o[e.q.inn]=dv;}}
+  });
+  seg(D);
+  Object.keys(res).forEach(function(k){res[k].a/=60;res[k].d/=60;});
+  return res;
 }
 function avgD(p){return p.dn?(p.d/p.dn).toFixed(1)+' m':'–';}
 var GCOL={F:'var(--gF)',M:'var(--gM)','':'var(--opp)'};
@@ -1155,7 +1208,7 @@ function playersPage(ms){
   var out='';
   /* profile */
   var KS=function(p){return TKEYS.map(function(k,i){return {v:p.st[k],c:TCOL[i]};});};
-  var prof='<div class="kpis">'+kpi('Shots',sel.shots)+kpi('Goals',sel.goals)+kpi('Shot %',pf(sel.goals,sel.shots))+(HAS.reb?kpi('Attacking rebounds',sel.att)+kpi('Defensive rebounds',sel.def):'')+kpi('Average shot distance',avgD(sel))+'</div>';
+  var prof='<div class="kpis">'+kpi('Shots',sel.shots)+kpi('Goals',sel.goals)+kpi('Shot %',pf(sel.goals,sel.shots))+(HAS.min&&sel.hasMin?kpi('Minutes in attack',fmtMin(sel.minA))+kpi('Minutes in defence',fmtMin(sel.minD))+kpi('Shots per minute in attack',perMin(sel.shotsL,sel.minA))+kpi('Goals per minute in attack',perMin(sel.goalsL,sel.minA)):'')+(HAS.reb?kpi('Attacking rebounds',sel.att)+kpi('Defensive rebounds',sel.def):'')+kpi('Average shot distance',avgD(sel))+'</div>';
   var typeRows=TKEYS.filter(function(k){return sel.st[k]>0;}).map(function(k){
     return {label:TYPE_LABEL[k],val:'<tspan style="font-weight:600">'+sel.gl[k]+'/'+sel.st[k]+'</tspan> <tspan class="m">'+pf(sel.gl[k],sel.st[k])+'</tspan>',
       segs:[{v:sel.gl[k],c:'var(--o1)',tip:[TYPE_LABEL[k],sel.gl[k]+' goals']},{v:sel.st[k]-sel.gl[k],c:'var(--o4)',tip:[TYPE_LABEL[k],(sel.st[k]-sel.gl[k])+' not scored']}]};});
@@ -1170,7 +1223,13 @@ function playersPage(ms){
     '<div><div class="lbl">Shot types: goals and misses</div>'+hbars(typeRows.length?typeRows:[{label:'No shots',segs:[]}],{W:340,lw:92,rw:84,aria:'Goals by shot type'})+'<div class="lbl sp">How shots ended</div>'+hbars(ocRow,{W:340,pct:true,rw:30,lw:62,aria:'Outcomes'})+leg(OUT5.map(function(o){return {c:o[2],l:o[1]};}))+'</div>'+
     '<div><div class="lbl">Shot locations</div><div class="pmap">'+pmap+'</div></div>'+
     '<div><div class="lbl">Shots by distance from the post (m)</div>'+vbars(bandC,[{name:'Goal',color:'var(--o1)',vals:bg},{name:'No goal',color:'var(--o4)',vals:bn}],{W:340,stack:true,H:200,cc:4,aria:'Shots by distance',tip:function(i,j){return [(j?'No goal':'Goal')+' · '+bandC[i]+' m',(j?bn:bg)[i]+' shots'];}})+leg([{c:'var(--o1)',l:'Goal'},{c:'var(--o4)',l:'No goal'}])+'</div>'+
-    '<div><div class="lbl">Match by match</div>'+(mids.length?vbars(mc,[{name:'Shots',color:'var(--s0)',vals:mshots},{name:'Goals',color:'var(--o1)',vals:mgoals}],{W:340,H:200,cc:6,labels:true,aria:'Shots and goals per match',tip:function(i,j){return [(j?'Goals':'Shots')+' · '+mids[i].name,(j?mgoals:mshots)[i]+'']}})+leg([{c:'var(--s0)',l:'Shots'},{c:'var(--o1)',l:'Goals'}]):'<p class="note">No matches.</p>')+'</div></div>';
+    '<div><div class="lbl">Match by match</div>'+(mids.length?vbars(mc,[{name:'Shots',color:'var(--s0)',vals:mshots},{name:'Goals',color:'var(--o1)',vals:mgoals}],{W:340,H:200,cc:6,labels:true,aria:'Shots and goals per match',tip:function(i,j){return [(j?'Goals':'Shots')+' · '+mids[i].name,(j?mgoals:mshots)[i]+'']}})+leg([{c:'var(--s0)',l:'Shots'},{c:'var(--o1)',l:'Goals'}]):'<p class="note">No matches.</p>')+'</div>'+
+    (HAS.min&&sel.hasMin?(function(){
+      var mm=ms.filter(function(m){return sel.bm[m.id]&&sel.bm[m.id].minA!==undefined;}),mcc=mm.map(function(m){return mShort(m,cut(m.name,6));});
+      function rt(m,j){var b=sel.bm[m.id];return b.minA>0?(j?b.goals:b.shots)/b.minA:0;}
+      return '<div><div class="lbl">Minutes in attack and in defence by match</div>'+vbars(mcc,[{name:'In attack',color:'var(--s0)',vals:mm.map(function(m){return Math.round(sel.bm[m.id].minA);})},{name:'In defence',color:'var(--o4)',vals:mm.map(function(m){return Math.round(sel.bm[m.id].minD);})}],{W:340,H:200,cc:6,stack:true,aria:'Minutes in attack and in defence per match',tip:function(i,j){var b=sel.bm[mm[i].id];return [(j?'In defence':'In attack')+' · '+mm[i].name,Math.round(j?b.minD:b.minA)+' min'];}})+leg([{c:'var(--s0)',l:'In attack'},{c:'var(--o4)',l:'In defence'}])+'</div>'+
+      '<div><div class="lbl">Shots and goals per minute in attack, by match</div>'+vbars(mcc,[{name:'Shots per minute',color:'var(--s0)',vals:mm.map(function(m){return Math.round(100*rt(m,0))/100;})},{name:'Goals per minute',color:'var(--o1)',vals:mm.map(function(m){return Math.round(100*rt(m,1))/100;})}],{W:340,H:200,cc:6,labels:true,lab:function(i,j){var v=rt(mm[i],j);return v?v.toFixed(2):'0';},aria:'Shots and goals per minute in attack per match',tip:function(i,j){var b=sel.bm[mm[i].id];return [(j?'Goals':'Shots')+' per minute in attack · '+mm[i].name,perMin(j?b.goals:b.shots,b.minA)];}})+leg([{c:'var(--s0)',l:'Shots per minute'},{c:'var(--o1)',l:'Goals per minute'}])+'</div>';
+    })():'')+'</div>';
   var opts=list.map(function(p){return '<option value="'+esc(pid(p))+'"'+(pid(p)===view.player?' selected':'')+'>'+esc(p.name)+(Object.keys(list.reduce(function(a,q){a[q.team]=1;return a;},{})).length>1?' · '+esc(p.team):'')+'</option>';}).join('');
   var pills='<span class="pill">'+esc(sel.team)+'</span>'+(sel.div?'<span class="pill">Division '+esc(sel.div)+'</span>':'')+(sel.gen?'<span class="pill" style="border-color:'+GCOL[sel.gen]+'">'+GLAB[sel.gen]+'</span>':'');
   function brk(title,obj){return '<table><thead><tr><th>'+title+'</th><th>Count</th></tr></thead><tbody>'+TKEYS.map(function(x){return '<tr><td>'+TYPE_LABEL[x]+'</td><td>'+obj[x]+'</td></tr>';}).join('')+'</tbody></table>';}
@@ -1183,6 +1242,13 @@ function playersPage(ms){
   var minShots=Math.min(5,Math.max(1,Math.round(list[0].shots/3)));
   out+=board(list.filter(function(p){return p.shots>=minShots;}),'b-pct','Shot %','Players with at least '+minShots+' shots',function(p){return p.shots?Math.round(100*p.goals/p.shots):0;},{pct:true,fmt:function(x){return x.v+'% <tspan class="m">'+x.p.goals+'/'+x.p.shots+'</tspan>';},segs:function(p){return [{v:p.goals/p.shots*100,c:'var(--accent)',tip:[p.name,p.goals+' goals from '+p.shots+' shots']}];}});
   if(HAS.reb) out+=board(list,'b-reb','Rebounds','Attacking and defensive rebounds collected',function(p){return p.att+p.def;},{legend:leg([{c:'var(--o1)',l:'Attacking'},{c:'var(--o3)',l:'Defensive'}]),segs:function(p){return [{v:p.att,c:'var(--o1)',tip:[p.name,p.att+' attacking rebounds']},{v:p.def,c:'var(--o3)',tip:[p.name,p.def+' defensive rebounds']}];}});
+
+  if(HAS.min){
+    var pm=list.filter(function(p){return p.hasMin;}),mxA=Math.max.apply(null,pm.map(function(p){return p.minA;}).concat([0])),minThr=Math.min(15,Math.max(1,Math.round(mxA/3)));
+    out+=board(pm,'b-min','Minutes played','Time in the attacking and defending zones',function(p){return p.minA+p.minD;},{legend:leg([{c:'var(--s0)',l:'In attack'},{c:'var(--o4)',l:'In defence'}]),fmt:function(x){return fmtMin(x.v);},segs:function(p){return [{v:p.minA,c:'var(--s0)',tip:[p.name+' · in attack',fmtMin(p.minA)]},{v:p.minD,c:'var(--o4)',tip:[p.name+' · in defence',fmtMin(p.minD)]}];}});
+    out+=board(pm.filter(function(p){return p.minA>=minThr;}),'b-spm','Shots per minute in attack','Players with at least '+minThr+' minutes in attack',function(p){return p.shotsL/p.minA;},{fmt:function(x){return x.v.toFixed(2)+'/min';},segs:function(p){return [{v:p.shotsL/p.minA,c:'var(--s0)',tip:[p.name,perMin(p.shotsL,p.minA)+' ('+p.shotsL+' shots in '+fmtMin(p.minA)+')']}];}});
+    out+=board(pm.filter(function(p){return p.minA>=minThr;}),'b-gpm','Goals per minute in attack','Players with at least '+minThr+' minutes in attack',function(p){return p.goalsL/p.minA;},{fmt:function(x){return x.v.toFixed(2)+'/min';},segs:function(p){return [{v:p.goalsL/p.minA,c:'var(--o1)',tip:[p.name,perMin(p.goalsL,p.minA)+' ('+p.goalsL+' goals in '+fmtMin(p.minA)+')']}];}});
+  }
 
   /* scatter */
   if(list.length>1){
@@ -1217,17 +1283,17 @@ function playersPage(ms){
   }
 
   /* heat table */
-  var hm=view.hm||'goals',mcols=ms.filter(function(m){return list.some(function(p){return p.bm[m.id];});});
-  function hv(p,m){var b=p.bm[m.id]||{shots:0,goals:0};return hm==='goals'?b.goals:(hm==='shots'?b.shots:(b.shots?100*b.goals/b.shots:null));}
+  var hm=view.hm||'goals';if(!HAS.min&&/^(mina|mind|spm|gpm)$/.test(hm)) hm='goals';var mcols=ms.filter(function(m){return list.some(function(p){return p.bm[m.id];});});
+  function hv(p,m){var b=p.bm[m.id]||{shots:0,goals:0};return hm==='goals'?b.goals:(hm==='shots'?b.shots:(hm==='mina'?(b.minA||0):(hm==='mind'?(b.minD||0):(hm==='spm'?(b.minA>0?b.shots/b.minA:0):(hm==='gpm'?(b.minA>0?b.goals/b.minA:0):(b.shots?100*b.goals/b.shots:null))))));}
   var hmax=1;list.forEach(function(p){mcols.forEach(function(m){var v=hv(p,m);if(v!=null) hmax=Math.max(hmax,v);});});
-  var ht='<div class="seg sm" role="group" aria-label="Metric">'+[['goals','Goals'],['shots','Shots'],['pct','Shot %']].map(function(x){return '<button type="button" data-hm="'+x[0]+'" aria-pressed="'+(hm===x[0])+'">'+x[1]+'</button>';}).join('')+'</div>';
+  var ht='<div class="seg sm" role="group" aria-label="Metric">'+[['goals','Goals'],['shots','Shots'],['pct','Shot %']].concat(HAS.min?[['mina','Min in attack'],['mind','Min in defence'],['spm','Shots/min'],['gpm','Goals/min']]:[]).map(function(x){return '<button type="button" data-hm="'+x[0]+'" aria-pressed="'+(hm===x[0])+'">'+x[1]+'</button>';}).join('')+'</div>';
   ht+='<div class="tw"><table class="heat"><thead><tr><th>Player</th>'+mcols.map(function(m){return '<th>'+esc(mShort(m,cut(m.name,8)))+'</th>';}).join('')+'<th>Total</th></tr></thead><tbody>'+list.map(function(p){
     return '<tr><td>'+esc(p.name)+'</td>'+mcols.map(function(m){
       var v=hv(p,m),b=p.bm[m.id];
-      if(!b) return '<td class="hz">–</td>';
+      if(!b||(/^(mina|mind|spm|gpm)$/.test(hm)&&b.minA===undefined)) return '<td class="hz">–</td>';
       var pp=v==null?0:v/hmax;
-      return '<td class="hc" style="background:'+seq(pp)+';color:'+inkOn(pp)+'"'+tp([p.name+' · '+m.name,b.goals+' goals from '+b.shots+' shots'])+'>'+(hm==='pct'?Math.round(v)+'%':v)+'</td>';
-    }).join('')+'<td><b>'+(hm==='goals'?p.goals:(hm==='shots'?p.shots:pf(p.goals,p.shots)))+'</b></td></tr>';
+      return '<td class="hc" style="background:'+seq(pp)+';color:'+inkOn(pp)+'"'+tp([p.name+' · '+m.name,b.goals+' goals from '+b.shots+' shots'])+'>'+(hm==='pct'?Math.round(v)+'%':((hm==='mina'||hm==='mind')?Math.round(v):((hm==='spm'||hm==='gpm')?(v?v.toFixed(2):'0'):v)))+'</td>';
+    }).join('')+'<td><b>'+(hm==='goals'?p.goals:(hm==='shots'?p.shots:(hm==='mina'?(p.hasMin?Math.round(p.minA):'–'):(hm==='mind'?(p.hasMin?Math.round(p.minD):'–'):(hm==='spm'?perMin(p.shotsL,p.minA).replace('/min',''):(hm==='gpm'?perMin(p.goalsL,p.minA).replace('/min',''):pf(p.goals,p.shots)))))))+'</b></td></tr>';
   }).join('')+'</tbody></table></div>';
   out+=card('heat','Player by match','Darker cells are higher values; hover a cell for goals and shots',ht,{wide:true});
 
@@ -1249,16 +1315,16 @@ function playersPage(ms){
   }
 
   /* table */
-  var SORTS={name:function(p){return p.name.toLowerCase();},team:function(p){return p.team.toLowerCase();},shots:function(p){return p.shots;},goals:function(p){return p.goals;},att:function(p){return p.att;},def:function(p){return p.def;},pct:function(p){return p.shots?p.goals/p.shots:-1;},dist:function(p){return p.dn?p.d/p.dn:-1;}};
+  var SORTS={name:function(p){return p.name.toLowerCase();},team:function(p){return p.team.toLowerCase();},shots:function(p){return p.shots;},goals:function(p){return p.goals;},att:function(p){return p.att;},def:function(p){return p.def;},mina:function(p){return p.hasMin?p.minA:-1;},mind:function(p){return p.hasMin?p.minD:-1;},spm:function(p){return p.minA>0?p.shotsL/p.minA:-1;},gpm:function(p){return p.minA>0?p.goalsL/p.minA:-1;},pct:function(p){return p.shots?p.goals/p.shots:-1;},dist:function(p){return p.dn?p.d/p.dn:-1;}};
   TKEYS.forEach(function(k){SORTS['s_'+k]=function(p){return p.st[k];};SORTS['g_'+k]=function(p){return p.gl[k];};});
   var ps=view.plSort,tlist=list;
   if(ps&&SORTS[ps.k]){var fn=SORTS[ps.k],dir=ps.dir==='asc'?1:-1;tlist=list.map(function(p,i){return {p:p,i:i};}).sort(function(a,b){var x=fn(a.p),y=fn(b.p);return x<y?-dir:x>y?dir:a.i-b.i;}).map(function(o){return o.p;});}
   function sth(k,label,rs){var on=ps&&ps.k===k;return '<th'+(rs?' rowspan="2"':'')+' class="srt" data-sort="'+k+'" tabindex="0" role="columnheader" aria-sort="'+(on?(ps.dir==='asc'?'ascending':'descending'):'none')+'" title="Sort by '+esc(label)+'">'+label+' <span class="ar" aria-hidden="true">'+(on?(ps.dir==='asc'?'▲':'▼'):'↕')+'</span></th>';}
-  var head='<thead><tr>'+sth('name','Player',1)+sth('team','Team',1)+'<th class="grp-h" colspan="'+(TKEYS.length+1)+'">Shots</th><th class="grp-h" colspan="'+(TKEYS.length+1)+'">Goals</th>'+(HAS.reb?'<th class="grp-h" colspan="2">Rebounds</th>':'')+sth('pct','Shot %',1)+sth('dist','Avg shot distance',1)+'</tr><tr>';
+  var head='<thead><tr>'+sth('name','Player',1)+sth('team','Team',1)+'<th class="grp-h" colspan="'+(TKEYS.length+1)+'">Shots</th><th class="grp-h" colspan="'+(TKEYS.length+1)+'">Goals</th>'+(HAS.reb?'<th class="grp-h" colspan="2">Rebounds</th>':'')+sth('pct','Shot %',1)+sth('dist','Avg shot distance',1)+(HAS.min?'<th class="grp-h" colspan="4">Time</th>':'')+'</tr><tr>';
   var SHL={open:'Open',distance:'Dist.',runner:'Run.',freepass:'Free',penalty:'Pen.'};
-  head+=sth('shots','All')+TKEYS.map(function(k){return sth('s_'+k,SHL[k]);}).join('')+sth('goals','All')+TKEYS.map(function(k){return sth('g_'+k,SHL[k]);}).join('')+(HAS.reb?sth('att','Att.')+sth('def','Def.'):'')+'</tr></thead>';
+  head+=sth('shots','All')+TKEYS.map(function(k){return sth('s_'+k,SHL[k]);}).join('')+sth('goals','All')+TKEYS.map(function(k){return sth('g_'+k,SHL[k]);}).join('')+(HAS.reb?sth('att','Att.')+sth('def','Def.'):'')+(HAS.min?sth('mina','In attack')+sth('mind','In defence')+sth('spm','Shots/min')+sth('gpm','Goals/min'):'')+'</tr></thead>';
   out+='<section class="card wide" data-card="allpl"><div class="card-head"><div class="ch"><h2>All players</h2><span class="sub">Select a row to open the profile. Select a column heading to sort; select it again to reverse the order.</span></div></div><div class="tw"><table id="plTbl">'+head+'<tbody>'+tlist.map(function(p){
-    return '<tr class="pl'+(pid(p)===view.player?' sel':'')+'" data-pl="'+esc(pid(p))+'" tabindex="0"><td>'+esc(p.name)+'</td><td>'+esc(p.team)+'</td><td>'+p.shots+'</td>'+TKEYS.map(function(k){return '<td>'+p.st[k]+'</td>';}).join('')+'<td>'+p.goals+'</td>'+TKEYS.map(function(k){return '<td>'+p.gl[k]+'</td>';}).join('')+(HAS.reb?'<td>'+p.att+'</td><td>'+p.def+'</td>':'')+'<td>'+pf(p.goals,p.shots)+'</td><td>'+avgD(p)+'</td></tr>';
+    return '<tr class="pl'+(pid(p)===view.player?' sel':'')+'" data-pl="'+esc(pid(p))+'" tabindex="0"><td>'+esc(p.name)+'</td><td>'+esc(p.team)+'</td><td>'+p.shots+'</td>'+TKEYS.map(function(k){return '<td>'+p.st[k]+'</td>';}).join('')+'<td>'+p.goals+'</td>'+TKEYS.map(function(k){return '<td>'+p.gl[k]+'</td>';}).join('')+(HAS.reb?'<td>'+p.att+'</td><td>'+p.def+'</td>':'')+'<td>'+pf(p.goals,p.shots)+'</td><td>'+avgD(p)+'</td>'+(HAS.min?(p.hasMin?'<td>'+Math.round(p.minA)+'</td><td>'+Math.round(p.minD)+'</td><td>'+perMin(p.shotsL,p.minA).replace('/min','')+'</td><td>'+perMin(p.goalsL,p.minA).replace('/min','')+'</td>':'<td>–</td><td>–</td><td>–</td><td>–</td>'):'')+'</tr>';
   }).join('')+'</tbody></table></div></section>';
   return out;
 }
@@ -1270,11 +1336,12 @@ function renderOverview(){
   renderSlicer();
   var ms=build();setCourtLook(ms);
   (function(){
-    var h={pass:0,turn:0,sub:0,gen:0,div:0,reb:0},used={};
+    var h={pass:0,turn:0,sub:0,gen:0,div:0,reb:0,min:0},used={};
     ms.forEach(function(m){m.rows.forEach(function(r){
       if(r.event==='pass') h.pass=1;
       if(r.event==='turnover') h.turn=1;
       if(r.event==='sub') h.sub=1;
+      if(r.event==='lineup') h.min=1;
       if(r.event==='shot'){
         if(r.gender) h.gen=1;
         if(r.division) h.div=1;

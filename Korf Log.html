@@ -1247,7 +1247,18 @@ function toCSV(m){
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
       o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''];
   });
-  return [head].concat(rows).map(function(r){return r.map(q).join(',');}).join('\n');
+  /* Starting line-up: one row per named player and substitute, so Korf Lab can work out minutes in attack and in defence. */
+  var lrows=[];
+  ['H','A'].forEach(function(t){
+    var tm=t==='H'?cfg.home:cfg.away,tn=t==='H'?m.home:m.away,ad=cfg.start&&cfg.start.divs?cfg.start.divs[t]:null;
+    tm.players.concat(tm.subs).forEach(function(p,i){
+      if(!p||!p.name) return;
+      var bench=i>=tm.players.length;
+      lrows.push([name,cfg.meta.league,cfg.meta.date,cfg.meta.week,'00:00',0,pLong(cfg,1),tn,'','lineup',bench?'bench':(p.div===ad?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player',
+        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||'']);
+    });
+  });
+  return [head].concat(lrows,rows).map(function(r){return r.map(q).join(',');}).join('\n');
 }
 function toJSON(m){
   return JSON.stringify({app:'korfball-tracker',version:3,match:{home:m.home,away:m.away,created:m.created,colors:{home_team:m.config.home.color,away_team:m.config.away.color,court:m.config.look.court,zone_circles:m.config.look.zone},config:m.config,events:m.events}},null,2);
@@ -1296,11 +1307,12 @@ function csvToBackup(txt){
     if(info){if(info.no&&!p.no) p.no=info.no;if(info.div&&!p.div) p.div=info.div;if(info.g&&!p.g) p.g=info.g;}
     return p;
   }
-  var evs=[],goals=0,firstDiv={H:null,A:null},first=null;
+  var evs=[],goals=0,firstDiv={H:null,A:null},first=null,lineDiv={H:null,A:null};
   var countPass=false;
   recs.forEach(function(o,i){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
     var e={t:t,ts:ts,type:o.event,team:team};if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
+    if(o.event==='lineup'){if(team){person(team,o.player,{no:o.player_no,div:Number(o.division)||null,g:o.gender,sub:o.role==='substitute'});if(o.detail==='attack'&&Number(o.division)) lineDiv[team]=Number(o.division);}return;}
     if(o.event!=='timeout'&&!team) return;
     if(!first&&team) first={team:team,o:o};
     if(o.event==='pass'){
@@ -1333,6 +1345,7 @@ function csvToBackup(txt){
   }
   var divs={H:1,A:2};
   ['H','A'].forEach(function(t){var f=firstDiv[t];if(f) divs[t]=(Math.floor(f.goals/2)%2)?3-f.div:f.div;});
+  ['H','A'].forEach(function(t){if(lineDiv[t]) divs[t]=lineDiv[t];});
   if(divs.H===divs.A) divs.A=3-divs.H;
   var has=function(ty){return recs.some(function(o){return o.event===ty;});};
   var cfg={home:{name:home,color:col.H||undefined},away:{name:away,color:col.A||undefined},length:mins,periods:per,court:{len:L},
