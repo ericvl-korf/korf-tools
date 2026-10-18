@@ -432,7 +432,7 @@ details>summary{transition:color .16s var(--ease)}
     <div class="main">
       <section class="score" aria-label="Scoreboard and match clock">
       <div class="team home">
-        <input id="homeName" type="text" maxlength="24" aria-label="Home team name" autocomplete="off">
+        <input id="homeName" type="text" maxlength="32" aria-label="Home team name" autocomplete="off">
         <div class="pts" id="homeScore">0</div>
       </div>
       <div class="mid">
@@ -447,7 +447,7 @@ details>summary{transition:color .16s var(--ease)}
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="0.75" aria-pressed="false" title="Run the clock at three quarters speed">0.75×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
       <div class="team away">
-        <input id="awayName" type="text" maxlength="24" aria-label="Away team name" autocomplete="off">
+        <input id="awayName" type="text" maxlength="32" aria-label="Away team name" autocomplete="off">
         <div class="pts" id="awayScore">0</div>
       </div>
     </section>
@@ -759,7 +759,7 @@ function normCfg(c){
   if(!c||typeof c!=='object') return d;
   ['home','away'].forEach(function(k){
     var t=c[k]||{};
-    d[k].name=String(t.name||d[k].name).slice(0,24);
+    d[k].name=String(t.name||d[k].name).slice(0,32);
     d[k].players=Array.isArray(t.players)?t.players.map(normP):[];
     d[k].subs=Array.isArray(t.subs)?t.subs.map(normP):[];
     if(/^#[0-9a-fA-F]{6}$/.test(String(t.color||''))) d[k].color=String(t.color).toLowerCase();
@@ -1363,6 +1363,8 @@ function syncBackupLabel(){var b=$('#backupBtn2');if(b) b.textContent=ui.fmt==='
 /* League names, in the order of the England Korfball "Select Competition" page (left to right, top to bottom). */
 var LEAGUES=["National League Premier", "National League North & West Promo", "National League South & East Promo", "London Regional League", "Midlands Regional League", "Northern Regional League", "South East Regional League", "Southern Regional League", "Western Regional League", "Cambridgeshire Korfball League 1", "East Midlands Korfball League 1", "Kent Korfball League", "London Korfball League 2", "Norfolk Korfball League 1", "North East Korfball League", "North West Korfball League 1", "Oxfordshire Korfball League", "South Midlands Korfball League", "South West Korfball League 1", "Southern Counties Korfball League 1", "West Midlands Korfball League", "Yorkshire Korfball League 1", "Cambridgeshire Korfball League 2", "East Midlands Korfball League 2", "London Korfball League 3 (Central)", "London Korfball League 3 (South)", "Norfolk Korfball League 2", "North West Korfball League 2", "South West Korfball League 2 North", "South West Korfball League 2 South", "Southern Counties Korfball League 2", "Yorkshire Korfball League 2", "North West Korfball League 3", "Yorkshire Korfball League 3", "Kent Korfball U13 League", "Kent Korfball U13 Mono League", "Kent Korfball U11 League", "Kent Korfball U9 League"];
 (function(){var sl=document.getElementById('fxLeague');if(!sl) return;sl.innerHTML='<option value="">Select the league…</option>'+LEAGUES.map(function(n){return '<option>'+n.replace(/&/g,'&amp;')+'</option>';}).join('')+'<option value="__other">Other (type a name)…</option>';})();
+/* Team names per league, as listed on the England Korfball League Republic competition pages. */
+var TEAMS={"National League Premier": ["Tornadoes 1", "Bromley 1", "Norwich Knights 1", "Bec 1", "Trojans 1", "Kingfisher 1", "Cambridge Tigers 1", "Nomads 1", "Bristol Thunder 1", "Birmingham City 1"], "National League North & West Promo": ["Cardiff Raptors 1", "Leicester 1", "Manchester Hawks 1", "Sheffield City 1"], "National League South & East Promo": ["Bearsted 1", "Cambridge City 1", "Oxford City 1", "Supernova 1"], "London Regional League": ["Supernova 1", "Bec 2", "Bromley 2", "Trojans 2", "Highbury 1", "Nomads 2", "East London 1", "Croydon 1", "Highbury 2"], "Midlands Regional League": ["Nottingham 1", "Leicester 1", "Nottingham Magic 1", "Birmingham City 2", "University of Loughborough 1", "University of Nottingham 1", "University of Nottingham 2", "Birmingham Panthers 1", "University of Birmingham 1"], "Northern Regional League": ["Leeds Hurricanes 2", "Leeds City 1", "Manchester Hawks 1", "Manchester Warriors 1", "University of Manchester 1", "Sheffield City 1", "Leeds Hurricanes 1", "Manchester Hawks 2", "Manchester KC 1"], "South East Regional League": ["Bearsted 1", "Tornadoes 2", "Kingfisher 2", "Cambridge City 1", "Norwich Knights 2", "Cambridge Tigers 2", "Bearsted 2", "Norfolk Dragons 1"], "Southern Regional League": ["Oxford City 1", "Basingstoke Bulls 1", "Abingdon Atoms 1", "Oxford City 2", "MK Matrix 1", "Guildford Thunder 1", "Oxford City 3", "Basingstoke Bulls 2", "Reading Rooks 1"], "Western Regional League": ["Cardiff Raptors 1", "Exeter City 1", "Bristol Thunder 2", "Cardiff Raptors 2", "Bristol City 1", "Newport Centurions 1", "Bristol Thunder 3", "University of Exeter 1", "Exeter City 2"], "Cambridgeshire Korfball League 1": ["Cambridge City 2", "Cambridge Tigers 3", "Ely Vikings 1", "Cambridge Phoenix 1", "Cambridge Tigers 4", "Cambridge Tigers 5", "Cambridge City 3", "Littleport Lions 1", "Cambridge University 1", "Cambridge City 4"], "East Midlands Korfball League 1": ["Leicester 2", "Nottingham 2", "Nottingham Magic 2", "Nottingham Trent University 1", "University of Loughborough 2", "University of Loughborough 3", "University of Nottingham 3"], "Kent Korfball League": ["Tornadoes Vortex", "K-Kingfisher", "Bearsted Grizzlies", "Bearsted BKC", "Bearsted Suns", "University of Kent 1", "Kingfisher Kookaburras", "Tornadoes Typhoons"], "London Korfball League 2": ["Harrow Vultrix 1", "Bromley 3", "Nomads 3", "Supernova 2", "Croydon 2", "Highbury 3", "Trojans 3", "Supernova 3"], "Norfolk Korfball League 1": ["Norwich Knights 3", "Norfolk Dragons 2", "Norwich City 1", "Norwich Knights 4", "Norwich Knights 5", "UEA 1"], "North East Korfball League": ["Northern Storm 1", "Tyneside Titans 1", "Newcastle University 1", "Newcastle University 3", "Northern Storm 2", "Northern Storm 3", "Newcastle University 2", "Tyneside Titans 2"], "North West Korfball League 1": ["Manchester Warriors 2", "Manchester Hawks 3", "Liver Birds 1", "Lancaster Phoenix 1", "Lancaster University 1", "University of Liverpool 1", "University of Manchester 2", "Manchester Warriors Barbarians", "Manchester KC 2"], "Oxfordshire Korfball League": ["Abingdon Atoms 2", "Abingdon Atoms 3", "Abingdon Atoms 4", "Oxford University 1", "Didcot Dragons 1", "Oxford City 4", "Oxford University 2", "Didcot Dragons 2", "Oxford City 5", "Oxford Isis 1", "Oxford Isis 2"], "South Midlands Korfball League": ["MK Matrix 2", "MK Matrix 3", "UOB Royals 1", "Watford", "MK Lakers 1"], "South West Korfball League 1": ["University of Bath 1", "Bristol Thunder 4", "Taunton Soul 1", "Bristol City 2", "University of Bristol 1", "University of Exeter 2", "Gloucester Lions 1", "Bristol Thunder 5", "Exeter City 3"], "Southern Counties Korfball League 1": ["Basingstoke Bulls 3", "Reading Rooks 2", "Southampton Spartans 1", "Guildford Thunder 3", "Guildford Thunder 2", "Southampton Spartans 2"], "West Midlands Korfball League": ["Leamington 2", "Leamington 1", "Birmingham Panthers 2", "Castle 1", "University of Birmingham 2", "University of Birmingham 3", "University of Birmingham 4", "University of Birmingham 5", "Warwick University 1", "Birmingham City 3"], "Yorkshire Korfball League 1": ["Snakebite 1", "Leeds Hurricanes 3", "Snakebite 2", "Sheffield City 2", "Leeds City 2", "Leeds Hurricanes 4", "Leeds City Owls", "Leeds Beckett 1", "Sheffield University 1"], "Cambridgeshire Korfball League 2": ["Cambridge Phoenix 2", "Cambridge University 2", "Ely Vikings 2", "Ely Vikings 3", "Littleport Lions 2", "Cambridge Phoenix 3", "Cambridge City 5", "Cambridge Tigers 6"], "East Midlands Korfball League 2": ["Leicester 3", "Nottingham 3", "Nottingham Trent University 2", "University of Lincoln 1", "University of Loughborough 4", "University of Nottingham 4", "University of Nottingham 5", "University of Nottingham 6"], "London Korfball League 3 (Central)": ["Bec 3", "Supernova 4", "Highbury 4", "East London 2", "Supernova 6", "Highbury 5"], "London Korfball League 3 (South)": ["Bromley 4", "Bromley 5", "Croydon 4", "Nomads 4", "Croydon 3", "Supernova 5"], "Norfolk Korfball League 2": ["Norwich City 2", "Norfolk Dragons 3", "UEA 2", "Norwich City 3", "Norwich Knights 6", "UEA 3"], "North West Korfball League 2": ["Manchester Hawks Vibes", "Liver Birds 2", "Lancaster Phoenix 2", "Manchester KC Bengals", "Manchester Hawks 4", "Lancaster University 2", "Manchester Warriors 3", "University of Liverpool 2", "University of Manchester 3"], "South West Korfball League 2 North": ["Bristol City 3", "University of Bath 2", "Gloucester Lions 2", "University of Bristol 2"], "South West Korfball League 2 South": ["Taunton Soul 2", "University of Exeter 3", "University of Exeter 4", "Taunton Soul 3"], "Southern Counties Korfball League 2": ["Southampton Spartans 3", "Reading Rooks 3", "Southampton Spartans 4", "Basingstoke Bulls 4", "Southampton University 1", "University of Reading Knights 1", "University Brighton 1", "University Brighton 2"], "Yorkshire Korfball League 2": ["Leeds University 1", "Sheffield City 3", "Leeds City 3", "Sheffield Hallam University 1", "York 1", "Leeds University 2", "Sheffield University 2", "Snakebite 3"], "North West Korfball League 3": ["Lancaster Phoenix 3", "Crewe & Nantwich 1", "Manchester Hawks 5", "Liver Birds 3", "Lancaster University 3", "University of Manchester 4", "Manchester KC 4", "University of Manchester Bees", "University of Liverpool 3", "Manchester Warriors 4"], "Yorkshire Korfball League 3": ["Sheffield Hallam University 3", "Sheffield Hallam University 2", "Leeds City 4", "Leeds University 3", "Sheffield University 3", "Sheffield University 4", "Leeds Beckett University 2", "Sheffield City 4"], "Kent Korfball U13 League": ["Kingfisher 1 U13", "KV U13", "Bearsted U13", "Kingfisher Falcons U13"], "Kent Korfball U13 Mono League": ["Kingfisher Falcons U13", "Bearsted U13", "KV U13", "Kingfisher 1 U13", "Tornadoes U13"], "Kent Korfball U11 League": ["Bearsted 1 U11", "Kingfisher 1 U11", "Tornadoes 1 U11", "Tornadoes Cyclones U11", "KV U11", "KV Knights U11", "Bearsted Rams U11", "Kingfisher Eagles U11"], "Kent Korfball U9 League": ["Bearsted U9", "KV U9", "Kingfisher U9", "Tornadoes U9"]};
 /* ---------- tracker rendering ---------- */
 function setPressed(sel,attr,test){qa(sel).forEach(function(b){b.setAttribute('aria-pressed',test(b.getAttribute(attr))?'true':'false');});}
 function matchLabel(m){
@@ -1909,7 +1911,7 @@ function playerRow(side,kind,p){
 function teamCardHTML(side){
   var t=draft[side],title=side==='home'?'Home team':'Away team';
   var h='<section class="card tcard '+side+'" data-side="'+side+'" aria-label="'+title+'">';
-  h+='<div class="tname"><label class="lbl" for="tn-'+side+'">'+title+'</label><input id="tn-'+side+'" data-name="'+side+'" type="text" maxlength="24" autocomplete="off" placeholder="'+(side==='home'?'Home':'Away')+'" value="'+esc(t.name)+'"></div>';
+  h+='<div class="tname"><label class="lbl" for="tns-'+side+'">'+title+'</label><select id="tns-'+side+'" data-teamsel="'+side+'" hidden></select><input id="tn-'+side+'" data-name="'+side+'" type="text" maxlength="32" autocomplete="off" placeholder="'+(side==='home'?'Home':'Away')+'" value="'+esc(t.name)+'"></div>';
   var col=t.color||COLOR_DEF[side],tl=side==='home'?'Team A':'Team B';
   h+='<div class="tname"><span class="lbl" id="tcLbl-'+side+'">'+tl+' colour</span><div class="cswatches" role="group" aria-labelledby="tcLbl-'+side+'">'+
     TB_PRESETS.map(function(c){return '<button type="button" data-tc="'+side+'" data-c="'+c+'" style="background:'+c+'" aria-label="Colour '+c+'" aria-pressed="'+(c===col)+'"></button>';}).join('')+
@@ -2043,9 +2045,23 @@ function syncIssues(){
   $('#setupStart').disabled=r.list.length>0;
   $('#barStatus').textContent=setupStep===2?'Ready to go':(r.list.length?(r.list.length===1?'1 thing to fix':r.list.length+' things to fix'):'Step 1 complete');
 }
+function syncTeamPick(){
+  var list=TEAMS[draft.meta.league||''];ui.teamOther=ui.teamOther||{};
+  ['home','away'].forEach(function(side){
+    var sel=$('#tns-'+side),inp=$('#tn-'+side);if(!sel||!inp) return;
+    if(!list){sel.hidden=true;inp.hidden=false;if(document.activeElement!==inp) inp.value=draft[side].name;return;}
+    var nm=draft[side].name,def=side==='home'?'Home':'Away',oth=draft[side==='home'?'away':'home'].name;
+    var inList=list.indexOf(nm)>=0,other=(!!nm&&nm!==def&&!inList)||!!ui.teamOther[side];
+    var opts=list.slice().sort(function(a,b){return a.localeCompare(b);});
+    sel.innerHTML='<option value="">Select the team…</option>'+opts.map(function(n){return '<option'+(n===oth?' disabled':'')+'>'+n.replace(/&/g,'&amp;')+'</option>';}).join('')+'<option value="__other">Other (type a name)…</option>';
+    sel.value=other?'__other':(inList?nm:'');sel.hidden=false;inp.hidden=!other;
+    if(other&&document.activeElement!==inp) inp.value=nm===def?'':nm;
+  });
+}
 function syncSetup(){
   applyTeamColor(draft.home.color,draft.away.color);applyLook(draft.look);
   ['home','away'].forEach(function(side){var i=$('#tn-'+side);if(i&&document.activeElement!==i) i.value=draft[side].name;});
+  syncTeamPick();
   [['#fxDate','date'],['#fxWeek','week']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=draft.meta[x[1]]||'';});
   (function(){var lg=draft.meta.league||'',sl=$('#fxLeague'),ot=$('#fxLeagueOther');if(!sl||!ot) return;var inList=LEAGUES.indexOf(lg)>=0,other=!!lg&&!inList||ui.leagueOther;sl.value=other?'__other':(inList?lg:'');ot.hidden=!other;if(other&&document.activeElement!==ot) ot.value=lg;})();
   syncCounts();
@@ -2096,7 +2112,7 @@ function buildSetup(){
   $('#setupCancel').textContent=(setupTarget==='new'&&cur().sample)?'Look at the sample match':'Cancel';
   showStep(setupStep);
 }
-function openSetup(target){ui.leagueOther=false;
+function openSetup(target){ui.leagueOther=false;ui.teamOther={};
   var m=cur();pauseQuiet();
   setupTarget=target;setupStep=1;
   draft=(target==='new'&&m.sample)?defaultConfig():cloneCfg(m.config);
@@ -2140,6 +2156,7 @@ function findP(row){
 function rebuildTeam(side){
   var card=document.querySelector('#teamsGrid [data-side="'+side+'"]');
   if(card) card.outerHTML=teamCardHTML(side);
+  syncTeamPick();
 }
 function addRow(side,kind){
   var p={id:uid(),name:'',no:'',div:null,g:null};
@@ -2186,7 +2203,8 @@ sv.addEventListener('click',function(e){
 });
 sv.addEventListener('input',function(e){
   var t=e.target;
-  if(t.dataset.name){draft[t.dataset.name].name=t.value;}
+  if(t.dataset.teamsel){var sd=t.dataset.teamsel,df=sd==='home'?'Home':'Away';ui.teamOther=ui.teamOther||{};if(t.value==='__other'){ui.teamOther[sd]=true;draft[sd].name=($('#tn-'+sd).value||'').trim();}else{ui.teamOther[sd]=false;draft[sd].name=t.value||df;}syncSetup();if(t.value==='__other'){var ti=$('#tn-'+sd);if(ti) ti.focus();}}
+  else if(t.dataset.name){draft[t.dataset.name].name=t.value;}
   else if(t.dataset.f){
     var row=t.closest('.prow'),p=row&&findP(row);if(!p) return;
     if(t.dataset.f==='no'){t.value=t.value.replace(/\D/g,'').slice(0,2);}
