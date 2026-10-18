@@ -1815,6 +1815,8 @@ function ptResample(pts,k){
   return out;
 }
 /* Distance between two attacks: the route (6 points along the passes), where the first shot was taken, and the number of passes. */
+/* Attacks tracked with Count tracking have passes but no pass locations, so their route cannot be compared. */
+function ptNoRoute(q){return q.np>0&&!q.steps.some(function(st){return st.k==='pass'&&st.x!=null&&st.x2!=null&&st.y!=null&&st.y2!=null;});}
 function ptSim(a,b){
   var na=ptNorm(a),nb=ptNorm(b),L=na.L,dr=0,ds=0,dp=Math.abs(a.np-b.np)/Math.max(a.np,b.np,1);
   if(na.pts.length&&nb.pts.length){var ra=ptResample(na.pts,6),rb=ptResample(nb.pts,6),sum=0;for(var i=0;i<6;i++) sum+=Math.hypot(ra[i].x-rb[i].x,ra[i].y-rb[i].y);dr=sum/6/L;}
@@ -1826,11 +1828,11 @@ function ptSim(a,b){
 function rpSimDraw(){
   var el=$('#rpSim');if(!el) return;
   var b=document.querySelector('button[data-rp="sim"]');if(b) b.setAttribute('aria-pressed',String(!!RP.sim));
-  var q=rpCur(),goal=!!q&&q.res==='Goal';
-  if(b){b.disabled=!goal;b.title=goal?'List the ten attacks by this team that look most like this goal':'Available for attacks that ended in a goal';}
-  if(!RP.sim||!q||!goal){el.innerHTML='';return;}
+  var q=rpCur(),goal=!!q&&q.res==='Goal',noRoute=goal&&ptNoRoute(q);
+  if(b){b.disabled=!goal||noRoute;b.title=noRoute?'This attack was tracked without pass locations (Count tracking), so its route cannot be compared':(goal?'List the ten attacks by this team that look most like this goal':'Available for attacks that ended in a goal');}
+  if(!RP.sim||!q||!goal||noRoute){el.innerHTML='';return;}
   var res=[];
-  rpList().forEach(function(o,i){if(o===q) return;res.push({o:o,i:i,s:ptSim(q,o)});});
+  rpList().forEach(function(o,i){if(o===q||ptNoRoute(o)) return;res.push({o:o,i:i,s:ptSim(q,o)});});
   function tier(o){return o.res==='Goal'?0:(o.steps.some(function(x){return x.k==='shot'&&x.out==='rebound'&&x.rbt===o.team;})||o.res==='Rebound by attack'?1:2);}
   res.sort(function(a,b){return a.s.d-b.s.d;});res=res.slice(0,10);
   res.sort(function(a,b){return tier(a.o)-tier(b.o)||a.s.d-b.s.d;});

@@ -591,7 +591,13 @@ details>summary{transition:color .16s var(--ease)}
       <section class="card" aria-label="Events to track">
         <div class="card-head"><h2>Events to track</h2><span class="sub">Only ticked events appear while tracking</span></div>
         <div class="evlist">
-          <label class="cb"><input type="checkbox" data-ev="pass"><span>Passes<small>Click on the court</small></span></label>
+          <div class="evgroup">
+            <label class="cb"><input type="checkbox" data-ev="pass"><span>Passes<small>Choose how passes are tracked</small></span></label>
+            <div class="subs" id="subPass" role="radiogroup" aria-label="Pass tracking">
+              <label class="cb"><input type="radio" name="passmode" data-pm="full"><span>Full tracking<small>One click per pass on the court. Logs pass location and pass count</small></span></label>
+              <label class="cb"><input type="radio" name="passmode" data-pm="count"><span>Count tracking<small>Press the Pass button next to the court to add a pass to the attack. Logs pass count only</small></span></label>
+            </div>
+          </div>
           <label class="cb"><input type="checkbox" data-ev="shot"><span>Shots<small>Double-click on the court</small></span></label>
           <div class="evgroup">
             <label class="cb"><input type="checkbox" data-ev="referee"><span>Referee calls<small>Tiles above the court</small></span></label>
@@ -727,7 +733,7 @@ function defaultConfig(){
     home:{name:'Home',players:[],subs:[],color:'#ff8a1f'},
     away:{name:'Away',players:[],subs:[],color:'#4fb3f6'},
     length:60,periods:2,court:{len:40},look:{court:'#2a6b58',zone:'#1f56c4'},
-    events:{pass:true,shot:true,referee:true,turnover:true,penalty:true,freepass:true,
+    events:{pass:true,passMode:'full',shot:true,referee:true,turnover:true,penalty:true,freepass:true,
       to:{general:true,attack:false,forced:false,unforced:false,attfoul:false,shotclock:false}},
     start:{team:'H',divs:{H:1,A:2},dir:'right'},
     meta:{league:'',date:'',week:'',video:''}
@@ -757,6 +763,7 @@ function normCfg(c){
   var ev=c.events;
   if(ev&&typeof ev==='object'){
     ['pass','shot','referee','turnover','penalty','freepass'].forEach(function(k){if(typeof ev[k]==='boolean') d.events[k]=ev[k];});
+    d.events.passMode=(ev.passMode==='count')?'count':'full';
     if(ev.to&&typeof ev.to==='object'){Object.keys(d.events.to).forEach(function(k){if(typeof ev.to[k]==='boolean') d.events.to[k]=ev.to[k];});}
   }
   var st=c.start;
@@ -819,7 +826,8 @@ function normEvent(e,cfg,i,fresh){
   if(e.ot!=null&&e.ot!==''&&isFinite(Number(e.ot))&&Number(e.ot)>=0) o.ot=Math.floor(Number(e.ot));
   function xy(k1,k2){var x=Number(e[k1]),y=Number(e[k2]);if(!isFinite(x)||!isFinite(y)) return null;return [rd2(clamp(x,0,L)),rd2(clamp(y,0,H))];}
   if(ty==='pass'){
-    var a=xy('x','y'),b=xy('x2','y2');if(!a||!b) return null;
+    var a=xy('x','y'),b=xy('x2','y2');
+    if(!a||!b){if(e.count===true&&!a&&!b){o.type='pass';o.count=true;return o;}return null;}
     o.type='pass';o.x=a[0];o.y=a[1];o.x2=b[0];o.y2=b[1];
   }else if(ty==='shot'||ty==='goal'||ty==='miss'||ty==='penalty'){
     var p=xy('x','y');if(!p) return null;
@@ -1098,6 +1106,18 @@ function setChain(p,fresh){
   var m=cur(),R=ui.R,last=m.events.length?m.events[m.events.length-1].id:null;
   ui.chain={x:p.x,y:p.y,team:R.st.team,lastId:last,mid:m.id,fresh:!!fresh};
 }
+function passMode(cfg){return cfg&&cfg.events&&cfg.events.pass&&cfg.events.passMode==='count'?'count':'full';}
+/* Count tracking: the Pass button adds one pass to the attack. No location is logged, so the event has no coordinates. */
+function addCountPass(){
+  var R=ui.R,m=cur();
+  if(!canAct(R)||passMode(m.config)!=='count') return;
+  addEvent({type:'pass',team:R.st.team,count:true});
+  renderHint(cur(),ui.R);
+}
+function attackPasses(m,R){
+  var a=R.st.att[R.st.team];
+  return m.events.filter(function(e){return e.type==='pass'&&e.team===R.st.team&&R.ann[e.id]&&R.ann[e.id].att===a;}).length;
+}
 function addPass(a,b){
   var R=ui.R;
   addEvent({type:'pass',team:R.st.team,x:a.x,y:a.y,x2:b.x,y2:b.y});
@@ -1148,7 +1168,7 @@ function undo(){
   if(c0&&c0.fresh){ui.chain=null;flashMsg('Start point cleared.');renderHint(cur(),ui.R);redraw();return;}
   var m=cur();if(!m.events.length) return;
   var e=m.events.pop();ui.review=null;ui.restore=null;
-  if(e.type==='pass'&&c0&&c0.lastId===e.id){
+  if(e.type==='pass'&&e.x!=null&&c0&&c0.lastId===e.id){
     var pv=m.events[m.events.length-1];
     ui.chain={x:e.x,y:e.y,team:e.team,lastId:pv?pv.id:null,mid:m.id,fresh:!(pv&&pv.type==='pass')};
   }
@@ -1189,7 +1209,7 @@ function evLabel(m,e){
 }
 function evDetail(m,e){
   if(e.type==='sub') return plLabel(e.out)+' → '+plLabel(e.in);
-  if(e.type==='pass') return (Math.hypot(e.x2-e.x,e.y2-e.y)).toFixed(1)+' m';
+  if(e.type==='pass') return e.x==null?'':(Math.hypot(e.x2-e.x,e.y2-e.y)).toFixed(1)+' m';
   if(e.type==='shot') return fmtN(e.r)+' m · '+e.a+'° · '+(e.stype?stypeLabel(e.stype)+' · ':'')+shooterName(m,e)+' → '+outText(m,e);
   return '';
 }
@@ -1260,12 +1280,16 @@ function csvToBackup(txt){
     return p;
   }
   var evs=[],goals=0,firstDiv={H:null,A:null},first=null;
+  var countPass=false;
   recs.forEach(function(o,i){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
     var e={t:t,ts:ts,type:o.event,team:team};if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
     if(o.event!=='timeout'&&!team) return;
     if(!first&&team) first={team:team,o:o};
-    if(o.event==='pass'){e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.x2=num(o.x2_m,NaN);e.y2=num(o.y2_m,NaN);}
+    if(o.event==='pass'){
+      if(String(o.x_m==null?'':o.x_m).trim()===''&&String(o.x2_m==null?'':o.x2_m).trim()===''){e.count=true;countPass=true;}
+      else{e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.x2=num(o.x2_m,NaN);e.y2=num(o.y2_m,NaN);}
+    }
     else if(o.event==='shot'){
       e.x=num(o.x_m,NaN);e.y=num(o.y_m,NaN);e.r=num(o.distance_from_post_m,null);e.a=num(o.angle_deg,null);
       e.kind=o.detail||'shot';e.stype=o.shot_type||null;
@@ -1303,6 +1327,7 @@ function csvToBackup(txt){
     cfg[nm].subs=roster[t].players.filter(function(p){return p.sub;});
   });
   if(has('pass')===false) cfg.events.pass=false;
+  if(countPass) cfg.events.passMode='count';
   recs.forEach(function(o){if(o.event==='turnover'&&o.detail) cfg.events.to[o.detail]=true;});
   return {app:'korfball-tracker',version:3,match:{home:home,away:away,created:Date.parse(r0.time_iso)||Date.now(),config:cfg,events:evs}};
 }
@@ -1376,6 +1401,8 @@ function renderTiles(m,R){
   }
   if(ev.referee){if(ev.penalty) ref.push(['penalty','Penalty']);if(ev.freepass) ref.push(['freepass','Free pass']);}
   var h='';
+  if(passMode(m.config)==='count'){var np=can?attackPasses(m,R):0;
+    h+='<div class="tgrp" role="group" aria-label="Passes"><button type="button" class="tile goal" data-cpass="1" title="Add a pass to this attack (P key)"'+(can?'':' disabled')+'>Pass'+(np?' · '+np:'')+'</button></div>';}
   if(turn.length) h+='<div class="tgrp" role="group" aria-label="Turnovers">'+turn.map(function(t){
     return '<button type="button" class="tile" data-turn="'+t[0]+'"'+(can?'':' disabled')+'>'+esc(t[1])+'</button>';}).join('')+'</div>';
   if(ref.length) h+='<div class="tgrp" role="group" aria-label="Referee calls">'+ref.map(function(t){
@@ -1413,7 +1440,8 @@ function hintText(m,R){
   if(atCap()){var tm=fmtClock(Math.ceil(nowT()));return (lastPeriod()?'Full time.':(m.config.periods===4?'End of quarter '+clk.go+'.':'Half time.'))+' Regular time is over and the clock runs on in extra time. Events are logged as '+tm+' + extra time. Press '+(lastPeriod()?'End match when play stops.':'End '+pBtn(m.config,clk.go)+' when the half is over, then Start when play restarts.');}
   if(R.st.phase==='transfer') return 'Choose Transfer to attack once the ball is in their attacking half.';
   var parts=[];
-  if(ev.pass) parts.push(chainStart()?'Click where the pass is received; that spot starts the next pass.':'Click where the ball is first held to set the start of the pass.');
+  if(ev.pass&&passMode(m.config)==='count') parts.push('Press Pass (or P) for each pass in this attack.');
+  else if(ev.pass) parts.push(chainStart()?'Click where the pass is received; that spot starts the next pass.':'Click where the ball is first held to set the start of the pass.');
   if(ev.shot) parts.push('Double-click (or double-tap) to log a shot.');
   if(!parts.length) parts.push('Use the tiles above the court to log turnovers and referee calls.');
   if(!clk.since) parts.push('The timer is paused.');
@@ -1498,7 +1526,7 @@ function renderLog(m,R){
       (open?'<ul class="kids">'+evs.slice().reverse().map(function(e){return rowHTML(m,R,e,idx);}).join('')+'</ul>':'')+'</li>';
   });
   $('#logCount').textContent=shown+' of '+m.events.length;
-  list.innerHTML=shown?html:'<li class="empty">Nothing to show yet. Click on the court to set where the first pass starts.</li>';
+  list.innerHTML=shown?html:'<li class="empty">Nothing to show yet. '+(passMode(m.config)==='count'?'Press Pass to count the first pass.':'Click on the court to set where the first pass starts.')+'</li>';
 }
 function currentView(m,R){
   var st=R.st,cfg=m.config;
@@ -1760,7 +1788,7 @@ function draw(){
   });
   var n=0;
   evs.forEach(function(e){
-    if(e.type!=='pass') return;
+    if(e.type!=='pass'||e.x==null) return;
     n++;
     drawArrow(X(e.x),Y(e.y),X(e.x2),Y(e.y2),C[e.team],C,r,{hl:V.hl===e.id,alpha:0.92,n:n});
   });
@@ -1826,6 +1854,7 @@ canvas.addEventListener('pointerup',function(ev){
   }
   ui.lastTap={at:now,cx:ev.clientX,cy:ev.clientY,p:p};
   if(!ev2.pass){flashMsg('Passes are switched off in the setup.');renderHint(cur(),ui.R);redraw();setTimeout(redraw,470);return;}
+  if(passMode(cur().config)==='count'){redraw();setTimeout(redraw,470);return;}
   var c=chainStart();
   if(c){
     if(Math.hypot(p.x-c.x,p.y-c.y)<0.3){redraw();setTimeout(redraw,470);return;}
@@ -1910,8 +1939,8 @@ function dirSVG(){
   var sc=s0.team==='H'?'sh':'sa',oc=s0.team==='H'?'sa':'sh',stx=s0.team==='H'?'tx-h':'tx-a',otx=s0.team==='H'?'tx-a':'tx-h';
   var a1=right?[11,31]:[29,9],a2=right?[29,9]:[11,31];
   o+=arrowSVG(a1[0],a1[1],6.5,sc)+arrowSVG(a2[0],a2[1],13.5,oc);
-  o+='<text class="alab '+stx+'" x="20" y="4.6" text-anchor="middle">'+esc(teamLabel(s0.team==='H'?'home':'away'))+' · Division '+s0.divs[s0.team]+'</text>';
-  o+='<text class="alab '+otx+'" x="20" y="16.8" text-anchor="middle">'+esc(teamLabel(s0.team==='H'?'away':'home'))+' · Division '+s0.divs[s0.team==='H'?'A':'H']+'</text>';
+  o+='<text class="alab '+stx+'" x="20" y="4.6" text-anchor="middle">'+esc(teamLabel(s0.team==='H'?'home':'away'))+(divKnown(s0.team==='H'?'home':'away')?' · Division '+s0.divs[s0.team]:'')+'</text>';
+  o+='<text class="alab '+otx+'" x="20" y="16.8" text-anchor="middle">'+esc(teamLabel(s0.team==='H'?'away':'home'))+(divKnown(s0.team==='H'?'away':'home')?' · Division '+s0.divs[s0.team==='H'?'A':'H']:'')+'</text>';
   o+='<text class="dim" x="10" y="22.6" text-anchor="middle">ZONE A</text><text class="dim" x="30" y="22.6" text-anchor="middle">ZONE B</text>';
   return o+'</svg>';
 }
@@ -1964,8 +1993,9 @@ function syncCourt(){
 function syncEvents(){
   var ev=draft.events;
   qa('[data-ev]').forEach(function(i){i.checked=!!ev[i.dataset.ev];});
+  qa('[data-pm]').forEach(function(i){i.checked=(ev.passMode==='count'?'count':'full')===i.dataset.pm;});
   qa('[data-to]').forEach(function(i){i.checked=!!ev.to[i.dataset.to];});
-  [['#subRef',!ev.referee],['#subTo',!ev.turnover]].forEach(function(x){
+  [['#subPass',!ev.pass],['#subRef',!ev.referee],['#subTo',!ev.turnover]].forEach(function(x){
     qa(x[0]+' input').forEach(function(i){i.disabled=x[1];i.closest('.cb').classList.toggle('dis',x[1]);});
   });
 }
@@ -2161,6 +2191,8 @@ sv.addEventListener('change',function(e){
     ev[t.dataset.ev]=t.checked;
     if(t.dataset.ev==='referee'&&t.checked&&!ev.penalty&&!ev.freepass){ev.penalty=true;ev.freepass=true;}
     if(t.dataset.ev==='turnover'&&t.checked&&!anyTo()){ev.to.general=true;}
+  }else if(t.dataset.pm){
+    ev.passMode=t.dataset.pm==='count'?'count':'full';
   }else if(t.dataset.to){
     var k=t.dataset.to;
     if(t.checked){
@@ -2180,6 +2212,7 @@ $('#setupCancel').addEventListener('click',closeSetup);
 $('#trackView').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b||b.disabled) return;
   var d=b.dataset,R=ui.R,m=cur();
+  if(d.cpass!==undefined){addCountPass();return;}
   if(d.subs!==undefined){openSubs();return;}
   if(d.timeout!==undefined){
     if(ui.popup||ui.review) return;
@@ -2351,6 +2384,7 @@ document.addEventListener('keydown',function(e){
   } else if((e.key===' '||e.code==='Space')&&!ui.review&&!document.querySelector('dialog[open]')){
     e.preventDefault();if(!e.repeat) toggleClock();return;
   }
+  if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&String(e.key).toLowerCase()==='p'&&!e.repeat&&!ui.popup&&!ui.review&&!document.querySelector('dialog[open]')&&passMode(cur().config)==='count'){e.preventDefault();addCountPass();return;}
   if((e.ctrlKey||e.metaKey)&&String(e.key).toLowerCase()==='z'){e.preventDefault();undo();}
 });
 
