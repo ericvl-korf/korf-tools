@@ -508,6 +508,15 @@ function loaded(){
   return allSources().filter(function(s){return st(s.id).status==='ok';}).map(function(s){return {id:s.id,name:s.name,rows:st(s.id).rows};});
 }
 function visible(){return loaded().filter(function(l){return !view.match||l.id===view.match;});}
+/* With one match and one team selected the opponents are one team: use its name instead of "Opponents". */
+function oppName(){
+  if(!view.match||!view.team) return '';
+  var l=loaded().filter(function(x){return x.id===view.match;})[0];if(!l) return '';
+  var t={};l.rows.forEach(function(r){if(r.team&&r.team!==view.team) t[r.team]=1;});
+  var k=Object.keys(t);
+  if(!k.length) k=String((l.rows[0]&&l.rows[0].match)||'').split(' v ').map(function(x){return x.trim();}).filter(function(x){return x&&x!==view.team;});
+  return k.length===1?k[0]:'';
+}
 function teamsOf(){
   var seen={},out=[];
   loaded().forEach(function(l){
@@ -812,7 +821,7 @@ function setupLine(ms){
   return t+(inf?' (some values guessed: older files do not record them)':'');
 }
 function mkSides(ms){
-  if(view.team) return [{label:view.team,color:tcol(view.team),has:function(t){return t===view.team;}},{label:'Opponents',color:'var(--opp)',has:function(t){return t!==view.team;}}];
+  if(view.team) return [{label:view.team,color:tcol(view.team),has:function(t){return t===view.team;}},{label:oppName()||'Opponents',color:'var(--opp)',has:function(t){return t!==view.team;}}];
   var set={};ms.forEach(function(m){set[m.home]=1;set[m.away]=1;});
   return Object.keys(set).sort().map(function(t){return {label:t,color:tcol(t),has:function(x){return x===t;}};});
 }
@@ -851,8 +860,8 @@ function teamPage(ms){
   var all=sstat(ms,{has:function(){return true;}});
   /* KPI strip */
   var opp=view.team?ST[1]:null;
-  function ov(txt){return opp?'Opponents '+txt:'';}
-  out+='<section class="card wide"><div class="card-head"><div class="ch"><h2>'+esc(pr.label)+'</h2><span class="sub">'+ms.length+(ms.length===1?' match':' matches')+(view.team?' · against all opponents':' · all teams')+'</span><span class="sub">'+setupLine(ms)+'</span></div></div><div class="kpis">'+
+  function ov(txt){return opp?(oppName()||'Opponents')+' '+txt:'';}
+  out+='<section class="card wide"><div class="card-head"><div class="ch"><h2>'+esc(pr.label)+'</h2><span class="sub">'+ms.length+(ms.length===1?' match':' matches')+(view.team?' · against '+(oppName()?esc(oppName()):'all opponents'):' · all teams')+'</span><span class="sub">'+setupLine(ms)+'</span></div></div><div class="kpis">'+
     kpi('Goals',PS.goals,ov(opp&&opp.goals))+kpi('Shots',PS.shots,ov(opp&&opp.shots))+kpi('Shot %',pf(PS.goals,PS.shots),ov(opp&&pf(opp.goals,opp.shots)))+kpi('Rebound %',pf(PS.reb1+PS.reb2,PS.shots-PS.goals+PS.opp-PS.oppG),ov(opp&&pf(opp.reb1+opp.reb2,opp.shots-opp.goals+opp.opp-opp.oppG)))+kpi('Attacking rebound %',pf(PS.reb1,PS.shots-PS.goals),ov(opp&&pf(opp.reb1,opp.shots-opp.goals)))+kpi('Defensive rebound %',pf(PS.reb2,PS.opp-PS.oppG),ov(opp&&pf(opp.reb2,opp.opp-opp.oppG)))+
     (HAS.att?kpi('Open-play attacks',PS.att,ov(opp&&opp.att))+kpi('Goals / attack',pf(PS.attGoal,PS.att),ov(opp&&pf(opp.attGoal,opp.att)))+
     (HAS.pass?kpi('Passes / attack',PS.att?(PS.passes/PS.att).toFixed(1):'–',ov(opp&&(opp.att?(opp.passes/opp.att).toFixed(1):'–'))):'')+kpi('Turnovers',PS.turn,ov(opp&&opp.turn)):'')+'</div><p class="note">Goals cannot be rebounded, so they are left out of the rebound percentages. Rebound % = rebounds collected ÷ all shots that did not score. Attacking rebound % = rebounds collected by the shooting team ÷ its own shots that did not score. Defensive rebound % = rebounds collected by the defending team ÷ opponent shots that did not score. '+(HAS.att?'Turnovers = open-play attacks that ended with the ball lost: a defended shot, a defensive rebound, the ball out with the defence getting it'+(HAS.turn?', or a logged turnover':'')+'.':'Attack, pass and turnover figures are left out because these files do not record passes or turnovers.')+'</p></section>';
@@ -879,7 +888,7 @@ function teamPage(ms){
     hh+='<div class="hm"><div class="lbl">'+h[0]+'</div>'+hbars(sides.map(function(sd,i){var v=vals[i],t=(h[3]?v.toFixed(1):Math.round(v*10)/10)+(h[2]||'');return {label:sd.label,dot:sd.color,val:'<tspan style="font-weight:600">'+t+'</tspan>',segs:[{v:v,c:sd.color,tip:[h[0]+' · '+sd.label,t]}]};}),{max:mx*1.0,W:340,lw:96,rw:56,bh:14,gp:8,cut:14,aria:h[0]})+'</div>';
   });
   var ht=tbl(['Metric'].concat(sides.map(function(s){return esc(s.label);})),HM.map(function(h){return [h[0]].concat(ST.map(function(s){var v=h[1](s);return (h[3]?v.toFixed(1):Math.round(v*10)/10)+(h[2]||'');}));}));
-  out+=card('h2h','Head to head',view.team?esc(view.team)+' against its opponents':'Teams side by side','<div class="hmgrid">'+hh+'</div>',{wide:true,table:ht,legend:leg(sides.map(function(s){return {c:s.color,l:s.label};}))});
+  out+=card('h2h','Head to head',view.team?esc(view.team)+' against '+(oppName()?esc(oppName()):'its opponents'):'Teams side by side','<div class="hmgrid">'+hh+'</div>',{wide:true,table:ht,legend:leg(sides.map(function(s){return {c:s.color,l:s.label};}))});
 
   /* score progression */
   var Tmax=60;ms.forEach(function(m){Tmax=Math.max(Tmax,m.minutes*60,Math.ceil(m.maxS/60)*60);});
@@ -978,7 +987,7 @@ function teamPage(ms){
     return q.team;
   }
   var single=!!(view.match&&view.team),ss=single?(view.shotSide||''):'';
-  var mapBar='<div class="bar"><div class="grp"><label class="lbl" for="markSz">Mark size</label><input id="markSz" type="range" min="0.5" max="3" step="0.1" value="'+(view.markScale||1)+'" aria-label="Size of the shot marks" style="width:140px;accent-color:var(--accent)"></div>'+(single?'<div class="grp"><span class="lbl">Shots by</span><div class="chips" role="group" aria-label="Shots by">'+[['',view.team],['opp','Opponent'],['both','Both']].map(function(d){return '<button type="button" class="chip" data-ss="'+d[0]+'" aria-pressed="'+(ss===d[0])+'">'+esc(d[1])+'</button>';}).join('')+'</div></div>':'')+'<div class="grp"><span class="lbl">View</span><div class="chips" role="group" aria-label="Map view"><button type="button" class="chip" data-mode="dots" aria-pressed="'+(view.mapMode!=='heat')+'">Shots</button><button type="button" class="chip" data-mode="heat" aria-pressed="'+(view.mapMode==='heat')+'">Density</button></div></div>'+
+  var mapBar='<div class="bar"><div class="grp"><label class="lbl" for="markSz">Mark size</label><input id="markSz" type="range" min="0.5" max="3" step="0.1" value="'+(view.markScale||1)+'" aria-label="Size of the shot marks" style="width:140px;accent-color:var(--accent)"></div>'+(single?'<div class="grp"><span class="lbl">Shots by</span><div class="chips" role="group" aria-label="Shots by">'+[['',view.team],['opp',oppName()||'Opponent'],['both','Both']].map(function(d){return '<button type="button" class="chip" data-ss="'+d[0]+'" aria-pressed="'+(ss===d[0])+'">'+esc(d[1])+'</button>';}).join('')+'</div></div>':'')+'<div class="grp"><span class="lbl">View</span><div class="chips" role="group" aria-label="Map view"><button type="button" class="chip" data-mode="dots" aria-pressed="'+(view.mapMode!=='heat')+'">Shots</button><button type="button" class="chip" data-mode="heat" aria-pressed="'+(view.mapMode==='heat')+'">Density</button></div></div>'+
     (!HAS.div?'':'<div class="grp"><span class="lbl">Division (shooter)</span><div class="chips" role="group" aria-label="Division">'+[['','All'],['1','Division 1'],['2','Division 2']].map(function(d){return '<button type="button" class="chip" data-div="'+d[0]+'" aria-pressed="'+(view.div===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>')+
     (TKEYS.length<2?'':'<div class="grp"><span class="lbl">Shot type</span><div class="chips" role="group" aria-label="Shot type">'+[['','All']].concat(TKEYS.map(function(k){return [k,TYPE_LABEL[k]];})).map(function(d){return '<button type="button" class="chip" data-type="'+d[0]+'" aria-pressed="'+((view.type||'')===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>')+
     '<div class="grp"><span class="lbl">Match half</span><div class="chips" role="group" aria-label="Match half">'+[[0,'Whole match'],[1,'1st half'],[2,'2nd half']].map(function(d){return '<button type="button" class="chip" data-half="'+d[0]+'" aria-pressed="'+(view.half===d[0])+'">'+d[1]+'</button>';}).join('')+'</div></div>'+
@@ -1027,7 +1036,7 @@ function teamPage(ms){
       group('mapT',view.team+' shot maps',function(q){return q.team===view.team;},cb4,'All shots of the whole selection, whatever filter is set on screen.');
       var oppPts=[];ms.forEach(function(m){m.shots.forEach(function(q){if(q.team!==view.team) oppPts.push(q);});});
       var oG=oppPts.some(function(q){return q.g;}),oD=oppPts.some(function(q){return q.div;});
-      group('mapO','Opponent shot maps',function(q){return q.team!==view.team;},['team'].concat(TKEYS.length>1?['type']:[],oG?['gender']:[],oD?['division']:[],['half']),'All opponent shots of the whole selection.'+((oG&&oD)?'':' Gender and division are shown when the opponent\'s players are named in the log.'));
+      group('mapO',(oppName()?esc(oppName()):'Opponent')+' shot maps',function(q){return q.team!==view.team;},['team'].concat(TKEYS.length>1?['type']:[],oG?['gender']:[],oD?['division']:[],['half']),'All '+(oppName()?esc(oppName())+'\'s':'opponent')+' shots of the whole selection.'+((oG&&oD)?'':' Gender and division are shown when the opponent\'s players are named in the log.'));
     }else group('mapT','Shot maps, all teams',function(){return true;},cb4,'All shots of the whole selection, whatever filter is set on screen.');
   })();
 
