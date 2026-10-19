@@ -169,7 +169,7 @@ body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
 .vidframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vidnote{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:flex-start;justify-content:center;padding:12px;background:var(--surface,#fff);color:var(--fg,#1c2a26);font-size:.8rem;overflow:auto}.vidnote p{margin:0}.vidnote a.btn{text-decoration:none}
 .vidtools a{color:var(--accent,#1f6f5a);font-weight:600}
-.vidtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:.85rem}
+.vidnudge{display:inline-flex;gap:4px;align-items:center;color:var(--muted,#555)}.vidtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:.85rem}
 body.max .vidbox:not(.has){display:none}
 body.max.hasvid .court-box{width:min(100%,calc(.64*(100vh - 84px)),calc(.64*(100dvh - 84px)))}
 body.max .vidbox.has{grid-column:1;grid-row:2/-1;align-self:end;justify-self:center;margin:0;height:calc(.36*(100vh - 84px));height:calc(.36*(100dvh - 84px));width:auto;aspect-ratio:16/9;max-width:100%}
@@ -444,9 +444,9 @@ details>summary{transition:color .16s var(--ease)}
         <span class="lbl" id="perLabel">1st half</span>
         <div class="clock paused" id="clock" aria-live="off">00:00</div>
         <div class="cctl">
-          <button class="btn" id="clkBack" type="button" title="Go back 5 seconds. Events after that time are removed.">−5 s</button>
+          <button class="btn" id="clkBack" type="button" title="Go back 1 second. Events after that time are removed.">−1 s</button>
           <button class="btn primary" id="clkToggle" type="button" title="Start or pause the clock (Space bar)">Start</button>
-          <button class="btn" id="clkFwd" type="button" title="Go forward 5 seconds">+5 s</button>
+          <button class="btn" id="clkFwd" type="button" title="Go forward 1 second">+1 s</button>
           <button class="btn primary" id="clkNext" type="button" title="End this half. The next half is set up with the clock stopped until you press Start." hidden>End 1st half</button>
         </div>
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="0.75" aria-pressed="false" title="Run the clock at three quarters speed">0.75×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
@@ -483,7 +483,7 @@ details>summary{transition:color .16s var(--ease)}
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
-            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
+            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
       </div>
@@ -1595,10 +1595,48 @@ function renderVideo(){
   if(box.dataset.vid!==key){
     box.dataset.vid=key;
     var local=!/^https?:$/.test(location.protocol);
-    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1'+(v.start?'&start='+v.start:'')+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
+    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+(v.start?'&start='+v.start:'')+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
+    vsync.ready=false;vsync.state=-1;vsync.t=null;var fi=fr.querySelector('iframe');if(fi) fi.addEventListener('load',vidHello);
     $('#vidLink').href=v?v.url:'#';
   }
   var inp=$('#vidUrl');if(inp&&document.activeElement!==inp&&!editing) inp.value=v?v.url:'';
+}
+/* ---------- clock and video start/pause together ---------- */
+var vsync={ready:false,state:-1,cmdAt:0,t:null},YTO='https://www.youtube-nocookie.com';
+function vidWin(){var f=document.querySelector('#vidFrame iframe');return f?f.contentWindow:null;}
+function vidPost(o){var w=vidWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}
+function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) return;vidPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,500);})();}
+function clockRunning(){return !!(clk.since||clk.otSince);}
+function vidFollowClock(){
+  if(!vsync.ready) return;
+  var run=clockRunning();
+  if(run&&vsync.state!==1&&vsync.state!==3){vsync.cmdAt=Date.now();vidPost({event:'command',func:'playVideo',args:[]});}
+  else if(!run&&(vsync.state===1||vsync.state===3)){vsync.cmdAt=Date.now();vidPost({event:'command',func:'pauseVideo',args:[]});}
+}
+window.addEventListener('message',function(e){
+  if(e.origin!==YTO||!vidWin()||e.source!==vidWin()) return;
+  var d;try{d=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(x){return;}
+  if(!d||typeof d!=='object') return;
+  vsync.ready=true;
+  var st=null;
+  if(d.event==='onStateChange'&&typeof d.info==='number') st=d.info;
+  else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number') st=d.info.playerState;
+  if(d.event==='infoDelivery'&&d.info&&typeof d.info.currentTime==='number') vsync.t=d.info.currentTime;
+  if(st===null||st===vsync.state) return;
+  var mine=Date.now()-vsync.cmdAt<1500;
+  vsync.state=st;
+  if(mine||!ui||ui.view!=='track') return;
+  if(st===1&&!clockRunning()&&!atCap()) toggleClock();
+  else if(st===2&&clockRunning()) toggleClock();
+});
+(function(){var tc=toggleClock,pq=pauseQuiet,sn=startNextPeriod;
+  toggleClock=function(){tc();vidFollowClock();};
+  pauseQuiet=function(){pq();vidFollowClock();};
+  startNextPeriod=function(){sn();vidFollowClock();};})();
+function vidNudge(d){
+  if(!vsync.ready||typeof vsync.t!=='number') return;
+  var t=Math.max(0,vsync.t+d);vsync.t=t;vsync.cmdAt=Date.now();
+  vidPost({event:'command',func:'seekTo',args:[t,true]});
 }
 function setVideo(){
   var m=cur(),raw=$('#vidUrl').value.trim(),msg=$('#vidMsg');
@@ -2346,8 +2384,10 @@ $('#vidUrl').addEventListener('keydown',function(e){e.stopPropagation();if(e.key
 $('#vidChange').addEventListener('click',function(){ui.vidEdit=true;$('#vidUrl').value=(cur().config.meta||{}).video||'';renderVideo();$('#vidUrl').focus();});
 $('#vidHide').addEventListener('click',function(){var m=cur();m.config.meta=m.config.meta||{};m.config.meta.video='';ui.vidEdit=false;$('#vidUrl').value='';$('#vidMsg').hidden=true;save();renderVideo();});
 $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-spd]');if(b) setSpeed(b.dataset.spd);});
-$('#clkBack').addEventListener('click',function(){adjustClock(-5);});
-$('#clkFwd').addEventListener('click',function(){adjustClock(5);});
+$('#clkBack').addEventListener('click',function(){adjustClock(-1);});
+$('#vidBack').addEventListener('click',function(){vidNudge(-1);});
+$('#vidFwd').addEventListener('click',function(){vidNudge(1);});
+$('#clkFwd').addEventListener('click',function(){adjustClock(1);});
 $('#undo')&&$('#undo').addEventListener('click',undo);
 function setMax(on){
   ui.max=!!on;document.body.classList.toggle('max',ui.max&&ui.view==='track');
