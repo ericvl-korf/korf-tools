@@ -1595,14 +1595,14 @@ function renderVideo(){
   if(box.dataset.vid!==key){
     box.dataset.vid=key;
     var local=!/^https?:$/.test(location.protocol);
-    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube-nocookie.com/embed/'+v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+(v.start?'&start='+v.start:'')+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
+    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube.com/embed/'+v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+(v.start?'&start='+v.start:'')+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
     vsync.ready=false;vsync.state=-1;vsync.t=null;var fi=fr.querySelector('iframe');if(fi) fi.addEventListener('load',vidHello);
     $('#vidLink').href=v?v.url:'#';
   }
   var inp=$('#vidUrl');if(inp&&document.activeElement!==inp&&!editing) inp.value=v?v.url:'';
 }
 /* ---------- clock and video start/pause together ---------- */
-var vsync={ready:false,state:-1,cmdAt:0,t:null},YTO='https://www.youtube-nocookie.com';
+var vsync={ready:false,state:-1,cmdAt:0,t:null},YTO='https://www.youtube.com';
 function vidWin(){var f=document.querySelector('#vidFrame iframe');return f?f.contentWindow:null;}
 function vidPost(o){var w=vidWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}
 function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) return;vidPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,500);})();}
