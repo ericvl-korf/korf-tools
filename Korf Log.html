@@ -2076,7 +2076,7 @@ function lineupAlerts(side){
   if(!rows.length) return al;
   [1,2].forEach(function(d){
     var ps=rows.filter(function(p){return p.div===d;}),n=ps.length;
-    if(n!==4) al.push('Division '+d+' has '+n+' '+(n===1?'player':'players')+' in the starting line-up; a division fields 4.');
+    if(n!==4) al.push('Division '+d+' has '+n+' '+(n===1?'player':'players')+' in the starting line-up; a division should field 4.');
     else{var mm=ps.filter(function(p){return p.g==='M';}).length,ff=ps.filter(function(p){return p.g==='F';}).length;if(mm!==2||ff!==2) al.push('Division '+d+' has '+mm+' male and '+ff+' female players; each division should field 2 male and 2 female players.');}
   });
   [['M','male'],['F','female']].forEach(function(x){var n=rows.filter(function(p){return p.g===x[0];}).length;if(n!==4) al.push('The starting line-up has '+n+' '+x[1]+' '+(n===1?'player':'players')+'; a team should field 4 '+x[1]+' players.');});
