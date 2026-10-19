@@ -2061,6 +2061,7 @@ function computeIssues(){
     var inc=0;
     draft[side].players.forEach(function(p){if(isEmptyRow(p)) return;if(!p.name.trim()||!p.div||!p.g){inc++;bad[p.id]=1;}});
     draft[side].subs.forEach(function(p){if(isEmptyRow(p)) return;if(!p.name.trim()||!p.g){inc++;bad[p.id]=1;}});
+    lineupAlerts(side).forEach(function(m){out.push(teamLabel(side)+': '+m);});
     if(inc) out.push(teamLabel(side)+': '+inc+' incomplete '+(inc===1?'row':'rows')+'. Players need a name, division and gender; substitutes need a name and gender.');
   });
   var mt0=draft.meta||{};
@@ -2070,6 +2071,17 @@ function computeIssues(){
   if(draft.home.color===draft.away.color) out.push('Give the two teams different colours.');
   return {list:out,bad:bad};
 }
+function lineupAlerts(side){
+  var rows=draft[side].players.filter(function(p){return !isEmptyRow(p)&&String(p.name||'').trim();}),al=[];
+  if(!rows.length) return al;
+  [1,2].forEach(function(d){
+    var ps=rows.filter(function(p){return p.div===d;}),n=ps.length;
+    if(n!==4) al.push('Division '+d+' has '+n+' '+(n===1?'player':'players')+' in the starting line-up; a division fields 4.');
+    else{var mm=ps.filter(function(p){return p.g==='M';}).length,ff=ps.filter(function(p){return p.g==='F';}).length;if(mm!==2||ff!==2) al.push('Division '+d+' has '+mm+' male and '+ff+' female players; each division should field 2 male and 2 female players.');}
+  });
+  [['M','male'],['F','female']].forEach(function(x){var n=rows.filter(function(p){return p.g===x[0];}).length;if(n!==4) al.push('The starting line-up has '+n+' '+x[1]+' '+(n===1?'player':'players')+'; a team fields 4 '+x[1]+' players.');});
+  return al;
+}
 function syncCounts(){
   ['home','away'].forEach(function(side){
     var el=document.querySelector('[data-counts="'+side+'"]');if(!el) return;
@@ -2078,11 +2090,12 @@ function syncCounts(){
       var ps=rows.filter(function(p){return p.div===d;});if(!ps.length) return;
       var mm=ps.filter(function(p){return p.g==='M';}).length,ff=ps.filter(function(p){return p.g==='F';}).length;
       out.push('Division '+d+': '+ps.length+' ('+mm+' male, '+ff+' female)');
-      if(ps.length>4||mm>2||ff>2) warn=true;
+      if(mm>2||ff>2) warn=true;
     });
     var subs=t.subs.filter(function(p){return !isEmptyRow(p);}).length;
     if(subs) out.push('Substitutes: '+subs);
-    el.innerHTML=esc(out.join(' · '))+(warn?'<span class="warn">A division fields 4 players: 2 male and 2 female.</span>':'');
+    var al=lineupAlerts(side);
+    el.innerHTML=esc(out.join(' · '))+al.map(function(m){return '<span class="warn">⚠ '+esc(m)+'</span>';}).join('');
   });
 }
 function syncCourt(){
