@@ -55,7 +55,7 @@ The Highlights page lists every logged shot and turns the shots you pick into cl
 
 **1. Add the video.** Under the filters, each match has a place for its video: a YouTube link (and a separate 2nd half link if the halves are separate videos) or a video file from your computer, with the video time at which each half starts, each box under its own link or file. If the log was made in Korf Log with a video, these are filled in for you (a local file has to be chosen again, because a browser does not remember files). Otherwise type the start times as mm:ss, for example 04:10.
 
-**2. Filter the shots.** Choose **Team** (both teams or one), **Division** (1, 2 or both), **Gender** (female players, male players or both), **Shooter**, **Shot type**, **Outcome** (goals or misses), **Attack** (multi-shot or single-shot) and **Attack no.** (the multi-attack index). **Seconds before** and **Seconds after** set how much of the play each clip includes. The list shows each clip's start and end and a YouTube link that opens at the start. **Save CSV** exports the list and **Copy list** copies it as text.
+**2. Filter the shots.** Choose **Half** (whole match, 1st half or 2nd half), **Team** (both teams or one), **Division** (1, 2 or both), **Gender** (female players, male players or both), **Shooter**, **Shot type**, **Outcome** (goals or misses), **Attack** (multi-shot or single-shot) and **Attack no.** (the multi-attack index). **Seconds before** and **Seconds after** set how much of the play each clip includes. The list shows each clip's start and end and a YouTube link that opens at the start. **Save CSV** exports the list and **Copy list** copies it as text.
 
 **3. Choose what to make.**
 
