@@ -89,6 +89,7 @@ thead th{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:va
 .seg button+button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
 .page{display:flex;flex-direction:column;gap:16px;min-width:0}
+.hlwrap{display:flex;flex-direction:column;gap:16px;min-width:0}.hlf{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}.hlf input[type=text],.hlf input[type=number],.hlf select{min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg);font:inherit;padding:.35rem .5rem;max-width:100%}.hlf input[type=number]{width:5.5rem}.hlv{display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(5.5rem,1fr));gap:8px;align-items:end}.hlv .nm{grid-column:1/-1;font-weight:600}.hlv input{width:100%}.hltbl{overflow-x:auto}.hltbl td,.hltbl th{text-align:left}.hltbl a{color:var(--accent);font-weight:600}
 tr.sel td{background:var(--surface-2)}
 tr.pl{cursor:pointer}
 tr.pl:hover td{background:var(--surface-2)}
@@ -304,7 +305,7 @@ details>summary{transition:color .16s var(--ease)}
     <button type="button" class="btn" id="batchBtn" title="Create a separate team + player report PDF for each player you select">Print player reports</button>
     <button type="button" class="btn" id="printCoachBtn" title="Print the team report followed by stats for every player">Print coach report</button>
     <button type="button" class="btn" id="printBtn" title="Print or save the team report as a paginated PDF">Print team report</button>
-    <div class="seg" role="group" aria-label="Page"><button type="button" data-page="overview" aria-pressed="true">Team</button><button type="button" data-page="players" aria-pressed="false">Players</button></div>
+    <div class="seg" role="group" aria-label="Page"><button type="button" data-page="overview" aria-pressed="true">Team</button><button type="button" data-page="players" aria-pressed="false">Players</button><button type="button" data-page="highlights" aria-pressed="false">Highlights</button></div>
   </div>
   <span class="sub" id="ovSub" role="status"></span>
   <div class="dlg" id="batchDlg" hidden role="dialog" aria-modal="true" aria-labelledby="batchTitle">
@@ -340,6 +341,7 @@ details>summary{transition:color .16s var(--ease)}
   <div id="printHead" hidden><h1>Korfball team report</h1><p id="printSub"></p></div>
   <div class="page" id="pageOverview"><div class="dgrid" id="teamGrid"></div></div>
   <div class="page" id="pagePlayers" hidden><div class="dgrid" id="playerGrid"></div></div>
+  <div class="page" id="pageHighlights" hidden><div class="hlwrap" id="hlGrid"></div></div>
 </div>
 
 <script>
@@ -420,7 +422,13 @@ function jsonToCsv(txt){
   function pLong(p){return per===4?'Quarter '+p:(p===1?'1st half':'2nd half');}
   function lab(p){return (p&&p.no?'#'+p.no+' ':'')+(p?p.name:'');}
   var att={H:0,A:0},cur=startTeam,lastP=1,halfP=per===4?3:2;att[startTeam]=1;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2'];
+  var vc=(function(){
+    function pv(t){t=String(t==null?'':t).trim();var q=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);if(q) return (q[1]?+q[1]*3600:0)+(+q[2])*60+(+q[3]);return /^\d{1,6}$/.test(t)?parseInt(t,10):null;}
+    var v1=String(meta.video||''),v2=String(meta.video2||'');if(!v1&&!v2) return ['','','',''];
+    var a=pv(meta.vs1),b=pv(meta.vs2),sp=!!(meta.split&&v2),hl=len*30;
+    return [v1,sp?v2:'',a==null?0:a,b!=null?b:(sp?0:(a==null?0:a)+hl)];
+  })();
   var name=hn+' v '+an,origin=null,rows=[];
   m.events.forEach(function(e){
     var pe=pOf(Number(e.t)||0);
@@ -435,7 +443,7 @@ function jsonToCsv(txt){
     rows.push([name,meta.league||'',meta.date||'',meta.week||'',e.ot!=null?clock(t+1)+' +'+clock(e.ot):clock(t),t,pOf(t)&&pLong(pOf(t)),tn,a==null?'':a,e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot&&e.r!=null?e.r:'',shot&&e.a!=null?e.a:'',zone,shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'',e.ot!=null?e.ot:'']);
+      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'',e.ot!=null?e.ot:''].concat(vc));
     var oth=function(x){return x==='H'?'A':'H';};
     if(e.type==='turnover'){origin=e.team;cur=oth(e.team);}
     else if(shot){
@@ -454,7 +462,7 @@ function jsonToCsv(txt){
     list.forEach(function(p,i){
       if(!p||!p.name) return;
       var bench=i>=np;
-      lrows.push([name,meta.league||'',meta.date||'',meta.week||'',clock(0),0,pLong(1),tn,'','lineup',bench?'bench':(p.div===sd[t]?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player','','','','','','','','','','','',new Date(Number(m.created)||Date.now()).toISOString(),L,len,per,t==='H'?hc:ac,look.court||'',look.zone||'','']);
+      lrows.push([name,meta.league||'',meta.date||'',meta.week||'',clock(0),0,pLong(1),tn,'','lineup',bench?'bench':(p.div===sd[t]?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player','','','','','','','','','','','',new Date(Number(m.created)||Date.now()).toISOString(),L,len,per,t==='H'?hc:ac,look.court||'',look.zone||'',''].concat(vc));
     });
   });
   return [head].concat(lrows,rows).map(function(r){return r.map(qv).join(',');}).join('\n');
@@ -1363,10 +1371,11 @@ function renderOverview(){
   $('#ovSub').textContent=ms.length?ms.length+(ms.length===1?' match':' matches')+(view.team?' · '+view.team:' loaded'):(view.team?'No matches for '+view.team:'Load a file to see numbers');
   if(!ms.length){
     var e='<section class="card wide"><div class="card-head"><div class="ch"><h2>Nothing to show yet</h2></div></div><p class="note">Add Event Log CSV files above by choosing a folder or picking files. Team and player visuals appear here as soon as one file is loaded.</p></section>';
-    $('#teamGrid').innerHTML=e;$('#playerGrid').innerHTML=e;return;
+    $('#teamGrid').innerHTML=e;$('#playerGrid').innerHTML=e;$('#hlGrid').innerHTML=e;return;
   }
   $('#teamGrid').innerHTML=teamPage(ms);rpMount();
   $('#playerGrid').innerHTML=playersPage(ms);
+  hlMount(ms);
   var det=$('#srcDet');if(det&&!window.__folded){window.__folded=true;det.open=false;}
 }
 function printCoachReport(){
@@ -1459,11 +1468,164 @@ function printReport(){
   try{window.print();}catch(e){back();alert('Printing is blocked here. Open the page in its own tab and try again.');}
   setPage(prev);
 }
+/* ---------- highlights list ---------- */
+var HL={ms:[],rows:[],player:'',type:'',out:'',att:'',attNo:'',pre:8,post:4,off:{}};
+function hlParse(t){
+  t=String(t||'').trim();if(!t) return null;
+  var m=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);
+  if(m) return (m[1]?+m[1]*3600:0)+(+m[2])*60+(+m[3]);
+  return /^\d+(\.\d+)?$/.test(t)?parseFloat(t):null;
+}
+function hlClock(sec){sec=Math.max(0,Math.round(sec));var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return (h?h+':'+(m<10?'0':''):'')+m+':'+(s<10?'0':'')+s;}
+function hlYt(u){var m=/(?:youtu\.be\/|[?&]v=|\/embed\/|\/shorts\/|\/live\/)([\w-]{11})/.exec(String(u||''));return m?m[1]:'';}
+function hlOutLabel(r){
+  var o=r.outcome;
+  if(o==='goal') return 'Goal';
+  if(o==='defended') return 'Defended shot';
+  if(o==='oobA') return 'Ball out (attack keeps)';
+  if(o==='oobD') return 'Ball out (defence)';
+  if(o==='rebound') return 'Rebound by '+(r.rebounder_team===r.team?'attack':'defence')+(r.rebounder==='Foul'?' (foul)':(r.rebounder?' · '+r.rebounder:''));
+  return o||'';
+}
+function hlBuild(ms){
+  var rows=[];
+  ms.forEach(function(m){
+    var attOf={};
+    m.atts.forEach(function(q){for(var i=num(q.id);i<=num(q.lastId);i++) attOf[q.team+'|'+i]=q;});
+    m.shots.forEach(function(s){
+      var r=s.r,has=r.attack!==''&&r.attack!=null&&r.attack!==undefined,q=has?attOf[r.team+'|'+num(r.attack)]:null;
+      rows.push({m:m,s:s,r:r,team:s.team,player:s.player||'',k:s.k,goal:s.goal,
+        an:has?(q?num(q.id):num(r.attack)):null,ns:q?q.shots:null,multi:q?q.shots>1:null,half:s.half,
+        oc:hlOutLabel(r)});
+    });
+  });
+  return rows;
+}
+function hlOff(m){
+  if(HL.off[m.id]) return HL.off[m.id];
+  var r=m.rows[0]||{},s1=r.video_start_1,s2=r.video_start_2,has=function(v){return v!==''&&v!=null&&isFinite(Number(v));};
+  return HL.off[m.id]={url:String(r.video_url||''),url2:String(r.video_url_2||''),h1:has(s1)?hlClock(+s1):'',h2:has(s2)?hlClock(+s2):''};
+}
+function hlVid(x){
+  var o=HL.off[x.m.id];if(!o) return null;
+  var base=hlParse(x.half===1?o.h1:o.h2);if(base==null) return null;
+  var el=Math.max(0,x.s.t-(x.half-1)*x.m.half)+num(x.r.extra_time_s);
+  var t=base+el;return {t:t,a:Math.max(0,t-HL.pre),b:t+HL.post,id:hlYt(x.half===2&&o.url2?o.url2:o.url)};
+}
+function hlFiltered(){
+  return HL.rows.filter(function(x){
+    if(HL.player&&(x.team+'|'+x.player)!==HL.player) return false;
+    if(HL.type&&x.k!==HL.type) return false;
+    if(HL.out==='goal'&&!x.goal) return false;
+    if(HL.out==='miss'&&x.goal) return false;
+    if(HL.att==='multi'&&x.multi!==true) return false;
+    if(HL.att==='single'&&x.multi!==false) return false;
+    if(HL.attNo!==''&&String(x.an)!==String(HL.attNo)) return false;
+    return true;
+  });
+}
+function hlMount(ms){
+  HL.ms=ms;HL.rows=hlBuild(ms);
+  var teams={};HL.rows.forEach(function(x){teams[x.team]=1;});var multi=Object.keys(teams).length>1;
+  var pl={};HL.rows.forEach(function(x){if(x.player) pl[x.team+'|'+x.player]=x.player+(multi?' · '+x.team:'');});
+  var plKeys=Object.keys(pl).sort(function(a,b){return pl[a]<pl[b]?-1:1;});
+  if(HL.player&&!pl[HL.player]) HL.player='';
+  var tk={};HL.rows.forEach(function(x){tk[x.k]=1;});
+  var types=CKEYS.filter(function(k){return tk[k];});
+  if(HL.type&&!tk[HL.type]) HL.type='';
+  var hasAtt=HL.rows.some(function(x){return x.an!=null;});
+  var opt=function(v,l,cur){return '<option value="'+esc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+esc(l)+'</option>';};
+  var h='<section class="card wide"><div class="card-head"><div class="ch"><h2>Highlights list</h2><span class="sub">Every logged shot, filtered. Add the video times to get clip start and end times and YouTube links.</span></div></div>';
+  h+='<div class="hlf">';
+  if(plKeys.length) h+='<div class="grp"><label class="lbl" for="hlPl">Shooter</label><select id="hlPl">'+opt('','All shooters',HL.player)+plKeys.map(function(k){return opt(k,pl[k],HL.player);}).join('')+'</select></div>';
+  h+='<div class="grp"><label class="lbl" for="hlTy">Shot type</label><select id="hlTy">'+opt('','All types',HL.type)+types.map(function(k){return opt(k,TYPE_LABEL[k]||k,HL.type);}).join('')+'</select></div>';
+  h+='<div class="grp"><label class="lbl" for="hlOu">Outcome</label><select id="hlOu">'+opt('','Goals and misses',HL.out)+opt('goal','Goals only',HL.out)+opt('miss','Misses only',HL.out)+'</select></div>';
+  if(hasAtt){
+    h+='<div class="grp"><label class="lbl" for="hlAt">Attack</label><select id="hlAt">'+opt('','All attacks',HL.att)+opt('multi','Multi-shot attacks',HL.att)+opt('single','Single-shot attacks',HL.att)+'</select></div>';
+    h+='<div class="grp"><label class="lbl" for="hlAn">Attack no.</label><input id="hlAn" type="number" min="1" inputmode="numeric" placeholder="Any" value="'+esc(HL.attNo)+'"></div>';
+  }
+  h+='<div class="grp"><label class="lbl" for="hlPre">Seconds before</label><input id="hlPre" type="number" min="0" max="60" value="'+HL.pre+'"></div>';
+  h+='<div class="grp"><label class="lbl" for="hlPost">Seconds after</label><input id="hlPost" type="number" min="0" max="60" value="'+HL.post+'"></div>';
+  h+='</div>';
+  h+='<div class="note">Video times (optional). Enter the video time at which each half started, as mm:ss, for example 04:10. Links and start times are filled in automatically when the log was made with a video in Korf Log. If the match video is split in two, add the 2nd half link as well.</div>';
+  h+='<div class="dgrid">'+ms.filter(function(m){return m.shots.length;}).map(function(m){
+    var o=hlOff(m);
+    return '<div class="hlv" data-m="'+esc(m.id)+'"><span class="nm">'+esc(m.name)+(m.week?' · Week '+esc(m.week):'')+'</span>'+
+      '<div class="grp"><label class="lbl">'+(o.url2?'1st half YouTube link':'YouTube link')+'</label><input type="text" data-o="url" inputmode="url" placeholder="Optional" value="'+esc(o.url)+'"></div>'+
+      '<div class="grp"><label class="lbl">2nd half YouTube link <span style="font-weight:500;text-transform:none;letter-spacing:0">(if separate)</span></label><input type="text" data-o="url2" inputmode="url" placeholder="Leave blank for one video" value="'+esc(o.url2)+'"></div>'+
+      '<div class="grp"><label class="lbl">1st half starts</label><input type="text" data-o="h1" placeholder="mm:ss" value="'+esc(o.h1)+'"></div>'+
+      '<div class="grp"><label class="lbl">2nd half starts</label><input type="text" data-o="h2" placeholder="mm:ss" value="'+esc(o.h2)+'"></div></div>';
+  }).join('')+'</div>';
+  h+='<div class="hlf" style="justify-content:space-between"><span class="note" id="hlCount" role="status"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="hlCopy">Copy list</button><button type="button" class="btn primary" id="hlSave">Save CSV</button></span></div>';
+  h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
+  $('#hlGrid').innerHTML=h;hlList();
+}
+function hlRows(){
+  var f=hlFiltered();
+  return f.map(function(x){
+    var v=hlVid(x),link=v&&v.id?'https://youtu.be/'+v.id+'?t='+Math.floor(v.a):'';
+    return {x:x,v:v,link:link};
+  });
+}
+function hlList(){
+  var L=hlRows(),el=$('#hlList');if(!el) return;
+  var anyV=L.some(function(q){return q.v;});
+  $('#hlCount').textContent=L.length+(L.length===1?' shot':' shots')+(L.length!==HL.rows.length?' of '+HL.rows.length:'');
+  if(!L.length){el.innerHTML='<p class="note">No shots match these filters.</p>';return;}
+  var head=['Match','Half','Time','Team','Shooter','Shot type','Outcome','Attack'].concat(anyV?['Clip','Link']:[]);
+  var shown=L.slice(0,400);
+  el.innerHTML='<table><thead><tr>'+head.map(function(t){return '<th>'+t+'</th>';}).join('')+'</tr></thead><tbody>'+shown.map(function(q){
+    var x=q.x,r=x.r;
+    return '<tr><td>'+esc(mShort(x.m,cut(x.m.name,14)))+'</td><td>'+(x.half===1?'1st':'2nd')+'</td><td>'+esc(r.time||mmss(x.s.t))+'</td><td>'+esc(x.team)+'</td><td>'+esc(x.player||'–')+'</td><td>'+esc(TYPE_LABEL[x.k]||x.k)+'</td><td>'+esc(x.oc)+'</td><td>'+(x.an==null?'–':x.an+(x.multi?' · '+x.ns+' shots':''))+'</td>'+
+      (anyV?'<td>'+(q.v?hlClock(q.v.a)+'–'+hlClock(q.v.b):'')+'</td><td>'+(q.link?'<a href="'+esc(q.link)+'" target="_blank" rel="noopener noreferrer">Open</a>':'')+'</td>':'')+'</tr>';
+  }).join('')+'</tbody></table>'+(L.length>shown.length?'<p class="note">Showing the first '+shown.length+'. The CSV has all '+L.length+'.</p>':'');
+}
+function hlCsv(){
+  var cols=['match','fixture_date','half','match_time','team','shooter','shot_type','outcome','attack_no','shots_in_attack','attack_kind','clip_start','clip_end','link'];
+  var q=function(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  var out=[cols.join(',')];
+  hlRows().forEach(function(z){
+    var x=z.x,r=x.r;
+    out.push([x.m.name,x.m.date,x.half===1?'1st half':'2nd half',r.time||mmss(x.s.t),x.team,x.player,TYPE_LABEL[x.k]||x.k,x.oc,x.an==null?'':x.an,x.ns==null?'':x.ns,x.multi==null?'':(x.multi?'multi-shot':'single-shot'),z.v?hlClock(z.v.a):'',z.v?hlClock(z.v.b):'',z.link].map(q).join(','));
+  });
+  return out.join('\n')+'\n';
+}
+function hlText(){
+  return hlRows().map(function(z){var x=z.x,r=x.r;
+    return (x.half===1?'1st':'2nd')+' half '+(r.time||mmss(x.s.t))+' · '+x.team+' · '+(x.player||'unknown shooter')+' · '+(TYPE_LABEL[x.k]||x.k)+' · '+x.oc+(z.v?' · clip '+hlClock(z.v.a)+'–'+hlClock(z.v.b):'')+(z.link?' · '+z.link:'');
+  }).join('\n');
+}
+function hlMsg(t,bad){var m=$('#hlMsg');if(m){m.textContent=t;m.className='msg '+(bad?'err':'');}}
 function setPage(p){
   view.page=p;
-  $('#pageOverview').hidden=p!=='overview';$('#pagePlayers').hidden=p!=='players';
+  $('#pageOverview').hidden=p!=='overview';$('#pagePlayers').hidden=p!=='players';$('#pageHighlights').hidden=p!=='highlights';
   document.querySelectorAll('[data-page]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.page===p?'true':'false');});
 }
+document.addEventListener('input',function(e){
+  var t=e.target;if(!t||!t.closest||!t.closest('#hlGrid')) return;
+  if(t.id==='hlPre'){HL.pre=Math.max(0,Math.min(60,num(t.value)));}
+  else if(t.id==='hlPost'){HL.post=Math.max(0,Math.min(60,num(t.value)));}
+  else if(t.id==='hlAn'){HL.attNo=t.value.trim();}
+  else if(t.dataset&&t.dataset.o){var m=t.closest('[data-m]');if(m&&HL.off[m.dataset.m]) HL.off[m.dataset.m][t.dataset.o]=t.value;}
+  else return;
+  hlList();
+});
+document.addEventListener('change',function(e){
+  var t=e.target;if(!t||!t.closest||!t.closest('#hlGrid')) return;
+  if(t.id==='hlPl') HL.player=t.value;else if(t.id==='hlTy') HL.type=t.value;else if(t.id==='hlOu') HL.out=t.value;else if(t.id==='hlAt') HL.att=t.value;else return;
+  hlList();
+});
+document.addEventListener('click',function(e){
+  var b=e.target&&e.target.closest?e.target.closest('#hlSave,#hlCopy'):null;if(!b) return;
+  if(b.id==='hlSave'){
+    if(!hlRows().length){hlMsg('Nothing to save: no shots match these filters.',true);return;}
+    ybDownload({csv:hlCsv(),fn:'highlights.csv'},function(ok,msg){hlMsg(msg,!ok);});
+  }else{
+    var txt=hlText();if(!txt){hlMsg('Nothing to copy: no shots match these filters.',true);return;}
+    try{navigator.clipboard.writeText(txt).then(function(){hlMsg('Copied '+hlRows().length+' lines.',false);},function(){hlMsg('Copying is blocked here. Use Save CSV instead.',true);});}
+    catch(x){hlMsg('Copying is blocked here. Use Save CSV instead.',true);}
+  }
+});
 function onTip(e){
   var t=e.target.closest&&e.target.closest('[data-tip]');
   if(!t){tip.hidden=true;return;}

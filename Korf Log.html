@@ -45,6 +45,8 @@ h2{font-size:1.15rem;font-weight:700;letter-spacing:.06em;text-transform:upperca
 .fixgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
 @media (max-width:640px){.fixgrid{grid-template-columns:minmax(0,1fr)}}
 .fixgrid input{width:100%}
+.vdgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}@media (max-width:640px){.vdgrid{grid-template-columns:minmax(0,1fr)}}.vdgrid input[type=text],.vdgrid input[type=url]{width:100%}.vdsplit{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.92rem}
+.fixgrid input.bad,.vdgrid input.bad{border-color:var(--danger)}
 .donate{display:flex;justify-content:flex-end;margin:0 0 6px}.donate a{font-size:.82rem;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:2px}.donate a:hover{text-decoration-thickness:2px}
 @media print{.donate{display:none!important}}
 .top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
@@ -548,6 +550,17 @@ details>summary{transition:color .16s var(--ease)}
           <div class="grp"><label class="lbl" for="fxWeek">Fixture week <span style="font-weight:500;text-transform:none;letter-spacing:0">(optional)</span></label><input id="fxWeek" type="text" inputmode="numeric" maxlength="2" placeholder="e.g. 5" autocomplete="off"></div>
         </div>
       </section>
+      <section class="card" aria-label="Match video">
+        <div class="card-head"><h2>Match video</h2><span class="sub">Optional. Lets the clock and the video start together</span></div>
+        <label class="vdsplit"><input type="checkbox" id="vdSplit"> The match video is split into one video per half</label>
+        <div class="vdgrid">
+          <div class="grp"><label class="lbl" for="vdLink1" id="vdLbl1">YouTube link</label><input id="vdLink1" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
+          <div class="grp" id="vdG2" hidden><label class="lbl" for="vdLink2">2nd half YouTube link</label><input id="vdLink2" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
+          <div class="grp"><label class="lbl" for="vdS1">1st half starts at (video time)</label><input id="vdS1" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss, e.g. 04:10"></div>
+          <div class="grp"><label class="lbl" for="vdS2">2nd half starts at (video time)</label><input id="vdS2" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss"></div>
+        </div>
+        <p class="note" id="vdNote" style="margin-top:10px">Enter the video time at which the clock starts for each half. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved.</p>
+      </section>
       <div class="sgrid" id="teamsGrid"></div>
 
       <div class="sgrid">
@@ -750,7 +763,7 @@ function defaultConfig(){
     events:{pass:true,passMode:'full',shot:true,shotTypes:'log',referee:true,turnover:true,penalty:true,freepass:true,
       to:{general:true,attack:false,forced:false,unforced:false,attfoul:false,shotclock:false}},
     start:{team:'H',divs:{H:1,A:2},dir:'right'},
-    meta:{league:'',date:'',week:'',video:''}
+    meta:{league:'',date:'',week:'',video:'',video2:'',split:false,vs1:'',vs2:''}
   };
 }
 function cloneCfg(c){return JSON.parse(JSON.stringify(c));}
@@ -794,7 +807,8 @@ function normCfg(c){
     d.meta.league=String(mt.league||'').slice(0,60);
     if(/^\d{4}-\d{2}-\d{2}$/.test(String(mt.date||''))) d.meta.date=String(mt.date);
     var wk=parseInt(mt.week,10);d.meta.week=(isFinite(wk)&&wk>0&&wk<100)?String(wk):'';
-    var yv=ytParse(mt.video);d.meta.video=yv?yv.url:'';
+    var yv=ytParse(mt.video);d.meta.video=yv?yv.url:'';var yv2=ytParse(mt.video2);d.meta.video2=yv2?yv2.url:'';d.meta.split=!!(mt.split||d.meta.video2);
+    d.meta.vs1=vNorm(mt.vs1);d.meta.vs2=vNorm(mt.vs2);
   }
   return d;
 }
@@ -1236,7 +1250,7 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
@@ -1245,7 +1259,7 @@ function toCSV(m){
     return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,evClock(e),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''];
+      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg));
   });
   /* Starting line-up: one row per named player and substitute, so Korf Lab can work out minutes in attack and in defence. */
   var lrows=[];
@@ -1255,7 +1269,7 @@ function toCSV(m){
       if(!p||!p.name) return;
       var bench=i>=tm.players.length;
       lrows.push([name,cfg.meta.league,cfg.meta.date,cfg.meta.week,'00:00',0,pLong(cfg,1),tn,'','lineup',bench?'bench':(p.div===ad?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player',
-        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||'']);
+        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg)));
     });
   });
   return [head].concat(lrows,rows).map(function(r){return r.map(q).join(',');}).join('\n');
@@ -1350,7 +1364,7 @@ function csvToBackup(txt){
   var has=function(ty){return recs.some(function(o){return o.event===ty;});};
   var cfg={home:{name:home,color:col.H||undefined},away:{name:away,color:col.A||undefined},length:mins,periods:per,court:{len:L},
     look:{court:r0.court_color,zone:r0.zone_color},events:{to:{}},start:{team:first?first.team:'H',divs:divs,dir:dir},
-    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week,video:r0.video_url||''}};
+    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week,video:r0.video_url||'',video2:r0.video_url_2||'',split:!!r0.video_url_2,vs1:r0.video_url?vFmt(num(r0.video_start_1,0)):'',vs2:r0.video_url&&r0.video_start_2!==''&&r0.video_start_2!=null?vFmt(num(r0.video_start_2,0)):''}};
   ['H','A'].forEach(function(t){
     var nm=t==='H'?'home':'away';
     cfg[nm].players=roster[t].players.filter(function(p){return !p.sub;});
@@ -1570,6 +1584,26 @@ function currentView(m,R){
   return {team:team,att:st.att[team],right:attackRight(cfg,team,p),period:p,hl:null,review:false};
 }
 /* ---------- match video (YouTube) ---------- */
+/* video times: mm:ss or h:mm:ss, or plain seconds */
+function vParse(t){
+  t=String(t==null?'':t).trim();if(!t) return null;
+  var m=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);
+  if(m){if(+m[3]>59||(m[1]&&+m[2]>59)) return null;return (m[1]?+m[1]*3600:0)+(+m[2])*60+(+m[3]);}
+  return /^\d{1,6}$/.test(t)?parseInt(t,10):null;
+}
+function vFmt(sec){sec=Math.max(0,Math.round(sec));var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return (h?h+':'+(m<10?'0':''):'')+m+':'+(s<10?'0':'')+s;}
+function vNorm(t){var n=vParse(t);return n==null?'':vFmt(n);}
+function vCols(cfg){var mt=cfg.meta||{};if(!mt.video&&!mt.video2) return ['','',''];return [(mt.split&&mt.video2)?mt.video2:'',vStartOf(cfg,1),vStartOf(cfg,2)];}
+function halfLenOf(cfg){return cfg.length*30;}
+function halfOfPeriod(cfg,go){return go>cfg.periods/2?2:1;}
+/* video time (s) at which the given half starts: start 1 defaults to 0; start 2 defaults to 0 for a separate video, or straight after the 1st half for one video */
+function vStartOf(cfg,h){
+  var mt=cfg.meta||{},a=vParse(mt.vs1),b=vParse(mt.vs2);
+  if(h===1) return a==null?0:a;
+  if(b!=null) return b;
+  return (mt.split&&mt.video2)?0:(a==null?0:a)+halfLenOf(cfg);
+}
+function vTarget(cfg,h,t){return Math.max(0,vStartOf(cfg,h)+t-(h-1)*halfLenOf(cfg));}
 function ytParse(s){
   s=String(s||'').trim();if(!s||s.length>300) return null;
   var u;try{u=new URL(/^https?:\/\//i.test(s)?s:'https://'+s);}catch(e){return null;}
@@ -1585,9 +1619,12 @@ function ytParse(s){
   if(mm) sec=(+mm[1]||0)*3600+(+mm[2]||0)*60+(+mm[3]||0);
   return {id:id,start:sec,url:'https://www.youtube.com/watch?v='+id+(sec?'&t='+sec+'s':'')};
 }
+function vidHalf(){var m=cur();return m?halfOfPeriod(m.config,clk.go||1):1;}
+function vidKey(m){var mt=m.config.meta||{};return (mt.split&&vidHalf()===2)?'video2':'video';}
+function vidTargetNow(m){return vTarget(m.config,vidHalf(),nowT());}
 function renderVideo(){
   var m=cur(),box=$('#vidBox');if(!m||!box) return;
-  var v=ytParse(m.config.meta&&m.config.meta.video),editing=!!ui.vidEdit,show=!!v&&!editing;
+  var v=ytParse(m.config.meta&&m.config.meta[vidKey(m)]),editing=!!ui.vidEdit,show=!!v&&!editing;
   box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);
   $('#vidAdd').hidden=show;$('#vidPlay').hidden=!v;
   if(editing&&v) $('#vidPlay').hidden=true;
@@ -1595,7 +1632,7 @@ function renderVideo(){
   if(box.dataset.vid!==key){
     box.dataset.vid=key;
     var local=!/^https?:$/.test(location.protocol);
-    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube.com/embed/'+v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+(v.start?'&start='+v.start:'')+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
+    fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube.com/embed/'+v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+(function(){var mt=m.config.meta||{};return (mt.vs1||mt.vs2)?'&start='+Math.floor(vidTargetNow(m)):(v.start?'&start='+v.start:'');})()+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
     vsync.ready=false;vsync.state=-1;vsync.t=null;var fi=fr.querySelector('iframe');if(fi) fi.addEventListener('load',vidHello);
     $('#vidLink').href=v?v.url:'#';
   }
@@ -1607,17 +1644,19 @@ function vidWin(){var f=document.querySelector('#vidFrame iframe');return f?f.co
 function vidPost(o){var w=vidWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}
 function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) return;vidPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,500);})();}
 function clockRunning(){return !!(clk.since||clk.otSince);}
+function vidSeekNow(){var m=cur();if(!m||clk.otSince) return;var mt=m.config.meta||{};if(!(mt.vs1||mt.vs2)) return;var t=vidTargetNow(m);vsync.t=t;vidPost({event:'command',func:'seekTo',args:[t,true]});}
 function vidFollowClock(){
   if(!vsync.ready) return;
   var run=clockRunning();
-  if(run&&vsync.state!==1&&vsync.state!==3){vsync.cmdAt=Date.now();vidPost({event:'command',func:'playVideo',args:[]});}
+  if(run&&vsync.state!==1&&vsync.state!==3){vsync.cmdAt=Date.now();vidSeekNow();vidPost({event:'command',func:'playVideo',args:[]});}
   else if(!run&&(vsync.state===1||vsync.state===3)){vsync.cmdAt=Date.now();vidPost({event:'command',func:'pauseVideo',args:[]});}
 }
 window.addEventListener('message',function(e){
   if(e.origin!==YTO||!vidWin()||e.source!==vidWin()) return;
   var d;try{d=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(x){return;}
   if(!d||typeof d!=='object') return;
-  vsync.ready=true;
+  var was=vsync.ready;vsync.ready=true;
+  if(!was&&clockRunning()){vsync.cmdAt=Date.now();vidSeekNow();vidPost({event:'command',func:'playVideo',args:[]});}
   var st=null;
   if(d.event==='onStateChange'&&typeof d.info==='number') st=d.info;
   else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number') st=d.info.playerState;
@@ -1632,18 +1671,27 @@ window.addEventListener('message',function(e){
 (function(){var tc=toggleClock,pq=pauseQuiet,sn=startNextPeriod;
   toggleClock=function(){tc();vidFollowClock();};
   pauseQuiet=function(){pq();vidFollowClock();};
+  var ac=adjustClock;adjustClock=function(dl){var a=nowT();ac(dl);var dv=nowT()-a;if(dv) vidShiftStart(-Math.round(dv));};
   startNextPeriod=function(){sn();vidFollowClock();};})();
 function vidNudge(d){
   if(!vsync.ready||typeof vsync.t!=='number') return;
   var t=Math.max(0,vsync.t+d);vsync.t=t;vsync.cmdAt=Date.now();
   vidPost({event:'command',func:'seekTo',args:[t,true]});
+  vidShiftStart(d);
+}
+/* The saved start moves with the alignment: the video moving forward by d (or the clock back by d) raises the start of the current half by d. */
+function vidShiftStart(d){
+  var m=cur();if(!m||clk.otSince||(clk.otOn&&atCap())) return;
+  var mt=m.config.meta=m.config.meta||{};if(!mt[vidKey(m)]) return;
+  var h=vidHalf(),k=h===1?'vs1':'vs2';
+  mt[k]=vFmt(Math.max(0,vStartOf(m.config,h)+d));save();
 }
 function setVideo(){
   var m=cur(),raw=$('#vidUrl').value.trim(),msg=$('#vidMsg');
-  if(!raw){msg.hidden=true;ui.vidEdit=false;m.config.meta=m.config.meta||{};m.config.meta.video='';save();renderVideo();return;}
+  if(!raw){msg.hidden=true;ui.vidEdit=false;m.config.meta=m.config.meta||{};m.config.meta[vidKey(m)]='';save();renderVideo();return;}
   var v=ytParse(raw);
   if(!v){msg.textContent='That does not look like a YouTube link. Paste the address from the YouTube share button or the browser address bar.';msg.hidden=false;return;}
-  msg.hidden=true;ui.vidEdit=false;m.config.meta=m.config.meta||{};m.config.meta.video=v.url;save();renderVideo();
+  msg.hidden=true;ui.vidEdit=false;m.config.meta=m.config.meta||{};m.config.meta[vidKey(m)]=v.url;save();renderVideo();
 }
 function render(){
   var cc=(draft&&ui.view==='setup')?draft:(cur()&&cur().config);applyTeamColor(cc&&cc.home.color,cc&&cc.away.color);applyLook(cc&&cc.look);
@@ -2067,6 +2115,8 @@ function computeIssues(){
   var mt0=draft.meta||{};
   if(!String(mt0.league||'').trim()){out.push('Enter the league name.');bad.fxLeague=1;}
   if(!/^\d{4}-\d{2}-\d{2}$/.test(String(mt0.date||''))){out.push('Enter the fixture date.');bad.fxDate=1;}
+  [['video','vdLink1','1st half video'],['video2','vdLink2','2nd half video']].forEach(function(x){var v=String(mt0[x[0]]||'').trim();if(v&&!ytParse(v)){out.push('The '+(x[0]==='video'&&!mt0.split?'match video':x[2])+' link does not look like a YouTube link. Paste the address from the YouTube share button.');bad[x[1]]=1;}});
+  [['vs1','vdS1','1st half'],['vs2','vdS2','2nd half']].forEach(function(x){var v=String(mt0[x[0]]||'').trim();if(v&&vParse(v)==null){out.push('The '+x[2]+' video start time must look like 04:10 (minutes:seconds).');bad[x[1]]=1;}});
   if(teamLabel('home').toLowerCase()===teamLabel('away').toLowerCase()) out.push('Give the two teams different names.');
   if(draft.home.color===draft.away.color) out.push('Give the two teams different colours.');
   return {list:out,bad:bad};
@@ -2136,9 +2186,19 @@ function syncStep2(){
   $('#stNote').textContent=tn+' start in possession'+(cur0?' with Division '+s0.divs[s0.team]:'')+' attacking '+zone+' in the '+(four?'first two quarters':'1st half')+'. '+on+(oth0?' have Division '+s0.divs[s0.team==='H'?'A':'H']+' attacking ':' attack ')+oz+'. Directions flip at the start of the '+(four?'3rd quarter':'2nd half')+'.'+((kh||ka)?' Divisions swap between attack and defence after every two goals.':'');
   qa('#setupStep2 .lockn').forEach(function(p){p.hidden=!lock;});
 }
+function syncVideoSetup(){
+  var mt=draft.meta,sp=!!mt.split;
+  [['#vdLink1','video'],['#vdLink2','video2'],['#vdS1','vs1'],['#vdS2','vs2']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=mt[x[1]]||'';});
+  $('#vdSplit').checked=sp;$('#vdG2').hidden=!sp;
+  $('#vdLbl1').textContent=sp?'1st half YouTube link':'YouTube link';
+  $('#vdS2').placeholder=sp?'mm:ss, e.g. 00:30':'mm:ss, e.g. 38:20';
+  var h=$('#vdNote');
+  h.textContent=sp?'Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).':'Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved.';
+}
 function syncIssues(){
   var r=computeIssues(),box=$('#issues');
   qa('.prow').forEach(function(row){row.classList.toggle('bad',!!r.bad[row.dataset.id]);});
+  ['vdLink1','vdLink2','vdS1','vdS2'].forEach(function(id){var i=$('#'+id);if(i) i.classList.toggle('bad',!!r.bad[id]);});
   var show=r.list.length>0&&setupStep===1;
   box.hidden=!show;
   box.innerHTML=show?'<strong>Before you continue</strong><ul>'+r.list.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'';
@@ -2164,6 +2224,7 @@ function syncSetup(){
   ['home','away'].forEach(function(side){var i=$('#tn-'+side);if(i&&document.activeElement!==i) i.value=draft[side].name;});
   syncTeamPick();
   [['#fxDate','date'],['#fxWeek','week']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=draft.meta[x[1]]||'';});
+  syncVideoSetup();
   (function(){var lg=draft.meta.league||'',sl=$('#fxLeague'),ot=$('#fxLeagueOther');if(!sl||!ot) return;var inList=LEAGUES.indexOf(lg)>=0,other=!!lg&&!inList||ui.leagueOther;sl.value=other?'__other':(inList?lg:'');ot.hidden=!other;if(other&&document.activeElement!==ot) ot.value=lg;})();
   syncCounts();
   var lock=setupLocked();
@@ -2315,6 +2376,10 @@ sv.addEventListener('input',function(e){
   else if(t.id==='fxLeagueOther'){draft.meta.league=t.value;}
   else if(t.id==='fxDate'){draft.meta.date=t.value;}
   else if(t.id==='fxWeek'){t.value=t.value.replace(/\D/g,'').slice(0,2);draft.meta.week=t.value;}
+  else if(t.id==='vdLink1'){draft.meta.video=t.value.trim();}
+  else if(t.id==='vdLink2'){draft.meta.video2=t.value.trim();}
+  else if(t.id==='vdS1'){t.value=t.value.replace(/[^\d:]/g,'');draft.meta.vs1=t.value;}
+  else if(t.id==='vdS2'){t.value=t.value.replace(/[^\d:]/g,'');draft.meta.vs2=t.value;}
   else if(t.id==='courtNum'){draft.court.len=t.value===''?NaN:Number(t.value);syncCourt();}
   else if(t.id==='courtRange'){draft.court.len=Number(t.value);syncCourt();}
   else return;
@@ -2338,6 +2403,8 @@ sv.addEventListener('change',function(e){
       else{ev.to.general=false;}
     }
     ev.to[k]=t.checked;
+  }else if(t.id==='vdSplit'){
+    draft.meta.split=t.checked;syncVideoSetup();
   }else return;
   syncEvents();syncIssues();persistDraft();
 });
@@ -2394,8 +2461,8 @@ $('#clkToggle').addEventListener('click',function(){toggleClock();});
 $('#clkNext').addEventListener('click',startNextPeriod);
 $('#vidSet').addEventListener('click',setVideo);
 $('#vidUrl').addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();setVideo();}});
-$('#vidChange').addEventListener('click',function(){ui.vidEdit=true;$('#vidUrl').value=(cur().config.meta||{}).video||'';renderVideo();$('#vidUrl').focus();});
-$('#vidHide').addEventListener('click',function(){var m=cur();m.config.meta=m.config.meta||{};m.config.meta.video='';ui.vidEdit=false;$('#vidUrl').value='';$('#vidMsg').hidden=true;save();renderVideo();});
+$('#vidChange').addEventListener('click',function(){ui.vidEdit=true;$('#vidUrl').value=(cur().config.meta||{})[vidKey(cur())]||'';renderVideo();$('#vidUrl').focus();});
+$('#vidHide').addEventListener('click',function(){var m=cur();m.config.meta=m.config.meta||{};m.config.meta[vidKey(m)]='';ui.vidEdit=false;$('#vidUrl').value='';$('#vidMsg').hidden=true;save();renderVideo();});
 $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-spd]');if(b) setSpeed(b.dataset.spd);});
 $('#clkBack').addEventListener('click',function(){adjustClock(-1);});
 $('#vidBack').addEventListener('click',function(){vidNudge(-1);});
