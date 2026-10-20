@@ -9,7 +9,7 @@ Korf Lab reads the event logs exported by Korf Log and builds team and player da
 - In **Data sources**, press **Choose folder** and pick the folder holding your CSV files, or **Pick CSV files** to select files by hand. Korf Lab reads the CSV event logs and the JSON backups saved from Korf Log (a JSON file is converted when it loads, with the same results as its CSV). Load each match once, as either CSV or JSON, or it is counted twice. Folder access needs Chrome or Edge.
 - No folder is remembered, so choose it again each time you open the page. Files picked by hand are kept in the browser.
 - Each file shows its number of events. Remove a file from its row, or reload everything.
-- Shot Location exports from Yellow Bucket cannot be loaded directly. Convert them first in the same pane (see section 5).
+- Shot Location exports from Yellow Bucket cannot be loaded directly. Convert them first in the same pane (see section 6).
 - To try Korf Lab without any data, press **Load a sample match**. It adds a made-up match (Team A v Team B) that you can explore and remove again. It is not real data and may contain slight mistakes.
 
 ![Figure 1. Data sources: the sample match loaded with its event count, plus the Load a sample match button with its note, Choose folder and hand-picked CSV or JSON files.](images/lab-1.png)
@@ -21,8 +21,7 @@ Korf Lab reads the event logs exported by Korf Log and builds team and player da
 - **All players table:** the Shots and Goals groups each have their own underline, with a gap between them. Select any column heading to sort by it (names A to Z first, numbers highest first), and select it again to reverse the order. Select a row to open that player's profile.
 - **Player highlight:** on the Players page, the selected player is highlighted by name in every chart that compares players (the goals, shots and shot % leaderboards and the volume against efficiency chart), so you can see where they stand against the others. Pick another player from the list, a table row or a chart to move the highlight.
 - **Minutes in attack and in defence, and per-minute rates:** when a loaded event log carries the starting line-up (logs saved by the current Korf Log, CSV or JSON), Korf Lab works out how long each player spent in the attacking zone and in the defending zone. A player is in attack while their division is their team's attacking division (the divisions swap after every second goal), and substitutions are followed minute by minute. The player profile shows minutes in attack, minutes in defence, and shots and goals per minute in attack, with match-by-match charts. The Players page adds a Minutes played leaderboard, Shots per minute in attack and Goals per minute in attack leaderboards (every player with time in attack), Time columns in All players and extra buttons in Player by match. Players who start and are never substituted count as playing the whole match; a starter who never shoots shows 0/min; bench players who never come on are not listed. Older event logs without a line-up do not show these visuals.
-- **Highlights page:** the third page lists every logged shot and filters it by **Team** (both teams or one), **Division** (1, 2 or both), **Gender** (female players, male players or both), **Shooter**, **Shot type**, **Outcome** (goals or misses), **Attack** (multi-shot or single-shot) and **Attack no.** (the multi-attack index). Set **Seconds before** and **Seconds after** to choose how much of the play each clip includes. Under the filters, each match has a place for its video: a YouTube link (and a separate 2nd half link if the halves are separate videos) or a video file from your computer, with the video time at which each half starts. These are filled in automatically when the log was made in Korf Log with a video; otherwise type them in (mm:ss, for example 04:10). The list then shows each clip's start and end and a YouTube link that opens at the start. **Save CSV** exports the list; **Copy list** copies it as text.
-- **Highlight reel:** under the filters, **Play all on YouTube** plays the filtered clips one after another in an embedded player (it needs Korf Lab opened from a web address). With a video file chosen, **Make highlight video** plays each clip from your file and records them into one new video, optionally with a caption (shooter, shot type, time). It records at normal playback speed, so keep the tab open and visible; the result is saved as an .mp4 (or .webm in some browsers), named after the match as in the event log followed by _highlights, for example Team A v Team B_highlights.mp4. For a faster result, **ffmpeg script (Windows)** or **(Mac/Linux)** saves a small script that cuts and joins the clips with ffmpeg: put it next to your video file and run it. The script is named the same way and leaves only the merged _highlights video; the individual clips are removed. Tick **Portrait 10:16 centre crop for the ffmpeg script (Instagram)** before saving it to get a portrait 1200 × 1920 video that fills the whole frame; the centre of the picture is kept and the left and right sides are cut off; leave it unticked to keep the video's original size. If **Captions** is ticked, the script burns the shooter, team, shot type, outcome, half and time into every clip. Tick **Individual clips for the ffmpeg script** to get each clip as its own video file, in a folder named after the match plus _highlights_clips (each file name has the number, shooter, shot type, outcome, half and time), instead of one merged highlight video. The portrait frame and individual clips options apply to the ffmpeg script only; Make highlight video always makes one 1280 × 720 video. A file stays on your computer; nothing is uploaded.
+- **Highlights page and highlight reels:** the third page lists every logged shot, filters it and turns the result into clips or a highlight video. See section 3.
 - **Shot map:** filter by shot type, division, half and gender, and colour the marks by team, shot type, gender, division or half. The shot type buttons appear when the logs contain more than one shot type. The **Mark size** slider scales the dots.
 - Other charts cover score progression, how attacks end, passes per attack and substitutions. Statistics missing from your logs are hidden.
 - **Shot distance histogram:** on the Team page, the number of shots in each 1 m band from the post (0–1 m, 1–2 m and so on, with the last band collecting everything beyond 12 m), one set of bars per team. It counts every shot type. Hover a bar for the shots, goals and shot % in that band, or switch to the table.
@@ -50,7 +49,29 @@ Korf Lab reads the event logs exported by Korf Log and builds team and player da
 
 ![Figure 11. Attack replay: the attack list shows each attack's time, passes, shots and final outcome. One attack is stepped to its last step, the shot, with the latest pass in full colour, earlier passes faded and a dashed ring where the rebound was collected.](images/lab-11.png)
 
-## 3. Print reports
+## 3. Highlight reels
+
+The Highlights page lists every logged shot and turns the shots you pick into clip links, a playlist or a highlight video. It needs the video of the match, which can be a YouTube link or a video file on your computer.
+
+**1. Add the video.** Under the filters, each match has a place for its video: a YouTube link (and a separate 2nd half link if the halves are separate videos) or a video file from your computer, with the video time at which each half starts, each box under its own link or file. If the log was made in Korf Log with a video, these are filled in for you (a local file has to be chosen again, because a browser does not remember files). Otherwise type the start times as mm:ss, for example 04:10.
+
+**2. Filter the shots.** Choose **Team** (both teams or one), **Division** (1, 2 or both), **Gender** (female players, male players or both), **Shooter**, **Shot type**, **Outcome** (goals or misses), **Attack** (multi-shot or single-shot) and **Attack no.** (the multi-attack index). **Seconds before** and **Seconds after** set how much of the play each clip includes. The list shows each clip's start and end and a YouTube link that opens at the start. **Save CSV** exports the list and **Copy list** copies it as text.
+
+**3. Choose what to make.**
+
+- **Play all on YouTube:** plays the filtered clips one after another in an embedded player. Korf Lab must be opened from a web address, such as the GitHub Pages link.
+- **Make highlight video:** with a video file chosen, plays each clip from your file and records them into one new video, optionally with a caption (shooter, team, shot type, outcome, half and time). It records at normal playback speed, so keep the tab open and visible. The video is saved as an .mp4 (or .webm in some browsers), named after the match as in the event log followed by _highlights, for example Team A v Team B_highlights.mp4, and is always 1280 × 720.
+- **ffmpeg script (Windows) or (Mac/Linux):** a faster way to the same result. It saves a small script that cuts and joins the clips with ffmpeg, which must be installed. Put the script next to your video file and run it. It is named like the video and leaves only the merged _highlights video; the individual clips are removed.
+
+**Script options.** These tickboxes apply to the ffmpeg script:
+
+- **Captions:** burns the shooter, team, shot type, outcome, half and time into every clip (this one also applies to Make highlight video).
+- **Portrait 10:16 centre crop (Instagram):** makes a 1200 × 1920 portrait video that fills the whole frame. The centre of the picture is kept and the left and right sides are cut off. Unticked, the video keeps its original size.
+- **Individual clips:** saves each clip as its own file, in a folder named after the match plus _highlights_clips, instead of one merged video. Each file name has the number, shooter, shot type, outcome, half and time, for example 001_Anna_Open_play_Goal_1st_02_04.mp4.
+
+**Good to know.** A video file stays on your computer and nothing is uploaded. A YouTube video cannot be turned into a video file here; to make a highlight video from a match you uploaded, download the original from YouTube Studio and choose that file instead.
+
+## 4. Print reports
 
 - **Print team report:** a paginated PDF of the team dashboard for the team and match you have selected. Unlike the screen, which shows one shot map at a time, the printed report shows several shot maps side by side, one for each way of colouring the shots (see Figures 12 and 13).
 - **Print coach report:** team statistics followed by every player.
@@ -64,11 +85,11 @@ Korf Lab reads the event logs exported by Korf Log and builds team and player da
 
 ![Figure 13. Printed team report: the opponent's shot maps, coloured by team, gender, division and half (opponent players named).](images/lab-13.png)
 
-## 4. Colours
+## 5. Colours
 
 Korf Log saves the team, court and circle colours in both its CSV and JSON exports. Korf Lab reads the CSV files and uses the team colours stored in them, and adjusts them where they would be hard to see against the shot map. It uses the logged court and circle colours when every loaded log agrees. Otherwise it falls back to its default green court with blue circles.
 
-## 5. Convert a Yellow Bucket export
+## 6. Convert a Yellow Bucket export
 
 If you track shots in Yellow Bucket, you can turn its Shot Location export (a CSV) into an event log that Korf Lab reads.
 
