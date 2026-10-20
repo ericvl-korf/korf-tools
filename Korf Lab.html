@@ -1671,6 +1671,12 @@ function rcMime(){
   for(var i=0;i<c.length;i++){try{if(window.MediaRecorder&&MediaRecorder.isTypeSupported(c[i])) return c[i];}catch(e){}}
   return '';
 }
+/* file name base: the match name from the event log (several matches are joined), then _highlights */
+function hlReelName(L){
+  var seen=[];L.forEach(function(z){var n=String(z.x.m.name||'').trim();if(n&&seen.indexOf(n)<0) seen.push(n);});
+  var base=!seen.length?'Match':(seen.length<=3?seen.join(' + '):seen.length+' matches');
+  return base.replace(/[\\\/:*?"<>|%$`!&]+/g,'').replace(/\s+/g,' ').trim()+'_highlights';
+}
 function hlSaveFile(blob,name){
   var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
   setTimeout(function(){URL.revokeObjectURL(u);},8000);
@@ -1730,8 +1736,8 @@ function rcMake(){
       clearInterval(timer);rec.stop();await done;
       if(RC.stop&&!chunks.length){finish('Stopped.',false);return;}
       var ext=/mp4/.test(mime)?'mp4':'webm',blob=new Blob(chunks,{type:mime.split(';')[0]});
-      hlSaveFile(blob,'highlights.'+ext);
-      finish((RC.stop?'Stopped early. ':'')+'Saved highlights.'+ext+' ('+(blob.size/1048576).toFixed(1)+' MB, '+L.length+' clips).',false);
+      var fnm=hlReelName(L)+'.'+ext;hlSaveFile(blob,fnm);
+      finish((RC.stop?'Stopped early. ':'')+'Saved '+fnm+' ('+(blob.size/1048576).toFixed(1)+' MB, '+L.length+' clips).',false);
     }catch(err){
       try{if(rec&&rec.state!=='inactive') rec.stop();}catch(e){}
       finish('Could not make the video: '+((err&&err.message)||'the browser refused to play or record this file')+'. Try the ffmpeg script instead.',true);
@@ -1741,27 +1747,27 @@ function rcMake(){
 /* ffmpeg script: cut every clip from the local file and join them */
 function hlScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
-  var nl=win?'\r\n':'\n',o=[];
+  var nl=win?'\r\n':'\n',o=[],out=hlReelName(L)+'.mp4',tmp='_hl_tmp';
   var vf='scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=25';
-  if(win){o.push('@echo off','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"');}
-  else{o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run: sh highlights.sh   (needs ffmpeg)','cd "$(dirname "$0")"');}
+  if(win){o.push('@echo off','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+tmp+' rmdir /s /q '+tmp,'mkdir '+tmp);}
+  else{o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh <this file>   (needs ffmpeg)','cd "$(dirname "$0")"','rm -rf '+tmp,'mkdir '+tmp);}
   var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
   L.forEach(function(z,i){
     var n=String(i+1);while(n.length<3) n='0'+n;
     var a=Math.max(0,z.v.a),d=Math.max(1,z.v.b-a);
-    o.push((win?'rem ':'# ')+(z.x.player||'Unknown shooter')+' · '+(TYPE_LABEL[z.x.k]||z.x.k)+' · '+z.x.oc);
-    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+' -vf "'+vf+'" -c:v libx264 -preset veryfast -crf 20 -c:a aac -ar 48000 -ac 2 clip_'+n+'.mp4');
+    o.push((win?'rem ':'# ')+(z.x.player||'Unknown shooter')+' - '+(TYPE_LABEL[z.x.k]||z.x.k)+' - '+z.x.oc);
+    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+' -vf "'+vf+'" -c:v libx264 -preset veryfast -crf 20 -c:a aac -ar 48000 -ac 2 '+tmp+'/clip_'+n+'.mp4');
   });
-  o.push(win?'if exist list.txt del list.txt':'rm -f list.txt');
-  L.forEach(function(z,i){var n=String(i+1);while(n.length<3) n='0'+n;o.push((win?'echo file clip_'+n+'.mp4>>list.txt':"echo \"file 'clip_"+n+".mp4'\" >> list.txt"));});
-  o.push('ffmpeg -y -f concat -safe 0 -i list.txt -c copy highlights.mp4');
+  L.forEach(function(z,i){var n=String(i+1);while(n.length<3) n='0'+n;o.push(win?'echo file clip_'+n+'.mp4>>'+tmp+'/list.txt':"echo \"file 'clip_"+n+".mp4'\" >> "+tmp+"/list.txt");});
+  o.push('ffmpeg -y -f concat -safe 0 -i '+tmp+'/list.txt -c copy '+q(out));
+  o.push(win?'rmdir /s /q '+tmp:'rm -rf '+tmp);
   return o.join(nl)+nl;
 }
 function hlSaveScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   if(!L.length){hlReelMsg('No clips with a video file name and start times.',true);return;}
-  hlSaveFile(new Blob([hlScript(win)],{type:'text/plain'}),win?'highlights.bat':'highlights.sh');
-  hlReelMsg('Saved the script ('+L.length+' clips). Put it in the folder with your video file and run it to get highlights.mp4.',false);
+  var base=hlReelName(L);hlSaveFile(new Blob([hlScript(win)],{type:'text/plain'}),base+(win?'.bat':'.sh'));
+  hlReelMsg('Saved '+base+(win?'.bat':'.sh')+' ('+L.length+' clips). Put it in the folder with your video file and run it to get '+base+'.mp4. Only the merged file is kept.',false);
 }
 function hlMsg(t,bad){var m=$('#hlMsg');if(m){m.textContent=t;m.className='msg '+(bad?'err':'');}}
 function setPage(p){
