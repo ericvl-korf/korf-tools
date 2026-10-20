@@ -6,7 +6,8 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
-- **2026-10-20 23:17 (Europe/London)**: New features today:
+- **2026-10-21 00:07 (Europe/London)**: New features today:
+  - **Video tutorials:** a short captioned walkthrough of each app (Korf Log 1:28, Korf Lab 1:29, in the [tutorials](tutorials/) folder) behind a new **Video tutorial** button at the top of Korf Log and Korf Lab. The Korf Log one includes the match video and the Time out buttons.
   - **Match video at setup (Korf Log):** add a YouTube link or a local video file in match setup, as one video or one per half, with the video time each half starts. Start moves the video to the right moment, and the video and clock ±1 s buttons keep the alignment saved. Links, file names and start times carry into Korf Lab.
   - **Time out start / end (Korf Log):** two Time out buttons replace the single one. The match clock stops and restarts while the video keeps running, and the video time of each time out is saved so clock and video stay lined up, including in Korf Lab highlight reels.
   - **Highlights page (Korf Lab):** list and filter every shot by half, team, division, gender, shooter, shot type, outcome and attack number, with clip start and end times and YouTube links.

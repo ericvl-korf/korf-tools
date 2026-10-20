@@ -4,6 +4,8 @@
 
 Korf Log records a korfball match as it is played, one click at a time, and exports an event log that Korf Lab turns into team and player reports.
 
+**Video tutorial:** watch a 90-second walkthrough, including match video and the Time out buttons: [Korf Log tutorial](https://ericvl-korf.github.io/korf-tools/tutorials/korf-log-tutorial.mp4). It is also behind the **Video tutorial** button at the top of the page.
+
 ## 1. Set up a match
 
 - **Fixture and teams:** enter the league (pick from the England Korfball list, or choose Other and type a name) and the fixture date (both required), the fixture week (optional) and the two team names. Once a league from the list is chosen, the Home and Away team names are dropdowns of that league's teams (as listed on the England Korfball League Republic site); choose Other to type a team that is not listed. A team cannot be picked for both sides. Pick a colour for each team. The match list shows each match as Team A v Team B, fixture date and score. Korf Lab uses the fixture week to order matches, or the fixture date when the week is empty.

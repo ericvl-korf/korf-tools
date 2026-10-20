@@ -37,7 +37,7 @@ h1{font-size:1.9rem;font-weight:700;letter-spacing:.02em;text-transform:uppercas
 h2{font-size:1.15rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.1}
 .sub{color:var(--muted);font-size:.9rem}
 .lbl{font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.donate{display:flex;justify-content:flex-end;margin:0 0 6px}.donate a{font-size:.82rem;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:2px}.donate a:hover{text-decoration-thickness:2px}
+.donate{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem;margin:0 0 6px}.donate a{font-size:.82rem;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:2px}.donate a:hover{text-decoration-thickness:2px}
 @media print{.donate{display:none!important}}
 .top{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
 .top p{margin:4px 0 0;color:var(--muted);max-width:60ch}
@@ -254,6 +254,7 @@ th,td{border-bottom-color:color-mix(in srgb,var(--line) 75%,transparent)}
 #tip{border-radius:10px;box-shadow:var(--sh3)}
 .donate a{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;padding:.28rem .8rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);box-shadow:var(--sh1);transition:box-shadow .16s var(--ease),border-color .16s var(--ease)}
 .donate a::before{content:"\2665";color:#d6336c;font-size:.9em}
+.donate a.tut::before{content:"\25B6";color:var(--accent);font-size:.75em}
 .donate a:hover{text-decoration:none;box-shadow:var(--sh2);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
 details>summary{transition:color .16s var(--ease)}
 .chart svg,.mapwrap svg{filter:drop-shadow(0 1px 1px rgba(16,40,32,.04))}
@@ -262,7 +263,7 @@ details>summary{transition:color .16s var(--ease)}
 </style>
 
 <div class="app">
-  <div class="donate"><a href="https://mentalhealth-uk.org/make-a-donation/?tfa_78=5" target="_blank" rel="noopener noreferrer" title="Opens the Mental Health UK donation page in a new tab, with £5 filled in">Donate £5 to Mental Health UK</a></div>
+  <div class="donate"><a class="tut" href="https://ericvl-korf.github.io/korf-tools/tutorials/korf-lab-tutorial.mp4" target="_blank" rel="noopener noreferrer" title="Opens a 2-minute video tutorial of Korf Lab in a new tab">Video tutorial</a><a href="https://mentalhealth-uk.org/make-a-donation/?tfa_78=5" target="_blank" rel="noopener noreferrer" title="Opens the Mental Health UK donation page in a new tab, with £5 filled in">Donate £5 to Mental Health UK</a></div>
   <header class="top">
     <div>
       <h1><svg class="mark" aria-hidden="true" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><rect width="256" height="256" rx="58" fill="#1d4fb0"/><g fill="none" stroke="#fff" opacity=".5" stroke-width="5" stroke-dasharray="4 14" stroke-linecap="round"><circle cx="140" cy="134" r="64"/><circle cx="140" cy="134" r="100"/></g><circle cx="64" cy="176" r="8" fill="#fff"/><circle cx="92" cy="206" r="6" fill="#fff"/><circle cx="50" cy="130" r="6" fill="#fff" opacity=".8"/><circle cx="72" cy="150" r="9" fill="#f4c20d"/><circle cx="200" cy="198" r="7" fill="#fff" opacity=".8"/><line x1="140" y1="150" x2="140" y2="240" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M92 104 L92 160 Q140 184 188 160 L188 104 Z" fill="#f4c20d"/><path d="M92 130 Q140 154 188 130" fill="none" stroke="#1d4fb0" stroke-width="4" opacity=".35"/><ellipse cx="140" cy="104" rx="48" ry="14" fill="#1d4fb0" stroke="#f4c20d" stroke-width="9"/><circle cx="140" cy="50" r="22" fill="#fff"/><g fill="none" stroke="#1d4fb0" stroke-width="4" stroke-linecap="round"><path d="M118 50 Q140 39 162 50"/><path d="M140 28 Q151 50 140 72"/></g></svg>Korf <span class="ylw">Lab</span></h1>

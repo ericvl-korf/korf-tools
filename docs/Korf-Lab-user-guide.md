@@ -4,6 +4,8 @@
 
 Korf Lab reads the event logs exported by Korf Log and builds team and player dashboards that you can print as PDF reports.
 
+**Video tutorial:** watch a 90-second walkthrough: [Korf Lab tutorial](https://ericvl-korf.github.io/korf-tools/tutorials/korf-lab-tutorial.mp4). It is also behind the **Video tutorial** button at the top of the page.
+
 ## 1. Load your data
 
 - In **Data sources**, press **Choose folder** and pick the folder holding your CSV files, or **Pick CSV files** to select files by hand. Korf Lab reads the CSV event logs and the JSON backups saved from Korf Log (a JSON file is converted when it loads, with the same results as its CSV). Load each match once, as either CSV or JSON, or it is counted twice. Folder access needs Chrome or Edge.
