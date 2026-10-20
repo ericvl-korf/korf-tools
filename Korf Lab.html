@@ -89,7 +89,7 @@ thead th{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:va
 .seg button+button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
 .page{display:flex;flex-direction:column;gap:16px;min-width:0}
-.hlwrap{display:flex;flex-direction:column;gap:16px;min-width:0}.hlf{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}.hlf input[type=text],.hlf input[type=number],.hlf select{min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg);font:inherit;padding:.35rem .5rem;max-width:100%}.hlf input[type=number]{width:5.5rem}.hlv{display:grid;grid-template-columns:minmax(0,2fr) repeat(2,minmax(5.5rem,1fr));gap:8px;align-items:end}.hlv .nm{grid-column:1/-1;font-weight:600}.hlv input{width:100%}.hltbl{overflow-x:auto}.hltbl td,.hltbl th{text-align:left}.hltbl a{color:var(--accent);font-weight:600}
+.hlwrap{display:flex;flex-direction:column;gap:16px;min-width:0}.hlf{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end}.hlf input[type=text],.hlf input[type=number],.hlf select{min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--fg);font:inherit;padding:.35rem .5rem;max-width:100%}.hlf input[type=number]{width:5.5rem}.hlreel{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px}.hlreel h3{margin:0;font-size:1rem}.hlpv{width:100%;max-width:640px}.hlpv iframe,.hlpv video,.hlpv canvas{display:block;width:100%;aspect-ratio:16/9;background:#000;border:0;border-radius:10px}.hlv .fn{font-size:.8rem;color:var(--muted);margin:2px 0 0;overflow-wrap:anywhere}.hlv input[type=file]{font-size:.85rem}.hlv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;align-items:end}@media (max-width:560px){.hlv{grid-template-columns:minmax(0,1fr)}.hlv .g1{order:1}.hlv .t1{order:2}.hlv .f1{order:3}.hlv .g2{order:4}.hlv .t2{order:5}.hlv .f2{order:6}}.hlv .nm{grid-column:1/-1;font-weight:600}.hlv input{width:100%}.hltbl{overflow-x:auto}.hltbl td,.hltbl th{text-align:left}.hltbl a{color:var(--accent);font-weight:600}
 tr.sel td{background:var(--surface-2)}
 tr.pl{cursor:pointer}
 tr.pl:hover td{background:var(--surface-2)}
@@ -422,12 +422,12 @@ function jsonToCsv(txt){
   function pLong(p){return per===4?'Quarter '+p:(p===1?'1st half':'2nd half');}
   function lab(p){return (p&&p.no?'#'+p.no+' ':'')+(p?p.name:'');}
   var att={H:0,A:0},cur=startTeam,lastP=1,halfP=per===4?3:2;att[startTeam]=1;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2'];
   var vc=(function(){
     function pv(t){t=String(t==null?'':t).trim();var q=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);if(q) return (q[1]?+q[1]*3600:0)+(+q[2])*60+(+q[3]);return /^\d{1,6}$/.test(t)?parseInt(t,10):null;}
-    var v1=String(meta.video||''),v2=String(meta.video2||'');if(!v1&&!v2) return ['','','',''];
+    var v1=String(meta.video||''),v2=String(meta.video2||''),f1=String(meta.fn1||''),f2=String(meta.fn2||'');if(!v1&&!v2&&!f1&&!f2) return ['','','','','',''];
     var a=pv(meta.vs1),b=pv(meta.vs2),sp=!!(meta.split&&v2),hl=len*30;
-    return [v1,sp?v2:'',a==null?0:a,b!=null?b:(sp?0:(a==null?0:a)+hl)];
+    sp=!!(meta.split&&(v2||f2));return [v1,sp?v2:'',a==null?0:a,b!=null?b:(sp?0:(a==null?0:a)+hl),f1,sp?f2:''];
   })();
   var name=hn+' v '+an,origin=null,rows=[];
   m.events.forEach(function(e){
@@ -1504,7 +1504,7 @@ function hlBuild(ms){
 function hlOff(m){
   if(HL.off[m.id]) return HL.off[m.id];
   var r=m.rows[0]||{},s1=r.video_start_1,s2=r.video_start_2,has=function(v){return v!==''&&v!=null&&isFinite(Number(v));};
-  return HL.off[m.id]={url:String(r.video_url||''),url2:String(r.video_url_2||''),h1:has(s1)?hlClock(+s1):'',h2:has(s2)?hlClock(+s2):''};
+  return HL.off[m.id]={fn1:String(r.video_file_1||''),fn2:String(r.video_file_2||''),url:String(r.video_url||''),url2:String(r.video_url_2||''),h1:has(s1)?hlClock(+s1):'',h2:has(s2)?hlClock(+s2):''};
 }
 function hlVid(x){
   var o=HL.off[x.m.id];if(!o) return null;
@@ -1551,24 +1551,33 @@ function hlMount(ms){
   h+='<div class="dgrid">'+ms.filter(function(m){return m.shots.length;}).map(function(m){
     var o=hlOff(m);
     return '<div class="hlv" data-m="'+esc(m.id)+'"><span class="nm">'+esc(m.name)+(m.week?' · Week '+esc(m.week):'')+'</span>'+
-      '<div class="grp"><label class="lbl">'+(o.url2?'1st half YouTube link':'YouTube link')+'</label><input type="text" data-o="url" inputmode="url" placeholder="Optional" value="'+esc(o.url)+'"></div>'+
-      '<div class="grp"><label class="lbl">2nd half YouTube link <span style="font-weight:500;text-transform:none;letter-spacing:0">(if separate)</span></label><input type="text" data-o="url2" inputmode="url" placeholder="Leave blank for one video" value="'+esc(o.url2)+'"></div>'+
-      '<div class="grp"><label class="lbl">1st half starts</label><input type="text" data-o="h1" placeholder="mm:ss" value="'+esc(o.h1)+'"></div>'+
-      '<div class="grp"><label class="lbl">2nd half starts</label><input type="text" data-o="h2" placeholder="mm:ss" value="'+esc(o.h2)+'"></div></div>';
+      '<div class="grp g1"><label class="lbl">'+(o.url2?'1st half YouTube link':'YouTube link')+'</label><input type="text" data-o="url" inputmode="url" placeholder="Optional" value="'+esc(o.url)+'"></div>'+
+      '<div class="grp g2"><label class="lbl">2nd half YouTube link <span style="font-weight:500;text-transform:none;letter-spacing:0">(if separate)</span></label><input type="text" data-o="url2" inputmode="url" placeholder="Leave blank for one video" value="'+esc(o.url2)+'"></div>'+
+      '<div class="grp t1"><label class="lbl">1st half starts at (video time)</label><input type="text" data-o="h1" placeholder="mm:ss" value="'+esc(o.h1)+'"></div>'+
+      '<div class="grp t2"><label class="lbl">2nd half starts at (video time)</label><input type="text" data-o="h2" placeholder="mm:ss" value="'+esc(o.h2)+'"></div>'+
+      '<div class="grp f1"><label class="lbl">Or a video file on this computer'+(o.url2||o.f2?' (1st half)':'')+'</label><input type="file" accept="video/*" data-f="f1"><p class="fn">'+(o.f1?esc(o.f1.name):(o.fn1?'Choose again: '+esc(o.fn1):''))+'</p></div>'+
+      '<div class="grp f2"><label class="lbl">2nd half file <span style="font-weight:500;text-transform:none;letter-spacing:0">(if separate)</span></label><input type="file" accept="video/*" data-f="f2"><p class="fn">'+(o.f2?esc(o.f2.name):(o.fn2?'Choose again: '+esc(o.fn2):''))+'</p></div></div>';
   }).join('')+'</div>';
   h+='<div class="hlf" style="justify-content:space-between"><span class="note" id="hlCount" role="status"></span><span style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="hlCopy">Copy list</button><button type="button" class="btn primary" id="hlSave">Save CSV</button></span></div>';
+  h+='<div class="hlreel"><h3>Highlight reel</h3><p class="note" id="hlReelInfo"></p>'+
+    '<div class="hlf"><button type="button" class="btn" id="hlPlayAll">Play all on YouTube</button><button type="button" class="btn primary" id="hlMake">Make highlight video</button>'+
+    '<button type="button" class="btn" id="hlSh">ffmpeg script (Windows)</button><button type="button" class="btn" id="hlSh2">ffmpeg script (Mac/Linux)</button>'+
+    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
+    '<p class="msg" id="hlReelMsg" role="status"></p><div id="hlPlayer"></div></div>';
   h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
-  $('#hlGrid').innerHTML=h;hlList();
+  hlStopAll();$('#hlGrid').innerHTML=h;hlList();
 }
 function hlRows(){
   var f=hlFiltered();
   return f.map(function(x){
     var v=hlVid(x),link=v&&v.id?'https://youtu.be/'+v.id+'?t='+Math.floor(v.a):'';
-    return {x:x,v:v,link:link};
+    var o=HL.off[x.m.id]||{},f=x.half===2?(o.f2||o.f1):o.f1,fname=f?f.name:(x.half===2?(o.fn2||o.fn1):o.fn1)||'';
+    return {x:x,v:v,link:link,file:f||null,fname:fname};
   });
 }
 function hlList(){
   var L=hlRows(),el=$('#hlList');if(!el) return;
+  hlReelInfo(L);
   var anyV=L.some(function(q){return q.v;});
   $('#hlCount').textContent=L.length+(L.length===1?' shot':' shots')+(L.length!==HL.rows.length?' of '+HL.rows.length:'');
   if(!L.length){el.innerHTML='<p class="note">No shots match these filters.</p>';return;}
@@ -1595,6 +1604,165 @@ function hlText(){
     return (x.half===1?'1st':'2nd')+' half '+(r.time||mmss(x.s.t))+' · '+x.team+' · '+(x.player||'unknown shooter')+' · '+(TYPE_LABEL[x.k]||x.k)+' · '+x.oc+(z.v?' · clip '+hlClock(z.v.a)+'–'+hlClock(z.v.b):'')+(z.link?' · '+z.link:'');
   }).join('\n');
 }
+
+/* ---------- highlight reel: YouTube play-all, local video file reel, ffmpeg script ---------- */
+var PA={on:false,i:0,list:[],id:'',armed:false,ready:false,adv:0},RC={on:false,stop:false};
+var YTO='https://www.youtube.com';
+function hlReelInfo(L){
+  var yt=L.filter(function(z){return z.v&&z.v.id;}).length,lc=L.filter(function(z){return z.v&&z.file;}).length,sc=L.filter(function(z){return z.v&&z.fname;}).length;
+  var i=$('#hlReelInfo');if(!i) return;
+  var parts=[];
+  if(yt) parts.push(yt+(yt===1?' clip':' clips')+' can play from YouTube');
+  if(lc) parts.push(lc+(lc===1?' clip':' clips')+' can be made into a video from your file');
+  i.textContent=parts.length?parts.join(' · ')+'.':'Add the video times and a YouTube link or a video file to build a reel from the filtered shots.';
+  $('#hlPlayAll').disabled=!yt||RC.on;$('#hlMake').disabled=!lc||PA.on||RC.on;$('#hlSh').disabled=!sc;$('#hlSh2').disabled=!sc;
+}
+function hlReelMsg(t,bad){var m=$('#hlReelMsg');if(m){m.textContent=t||'';m.className='msg '+(bad?'err':'');}}
+function hlNowText(z,i,n){var x=z.x;return 'Clip '+(i+1)+' of '+n+' · '+(x.player||'Unknown shooter')+' · '+x.team+' · '+(TYPE_LABEL[x.k]||x.k)+' · '+x.oc+' · '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t));}
+function hlStopAll(){if(PA.on) paStop('');if(RC.on) RC.stop=true;}
+/* YouTube: play the filtered clips one after another in the embedded player */
+function paWin(){var f=document.querySelector('#hlPV iframe');return f?f.contentWindow:null;}
+function paPost(o){var w=paWin();if(w){try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}}
+function paHello(){var n=0;(function ping(){if(!PA.on||PA.ready||n++>30||!paWin()) return;paPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,400);})();}
+function paStart(){
+  var L=hlRows().filter(function(z){return z.v&&z.v.id;});
+  if(!L.length){hlReelMsg('No clips with a YouTube link and start times.',true);return;}
+  if(location.protocol==='file:'){hlReelMsg('YouTube only plays inside a page opened from a web address (for example the GitHub Pages link), not from a file on your computer.',true);return;}
+  hlStopAll();PA={on:true,i:0,list:L,id:'',armed:false,ready:false,adv:0};
+  $('#hlPlayer').innerHTML='<div class="hlpv" id="hlPV"></div><p class="note" id="hlNow"></p>';
+  $('#hlStop').hidden=false;hlReelMsg('',false);hlReelInfo(hlRows());paLoad();
+}
+function paLoad(){
+  var z=PA.list[PA.i];
+  if(!z){paStop('Finished: all '+PA.list.length+' clips played.');return;}
+  var a=Math.floor(z.v.a);PA.armed=false;
+  if(PA.id===z.v.id&&PA.ready){paPost({event:'command',func:'seekTo',args:[a,true]});paPost({event:'command',func:'playVideo',args:[]});}
+  else{
+    PA.id=z.v.id;PA.ready=false;
+    $('#hlPV').innerHTML='<iframe src="'+YTO+'/embed/'+z.v.id+'?rel=0&playsinline=1&enablejsapi=1&autoplay=1&start='+a+'&origin='+encodeURIComponent(location.origin)+'" title="Highlights" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    $('#hlPV iframe').addEventListener('load',paHello);
+  }
+  $('#hlNow').textContent=hlNowText(z,PA.i,PA.list.length);
+}
+function paNext(){if(Date.now()-PA.adv<900) return;PA.adv=Date.now();PA.i++;paLoad();}
+function paStop(msg){
+  PA.on=false;var p=$('#hlPlayer');if(p&&!RC.on) p.innerHTML='';
+  var b=$('#hlStop');if(b&&!RC.on) b.hidden=true;
+  if(msg) hlReelMsg(msg,false);
+  var L=null;try{L=hlRows();}catch(e){}if(L&&$('#hlReelInfo')) hlReelInfo(L);
+}
+window.addEventListener('message',function(e){
+  if(!PA.on||e.origin!==YTO||e.source!==paWin()) return;
+  var d;try{d=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(x){return;}
+  if(!d||typeof d!=='object') return;
+  PA.ready=true;
+  var z=PA.list[PA.i];if(!z) return;
+  var info=d.info||{};
+  if(d.event==='infoDelivery'&&typeof info.currentTime==='number'){
+    var t=info.currentTime;
+    if(t>=z.v.a-1.5&&t<z.v.b) PA.armed=true;
+    if(PA.armed&&t>=z.v.b){paNext();return;}
+  }
+  if((d.event==='onStateChange'&&info===0)||(d.event==='infoDelivery'&&info.playerState===0)) paNext();
+});
+/* local file: play each clip from the chosen file and record the result as one new video */
+function rcMime(){
+  var c=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  for(var i=0;i<c.length;i++){try{if(window.MediaRecorder&&MediaRecorder.isTypeSupported(c[i])) return c[i];}catch(e){}}
+  return '';
+}
+function hlSaveFile(blob,name){
+  var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(u);},8000);
+  try{if(typeof gcEvent==='function') gcEvent('download-lab-'+(/\.(mp4|webm)$/.test(name)?'reel':'script'));}catch(e){}
+}
+function rcWait(el,ev){return new Promise(function(res){var f=function(){el.removeEventListener(ev,f);res();};el.addEventListener(ev,f);});}
+function rcMake(){
+  var L=hlRows().filter(function(z){return z.v&&z.file;});
+  if(!L.length){hlReelMsg('No clips with a video file and start times. Choose the file and enter the half start times.',true);return;}
+  if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){hlReelMsg('This browser cannot record video. Try Chrome, Edge or Firefox, or use the ffmpeg script.',true);return;}
+  var mime=rcMime();if(!mime){hlReelMsg('This browser has no supported video recorder. Use the ffmpeg script instead.',true);return;}
+  hlStopAll();RC.on=true;RC.stop=false;hlReelInfo(hlRows());
+  var cap=$('#hlCap').checked,vid=document.createElement('video'),cv=document.createElement('canvas'),urls=new Map(),chunks=[],timer=null,ac=null,rec=null,cur=null;
+  vid.playsInline=true;vid.preload='auto';vid.controls=false;
+  $('#hlPlayer').innerHTML='<div class="hlpv" id="hlPV"></div><p class="note" id="hlNow"></p>';$('#hlPV').appendChild(cv);
+  $('#hlStop').hidden=false;hlReelMsg('Recording runs at normal playback speed. Keep this tab open and visible until it finishes.',false);
+  var W=1280,H=720;cv.width=W;cv.height=H;
+  var g=cv.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,W,H);
+  function draw(){
+    if(!vid.videoWidth) return;
+    var r=Math.min(W/vid.videoWidth,H/vid.videoHeight),w=vid.videoWidth*r,h=vid.videoHeight*r;
+    g.fillStyle='#000';g.fillRect(0,0,W,H);g.drawImage(vid,(W-w)/2,(H-h)/2,w,h);
+    if(cap&&cur){
+      var x=cur.x,t1=(x.player||'Unknown shooter')+' · '+x.team,t2=(TYPE_LABEL[x.k]||x.k)+' · '+x.oc+' · '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t));
+      g.fillStyle='rgba(0,0,0,.6)';g.fillRect(0,H-96,W,96);g.fillStyle='#fff';g.textBaseline='top';
+      g.font='600 34px system-ui,sans-serif';g.fillText(t1,28,H-86);g.font='500 26px system-ui,sans-serif';g.fillText(t2,28,H-42);
+    }
+  }
+  function finish(msg,bad){
+    clearInterval(timer);try{vid.pause();}catch(e){}
+    RC.on=false;var b=$('#hlStop');if(b) b.hidden=true;
+    urls.forEach(function(u){URL.revokeObjectURL(u);});
+    try{if(ac) ac.close();}catch(e){}
+    hlReelMsg(msg,bad);try{hlReelInfo(hlRows());}catch(e){}
+  }
+  (async function(){
+    try{
+      ac=new (window.AudioContext||window.webkitAudioContext)();
+      var dest=ac.createMediaStreamDestination(),src=ac.createMediaElementSource(vid);src.connect(dest);
+      var stream=cv.captureStream(30);dest.stream.getAudioTracks().forEach(function(t){stream.addTrack(t);});
+      rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:5000000});
+      rec.ondataavailable=function(e){if(e.data&&e.data.size) chunks.push(e.data);};
+      var done=new Promise(function(res){rec.onstop=res;});
+      timer=setInterval(draw,33);rec.start(1000);
+      var curFile=null;
+      for(var i=0;i<L.length&&!RC.stop;i++){
+        var z=L[i];cur=z;$('#hlNow').textContent=hlNowText(z,i,L.length);
+        if(curFile!==z.file){
+          var u=urls.get(z.file);if(!u){u=URL.createObjectURL(z.file);urls.set(z.file,u);}
+          vid.src=u;curFile=z.file;await rcWait(vid,'loadedmetadata');
+        }
+        vid.currentTime=Math.min(z.v.a,Math.max(0,(vid.duration||1e9)-0.5));await rcWait(vid,'seeked');
+        await vid.play();
+        await new Promise(function(res){var k=setInterval(function(){if(RC.stop||vid.ended||vid.currentTime>=z.v.b){clearInterval(k);res();}},50);});
+        vid.pause();
+      }
+      clearInterval(timer);rec.stop();await done;
+      if(RC.stop&&!chunks.length){finish('Stopped.',false);return;}
+      var ext=/mp4/.test(mime)?'mp4':'webm',blob=new Blob(chunks,{type:mime.split(';')[0]});
+      hlSaveFile(blob,'highlights.'+ext);
+      finish((RC.stop?'Stopped early. ':'')+'Saved highlights.'+ext+' ('+(blob.size/1048576).toFixed(1)+' MB, '+L.length+' clips).',false);
+    }catch(err){
+      try{if(rec&&rec.state!=='inactive') rec.stop();}catch(e){}
+      finish('Could not make the video: '+((err&&err.message)||'the browser refused to play or record this file')+'. Try the ffmpeg script instead.',true);
+    }
+  })();
+}
+/* ffmpeg script: cut every clip from the local file and join them */
+function hlScript(win){
+  var L=hlRows().filter(function(z){return z.v&&z.fname;});
+  var nl=win?'\r\n':'\n',o=[];
+  var vf='scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=25';
+  if(win){o.push('@echo off','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"');}
+  else{o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run: sh highlights.sh   (needs ffmpeg)','cd "$(dirname "$0")"');}
+  var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
+  L.forEach(function(z,i){
+    var n=String(i+1);while(n.length<3) n='0'+n;
+    var a=Math.max(0,z.v.a),d=Math.max(1,z.v.b-a);
+    o.push((win?'rem ':'# ')+(z.x.player||'Unknown shooter')+' · '+(TYPE_LABEL[z.x.k]||z.x.k)+' · '+z.x.oc);
+    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+' -vf "'+vf+'" -c:v libx264 -preset veryfast -crf 20 -c:a aac -ar 48000 -ac 2 clip_'+n+'.mp4');
+  });
+  o.push(win?'if exist list.txt del list.txt':'rm -f list.txt');
+  L.forEach(function(z,i){var n=String(i+1);while(n.length<3) n='0'+n;o.push((win?'echo file clip_'+n+'.mp4>>list.txt':"echo \"file 'clip_"+n+".mp4'\" >> list.txt"));});
+  o.push('ffmpeg -y -f concat -safe 0 -i list.txt -c copy highlights.mp4');
+  return o.join(nl)+nl;
+}
+function hlSaveScript(win){
+  var L=hlRows().filter(function(z){return z.v&&z.fname;});
+  if(!L.length){hlReelMsg('No clips with a video file name and start times.',true);return;}
+  hlSaveFile(new Blob([hlScript(win)],{type:'text/plain'}),win?'highlights.bat':'highlights.sh');
+  hlReelMsg('Saved the script ('+L.length+' clips). Put it in the folder with your video file and run it to get highlights.mp4.',false);
+}
 function hlMsg(t,bad){var m=$('#hlMsg');if(m){m.textContent=t;m.className='msg '+(bad?'err':'');}}
 function setPage(p){
   view.page=p;
@@ -1612,11 +1780,17 @@ document.addEventListener('input',function(e){
 });
 document.addEventListener('change',function(e){
   var t=e.target;if(!t||!t.closest||!t.closest('#hlGrid')) return;
+  if(t.dataset&&t.dataset.f){var mm=t.closest('[data-m]');if(mm&&HL.off[mm.dataset.m]){HL.off[mm.dataset.m][t.dataset.f]=(t.files&&t.files[0])||null;hlMount(HL.ms);}return;}
   if(t.id==='hlPl') HL.player=t.value;else if(t.id==='hlTy') HL.type=t.value;else if(t.id==='hlOu') HL.out=t.value;else if(t.id==='hlAt') HL.att=t.value;else return;
   hlList();
 });
 document.addEventListener('click',function(e){
-  var b=e.target&&e.target.closest?e.target.closest('#hlSave,#hlCopy'):null;if(!b) return;
+  var b=e.target&&e.target.closest?e.target.closest('#hlSave,#hlCopy,#hlPlayAll,#hlMake,#hlSh,#hlSh2,#hlStop'):null;if(!b) return;
+  if(b.id==='hlPlayAll'){paStart();return;}
+  if(b.id==='hlMake'){rcMake();return;}
+  if(b.id==='hlSh'){hlSaveScript(true);return;}
+  if(b.id==='hlSh2'){hlSaveScript(false);return;}
+  if(b.id==='hlStop'){if(PA.on) paStop('Stopped.');if(RC.on) RC.stop=true;return;}
   if(b.id==='hlSave'){
     if(!hlRows().length){hlMsg('Nothing to save: no shots match these filters.',true);return;}
     ybDownload({csv:hlCsv(),fn:'highlights.csv'},function(ok,msg){hlMsg(msg,!ok);});

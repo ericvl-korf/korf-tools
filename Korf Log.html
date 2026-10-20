@@ -168,7 +168,7 @@ body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
 .vidbox{margin:12px auto 0;width:min(100%,max(340px,calc(100vh - 215px)))}
 .vidadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.vidadd label{font-weight:600;font-size:.85rem;color:var(--muted)}.vidadd input{flex:1 1 14rem;min-width:0}
 .vidmsg{margin:6px 0 0;font-size:.85rem;color:var(--muted)}
-.vidframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vidframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000}.vdgrid .vdf{font-size:.85rem}.vdgrid .fnm{margin:2px 0 0;font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}@media (max-width:640px){.vdgrid .l1{order:1}.vdgrid .t1{order:2}.vdgrid .f1{order:3}.vdgrid .l2{order:4}.vdgrid .t2{order:5}.vdgrid .f2{order:6}}.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vidnote{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:flex-start;justify-content:center;padding:12px;background:var(--surface,#fff);color:var(--fg,#1c2a26);font-size:.8rem;overflow:auto}.vidnote p{margin:0}.vidnote a.btn{text-decoration:none}
 .vidtools a{color:var(--accent,#1f6f5a);font-weight:600}
 .vidnudge{display:inline-flex;gap:4px;align-items:center;color:var(--muted,#555)}.vidtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:.85rem}
@@ -481,7 +481,7 @@ details>summary{transition:color .16s var(--ease)}
         </div>
         <div class="hintrow"><span id="hint" aria-live="polite"></span><span id="readout"></span></div>
         <div class="vidbox" id="vidBox">
-          <div class="vidadd" id="vidAdd"><label for="vidUrl">Match video</label><input id="vidUrl" type="url" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link (optional)"><button class="btn sm" id="vidSet" type="button">Show video</button></div>
+          <div class="vidadd" id="vidAdd"><label for="vidUrl">Match video</label><input id="vidUrl" type="url" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link (optional)"><button class="btn sm" id="vidSet" type="button">Show video</button><label class="btn sm" for="vidFile" style="cursor:pointer">Choose video file</label><input id="vidFile" type="file" accept="video/*" hidden></div>
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
@@ -554,10 +554,12 @@ details>summary{transition:color .16s var(--ease)}
         <div class="card-head"><h2>Match video</h2><span class="sub">Optional. Lets the clock and the video start together</span></div>
         <label class="vdsplit"><input type="checkbox" id="vdSplit"> The match video is split into one video per half</label>
         <div class="vdgrid">
-          <div class="grp"><label class="lbl" for="vdLink1" id="vdLbl1">YouTube link</label><input id="vdLink1" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
-          <div class="grp" id="vdG2" hidden><label class="lbl" for="vdLink2">2nd half YouTube link</label><input id="vdLink2" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
-          <div class="grp"><label class="lbl" for="vdS1">1st half starts at (video time)</label><input id="vdS1" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss, e.g. 04:10"></div>
-          <div class="grp"><label class="lbl" for="vdS2">2nd half starts at (video time)</label><input id="vdS2" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss"></div>
+          <div class="grp l1"><label class="lbl" for="vdLink1" id="vdLbl1">YouTube link</label><input id="vdLink1" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
+          <div class="grp l2" id="vdG2" hidden><label class="lbl" for="vdLink2">2nd half YouTube link</label><input id="vdLink2" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
+          <div class="grp t1"><label class="lbl" for="vdS1">1st half starts at (video time)</label><input id="vdS1" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss, e.g. 04:10"></div>
+          <div class="grp t2"><label class="lbl" for="vdS2">2nd half starts at (video time)</label><input id="vdS2" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss"></div>
+          <div class="grp f1"><label class="lbl" for="vdF1" id="vdFl1">Or a video file on this computer</label><input id="vdF1" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn1"></p></div>
+          <div class="grp f2" id="vdFG2" hidden><label class="lbl" for="vdF2">2nd half video file</label><input id="vdF2" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn2"></p></div>
         </div>
         <p class="note" id="vdNote" style="margin-top:10px">Enter the video time at which the clock starts for each half. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved.</p>
       </section>
@@ -763,7 +765,7 @@ function defaultConfig(){
     events:{pass:true,passMode:'full',shot:true,shotTypes:'log',referee:true,turnover:true,penalty:true,freepass:true,
       to:{general:true,attack:false,forced:false,unforced:false,attfoul:false,shotclock:false}},
     start:{team:'H',divs:{H:1,A:2},dir:'right'},
-    meta:{league:'',date:'',week:'',video:'',video2:'',split:false,vs1:'',vs2:''}
+    meta:{league:'',date:'',week:'',video:'',video2:'',split:false,vs1:'',vs2:'',fn1:'',fn2:''}
   };
 }
 function cloneCfg(c){return JSON.parse(JSON.stringify(c));}
@@ -808,7 +810,8 @@ function normCfg(c){
     if(/^\d{4}-\d{2}-\d{2}$/.test(String(mt.date||''))) d.meta.date=String(mt.date);
     var wk=parseInt(mt.week,10);d.meta.week=(isFinite(wk)&&wk>0&&wk<100)?String(wk):'';
     var yv=ytParse(mt.video);d.meta.video=yv?yv.url:'';var yv2=ytParse(mt.video2);d.meta.video2=yv2?yv2.url:'';d.meta.split=!!(mt.split||d.meta.video2);
-    d.meta.vs1=vNorm(mt.vs1);d.meta.vs2=vNorm(mt.vs2);
+    d.meta.vs1=vNorm(mt.vs1);d.meta.vs2=vNorm(mt.vs2);d.meta.fn1=String(mt.fn1||'').slice(0,120);d.meta.fn2=String(mt.fn2||'').slice(0,120);
+    d.meta.split=!!(mt.split||d.meta.video2||d.meta.fn2);
   }
   return d;
 }
@@ -1250,7 +1253,7 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
@@ -1364,7 +1367,7 @@ function csvToBackup(txt){
   var has=function(ty){return recs.some(function(o){return o.event===ty;});};
   var cfg={home:{name:home,color:col.H||undefined},away:{name:away,color:col.A||undefined},length:mins,periods:per,court:{len:L},
     look:{court:r0.court_color,zone:r0.zone_color},events:{to:{}},start:{team:first?first.team:'H',divs:divs,dir:dir},
-    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week,video:r0.video_url||'',video2:r0.video_url_2||'',split:!!r0.video_url_2,vs1:r0.video_url?vFmt(num(r0.video_start_1,0)):'',vs2:r0.video_url&&r0.video_start_2!==''&&r0.video_start_2!=null?vFmt(num(r0.video_start_2,0)):''}};
+    meta:{league:r0.league,date:r0.fixture_date,week:r0.fixture_week,video:r0.video_url||'',video2:r0.video_url_2||'',split:!!(r0.video_url_2||r0.video_file_2),fn1:r0.video_file_1||'',fn2:r0.video_file_2||'',vs1:(r0.video_url||r0.video_file_1)?vFmt(num(r0.video_start_1,0)):'',vs2:(r0.video_url||r0.video_file_1)&&r0.video_start_2!==''&&r0.video_start_2!=null?vFmt(num(r0.video_start_2,0)):''}};
   ['H','A'].forEach(function(t){
     var nm=t==='H'?'home':'away';
     cfg[nm].players=roster[t].players.filter(function(p){return !p.sub;});
@@ -1584,6 +1587,7 @@ function currentView(m,R){
   return {team:team,att:st.att[team],right:attackRight(cfg,team,p),period:p,hl:null,review:false};
 }
 /* ---------- match video (YouTube) ---------- */
+var vfiles={1:null,2:null};
 /* video times: mm:ss or h:mm:ss, or plain seconds */
 function vParse(t){
   t=String(t==null?'':t).trim();if(!t) return null;
@@ -1593,7 +1597,7 @@ function vParse(t){
 }
 function vFmt(sec){sec=Math.max(0,Math.round(sec));var h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return (h?h+':'+(m<10?'0':''):'')+m+':'+(s<10?'0':'')+s;}
 function vNorm(t){var n=vParse(t);return n==null?'':vFmt(n);}
-function vCols(cfg){var mt=cfg.meta||{};if(!mt.video&&!mt.video2) return ['','',''];return [(mt.split&&mt.video2)?mt.video2:'',vStartOf(cfg,1),vStartOf(cfg,2)];}
+function vCols(cfg){var mt=cfg.meta||{};if(!mt.video&&!mt.video2&&!mt.fn1&&!mt.fn2) return ['','','','',''];return [(mt.split&&mt.video2)?mt.video2:'',vStartOf(cfg,1),vStartOf(cfg,2),mt.fn1||'',mt.split?(mt.fn2||''):''];}
 function halfLenOf(cfg){return cfg.length*30;}
 function halfOfPeriod(cfg,go){return go>cfg.periods/2?2:1;}
 /* video time (s) at which the given half starts: start 1 defaults to 0; start 2 defaults to 0 for a separate video, or straight after the 1st half for one video */
@@ -1624,24 +1628,49 @@ function vidKey(m){var mt=m.config.meta||{};return (mt.split&&vidHalf()===2)?'vi
 function vidTargetNow(m){return vTarget(m.config,vidHalf(),nowT());}
 function renderVideo(){
   var m=cur(),box=$('#vidBox');if(!m||!box) return;
-  var v=ytParse(m.config.meta&&m.config.meta[vidKey(m)]),editing=!!ui.vidEdit,show=!!v&&!editing;
+  var v=ytParse(m.config.meta&&m.config.meta[vidKey(m)]),lf=vidFile(m),editing=!!ui.vidEdit,show=!!(v||lf)&&!editing;
   box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);
-  $('#vidAdd').hidden=show;$('#vidPlay').hidden=!v;
-  if(editing&&v) $('#vidPlay').hidden=true;
-  var fr=$('#vidFrame'),key=v?v.url:'';
+  $('#vidAdd').hidden=show;$('#vidPlay').hidden=!(v||lf);
+  if(editing&&(v||lf)) $('#vidPlay').hidden=true;
+  var fr=$('#vidFrame'),key=lf?'file:'+lf.name+':'+lf.size+':'+lf.lastModified:(v?v.url:'');
   if(box.dataset.vid!==key){
     box.dataset.vid=key;
+    if(vlocal.url){URL.revokeObjectURL(vlocal.url);vlocal.url='';}
     var local=!/^https?:$/.test(location.protocol);
+    if(lf){vidLocalLoad(fr,lf);$('#vidLink').hidden=true;}else{$('#vidLink').hidden=false;
     fr.innerHTML=v&&local?'<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.</p><a href="'+v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>':v?'<iframe src="https://www.youtube.com/embed/'+v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+(function(){var mt=m.config.meta||{};return (mt.vs1||mt.vs2)?'&start='+Math.floor(vidTargetNow(m)):(v.start?'&start='+v.start:'');})()+'" title="Match video" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>':'';
     vsync.ready=false;vsync.state=-1;vsync.t=null;var fi=fr.querySelector('iframe');if(fi) fi.addEventListener('load',vidHello);
-    $('#vidLink').href=v?v.url:'#';
+    $('#vidLink').href=v?v.url:'#';}
   }
   var inp=$('#vidUrl');if(inp&&document.activeElement!==inp&&!editing) inp.value=v?v.url:'';
+  var mt=m.config.meta||{},fnh=(mt.split&&vidHalf()===2)?mt.fn2:mt.fn1,vm=$('#vidMsg');
+  if(!lf&&!v&&fnh&&!ui.vidEdit){vm.textContent='Choose the video file again: '+fnh+' (a file has to be chosen each time Korf Log is opened).';vm.hidden=false;}
+  else if(vm.textContent.indexOf('Choose the video file again')===0){vm.hidden=true;vm.textContent='';}
+}
+var vlocal={url:''};
+function vidFile(m){var mt=m.config.meta||{};return (mt.split&&vidHalf()===2)?vfiles[2]:vfiles[1];}
+function vidLocalLoad(fr,f){
+  vlocal.url=URL.createObjectURL(f);
+  fr.innerHTML='<video controls playsinline preload="auto"></video>';
+  var vd=fr.firstChild;vd.src=vlocal.url;
+  vsync.ready=true;vsync.state=-1;vsync.t=0;
+  vd.addEventListener('play',function(){vidState(1);});
+  vd.addEventListener('pause',function(){vidState(2);});
+  vd.addEventListener('timeupdate',function(){vsync.t=vd.currentTime;});
+  vd.addEventListener('loadedmetadata',function(){var m=cur();if(!m) return;vidSeekNow();if(clockRunning()){vsync.cmdAt=Date.now();vd.play();}});
+}
+function vidPickFile(f){
+  var m=cur();if(!m||!f) return;
+  var mt=m.config.meta=m.config.meta||{},k=(mt.split&&vidHalf()===2)?2:1;
+  vfiles[k]=f;mt['fn'+k]=f.name.slice(0,120);ui.vidEdit=false;save();$('#vidBox').dataset.vid='';renderVideo();
 }
 /* ---------- clock and video start/pause together ---------- */
 var vsync={ready:false,state:-1,cmdAt:0,t:null},YTO='https://www.youtube.com';
 function vidWin(){var f=document.querySelector('#vidFrame iframe');return f?f.contentWindow:null;}
-function vidPost(o){var w=vidWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}
+function vidPost(o){
+  var lv=document.querySelector('#vidFrame video');
+  if(lv){try{if(o.func==='seekTo') lv.currentTime=o.args[0];else if(o.func==='playVideo'){var pr=lv.play();if(pr&&pr.catch) pr.catch(function(){});}else if(o.func==='pauseVideo') lv.pause();}catch(e){}return;}
+  var w=vidWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}
 function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) return;vidPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,500);})();}
 function clockRunning(){return !!(clk.since||clk.otSince);}
 function vidSeekNow(){var m=cur();if(!m||clk.otSince) return;var mt=m.config.meta||{};if(!(mt.vs1||mt.vs2)) return;var t=vidTargetNow(m);vsync.t=t;vidPost({event:'command',func:'seekTo',args:[t,true]});}
@@ -1661,13 +1690,16 @@ window.addEventListener('message',function(e){
   if(d.event==='onStateChange'&&typeof d.info==='number') st=d.info;
   else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number') st=d.info.playerState;
   if(d.event==='infoDelivery'&&d.info&&typeof d.info.currentTime==='number') vsync.t=d.info.currentTime;
+  vidState(st);
+});
+function vidState(st){
   if(st===null||st===vsync.state) return;
   var mine=Date.now()-vsync.cmdAt<1500;
   vsync.state=st;
   if(mine||!ui||ui.view!=='track') return;
   if(st===1&&!clockRunning()&&!atCap()) toggleClock();
   else if(st===2&&clockRunning()) toggleClock();
-});
+}
 (function(){var tc=toggleClock,pq=pauseQuiet,sn=startNextPeriod;
   toggleClock=function(){tc();vidFollowClock();};
   pauseQuiet=function(){pq();vidFollowClock();};
@@ -1682,7 +1714,7 @@ function vidNudge(d){
 /* The saved start moves with the alignment: the video moving forward by d (or the clock back by d) raises the start of the current half by d. */
 function vidShiftStart(d){
   var m=cur();if(!m||clk.otSince||(clk.otOn&&atCap())) return;
-  var mt=m.config.meta=m.config.meta||{};if(!mt[vidKey(m)]) return;
+  var mt=m.config.meta=m.config.meta||{};if(!mt[vidKey(m)]&&!vidFile(m)) return;
   var h=vidHalf(),k=h===1?'vs1':'vs2';
   mt[k]=vFmt(Math.max(0,vStartOf(m.config,h)+d));save();
 }
@@ -2189,11 +2221,13 @@ function syncStep2(){
 function syncVideoSetup(){
   var mt=draft.meta,sp=!!mt.split;
   [['#vdLink1','video'],['#vdLink2','video2'],['#vdS1','vs1'],['#vdS2','vs2']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=mt[x[1]]||'';});
-  $('#vdSplit').checked=sp;$('#vdG2').hidden=!sp;
+  $('#vdSplit').checked=sp;$('#vdG2').hidden=!sp;$('#vdFG2').hidden=!sp;
+  $('#vdFl1').textContent=sp?'1st half video file':'Or a video file on this computer';
+  [1,2].forEach(function(k){var f=vfiles[k],n=mt['fn'+k];$('#vdFn'+k).textContent=f?f.name:(n?'Choose again when tracking: '+n:'');});
   $('#vdLbl1').textContent=sp?'1st half YouTube link':'YouTube link';
   $('#vdS2').placeholder=sp?'mm:ss, e.g. 00:30':'mm:ss, e.g. 38:20';
   var h=$('#vdNote');
-  h.textContent=sp?'Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).':'Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved.';
+  h.textContent=sp?'Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).':'Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved. A file stays on your computer and has to be chosen again each time Korf Log is opened.';
 }
 function syncIssues(){
   var r=computeIssues(),box=$('#issues');
@@ -2386,6 +2420,10 @@ sv.addEventListener('input',function(e){
   syncCounts();syncIssues();persistDraft();
 });
 sv.addEventListener('change',function(e){
+  var t=e.target;
+  if(draft&&(t.id==='vdF1'||t.id==='vdF2')){var k=t.id==='vdF1'?1:2,f=(t.files&&t.files[0])||null;vfiles[k]=f;draft.meta['fn'+k]=f?f.name.slice(0,120):'';syncVideoSetup();syncIssues();persistDraft();return;}
+});
+sv.addEventListener('change',function(e){
   var t=e.target;if(!draft||t.type==='file') return;
   var ev=draft.events;
   if(t.dataset.ev){
@@ -2460,9 +2498,10 @@ $('#restoreBtn').addEventListener('click',restoreWiped);
 $('#clkToggle').addEventListener('click',function(){toggleClock();});
 $('#clkNext').addEventListener('click',startNextPeriod);
 $('#vidSet').addEventListener('click',setVideo);
+$('#vidFile').addEventListener('change',function(e){vidPickFile(e.target.files&&e.target.files[0]);e.target.value='';});
 $('#vidUrl').addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();setVideo();}});
 $('#vidChange').addEventListener('click',function(){ui.vidEdit=true;$('#vidUrl').value=(cur().config.meta||{})[vidKey(cur())]||'';renderVideo();$('#vidUrl').focus();});
-$('#vidHide').addEventListener('click',function(){var m=cur();m.config.meta=m.config.meta||{};m.config.meta[vidKey(m)]='';ui.vidEdit=false;$('#vidUrl').value='';$('#vidMsg').hidden=true;save();renderVideo();});
+$('#vidHide').addEventListener('click',function(){var m=cur();m.config.meta=m.config.meta||{};m.config.meta[vidKey(m)]='';(function(){var mt=m.config.meta,k=(mt.split&&vidHalf()===2)?2:1;vfiles[k]=null;mt['fn'+k]='';})();ui.vidEdit=false;$('#vidUrl').value='';$('#vidMsg').hidden=true;save();renderVideo();});
 $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-spd]');if(b) setSpeed(b.dataset.spd);});
 $('#clkBack').addEventListener('click',function(){adjustClock(-1);});
 $('#vidBack').addEventListener('click',function(){vidNudge(-1);});
