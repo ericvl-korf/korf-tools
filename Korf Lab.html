@@ -1571,8 +1571,8 @@ function hlMount(ms){
   h+='<div class="hlreel"><h3>Highlight reel</h3><p class="note" id="hlReelInfo"></p>'+
     '<div class="hlf"><button type="button" class="btn" id="hlPlayAll">Play all on YouTube</button><button type="button" class="btn primary" id="hlMake">Make highlight video</button>'+
     '<button type="button" class="btn" id="hlSh">ffmpeg script (Windows)</button><button type="button" class="btn" id="hlSh2">ffmpeg script (Mac/Linux)</button>'+
-    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a 16:9 (1280x720) video, with black bars if the source is another shape. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> 16:9 frame for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
-    '<p class="note">The 16:9 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
+    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a portrait 9:16 (1080x1920) video for Instagram, with black bars if the source is another shape. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> Portrait 9:16 frame for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
+    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The Portrait 9:16 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
     '<p class="msg" id="hlReelMsg" role="status"></p><div id="hlPlayer"></div></div>';
   h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
   hlStopAll();$('#hlGrid').innerHTML=h;hlList();
@@ -1758,18 +1758,32 @@ function rcMake(){
 function hlScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   var nl=win?'\r\n':'\n',o=[],base=hlReelName(L),out=base+'.mp4',ind=!!($('#hlInd')&&$('#hlInd').checked),dir=ind?base+'_clips':'_hl_tmp';
-  var wide=!!($('#hl169')&&$('#hl169').checked),vf=wide?' -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=25"':'';
+  var port=!!($('#hl169')&&$('#hl169').checked),cap=!!($('#hlCap')&&$('#hlCap').checked);
+  var frame=port?'scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=25':'';
+  var fs1=port?48:36,fs2=port?40:30,y1=port?'h-230':'h-110',y2=port?'h-160':'h-62';
   var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
   var safe=function(t){return String(t||'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'')||'x';};
-  if(win){o.push('@echo off','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+q(dir)+' rmdir /s /q '+q(dir),'mkdir '+q(dir));}
-  else{o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh <this file>   (needs ffmpeg)','cd "$(dirname "$0")"','rm -rf '+q(dir),'mkdir '+q(dir));}
+  var ct=function(t){return String(t==null?'':t).replace(/[\\'"`$%!&|<>^;]+/g,'').replace(/\s+/g,' ').trim();},ce=function(t){return ct(t).replace(/:/g,'\\:');};
+  if(win){o.push('@echo off','chcp 65001 >nul','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+q(dir)+' rmdir /s /q '+q(dir),'mkdir '+q(dir));if(cap) o.push("set \"FF=fontfile='C\\:/Windows/Fonts/arial.ttf':\"");}
+  else{
+    o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh <this file>   (needs ffmpeg)','cd "$(dirname "$0")"','rm -rf '+q(dir),'mkdir '+q(dir));
+    if(cap) o.push('FONT=""','for f in /System/Library/Fonts/Supplemental/Arial.ttf /Library/Fonts/Arial.ttf /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf /usr/share/fonts/dejavu/DejaVuSans.ttf /usr/share/fonts/TTF/DejaVuSans.ttf; do [ -f "$f" ] && FONT="$f" && break; done','FF=""','[ -n "$FONT" ] && FF="fontfile=\'$FONT\':"');
+  }
+  var ff=win?'%FF%':'${FF}';
   var names=[];
   L.forEach(function(z,i){
     var n=String(i+1);while(n.length<3) n='0'+n;
     var a=Math.max(0,z.v.a),d=Math.max(1,z.v.b-a),x=z.x;
     var fn=ind?n+'_'+safe(x.player||'Unknown')+'_'+safe(TYPE_LABEL[x.k]||x.k)+'_'+safe(x.oc)+'_'+(x.half===1?'1st':'2nd')+'_'+safe(x.r.time||mmss(x.s.t))+'.mp4':'clip_'+n+'.mp4';
     names.push(fn);
-    o.push((win?'rem ':'# ')+(x.player||'Unknown shooter')+' - '+(TYPE_LABEL[x.k]||x.k)+' - '+x.oc);
+    var chain=[];if(frame) chain.push(frame);
+    if(cap){
+      var t1=ce((x.player||'Unknown shooter')+' - '+x.team),t2=ce((TYPE_LABEL[x.k]||x.k)+' - '+x.oc+' - '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t)));
+      chain.push('drawtext='+ff+"text='"+t1+"':fontsize="+fs1+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=10:x=(w-text_w)/2:y="+y1);
+      chain.push('drawtext='+ff+"text='"+t2+"':fontsize="+fs2+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8:x=(w-text_w)/2:y="+y2);
+    }
+    var vf=chain.length?' -vf "'+chain.join(',')+'"':'';
+    o.push((win?'rem ':'# ')+ct((x.player||'Unknown shooter')+' - '+(TYPE_LABEL[x.k]||x.k)+' - '+x.oc));
     o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+vf+' -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -ar 48000 -ac 2 '+q(dir+'/'+fn));
   });
   if(!ind){
