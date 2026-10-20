@@ -1562,7 +1562,7 @@ function hlMount(ms){
   h+='<div class="hlreel"><h3>Highlight reel</h3><p class="note" id="hlReelInfo"></p>'+
     '<div class="hlf"><button type="button" class="btn" id="hlPlayAll">Play all on YouTube</button><button type="button" class="btn primary" id="hlMake">Make highlight video</button>'+
     '<button type="button" class="btn" id="hlSh">ffmpeg script (Windows)</button><button type="button" class="btn" id="hlSh2">ffmpeg script (Mac/Linux)</button>'+
-    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a 16:9 (1280x720) video, with black bars if the source is another shape. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> 16:9 frame for the ffmpeg script (Instagram)</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
+    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a 16:9 (1280x720) video, with black bars if the source is another shape. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> 16:9 frame for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
     '<p class="msg" id="hlReelMsg" role="status"></p><div id="hlPlayer"></div></div>';
   h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
   hlStopAll();$('#hlGrid').innerHTML=h;hlList();
@@ -1747,27 +1747,33 @@ function rcMake(){
 /* ffmpeg script: cut every clip from the local file and join them */
 function hlScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
-  var nl=win?'\r\n':'\n',o=[],out=hlReelName(L)+'.mp4',tmp='_hl_tmp';
+  var nl=win?'\r\n':'\n',o=[],base=hlReelName(L),out=base+'.mp4',ind=!!($('#hlInd')&&$('#hlInd').checked),dir=ind?base+'_clips':'_hl_tmp';
   var wide=!!($('#hl169')&&$('#hl169').checked),vf=wide?' -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=25"':'';
-  if(win){o.push('@echo off','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+tmp+' rmdir /s /q '+tmp,'mkdir '+tmp);}
-  else{o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh <this file>   (needs ffmpeg)','cd "$(dirname "$0")"','rm -rf '+tmp,'mkdir '+tmp);}
   var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
+  var safe=function(t){return String(t||'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'')||'x';};
+  if(win){o.push('@echo off','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+q(dir)+' rmdir /s /q '+q(dir),'mkdir '+q(dir));}
+  else{o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh <this file>   (needs ffmpeg)','cd "$(dirname "$0")"','rm -rf '+q(dir),'mkdir '+q(dir));}
+  var names=[];
   L.forEach(function(z,i){
     var n=String(i+1);while(n.length<3) n='0'+n;
-    var a=Math.max(0,z.v.a),d=Math.max(1,z.v.b-a);
-    o.push((win?'rem ':'# ')+(z.x.player||'Unknown shooter')+' - '+(TYPE_LABEL[z.x.k]||z.x.k)+' - '+z.x.oc);
-    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+vf+' -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -ar 48000 -ac 2 '+tmp+'/clip_'+n+'.mp4');
+    var a=Math.max(0,z.v.a),d=Math.max(1,z.v.b-a),x=z.x;
+    var fn=ind?n+'_'+safe(x.player||'Unknown')+'_'+safe(TYPE_LABEL[x.k]||x.k)+'_'+(x.half===1?'1st':'2nd')+'_'+safe(x.r.time||mmss(x.s.t))+'.mp4':'clip_'+n+'.mp4';
+    names.push(fn);
+    o.push((win?'rem ':'# ')+(x.player||'Unknown shooter')+' - '+(TYPE_LABEL[x.k]||x.k)+' - '+x.oc);
+    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+vf+' -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -ar 48000 -ac 2 '+q(dir+'/'+fn));
   });
-  L.forEach(function(z,i){var n=String(i+1);while(n.length<3) n='0'+n;o.push(win?'echo file clip_'+n+'.mp4>>'+tmp+'/list.txt':"echo \"file 'clip_"+n+".mp4'\" >> "+tmp+"/list.txt");});
-  o.push('ffmpeg -y -f concat -safe 0 -i '+tmp+'/list.txt -c copy '+q(out));
-  o.push(win?'rmdir /s /q '+tmp:'rm -rf '+tmp);
+  if(!ind){
+    names.forEach(function(fn){o.push(win?'echo file '+fn+'>>'+dir+'/list.txt':"echo \"file '"+fn+"'\" >> "+dir+"/list.txt");});
+    o.push('ffmpeg -y -f concat -safe 0 -i '+dir+'/list.txt -c copy '+q(out));
+    o.push(win?'rmdir /s /q '+dir:'rm -rf '+dir);
+  }
   return o.join(nl)+nl;
 }
 function hlSaveScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   if(!L.length){hlReelMsg('No clips with a video file name and start times.',true);return;}
   var base=hlReelName(L);hlSaveFile(new Blob([hlScript(win)],{type:'text/plain'}),base+(win?'.bat':'.sh'));
-  hlReelMsg('Saved '+base+(win?'.bat':'.sh')+' ('+L.length+' clips). Put it in the folder with your video file and run it to get '+base+'.mp4. Only the merged file is kept.',false);
+  hlReelMsg('Saved '+base+(win?'.bat':'.sh')+' ('+L.length+' clips). Put it in the folder with your video file and run it to get '+(($('#hlInd')&&$('#hlInd').checked)?'the clips in the folder '+base+'_clips.':base+'.mp4. Only the merged file is kept.'),false);
 }
 function hlMsg(t,bad){var m=$('#hlMsg');if(m){m.textContent=t;m.className='msg '+(bad?'err':'');}}
 function setPage(p){
