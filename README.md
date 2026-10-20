@@ -4,6 +4,10 @@
 
 Two free, single-file web apps for korfball, created by Eric Van Looy.
 
+## Latest features
+
+- **2026-10-20 20:17 (Europe/London)**: Match video can now be set up in Korf Log's match setup (YouTube link or local video file, one video or one per half, with the video time each half starts). Start moves the video to the right moment. Korf Lab's new Highlights page filters shots by shooter, shot type, outcome and attack number, and builds a highlight reel: Play all on YouTube, a video file made from a local video, or an ffmpeg script.
+
 | App | What it does | Open |
 |---|---|---|
 | **Korf Log** | Record a match live, one click at a time: passes, shots, turnovers, substitutions. Exports an event log (CSV or JSON). | [Open Korf Log](https://ericvl-korf.github.io/korf-tools/Korf%20Log.html) |
