@@ -879,7 +879,8 @@ function normEvent(e,cfg,i,fresh){
   }else if(ty==='freepass'){
     o.type='freepass';
   }else if(ty==='timeout'){
-    o.type='timeout';o.team=null;
+    o.type='timeout';o.team=null;if(e.sub==='start'||e.sub==='end') o.sub=e.sub;
+    if(e.vt!=null&&e.vt!==''&&isFinite(Number(e.vt))&&Number(e.vt)>=0) o.vt=Math.round(Number(e.vt)*10)/10;
   }else if(ty==='sub'){
     var po=normPl(e.out),pi=normPl(e.in);if(!po||!pi) return null;
     o.type='sub';o.out=po;o.in=pi;
@@ -1236,7 +1237,7 @@ function evLabel(m,e){
     case 'turnover':return e.sub==='general'?'Turnover':'Turnover · '+TO_SHORT[e.sub].toLowerCase();
     case 'freepass':return 'Free pass awarded';
     case 'sub':return 'Substitution';
-    case 'timeout':return 'Time out';
+    case 'timeout':return e.sub==='start'?'Time out start':(e.sub==='end'?'Time out end':'Time out');
     case 'transfer':return e.res==='attack'?'Transfer to attack':'Turnover in attack';
   }
   return e.type;
@@ -1253,16 +1254,16 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
     var reb=(o&&o.k==='rebound'&&o.by)?o.by:null;
-    var detail=e.type==='turnover'?e.sub:(e.type==='shot'?e.kind:(e.type==='transfer'?e.res:(e.type==='sub'?plLabel(e.out)+' -> '+plLabel(e.in):'')));
+    var detail=e.type==='turnover'?e.sub:(e.type==='shot'?e.kind:(e.type==='transfer'?e.res:(e.type==='sub'?plLabel(e.out)+' -> '+plLabel(e.in):(e.type==='timeout'?(e.sub||''):''))));
     return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,evClock(e),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg));
+      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg),[e.vt==null?'':e.vt]);
   });
   /* Starting line-up: one row per named player and substitute, so Korf Lab can work out minutes in attack and in defence. */
   var lrows=[];
@@ -1272,7 +1273,7 @@ function toCSV(m){
       if(!p||!p.name) return;
       var bench=i>=tm.players.length;
       lrows.push([name,cfg.meta.league,cfg.meta.date,cfg.meta.week,'00:00',0,pLong(cfg,1),tn,'','lineup',bench?'bench':(p.div===ad?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player',
-        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg)));
+        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg),['']));
     });
   });
   return [head].concat(lrows,rows).map(function(r){return r.map(q).join(',');}).join('\n');
@@ -1330,6 +1331,7 @@ function csvToBackup(txt){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
     var e={t:t,ts:ts,type:o.event,team:team};if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
     if(o.event==='lineup'){if(team){person(team,o.player,{no:o.player_no,div:Number(o.division)||null,g:o.gender,sub:o.role==='substitute'});if(o.detail==='attack'&&Number(o.division)) lineDiv[team]=Number(o.division);}return;}
+    if(o.event==='timeout'){if(o.detail==='start'||o.detail==='end') e.sub=o.detail;if(String(o.video_time_s==null?'':o.video_time_s).trim()!=='') e.vt=num(o.video_time_s,undefined);}
     if(o.event!=='timeout'&&!team) return;
     if(!first&&team) first={team:team,o:o};
     if(o.event==='pass'){
@@ -1459,7 +1461,7 @@ function renderTiles(m,R){
     return '<button type="button" class="tile ref" data-ref="'+t[0]+'" aria-pressed="'+on+'"'+((can&&!on)?'':' disabled')+'>'+esc(t[1])+'</button>';}).join('')+'</div>';
   var hasSubs=['H','A'].some(function(t){var r=st.ros[t];return r.subs.length>0&&r.players.length>0;});
   var dis=(ui.popup||ui.review)?' disabled':'';
-  h+='<div class="tgrp" role="group" aria-label="Match"><button type="button" class="tile ref" data-timeout="1"'+dis+'>Time out</button>'+
+  h+='<div class="tgrp" role="group" aria-label="Match"><button type="button" class="tile ref" data-timeout="start"'+(dis||(toOpen()?' disabled':''))+'>Time out start</button><button type="button" class="tile ref" data-timeout="end"'+(dis||(toOpen()?'':' disabled'))+'>Time out end</button>'+
     (hasSubs?'<button type="button" class="tile ref" data-subs="1"'+dis+'>Subs</button>':'')+'</div>';
   setHTML($('#tilebar'),h);$('#tilebar').hidden=!h;
 }
@@ -1625,7 +1627,27 @@ function ytParse(s){
 }
 function vidHalf(){var m=cur();return m?halfOfPeriod(m.config,clk.go||1):1;}
 function vidKey(m){var mt=m.config.meta||{};return (mt.split&&vidHalf()===2)?'video2':'video';}
-function vidTargetNow(m){return vTarget(m.config,vidHalf(),nowT());}
+function vidNowT(){return (vsync.ready&&typeof vsync.t==='number')?Math.round(vsync.t*10)/10:undefined;}
+/* Time outs: the match clock stops, the video does not. A closed time out is a span of video time that has no match clock time; spans before a moment in the same half push that moment later in the video. */
+function toOpen(){
+  var m=cur();if(!m) return false;
+  for(var i=m.events.length-1;i>=0;i--){var e=m.events[i];if(e.type==='timeout'&&e.sub){return e.sub==='start';}}
+  return false;
+}
+function toSpans(m){
+  var cfg=m.config,out=[],st=null;
+  m.events.forEach(function(e){
+    if(e.type!=='timeout'||!e.sub) return;
+    if(e.sub==='start'){st=e;return;}
+    if(!st) return;
+    var d=(typeof e.vt==='number'&&typeof st.vt==='number')?e.vt-st.vt:(e.ts-st.ts)/1000;
+    if(isFinite(d)&&d>0) out.push({t:st.t,half:halfOfPeriod(cfg,periodOf(cfg,st.t)),dur:d});
+    st=null;
+  });
+  return out;
+}
+function toAdd(m,h,t){var s=0;toSpans(m).forEach(function(x){if(x.half===h&&x.t<=t) s+=x.dur;});return s;}
+function vidTargetNow(m){return vTarget(m.config,vidHalf(),nowT())+toAdd(m,vidHalf(),nowT());}
 function renderVideo(){
   var m=cur(),box=$('#vidBox');if(!m||!box) return;
   var v=ytParse(m.config.meta&&m.config.meta[vidKey(m)]),lf=vidFile(m),editing=!!ui.vidEdit,show=!!(v||lf)&&!editing;
@@ -1675,7 +1697,7 @@ function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) 
 function clockRunning(){return !!(clk.since||clk.otSince);}
 function vidSeekNow(){var m=cur();if(!m||clk.otSince) return;var mt=m.config.meta||{};if(!(mt.vs1||mt.vs2)) return;var t=vidTargetNow(m);vsync.t=t;vidPost({event:'command',func:'seekTo',args:[t,true]});}
 function vidFollowClock(){
-  if(!vsync.ready) return;
+  if(!vsync.ready||toOpen()) return;
   var run=clockRunning();
   if(run&&vsync.state!==1&&vsync.state!==3){vsync.cmdAt=Date.now();vidSeekNow();vidPost({event:'command',func:'playVideo',args:[]});}
   else if(!run&&(vsync.state===1||vsync.state===3)){vsync.cmdAt=Date.now();vidPost({event:'command',func:'pauseVideo',args:[]});}
@@ -1696,12 +1718,12 @@ function vidState(st){
   if(st===null||st===vsync.state) return;
   var mine=Date.now()-vsync.cmdAt<1500;
   vsync.state=st;
-  if(mine||!ui||ui.view!=='track') return;
+  if(mine||!ui||ui.view!=='track'||toOpen()) return;
   if(st===1&&!clockRunning()&&!atCap()) toggleClock();
   else if(st===2&&clockRunning()) toggleClock();
 }
 (function(){var tc=toggleClock,pq=pauseQuiet,sn=startNextPeriod;
-  toggleClock=function(){tc();vidFollowClock();};
+  toggleClock=function(){if(toOpen()&&!clockRunning()){flashMsg('A time out is running. Press Time out end when play restarts.');return;}tc();vidFollowClock();};
   pauseQuiet=function(){pq();vidFollowClock();};
   var ac=adjustClock;adjustClock=function(dl){var a=nowT();ac(dl);var dv=nowT()-a;if(dv) vidShiftStart(-Math.round(dv));};
   startNextPeriod=function(){sn();vidFollowClock();};})();
@@ -2458,7 +2480,16 @@ $('#trackView').addEventListener('click',function(e){
   if(d.subs!==undefined){openSubs();return;}
   if(d.timeout!==undefined){
     if(ui.popup||ui.review) return;
-    pauseQuiet();addEvent({type:'timeout',team:null},'Time out. The clock is stopped. Press Resume to restart it.');return;
+    var vtn=vidNowT();
+    if(d.timeout==='end'){
+      if(!toOpen()) return;
+      addEvent({type:'timeout',team:null,sub:'end',vt:vtn},'Time out ended. The clock is running again.');
+      if(!clockRunning()&&!atCap()) toggleClock();
+      return;
+    }
+    if(toOpen()) return;
+    addEvent({type:'timeout',team:null,sub:'start',vt:vtn},'Time out. The clock is stopped and the video keeps playing. Press Time out end when play restarts.');
+    pauseQuiet();return;
   }
   if(d.turn){
     if(!canAct(R)) return;
