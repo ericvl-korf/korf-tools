@@ -1571,8 +1571,8 @@ function hlMount(ms){
   h+='<div class="hlreel"><h3>Highlight reel</h3><p class="note" id="hlReelInfo"></p>'+
     '<div class="hlf"><button type="button" class="btn" id="hlPlayAll">Play all on YouTube</button><button type="button" class="btn primary" id="hlMake">Make highlight video</button>'+
     '<button type="button" class="btn" id="hlSh">ffmpeg script (Windows)</button><button type="button" class="btn" id="hlSh2">ffmpeg script (Mac/Linux)</button>'+
-    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a portrait 9:16 (1080x1920) video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> Portrait 9:16 centre crop for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="With the portrait frame ticked: keeps the whole picture sharp in the middle and fills the rest of the frame with a blurred copy, instead of cutting the sides off."><input type="checkbox" id="hlBlur"> Blurred background (portrait only)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
-    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The Portrait 9:16 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
+    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a portrait 10:16 (1200x1920) video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> Portrait 10:16 centre crop for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
+    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The Portrait 10:16 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
     '<p class="msg" id="hlReelMsg" role="status"></p><div id="hlPlayer"></div></div>';
   h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
   hlStopAll();$('#hlGrid').innerHTML=h;hlList();
@@ -1758,8 +1758,8 @@ function rcMake(){
 function hlScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   var nl=win?'\r\n':'\n',o=[],base=hlReelName(L),out=base+'.mp4',ind=!!($('#hlInd')&&$('#hlInd').checked),dir=ind?base+'_clips':'_hl_tmp';
-  var port=!!($('#hl169')&&$('#hl169').checked),blur=port&&!!($('#hlBlur')&&$('#hlBlur').checked),cap=!!($('#hlCap')&&$('#hlCap').checked);
-  var frame=port?'scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=25':'';
+  var port=!!($('#hl169')&&$('#hl169').checked),cap=!!($('#hlCap')&&$('#hlCap').checked);
+  var frame=port?'scale=1200:1920:force_original_aspect_ratio=increase,crop=1200:1920,setsar=1,fps=25':'';
   var fs1=port?48:36,fs2=port?40:30,y1=port?'h-230':'h-110',y2=port?'h-160':'h-62';
   var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
   var safe=function(t){return String(t||'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'')||'x';};
@@ -1783,10 +1783,6 @@ function hlScript(win){
       chain.push('drawtext='+ff+"text='"+t2+"':fontsize="+fs2+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8:x=(w-text_w)/2:y="+y2);
     }
     var vf=chain.length?' -vf "'+chain.join(',')+'"':'';
-    if(blur){
-      var g='[0:v]split[a][b];[a]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=40:10[bg];[b]scale=1080:1920:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=25'+chain.slice(1).map(function(c){return ','+c;}).join('');
-      vf=' -filter_complex "'+g+'[v]" -map "[v]" -map 0:a?';
-    }
     o.push((win?'rem ':'# ')+ct((x.player||'Unknown shooter')+' - '+(TYPE_LABEL[x.k]||x.k)+' - '+x.oc));
     o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+vf+' -c:v libx264 -profile:v high -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -ar 48000 -ac 2 -movflags +faststart '+q(dir+'/'+fn));
   });
