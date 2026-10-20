@@ -6,8 +6,10 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
-- **2026-10-20 20:53 (Europe/London)**: Korf Lab highlight videos and ffmpeg scripts are now named after the match as in the event log plus _highlights (for example Team A v Team B_highlights.mp4). The ffmpeg script keeps only the merged highlights file, not the individual clips.
-- **2026-10-20 20:17 (Europe/London)**: Match video can now be set up in Korf Log's match setup (YouTube link or local video file, one video or one per half, with the video time each half starts). Start moves the video to the right moment. Korf Lab's new Highlights page filters shots by shooter, shot type, outcome and attack number, and builds a highlight reel: Play all on YouTube, a video file made from a local video, or an ffmpeg script.
+- **2026-10-20 21:13 (Europe/London)**: New features today:
+  - **Match video at setup (Korf Log):** add a YouTube link or a local video file in match setup, as one video or one per half, with the video time each half starts. Start moves the video to the right moment, and the video and clock ±1 s buttons keep the alignment saved. Links, file names and start times carry into Korf Lab.
+  - **Highlights page (Korf Lab):** list and filter every shot by shooter, shot type, outcome and attack number, with clip start and end times and YouTube links.
+  - **Highlight reel (Korf Lab):** Play all on YouTube, make one highlight video from a local video file, or save an ffmpeg script. Files are named after the match plus _highlights; the script keeps only the merged file and has a tick box for a 16:9 frame (Instagram).
 
 | App | What it does | Open |
 |---|---|---|
