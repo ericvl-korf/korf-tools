@@ -65,11 +65,14 @@ The Highlights page lists every logged shot and turns the shots you pick into cl
 - **Make highlight video:** with a video file chosen, plays each clip from your file and records them into one new video, optionally with a caption (shooter, team, shot type, outcome, half and time). It records at normal playback speed, so keep the tab open and visible. The video is saved as an .mp4 (or .webm in some browsers), named after the match as in the event log followed by _highlights, for example Team A v Team B_highlights.mp4, and is always 1280 × 720.
 - **ffmpeg script (Windows) or (Mac/Linux):** a faster way to the same result. It saves a small script that cuts and joins the clips with ffmpeg, which must be installed. Put the script next to your video file and run it. It is named like the video and leaves only the merged _highlights video; the individual clips are removed.
 
-**Script options.** These tickboxes apply to the ffmpeg script:
+**Script options.** These options apply to the ffmpeg script:
 
-- **Captions:** burns the shooter, team, shot type, outcome, half and time into every clip (this one also applies to Make highlight video).
+- **Captions:** burns a caption into every clip (this one also applies to Make highlight video). In the ffmpeg script the caption is a lower-third banner at the bottom left, with an accent bar in the team's colour. By default line 1 shows the shooter and team and line 2 the shot type, outcome, half and time.
 - **Portrait 10:16 centre crop (Instagram):** makes a 1200 × 1920 portrait video that fills the whole frame. The centre of the picture is kept and the left and right sides are cut off. Unticked, the video keeps its original size.
 - **Individual clips:** saves each clip as its own file, in a folder named after the match plus _highlights_clips, instead of one merged video. Each file name has the number, shooter, shot type, outcome, half and time, for example 001_Anna_Open_play_Goal_1st_02_04.mp4.
+- **Caption text:** two boxes, *Caption line 1* (large) and *Line 2* (smaller), set what the ffmpeg script's caption says. Write your own words and add `{shooter}`, `{team}`, `{type}`, `{outcome}`, `{half}` (1st or 2nd) and `{time}`, for example `GOAL! {shooter}` over `{outcome}, {half} half`. Reset text restores the default. Each line is shortened to fit the banner, an empty line is left out, and characters that could break the script (such as ! & % and quotes) are removed.
+- **Club logo:** choose a logo image (a PNG with a transparent background works best) and it appears at the left of the caption banner. Put the logo file in the same folder as the script and your video; the script stops with a message if it cannot find it.
+- **Caption entrance:** None, Fade in, Slide from left, Slide up or Wipe reveal, like a slide transition. The caption enters half a second into each clip.
 
 **Good to know.** A video file stays on your computer and nothing is uploaded. A YouTube video cannot be turned into a video file here; to make a highlight video from a match you uploaded, download the original from YouTube Studio and choose that file instead.
 
