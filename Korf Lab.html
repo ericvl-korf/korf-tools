@@ -1470,7 +1470,7 @@ function printReport(){
   setPage(prev);
 }
 /* ---------- highlights list ---------- */
-var HL={ms:[],rows:[],half:'',team:'',div:'',gen:'',player:'',type:'',out:'',att:'',attNo:'',pre:8,post:4,off:{},tr:'fade',logo:null,t1:'{shooter} - {team}',t2:'{type} - {outcome} - {half} half {time}',ce:{},ceOpen:null};
+var HL={ms:[],rows:[],half:'',team:'',div:'',gen:'',player:'',type:'',out:'',att:'',attNo:'',pre:8,post:4,off:{}};
 function hlParse(t){
   t=String(t||'').trim();if(!t) return null;
   var m=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);
@@ -1592,11 +1592,7 @@ function hlMount(ms){
     '<div class="hlf"><button type="button" class="btn" id="hlPlayAll">Play all on YouTube</button><button type="button" class="btn primary" id="hlMake">Make highlight video</button>'+
     '<button type="button" class="btn" id="hlSh">ffmpeg script (Windows)</button><button type="button" class="btn" id="hlSh2">ffmpeg script (Mac/Linux)</button>'+
     '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a portrait 10:16 (1200x1920) video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> Portrait 10:16 centre crop for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
-    '<div class="hlf"><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="How the caption banner enters each clip in the ffmpeg script.">Caption entrance <select id="hlTr">'+[['none','None'],['fade','Fade in'],['left','Slide from left'],['up','Slide up'],['wipe','Wipe reveal']].map(function(o){return '<option value="'+o[0]+'"'+(HL.tr===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select></label>'+
-    '<label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Optional club logo (PNG with a transparent background works best). It is shown at the left of the caption banner in the ffmpeg script. Put the logo file in the same folder as the script and your video."><span>Club logo</span> <input type="file" accept="image/*" id="hlLogo"></label><span class="note" id="hlLogoFn">'+(HL.logo?'Put this file in the same folder as the script.':'')+'</span></div>'+
-    '<div class="hlf"><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="First line of the caption in the ffmpeg script (large text). Use {shooter}, {team}, {type}, {outcome}, {half} and {time}, or type your own words.">Caption line 1 <input type="text" id="hlT1" maxlength="60" size="30" value="'+esc(HL.t1)+'"></label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Second line of the caption in the ffmpeg script (smaller text). Leave it empty for a one-line caption.">Line 2 <input type="text" id="hlT2" maxlength="80" size="38" value="'+esc(HL.t2)+'"></label><button type="button" class="btn" id="hlTReset">Reset text</button></div>'+
-    '<p class="note">Caption text for the ffmpeg script: write your own words and add {shooter}, {team}, {type}, {outcome}, {half} (1st or 2nd) and {time}. Each line is shortened to fit the banner, an empty line is left out, and characters that can break the script (such as ! & % and quotes) are removed.</p>'+
-    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The caption text, caption entrance, club logo, Portrait 10:16 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
+    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The Portrait 10:16 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
     '<p class="msg" id="hlReelMsg" role="status"></p><div id="hlPlayer"></div></div>';
   h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
   hlStopAll();$('#hlGrid').innerHTML=h;hlList();
@@ -1609,22 +1605,18 @@ function hlRows(){
     return {x:x,v:v,link:link,file:f||null,fname:fname};
   });
 }
-function hlKey(x){var i=hlSpans(x.m).idx.get(x.r);return x.m.id+':'+(i==null?x.s.t:i);}
-function hlHasCe(x){var c=HL.ce[hlKey(x)];return !!(c&&(c.t1||c.t2));}
 function hlList(){
   var L=hlRows(),el=$('#hlList');if(!el) return;
   hlReelInfo(L);
   var anyV=L.some(function(q){return q.v;});
   $('#hlCount').textContent=L.length+(L.length===1?' shot':' shots')+(L.length!==HL.rows.length?' of '+HL.rows.length:'');
   if(!L.length){el.innerHTML='<p class="note">No shots match these filters.</p>';return;}
-  var head=['Match','Half','Time','Team','Shooter','Shot type','Outcome','Attack','Caption'].concat(anyV?['Clip','Link']:[]);
+  var head=['Match','Half','Time','Team','Shooter','Shot type','Outcome','Attack'].concat(anyV?['Clip','Link']:[]);
   var shown=L.slice(0,400);
   el.innerHTML='<table><thead><tr>'+head.map(function(t){return '<th>'+t+'</th>';}).join('')+'</tr></thead><tbody>'+shown.map(function(q){
     var x=q.x,r=x.r;
     return '<tr><td>'+esc(mShort(x.m,cut(x.m.name,14)))+'</td><td>'+(x.half===1?'1st':'2nd')+'</td><td>'+esc(r.time||mmss(x.s.t))+'</td><td>'+esc(x.team)+'</td><td>'+esc(x.player||'–')+'</td><td>'+esc(TYPE_LABEL[x.k]||x.k)+'</td><td>'+esc(x.oc)+'</td><td>'+(x.an==null?'–':x.an+(x.multi?' · '+x.ns+' shots':''))+'</td>'+
-      '<td><button type="button" class="btn" style="padding:2px 8px;font-size:.8rem" data-ce="'+esc(hlKey(x))+'" title="Change the caption of this clip in the ffmpeg script">'+(hlHasCe(x)?'Edited':'Edit')+'</button></td>'+
-      (anyV?'<td>'+(q.v?hlClock(q.v.a)+'–'+hlClock(q.v.b):'')+'</td><td>'+(q.link?'<a href="'+esc(q.link)+'" target="_blank" rel="noopener noreferrer">Open</a>':'')+'</td>':'')+'</tr>'+
-      (HL.ceOpen===hlKey(x)?'<tr><td colspan="'+head.length+'" style="background:var(--surface-2,#f3f6f4)"><span class="note">Caption for this clip in the ffmpeg script. Leave a line empty to use the standard text.</span><div class="hlf" style="margin-top:6px"><label class="note" style="display:inline-flex;gap:6px;align-items:center">Line 1 <input type="text" maxlength="60" size="30" data-cek="'+esc(hlKey(x))+'" data-cef="t1" value="'+esc((HL.ce[hlKey(x)]||{}).t1||'')+'" placeholder="'+esc(HL.t1)+'"></label><label class="note" style="display:inline-flex;gap:6px;align-items:center">Line 2 <input type="text" maxlength="80" size="38" data-cek="'+esc(hlKey(x))+'" data-cef="t2" value="'+esc((HL.ce[hlKey(x)]||{}).t2||'')+'" placeholder="'+esc(HL.t2)+'"></label><button type="button" class="btn" data-cereset="'+esc(hlKey(x))+'">Use standard text</button><button type="button" class="btn" data-ce="'+esc(hlKey(x))+'">Close</button></div></td></tr>':'');
+      (anyV?'<td>'+(q.v?hlClock(q.v.a)+'–'+hlClock(q.v.b):'')+'</td><td>'+(q.link?'<a href="'+esc(q.link)+'" target="_blank" rel="noopener noreferrer">Open</a>':'')+'</td>':'')+'</tr>';
   }).join('')+'</tbody></table>'+(L.length>shown.length?'<p class="note">Showing the first '+shown.length+'. The CSV has all '+L.length+'.</p>':'');
 }
 function hlCsv(){
@@ -1786,16 +1778,15 @@ function rcMake(){
 function hlScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   var nl=win?'\r\n':'\n',o=[],base=hlReelName(L),out=base+'.mp4',ind=!!($('#hlInd')&&$('#hlInd').checked),dir=ind?base+'_clips':'_hl_tmp';
-  var port=!!($('#hl169')&&$('#hl169').checked),cap=!!($('#hlCap')&&$('#hlCap').checked),logo=(cap&&HL.logo)?HL.logo.name:'';
+  var port=!!($('#hl169')&&$('#hl169').checked),cap=!!($('#hlCap')&&$('#hlCap').checked);
   var frame=port?'scale=1200:1920:force_original_aspect_ratio=increase,crop=1200:1920,setsar=1,fps=25':'';
   var fs1=port?48:36,fs2=port?40:30,y1=port?'h-230':'h-110',y2=port?'h-160':'h-62';
   var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
   var safe=function(t){return String(t||'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,'')||'x';};
   var ct=function(t){return String(t==null?'':t).replace(/[\\'"`$%!&|<>^;]+/g,'').replace(/\s+/g,' ').trim();},ce=function(t){return ct(t).replace(/:/g,'\\:');};
-  if(win){o.push('@echo off','chcp 65001 >nul','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+q(dir)+' rmdir /s /q '+q(dir),'mkdir '+q(dir));if(cap) o.push("set \"FF=fontfile='C\\:/Windows/Fonts/arial.ttf':\"");if(logo) o.push('if not exist '+q(logo)+' (echo The logo file '+logo.replace(/[^A-Za-z0-9._ -]/g,'')+' was not found next to this script.& pause & exit /b 1)');}
+  if(win){o.push('@echo off','chcp 65001 >nul','rem Korf Lab highlight reel. Put this file next to your video file(s) and double-click it. Needs ffmpeg installed.','cd /d "%~dp0"','if exist '+q(dir)+' rmdir /s /q '+q(dir),'mkdir '+q(dir));if(cap) o.push("set \"FF=fontfile='C\\:/Windows/Fonts/arial.ttf':\"");}
   else{
     o.push('#!/bin/sh','# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh <this file>   (needs ffmpeg)','cd "$(dirname "$0")"','rm -rf '+q(dir),'mkdir '+q(dir));
-    if(logo) o.push('[ -f '+q(logo)+' ] || { echo "The logo file '+logo.replace(/[^A-Za-z0-9._ -]/g,'')+' was not found next to this script."; exit 1; }');
     if(cap) o.push('FONT=""','for f in /System/Library/Fonts/Supplemental/Arial.ttf /Library/Fonts/Arial.ttf /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf /usr/share/fonts/dejavu/DejaVuSans.ttf /usr/share/fonts/TTF/DejaVuSans.ttf; do [ -f "$f" ] && FONT="$f" && break; done','FF=""','[ -n "$FONT" ] && FF="fontfile=\'$FONT\':"');
   }
   var ff=win?'%FF%':'${FF}';
@@ -1806,40 +1797,14 @@ function hlScript(win){
     var fn=ind?n+'_'+safe(x.player||'Unknown')+'_'+safe(TYPE_LABEL[x.k]||x.k)+'_'+safe(x.oc)+'_'+(x.half===1?'1st':'2nd')+'_'+safe(x.r.time||mmss(x.s.t))+'.mp4':'clip_'+n+'.mp4';
     names.push(fn);
     var chain=[];if(frame) chain.push(frame);
-    var vf='',inp=q(z.fname),fx='';
     if(cap){
-      var vals={shooter:x.player||'Unknown shooter',team:x.team||'',type:TYPE_LABEL[x.k]||x.k,outcome:x.oc||'',half:(x.half===1?'1st':'2nd'),time:(x.r.time||mmss(x.s.t))};
-      var fill=function(tp,mx){var r=ct(String(tp||'').replace(/\{(\w+)\}/g,function(m0,k){return vals.hasOwnProperty(k)?vals[k]:m0;}));return r.length>mx?r.slice(0,mx-1)+'.':r;};
-      var ov=HL.ce[hlKey(x)]||{},s1=fill(ov.t1?ov.t1:HL.t1,port?26:24),s2=fill(ov.t2?ov.t2:HL.t2,port?44:40),t1=ce(s1),t2=ce(s2),tc=TEAMCOL[x.team],col=(tc&&/^#[0-9a-f]{6}$/i.test(tc))?'0x'+tc.slice(1):'0xf4c20d';
-      var BW=port?1040:720,BH=port?190:120,F1=port?64:40,F2=port?40:26,LH=port?150:88,MG=port?60:48,BM=port?170:60;
-      var tx=logo?(12+28+LH+22):(12+28),cx='max('+tx+','+tx+'+('+(BW-tx-24)+'-text_w)/2)',dd=Math.max(2,z.v.b-a),T0=0.5,TD=0.6,tr=HL.tr||'fade';
-      var g=[];
-      g.push('[0:v]'+(chain.length?chain.join(','):'null')+'[bg]');
-      g.push('color=c=0x101820@0.78:s='+BW+'x'+BH+':r=25:d='+dd.toFixed(1)+',format=rgba[p0]');
-      g.push('[p0]drawbox=x=0:y=0:w=12:h='+BH+':color='+col+'@1:t=fill[p1]');
-      var dts=[];if(s1) dts.push('drawtext='+ff+"text='"+t1+"':fontsize="+F1+":fontcolor=white:x='"+cx+"':y="+Math.round(s2?BH*0.15:(BH-F1)/2));if(s2) dts.push('drawtext='+ff+"text='"+t2+"':fontsize="+F2+":fontcolor=0xdddddd:x='"+cx+"':y="+Math.round(s1?BH*0.15+F1+10:(BH-F2)/2));
-      g.push('[p1]'+(dts.length?dts.join(','):'null')+'[p2]');
-      var cur='p2';
-      if(logo){g.push('[1:v]scale=-1:'+LH+',format=rgba[lg]');g.push('[p2][lg]overlay=x=28:y=(H-h)/2[p3]');cur='p3';}
-      var ox=MG,oy='H-h-'+BM,en='';
-      var ease='(1-pow(1-(t-'+T0+')/'+TD+',3))';
-      if(tr==='fade'){
-        g.push('['+cur+']fade=t=in:st='+T0+':d='+TD+':alpha=1,fade=t=out:st='+Math.max(T0+TD,dd-0.5).toFixed(1)+':d=0.4:alpha=1[p4]');cur='p4';
-      }else if(tr==='wipe'){
-        g.push('['+cur+"]format=rgba,geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='if(lt(X,W*clip((T-"+T0+')/'+TD+",0,1)),alpha(X,Y),0)'[p4]");cur='p4';
-      }else if(tr==='left'){
-        ox="'if(lt(t,"+T0+"),-w,if(lt(t,"+(T0+TD)+"),-w+("+MG+"+w)*"+ease+","+MG+"))'";
-      }else if(tr==='up'){
-        oy="'if(lt(t,"+T0+"),H,if(lt(t,"+(T0+TD)+"),H-(h+"+BM+")*"+ease+",H-h-"+BM+"))'";
-      }else{
-        en=":enable='gte(t,"+T0+")'";
-      }
-      g.push('[bg]['+cur+']overlay=x='+ox+':y='+oy+en+':eof_action=pass[v]');
-      fx=' -filter_complex "'+g.join(';')+'" -map "[v]" -map 0:a?';
-      if(logo) inp+=' -i '+q(logo);
-    }else if(chain.length){vf=' -vf "'+chain.join(',')+'"';}
+      var t1=ce((x.player||'Unknown shooter')+' - '+x.team),t2=ce((TYPE_LABEL[x.k]||x.k)+' - '+x.oc+' - '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t)));
+      chain.push('drawtext='+ff+"text='"+t1+"':fontsize="+fs1+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=10:x=(w-text_w)/2:y="+y1);
+      chain.push('drawtext='+ff+"text='"+t2+"':fontsize="+fs2+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8:x=(w-text_w)/2:y="+y2);
+    }
+    var vf=chain.length?' -vf "'+chain.join(',')+'"':'';
     o.push((win?'rem ':'# ')+ct((x.player||'Unknown shooter')+' - '+(TYPE_LABEL[x.k]||x.k)+' - '+x.oc));
-    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+inp+' -t '+d.toFixed(1)+vf+fx+' -c:v libx264 -profile:v high -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -ar 48000 -ac 2 -movflags +faststart '+q(dir+'/'+fn));
+    o.push('ffmpeg -y -ss '+a.toFixed(1)+' -i '+q(z.fname)+' -t '+d.toFixed(1)+vf+' -c:v libx264 -profile:v high -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -ar 48000 -ac 2 -movflags +faststart '+q(dir+'/'+fn));
   });
   if(!ind){
     names.forEach(function(fn){o.push(win?'echo file '+fn+'>>'+dir+'/list.txt':"echo \"file '"+fn+"'\" >> "+dir+"/list.txt");});
@@ -1869,17 +1834,9 @@ document.addEventListener('input',function(e){
   else return;
   hlList();
 });
-document.addEventListener('input',function(e){var t=e.target;if(t&&t.id==='hlT1') HL.t1=t.value;else if(t&&t.id==='hlT2') HL.t2=t.value;
-  else if(t&&t.dataset&&t.dataset.cek){var k=t.dataset.cek,c=HL.ce[k]||(HL.ce[k]={});c[t.dataset.cef]=t.value;if(!c.t1&&!c.t2) delete HL.ce[k];var b=document.querySelector('[data-ce]'+'[data-ce="'+k.replace(/"/g,'')+'"]');if(b&&b.textContent!=='Close') b.textContent=HL.ce[k]?'Edited':'Edit';}});
-document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('#hlList [data-ce],#hlList [data-cereset]'):null;if(!b) return;
-  if(b.dataset.cereset){delete HL.ce[b.dataset.cereset];hlList();return;}
-  HL.ceOpen=HL.ceOpen===b.dataset.ce?null:b.dataset.ce;hlList();});
-document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('#hlTReset'):null;if(!b) return;HL.t1='{shooter} - {team}';HL.t2='{type} - {outcome} - {half} half {time}';var a=$('#hlT1'),c=$('#hlT2');if(a) a.value=HL.t1;if(c) c.value=HL.t2;});
 document.addEventListener('change',function(e){
   var t=e.target;if(!t||!t.closest||!t.closest('#hlGrid')) return;
   if(t.dataset&&t.dataset.f){var mm=t.closest('[data-m]');if(mm&&HL.off[mm.dataset.m]){HL.off[mm.dataset.m][t.dataset.f]=(t.files&&t.files[0])||null;hlMount(HL.ms);}return;}
-  if(t.id==='hlTr'){HL.tr=t.value;return;}
-  if(t.id==='hlLogo'){HL.logo=(t.files&&t.files[0])||null;var lf=$('#hlLogoFn');if(lf) lf.textContent=HL.logo?'Put this file in the same folder as the script.':'';return;}
   if(t.id==='hlHf') HL.half=t.value;else if(t.id==='hlTm') HL.team=t.value;else if(t.id==='hlDv') HL.div=t.value;else if(t.id==='hlGn') HL.gen=t.value;else if(t.id==='hlPl') HL.player=t.value;else if(t.id==='hlTy') HL.type=t.value;else if(t.id==='hlOu') HL.out=t.value;else if(t.id==='hlAt') HL.att=t.value;else return;
   hlList();
 });
