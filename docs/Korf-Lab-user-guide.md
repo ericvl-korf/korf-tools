@@ -67,11 +67,12 @@ The Highlights page lists every logged shot and turns the shots you pick into cl
 
 **Script options.** These options apply to the ffmpeg script:
 
-- **Captions:** burns a caption into every clip (this one also applies to Make highlight video). In the ffmpeg script the caption is a lower-third banner at the bottom left, with an accent bar in the team's colour. By default line 1 shows the shooter and team and line 2 the shot type, outcome, half and time.
+- **Captions:** burns a caption into every clip (this one also applies to Make highlight video). In the ffmpeg script the caption is a lower-third banner at the bottom left, with an accent bar in the team's colour and the text centred. By default line 1 shows the shooter and team and line 2 the shot type, outcome, half and time.
 - **Portrait 10:16 centre crop (Instagram):** makes a 1200 × 1920 portrait video that fills the whole frame. The centre of the picture is kept and the left and right sides are cut off. Unticked, the video keeps its original size.
 - **Individual clips:** saves each clip as its own file, in a folder named after the match plus _highlights_clips, instead of one merged video. Each file name has the number, shooter, shot type, outcome, half and time, for example 001_Anna_Open_play_Goal_1st_02_04.mp4.
 - **Caption text:** two boxes, *Caption line 1* (large) and *Line 2* (smaller), set what the ffmpeg script's caption says. Write your own words and add `{shooter}`, `{team}`, `{type}`, `{outcome}`, `{half}` (1st or 2nd) and `{time}`, for example `GOAL! {shooter}` over `{outcome}, {half} half`. Reset text restores the default. Each line is shortened to fit the banner, an empty line is left out, and characters that could break the script (such as ! & % and quotes) are removed.
 - **Club logo:** choose a logo image (a PNG with a transparent background works best) and it appears at the left of the caption banner. Put the logo file in the same folder as the script and your video; the script stops with a message if it cannot find it.
+- **Caption per clip:** in the clip list, press **Edit** in the Caption column to give one clip its own two lines (the same placeholders work). An empty line uses the standard text, and Use standard text clears the change. Edits last until the page is reloaded.
 - **Caption entrance:** None, Fade in, Slide from left, Slide up or Wipe reveal, like a slide transition. The caption enters half a second into each clip.
 
 **Good to know.** A video file stays on your computer and nothing is uploaded. A YouTube video cannot be turned into a video file here; to make a highlight video from a match you uploaded, download the original from YouTube Studio and choose that file instead.

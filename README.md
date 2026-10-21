@@ -6,8 +6,8 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
-- **2026-10-21 18:46 (Europe/London)**: New features today:
-  - **Highlight reel captions (Korf Lab):** the ffmpeg script's caption is now a lower-third banner with a team-colour accent bar. Edit its two lines with {shooter}, {team}, {type}, {outcome}, {half} and {time}, add a club logo, and pick an entrance: none, fade, slide from left, slide up or wipe.
+- **2026-10-21 19:00 (Europe/London)**: New features today:
+  - **Highlight reel captions (Korf Lab):** the ffmpeg script's caption is now a lower-third banner with a team-colour accent bar. Edit its two lines with {shooter}, {team}, {type}, {outcome}, {half} and {time}, add a club logo, change the caption of any single clip from the clip list, and pick an entrance: none, fade, slide from left, slide up or wipe.
   - **Video tutorials:** a short captioned walkthrough of each app (Korf Log 1:28, Korf Lab 1:29, in the [tutorials](tutorials/) folder) behind a new **Video tutorial** button at the top of Korf Log and Korf Lab. The Korf Log one includes the match video and the Time out buttons.
   - **Match video at setup (Korf Log):** add a YouTube link or a local video file in match setup, as one video or one per half, with the video time each half starts. Start moves the video to the right moment, and the video and clock ±1 s buttons keep the alignment saved. Links, file names and start times carry into Korf Lab.
   - **Time out start / end (Korf Log):** two Time out buttons replace the single one. The match clock stops and restarts while the video keeps running, and the video time of each time out is saved so clock and video stay lined up, including in Korf Lab highlight reels.
