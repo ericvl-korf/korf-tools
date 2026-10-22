@@ -1680,6 +1680,7 @@ function vidLocalLoad(fr,f){
   vd.addEventListener('play',function(){vidState(1);});
   vd.addEventListener('pause',function(){vidState(2);});
   vd.addEventListener('timeupdate',function(){vsync.t=vd.currentTime;});
+  vd.addEventListener('ratechange',function(){vidRateSeen(vd.playbackRate);});
   vd.addEventListener('loadedmetadata',function(){var m=cur();if(!m) return;vidSeekNow();if(clockRunning()){vsync.cmdAt=Date.now();vd.play();}});
 }
 function vidPickFile(f){
@@ -1697,6 +1698,11 @@ function vidPost(o){
 function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) return;vidPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,500);})();}
 /* The video plays at the clock's speed (0.5x, 0.75x, 1x or 1.25x), so the two stay lined up. */
 function vidSetRate(){vsync.rate=clk.speed;vsync.rateAt=Date.now();vidPost({event:'command',func:'setPlaybackRate',args:[clk.speed]});}
+/* The video speed was changed in the player: the clock follows when it is one of the clock's speeds, otherwise the video goes back to the clock's speed. */
+function vidRateSeen(pr){
+  if(typeof pr!=='number'||pr===vsync.rate||Date.now()-(vsync.rateAt||0)<=2500) return;
+  vsync.rate=pr;if([0.5,0.75,1,1.25].indexOf(pr)<0) vidSetRate();else if(pr!==clk.speed) setSpeed(pr);
+}
 function clockRunning(){return !!(clk.since||clk.otSince);}
 function vidSeekNow(){var m=cur();if(!m||clk.otSince) return;var mt=m.config.meta||{};if(!(mt.vs1||mt.vs2)) return;var t=vidTargetNow(m);vsync.t=t;vidSetRate();vidPost({event:'command',func:'seekTo',args:[t,true]});}
 function vidFollowClock(){
@@ -1717,10 +1723,7 @@ window.addEventListener('message',function(e){
   else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number') st=d.info.playerState;
   if(d.event==='infoDelivery'&&d.info&&typeof d.info.currentTime==='number') vsync.t=d.info.currentTime;
   var pr=d.info&&d.info.playbackRate;
-  if(was&&d.event==='infoDelivery'&&typeof pr==='number'&&pr!==vsync.rate&&Date.now()-(vsync.rateAt||0)>2500){
-    /* The video speed was changed in the player: the clock follows when it is one of the clock's speeds. */
-    vsync.rate=pr;if([0.5,0.75,1,1.25].indexOf(pr)<0) vidSetRate();else if(pr!==clk.speed) setSpeed(pr);
-  }
+  if(was&&d.event==='infoDelivery') vidRateSeen(pr);
   vidState(st);
 });
 function vidState(st){
