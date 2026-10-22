@@ -486,7 +486,7 @@ details>summary{transition:color .16s var(--ease)}
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
-            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
+            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
       </div>
@@ -1734,6 +1734,12 @@ function vidNudge(d){
   vidPost({event:'command',func:'seekTo',args:[t,true]});
   vidShiftStart(d);
 }
+/* Rewind or fast forward the clock and the video together. The clock decides how far both move (it stops at the start of the half or at the cap), and the saved start is unchanged because both shift by the same amount. */
+function vidBoth(d){
+  if(!vsync.ready||typeof vsync.t!=='number') return;
+  var a=nowT();adjustClock(d);var dv=Math.round(nowT()-a);
+  if(dv) vidNudge(dv);
+}
 /* The saved start moves with the alignment: the video moving forward by d (or the clock back by d) raises the start of the current half by d. */
 function vidShiftStart(d){
   var m=cur();if(!m||clk.otSince||(clk.otOn&&atCap())) return;
@@ -2538,6 +2544,8 @@ $('#cspeed').addEventListener('click',function(e){var b=e.target.closest('[data-
 $('#clkBack').addEventListener('click',function(){adjustClock(-1);});
 $('#vidBack').addEventListener('click',function(){vidNudge(-1);});
 $('#vidFwd').addEventListener('click',function(){vidNudge(1);});
+$('#bothBack').addEventListener('click',function(){vidBoth(-1);});
+$('#bothFwd').addEventListener('click',function(){vidBoth(1);});
 $('#clkFwd').addEventListener('click',function(){adjustClock(1);});
 $('#undo')&&$('#undo').addEventListener('click',undo);
 function setMax(on){
@@ -2704,4 +2712,5 @@ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(draw);}
 </script>
 <style>.credit{max-width:1100px;margin:28px auto 22px;padding:0 16px;text-align:center;font-size:.8rem;color:var(--muted,#5b6b66);letter-spacing:.01em}.credit b{font-weight:600;color:var(--fg,#1c2a26)}@media print{.credit{display:none!important}}body.max .credit{display:none}</style>
 <footer class="credit">Korf Log · created by <b>Eric Van Looy</b></footer>
+
 </body></html>
