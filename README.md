@@ -8,6 +8,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 - **2026-10-22 23:14 (Europe/London)**: New feature today:
   - **Move video and clock together (Korf Log):** new **Both −1 s / +1 s** buttons under the match video rewind or fast forward the clock and the video by the same amount, so they stay lined up.
+  - **Video follows the clock speed (Korf Log):** the Speed buttons (0.5×, 0.75×, 1×, 1.25×) now set the video's playback speed too, so clock and video stay lined up at any speed. Changing the speed in the YouTube player moves the clock to match.
 
 - **2026-10-21 00:07 (Europe/London)**: New features today:
   - **Video tutorials:** a short captioned walkthrough of each app (Korf Log 1:28, Korf Lab 1:29, in the [tutorials](tutorials/) folder) behind a new **Video tutorial** button at the top of Korf Log and Korf Lab. The Korf Log one includes the match video and the Time out buttons.

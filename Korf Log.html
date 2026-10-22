@@ -1692,11 +1692,13 @@ var vsync={ready:false,state:-1,cmdAt:0,t:null},YTO='https://www.youtube.com';
 function vidWin(){var f=document.querySelector('#vidFrame iframe');return f?f.contentWindow:null;}
 function vidPost(o){
   var lv=document.querySelector('#vidFrame video');
-  if(lv){try{if(o.func==='seekTo') lv.currentTime=o.args[0];else if(o.func==='playVideo'){var pr=lv.play();if(pr&&pr.catch) pr.catch(function(){});}else if(o.func==='pauseVideo') lv.pause();}catch(e){}return;}
+  if(lv){try{if(o.func==='seekTo') lv.currentTime=o.args[0];else if(o.func==='playVideo'){var pr=lv.play();if(pr&&pr.catch) pr.catch(function(){});}else if(o.func==='pauseVideo') lv.pause();else if(o.func==='setPlaybackRate') lv.playbackRate=o.args[0];}catch(e){}return;}
   var w=vidWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}}
 function vidHello(){var n=0;(function ping(){if(vsync.ready||n++>20||!vidWin()) return;vidPost({event:'listening',id:1,channel:'widget'});setTimeout(ping,500);})();}
+/* The video plays at the clock's speed (0.5x, 0.75x, 1x or 1.25x), so the two stay lined up. */
+function vidSetRate(){vsync.rate=clk.speed;vsync.rateAt=Date.now();vidPost({event:'command',func:'setPlaybackRate',args:[clk.speed]});}
 function clockRunning(){return !!(clk.since||clk.otSince);}
-function vidSeekNow(){var m=cur();if(!m||clk.otSince) return;var mt=m.config.meta||{};if(!(mt.vs1||mt.vs2)) return;var t=vidTargetNow(m);vsync.t=t;vidPost({event:'command',func:'seekTo',args:[t,true]});}
+function vidSeekNow(){var m=cur();if(!m||clk.otSince) return;var mt=m.config.meta||{};if(!(mt.vs1||mt.vs2)) return;var t=vidTargetNow(m);vsync.t=t;vidSetRate();vidPost({event:'command',func:'seekTo',args:[t,true]});}
 function vidFollowClock(){
   if(!vsync.ready||toOpen()) return;
   var run=clockRunning();
@@ -1708,11 +1710,17 @@ window.addEventListener('message',function(e){
   var d;try{d=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(x){return;}
   if(!d||typeof d!=='object') return;
   var was=vsync.ready;vsync.ready=true;
+  if(!was) vidSetRate();
   if(!was&&clockRunning()){vsync.cmdAt=Date.now();vidSeekNow();vidPost({event:'command',func:'playVideo',args:[]});}
   var st=null;
   if(d.event==='onStateChange'&&typeof d.info==='number') st=d.info;
   else if(d.event==='infoDelivery'&&d.info&&typeof d.info.playerState==='number') st=d.info.playerState;
   if(d.event==='infoDelivery'&&d.info&&typeof d.info.currentTime==='number') vsync.t=d.info.currentTime;
+  var pr=d.info&&d.info.playbackRate;
+  if(was&&d.event==='infoDelivery'&&typeof pr==='number'&&pr!==vsync.rate&&Date.now()-(vsync.rateAt||0)>2500){
+    /* The video speed was changed in the player: the clock follows when it is one of the clock's speeds. */
+    vsync.rate=pr;if([0.5,0.75,1,1.25].indexOf(pr)<0) vidSetRate();else if(pr!==clk.speed) setSpeed(pr);
+  }
   vidState(st);
 });
 function vidState(st){
@@ -1726,6 +1734,7 @@ function vidState(st){
 (function(){var tc=toggleClock,pq=pauseQuiet,sn=startNextPeriod;
   toggleClock=function(){if(toOpen()&&!clockRunning()){flashMsg('A time out is running. Press Time out end when play restarts.');return;}tc();vidFollowClock();};
   pauseQuiet=function(){pq();vidFollowClock();};
+  var ss=setSpeed;setSpeed=function(v){ss(v);vidSetRate();};
   var ac=adjustClock;adjustClock=function(dl){var a=nowT();ac(dl);var dv=nowT()-a;if(dv) vidShiftStart(-Math.round(dv));};
   startNextPeriod=function(){sn();vidFollowClock();};})();
 function vidNudge(d){
