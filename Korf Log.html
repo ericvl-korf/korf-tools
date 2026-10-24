@@ -82,6 +82,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 .cctl .btn{min-width:3.6rem}
 .cspeed{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:2px}.cspeed .lbl{margin-right:2px}.cspeed button{font:600 .8rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.15rem .6rem;min-height:30px;cursor:pointer}.cspeed button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 body.max .cspeed{margin-top:0}
+.cboth{display:none;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;margin-top:2px}body.hasvid .cboth{display:flex}.cboth .lbl{margin-right:2px}.cboth button{font:600 .8rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.15rem .6rem;min-height:30px;cursor:pointer}.cboth button:hover{border-color:var(--accent)}
 @media (max-width:640px){
   .score{grid-template-columns:1fr 1fr;padding:12px}
   .mid{grid-column:1/-1;grid-row:2}
@@ -452,6 +453,7 @@ details>summary{transition:color .16s var(--ease)}
           <button class="btn" id="clkFwd" type="button" title="Go forward 1 second">+1 s</button>
           <button class="btn primary" id="clkNext" type="button" title="End this half. The next half is set up with the clock stopped until you press Start." hidden>End 1st half</button>
         </div>
+        <div class="cboth" id="cboth" role="group" aria-label="Move the video and the clock together"><span class="lbl">Video + clock</span><button type="button" id="clkBothBack" title="Rewind the video and the clock together by 1 second. Events after that time are removed.">−1 s</button><button type="button" id="clkBothFwd" title="Fast forward the video and the clock together by 1 second">+1 s</button></div>
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="0.75" aria-pressed="false" title="Run the clock at three quarters speed">0.75×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
       <div class="team away">
@@ -2558,6 +2560,8 @@ $('#vidBack').addEventListener('click',function(){vidNudge(-1);});
 $('#vidFwd').addEventListener('click',function(){vidNudge(1);});
 $('#bothBack').addEventListener('click',function(){vidBoth(-1);});
 $('#bothFwd').addEventListener('click',function(){vidBoth(1);});
+$('#clkBothBack').addEventListener('click',function(){vidBoth(-1);});
+$('#clkBothFwd').addEventListener('click',function(){vidBoth(1);});
 $('#clkFwd').addEventListener('click',function(){adjustClock(1);});
 $('#undo')&&$('#undo').addEventListener('click',undo);
 function setMax(on){
