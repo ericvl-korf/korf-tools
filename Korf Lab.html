@@ -1646,6 +1646,13 @@ function hlReelInfo(L){
   if(lc) parts.push(lc+(lc===1?' clip':' clips')+' can be made into a video from your file');
   i.textContent=parts.length?parts.join(' · ')+'.':'Add the video times and a YouTube link or a video file to build a reel from the filtered shots.';
   $('#hlPlayAll').disabled=!yt||RC.on;$('#hlMake').disabled=!lc||PA.on||RC.on;$('#hlSh').disabled=!sc;$('#hlSh2').disabled=!sc;
+  /* Say why a button is greyed out (tooltip on hover, also read out by screen readers). */
+  var noV=!L.some(function(z){return z.v;}),names=[];
+  L.forEach(function(z){if(z.v&&!z.file&&z.fname&&names.indexOf(z.fname)<0) names.push(z.fname);});
+  var why=function(btn,msg){var b=$(btn);if(!b) return;if(b.disabled&&msg){b.title=msg;b.setAttribute('aria-description',msg);}else{b.removeAttribute('title');b.removeAttribute('aria-description');}};
+  var base=!L.length?'No shots match the current filters.':(noV?'Fill in the video start time for each half first.':'');
+  why('#hlMake',RC.on?'A highlight video is already being made. Stop it first.':(PA.on?'Stop the YouTube play-through first.':(base||(lc?'':(names.length?'Choose the video file on this computer first. The log only remembers the file name ('+names.join(', ')+'), so pick it again each time you open the page.':'Choose a video file on this computer first.'))))); 
+  why('#hlPlayAll',RC.on?'A highlight video is being made. Stop it first.':(base||'Paste a YouTube link for the match first.'));
 }
 function hlReelMsg(t,bad){var m=$('#hlReelMsg');if(m){m.textContent=t||'';m.className='msg '+(bad?'err':'');}}
 function hlNowText(z,i,n){var x=z.x;return 'Clip '+(i+1)+' of '+n+' · '+(x.player||'Unknown shooter')+' · '+x.team+' · '+(TYPE_LABEL[x.k]||x.k)+' · '+x.oc+' · '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t));}
