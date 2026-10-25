@@ -1591,8 +1591,8 @@ function hlMount(ms){
   h+='<div class="hlreel"><h3>Highlight reel</h3><p class="note" id="hlReelInfo"></p>'+
     '<div class="hlf"><button type="button" class="btn" id="hlPlayAll">Play all on YouTube</button><button type="button" class="btn primary" id="hlMake">Make highlight video</button>'+
     '<button type="button" class="btn" id="hlSh">ffmpeg script (Windows)</button><button type="button" class="btn" id="hlSh2">ffmpeg script (Mac/Linux)</button>'+
-    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a portrait 10:16 (1200x1920) video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> Portrait 10:16 centre crop for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
-    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The Portrait 10:16 frame and Individual clips options apply to the ffmpeg script only. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
+    '<label class="note" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="hlCap" checked> Captions</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script makes a portrait 10:16 (1200x1920) video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original size."><input type="checkbox" id="hl169"> Portrait 10:16 centre crop for the ffmpeg script (Instagram)</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked, with a ball track file: the portrait crop follows the ball instead of staying in the centre. Needs the Portrait option and a ball track file."><input type="checkbox" id="hlFollow"> Crop follows the ball</label><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="A CSV file of ball positions for the same video (columns time_s and x, optionally x_norm and half).">Ball track file <input type="file" id="hlTrk" accept=".csv,text/csv"></label><button type="button" class="btn" id="hlFind" title="Finds the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded.">Find the ball in my video</button><span class="note" id="hlTrkInfo">'+hlTrkInfo()+'</span><label class="note" style="display:inline-flex;gap:6px;align-items:center" title="Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video."><input type="checkbox" id="hlInd"> Individual clips for the ffmpeg script</label><button type="button" class="btn" id="hlStop" hidden>Stop</button></div>'+
+    '<p class="note">Captions apply to both the highlight video and the ffmpeg script. The Portrait 10:16 frame, Crop follows the ball and Individual clips options apply to the ffmpeg script only. Crop follows the ball needs the Portrait option and ball positions: either click Find the ball in my video (it works through the filtered clips on this computer, which takes a few minutes, and downloads a 20 MB ball finder the first time), or load a ball track file made for the same video. Make highlight video always makes one 1280 \u00d7 720 video.</p>'+
     '<p class="msg" id="hlReelMsg" role="status"></p><div id="hlPlayer"></div></div>';
   h+='<p class="msg" id="hlMsg" role="status"></p><div class="hltbl" id="hlList"></div></section>';
   hlStopAll();$('#hlGrid').innerHTML=h;hlList();
@@ -1652,6 +1652,7 @@ function hlReelInfo(L){
   var why=function(btn,msg){var b=$(btn);if(!b) return;if(b.disabled&&msg){b.title=msg;b.setAttribute('aria-description',msg);}else{b.removeAttribute('title');b.removeAttribute('aria-description');}};
   var base=!L.length?'No shots match the current filters.':(noV?'Fill in the video start time for each half first.':'');
   why('#hlMake',RC.on?'A highlight video is already being made. Stop it first.':(PA.on?'Stop the YouTube play-through first.':(base||(lc?'':(names.length?'Choose the video file on this computer first. The log only remembers the file name ('+names.join(', ')+'), so pick it again each time you open the page.':'Choose a video file on this computer first.'))))); 
+  var fb=$('#hlFind');if(fb){fb.disabled=!DET.on&&!lc;if(fb.disabled) fb.title=base||'Choose the video file on this computer first.';else fb.title='Finds the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded.';}
   why('#hlPlayAll',RC.on?'A highlight video is being made. Stop it first.':(base||'Paste a YouTube link for the match first.'));
 }
 function hlReelMsg(t,bad){var m=$('#hlReelMsg');if(m){m.textContent=t||'';m.className='msg '+(bad?'err':'');}}
@@ -1781,11 +1782,107 @@ function rcMake(){
     }
   })();
 }
+/* Find the ball in the person's own video file, in the browser: a small ball detector (YOLOX tiny, Apache-2.0) runs with ONNX Runtime Web. The video never leaves the computer; only the 20 MB detector is downloaded, once. */
+var DET={on:false,stop:false,sess:null,ortP:null};
+function hlBallBase(){if(window.KORF_BALL_BASE) return window.KORF_BALL_BASE;return (/^https?:$/.test(location.protocol)&&/github\.io$/.test(location.hostname))?'ball/':'https://ericvl-korf.github.io/korf-tools/ball/';}
+function hlLoadDetector(){
+  if(DET.sess) return Promise.resolve(DET.sess);
+  if(DET.ortP) return DET.ortP;
+  var base=hlBallBase();
+  DET.ortP=new Promise(function(ok,no){var sc=document.createElement('script');sc.src=base+'ort.wasm.min.js';sc.onload=ok;sc.onerror=function(){no(new Error('could not download the ball finder'));};document.head.appendChild(sc);})
+  .then(function(){
+    ort.env.wasm.wasmPaths=base;ort.env.wasm.proxy=true;ort.env.wasm.numThreads=window.crossOriginIsolated?Math.min(4,navigator.hardwareConcurrency||2):1;
+    return ort.InferenceSession.create(base+'ball960.onnx',{executionProviders:['wasm']});
+  }).then(function(s){DET.sess=s;return s;},function(e){DET.ortP=null;throw e;});
+  return DET.ortP;
+}
+/* One frame: letterboxed into 960 x 544, BGR 0-255. Returns the best ball (x as 0..1 of the picture width) or null. */
+var DETC=null;
+async function hlDetect(vid){
+  var vw=vid.videoWidth,vh=vid.videoHeight,sc=Math.min(960/vw,544/vh),dw=Math.round(vw*sc),dh=Math.round(vh*sc);
+  if(!DETC){DETC=document.createElement('canvas');DETC.width=960;DETC.height=544;}
+  var g=DETC.getContext('2d',{willReadFrequently:true});g.fillStyle='rgb(114,114,114)';g.fillRect(0,0,960,544);g.drawImage(vid,0,0,dw,dh);
+  var d=g.getImageData(0,0,960,544).data,n=960*544,f=new Float32Array(3*n);
+  for(var i=0;i<n;i++){f[i]=d[4*i+2];f[n+i]=d[4*i+1];f[2*n+i]=d[4*i];}
+  var out=(await DET.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])})).out,a=out.data,N=out.dims[1],best=null;
+  for(var k=0;k<N;k++){var sco=a[6*k+4]*a[6*k+5];if(sco>=0.25&&(!best||sco>best.s)) best={x:a[6*k]/dw,s:sco};}
+  return best;
+}
+function hlSeek(vid,t){return new Promise(function(ok){var done=false,fin=function(){if(done) return;done=true;vid.removeEventListener('seeked',fin);ok();};vid.addEventListener('seeked',fin);vid.currentTime=Math.max(0,t);setTimeout(fin,8000);});}
+async function hlFind(){
+  var btn=$('#hlFind');
+  if(DET.on){DET.stop=true;return;}
+  var L=hlRows().filter(function(z){return z.v&&z.file;});
+  if(!L.length){hlReelMsg('Choose the video file and the video start times first.',true);return;}
+  DET.on=true;DET.stop=false;if(btn) btn.textContent='Stop finding the ball';
+  var groups=[],seen={};
+  L.forEach(function(z){var gi=groups.findIndex(function(g){return g.file===z.file;});if(gi<0){gi=groups.length;groups.push({file:z.file,items:[]});}
+    for(var t=Math.floor((z.v.a-1)*3)/3;t<=z.v.b+1;t+=1/3){t=Math.round(t*3)/3;if(t<0) continue;var key=gi+'|'+z.x.half+'|'+Math.round(t*3);if(seen[key]) continue;seen[key]=1;groups[gi].items.push({t:t,h:z.x.half});}});
+  var total=groups.reduce(function(s,g){return s+g.items.length;},0),done=0,found=0,pts=[],t0=Date.now(),url=null;
+  try{
+    hlReelMsg('Loading the ball finder (20 MB, downloaded once)…',false);
+    await hlLoadDetector();
+    t0=Date.now();
+    for(var gi=0;gi<groups.length&&!DET.stop;gi++){
+      var g=groups[gi];g.items.sort(function(p,q){return p.t-q.t;});
+      var vid=document.createElement('video');vid.muted=true;vid.preload='auto';vid.playsInline=true;url=URL.createObjectURL(g.file);vid.src=url;
+      await new Promise(function(ok,no){vid.onloadeddata=ok;vid.onerror=function(){no(new Error('the browser could not open '+g.file.name));};});
+      for(var q=0;q<g.items.length&&!DET.stop;q++){
+        var it=g.items[q];await hlSeek(vid,it.t);var r=await hlDetect(vid);done++;
+        if(r){found++;pts.push({t:it.t,x:Math.max(0,Math.min(1,r.x)),h:it.h});}
+        if(done%3===0||done===total){var el=(Date.now()-t0)/1000,left=Math.max(0,Math.round(el/done*(total-done)/60));hlReelMsg('Finding the ball: '+done+' of '+total+' frames · about '+(left<1?'under a minute':left+(left===1?' minute':' minutes'))+' left. Keep this tab open.',false);}
+      }
+      URL.revokeObjectURL(url);url=null;vid.removeAttribute('src');vid.load();
+    }
+    pts.sort(function(a,b){return a.t-b.t;});
+    var stopped=DET.stop;
+    if(pts.length>=2){
+      HLTRK={name:'Found in your video',pts:pts,n:pts.length};
+      var fo=$('#hlFollow');if(fo) fo.checked=true;var po=$('#hl169');if(po) po.checked=true;
+      var inf=$('#hlTrkInfo');if(inf) inf.innerHTML=hlTrkInfo();
+      hlReelMsg((stopped?'Stopped. ':'')+'Found the ball in '+found+' of '+done+' frames. Portrait 10:16 and Crop follows the ball are ticked for the ffmpeg script.',false);
+    }else hlReelMsg(stopped?'Stopped before the ball was found.':'The ball finder did not find the ball in these clips.',!stopped);
+  }catch(err){
+    hlReelMsg('Could not find the ball: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);
+  }finally{
+    if(url) URL.revokeObjectURL(url);
+    DET.on=false;DET.stop=false;var b2=$('#hlFind');if(b2) b2.textContent='Find the ball in my video';
+  }
+}
 /* ffmpeg script: cut every clip from the local file and join them */
+var HLTRK=null;
+function hlTrkInfo(){return HLTRK?esc(HLTRK.name)+': '+HLTRK.n+' ball positions':'';}
+/* Ball track CSV: columns time_s (seconds in the video) and x (pixels, 1280 wide unless frame_w is given) or x_norm (0 to 1); half (1 or 2) is optional. */
+function hlTrkParse(txt){
+  var ln=String(txt).replace(/^\uFEFF/,'').split(/\r?\n/).filter(function(l){return l.trim();});if(ln.length<2) return null;
+  var h=ln[0].split(',').map(function(c){return c.trim().toLowerCase();}),ti=h.indexOf('time_s'),xi=h.indexOf('x_norm'),xp=h.indexOf('x'),wi=h.indexOf('frame_w'),hi=h.indexOf('half');
+  if(ti<0||(xi<0&&xp<0)) return null;
+  var pts=[];
+  for(var i=1;i<ln.length;i++){var c=ln[i].split(','),t=parseFloat(c[ti]),x=xi>=0?parseFloat(c[xi]):parseFloat(c[xp])/(wi>=0&&parseFloat(c[wi])>0?parseFloat(c[wi]):1280);
+    if(isFinite(t)&&isFinite(x)) pts.push({t:t,x:Math.max(0,Math.min(1,x)),h:hi>=0?parseInt(c[hi],10)||0:0});}
+  pts.sort(function(a,b){return a.t-b.t;});
+  return pts.length?{pts:pts,n:pts.length}:null;
+}
+/* The crop x expression for one clip: the ball's position, sampled and smoothed, as a piecewise straight line in the clip's own time. */
+function hlFollowExpr(a,d,half){
+  if(!HLTRK) return '';
+  var P=HLTRK.pts.filter(function(p){return !p.h||!half||p.h===half;}).filter(function(p){return p.t>=a-1.5&&p.t<=a+d+1.5;});
+  if(P.length<2) return '';
+  var step=Math.max(0.5,d/24),n=Math.max(2,Math.round(d/step)+1),xs=[],ts=[],i,j,k;
+  for(i=0;i<n;i++){var t=Math.min(d,i*d/(n-1)),ta=a+t;ts.push(t);
+    j=0;while(j<P.length&&P[j].t<ta) j++;
+    var v=j<=0?P[0].x:(j>=P.length?P[P.length-1].x:(P[j].t===P[j-1].t?P[j].x:P[j-1].x+(P[j].x-P[j-1].x)*(ta-P[j-1].t)/(P[j].t-P[j-1].t)));
+    xs.push(v);}
+  for(k=0;k<3;k++){xs=xs.map(function(v,q){var s=0,c=0;for(var w=-2;w<=2;w++){var z=xs[q+w];if(z!=null){s+=z;c++;}}return s/c;});}
+  var f=function(v){return v.toFixed(4);},e=[];
+  for(i=0;i<n-1;i++) e.push('gte(t,'+ts[i].toFixed(3)+')*lt(t,'+ts[i+1].toFixed(3)+')*('+f(xs[i])+'+('+f(xs[i+1]-xs[i])+')*(t-'+ts[i].toFixed(3)+')/'+(ts[i+1]-ts[i]).toFixed(3)+')');
+  e.push('gte(t,'+ts[n-1].toFixed(3)+')*'+f(xs[n-1]));
+  return "x='min(max(("+e.join('+')+")*iw-600,0),iw-1200)':y=0";
+}
 function hlScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   var nl=win?'\r\n':'\n',o=[],base=hlReelName(L),out=base+'.mp4',ind=!!($('#hlInd')&&$('#hlInd').checked),dir=ind?base+'_clips':'_hl_tmp';
-  var port=!!($('#hl169')&&$('#hl169').checked),cap=!!($('#hlCap')&&$('#hlCap').checked);
+  var port=!!($('#hl169')&&$('#hl169').checked),follow=!!($('#hlFollow')&&$('#hlFollow').checked&&HLTRK),cap=!!($('#hlCap')&&$('#hlCap').checked);
   var frame=port?'scale=1200:1920:force_original_aspect_ratio=increase,crop=1200:1920,setsar=1,fps=25':'';
   var fs1=port?48:36,fs2=port?40:30,y1=port?'h-230':'h-110',y2=port?'h-160':'h-62';
   var q=function(f){return '"'+String(f).replace(/"/g,'')+'"';};
@@ -1803,7 +1900,8 @@ function hlScript(win){
     var a=Math.max(0,z.v.a),d=Math.max(1,z.v.b-a),x=z.x;
     var fn=ind?n+'_'+safe(x.player||'Unknown')+'_'+safe(TYPE_LABEL[x.k]||x.k)+'_'+safe(x.oc)+'_'+(x.half===1?'1st':'2nd')+'_'+safe(x.r.time||mmss(x.s.t))+'.mp4':'clip_'+n+'.mp4';
     names.push(fn);
-    var chain=[];if(frame) chain.push(frame);
+    var fr=frame,xe=(port&&follow)?hlFollowExpr(a,d,x.half):'';if(xe) fr='scale=1200:1920:force_original_aspect_ratio=increase,crop=1200:1920:'+xe+',setsar=1,fps=25';
+    var chain=[];if(fr) chain.push(fr);
     if(cap){
       var t1=ce((x.player||'Unknown shooter')+' - '+x.team),t2=ce((TYPE_LABEL[x.k]||x.k)+' - '+x.oc+' - '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t)));
       chain.push('drawtext='+ff+"text='"+t1+"':fontsize="+fs1+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=10:x=(w-text_w)/2:y="+y1);
@@ -1843,12 +1941,14 @@ document.addEventListener('input',function(e){
 });
 document.addEventListener('change',function(e){
   var t=e.target;if(!t||!t.closest||!t.closest('#hlGrid')) return;
+  if(t.id==='hlTrk'){var tf=t.files&&t.files[0];if(!tf) return;var rd=new FileReader();rd.onload=function(){var r=hlTrkParse(rd.result);if(r){r.name=tf.name;HLTRK=r;var fo=$('#hlFollow');if(fo) fo.checked=true;var po=$('#hl169');if(po) po.checked=true;hlReelMsg('Loaded '+r.n+' ball positions from '+tf.name+'. Portrait 10:16 and Crop follows the ball are ticked for the ffmpeg script.',false);}else{HLTRK=null;hlReelMsg('That file has no ball positions. It needs the columns time_s and x (or x_norm).',true);}var inf=$('#hlTrkInfo');if(inf) inf.innerHTML=hlTrkInfo();};rd.readAsText(tf);return;}
   if(t.dataset&&t.dataset.f){var mm=t.closest('[data-m]');if(mm&&HL.off[mm.dataset.m]){HL.off[mm.dataset.m][t.dataset.f]=(t.files&&t.files[0])||null;hlMount(HL.ms);}return;}
   if(t.id==='hlHf') HL.half=t.value;else if(t.id==='hlTm') HL.team=t.value;else if(t.id==='hlDv') HL.div=t.value;else if(t.id==='hlGn') HL.gen=t.value;else if(t.id==='hlPl') HL.player=t.value;else if(t.id==='hlTy') HL.type=t.value;else if(t.id==='hlOu') HL.out=t.value;else if(t.id==='hlAt') HL.att=t.value;else return;
   hlList();
 });
 document.addEventListener('click',function(e){
-  var b=e.target&&e.target.closest?e.target.closest('#hlSave,#hlCopy,#hlPlayAll,#hlMake,#hlSh,#hlSh2,#hlStop'):null;if(!b) return;
+  var b=e.target&&e.target.closest?e.target.closest('#hlSave,#hlCopy,#hlPlayAll,#hlMake,#hlSh,#hlSh2,#hlStop,#hlFind'):null;if(!b) return;
+  if(b.id==='hlFind'){hlFind();return;}
   if(b.id==='hlPlayAll'){paStart();return;}
   if(b.id==='hlMake'){rcMake();return;}
   if(b.id==='hlSh'){hlSaveScript(true);return;}

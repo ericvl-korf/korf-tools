@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-25 10:03 (Europe/London)**: New feature today:
+  - **Find the ball in my video (Korf Lab):** a ball finder that runs in your browser, on your computer, works through the filtered clips in your own video file and finds the ball. With Portrait 10:16 and **Crop follows the ball** ticked, the ffmpeg script then keeps the ball in the portrait frame. Nothing is uploaded; a 20 MB ball finder (YOLOX tiny, Apache-2.0) is downloaded once. Ball track CSV files still work too.
+
 - **2026-10-24 23:58 (Europe/London)**: New feature today:
   - **Why a button is greyed out (Korf Lab):** hover over **Make highlight video** or **Play all on YouTube** when it is disabled to see what is missing, such as choosing the video file again after reopening Korf Lab, or the video start times.
 
