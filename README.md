@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-25 11:30 (Europe/London)**: Fix today:
+  - **Find the ball in my video (Korf Lab):** the ball finder now loads when Korf Lab is opened from GitHub Pages (it failed with a "Failed to resolve module specifier" message). If Crop follows the ball is ticked but no ball positions are loaded, saving the script or recording now says so instead of quietly centring the crop.
+
 - **2026-10-25 11:08 (Europe/London)**: New feature today:
   - **Penalty and free pass clips (Korf Lab):** these shots are logged at the referee's call, but taken seconds later. Their clips are now longer (marked ~), and **Find the ball in my video** finds the exact moment of the shot from the ball's first big arc and moves the clip there (marked ✓).
 

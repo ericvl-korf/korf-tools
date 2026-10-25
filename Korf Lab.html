@@ -1734,7 +1734,7 @@ function rcMake(){
   var cap=$('#hlCap').checked,vid=document.createElement('video'),cv=document.createElement('canvas'),urls=new Map(),chunks=[],timer=null,ac=null,rec=null,cur=null;
   vid.playsInline=true;vid.preload='auto';vid.controls=false;
   $('#hlPlayer').innerHTML='<div class="hlpv" id="hlPV"></div><p class="note" id="hlNow"></p>';$('#hlPV').appendChild(cv);
-  $('#hlStop').hidden=false;hlReelMsg('Recording runs at normal playback speed. Keep this tab open and visible until it finishes.',false);
+  $('#hlStop').hidden=false;hlReelMsg('Recording runs at normal playback speed. Keep this tab open and visible until it finishes.'+(($('#hlFollow')&&$('#hlFollow').checked&&!HLTRK&&$('#hl169')&&$('#hl169').checked)?' Crop follows the ball is ticked but no ball positions are loaded, so the crop stays in the centre.':''),false);
   var port=!!($('#hl169')&&$('#hl169').checked),W=port?720:1280,H=port?1152:720;cv.width=W;cv.height=H;
   var g=cv.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,W,H);
   function draw(){
@@ -1799,7 +1799,10 @@ function rcMake(){
 }
 /* Find the ball in the person's own video file, in the browser: a small ball detector (YOLOX tiny, Apache-2.0) runs with ONNX Runtime Web. The video never leaves the computer; only the 20 MB detector is downloaded, once. */
 var DET={on:false,stop:false,sess:null,ortP:null};
-function hlBallBase(){if(window.KORF_BALL_BASE) return window.KORF_BALL_BASE;return (/^https?:$/.test(location.protocol)&&/github\.io$/.test(location.hostname))?'ball/':'https://ericvl-korf.github.io/korf-tools/ball/';}
+function hlBallBase(){
+  var raw=window.KORF_BALL_BASE||((/^https?:$/.test(location.protocol)&&/github\.io$/.test(location.hostname))?'ball/':'https://ericvl-korf.github.io/korf-tools/ball/');
+  try{return new URL(raw,location.href).href;}catch(e){return raw;}   /* ONNX Runtime needs a full address for its files */
+}
 function hlLoadDetector(){
   if(DET.sess) return Promise.resolve(DET.sess);
   if(DET.ortP) return DET.ortP;
@@ -1987,7 +1990,8 @@ function hlSaveScript(win){
   var L=hlRows().filter(function(z){return z.v&&z.fname;});
   if(!L.length){hlReelMsg('No clips with a video file name and start times.',true);return;}
   var base=hlReelName(L);hlSaveFile(new Blob([hlScript(win)],{type:'text/plain'}),base+(win?'.bat':'.sh'));
-  hlReelMsg('Saved '+base+(win?'.bat':'.sh')+' ('+L.length+' clips). Put it in the folder with your video file and run it to get '+(($('#hlInd')&&$('#hlInd').checked)?'the clips in the folder '+base+'_clips.':base+'.mp4. Only the merged file is kept.'),false);
+  var noTrk=!!($('#hlFollow')&&$('#hlFollow').checked&&!HLTRK&&$('#hl169')&&$('#hl169').checked);
+  hlReelMsg('Saved '+base+(win?'.bat':'.sh')+' ('+L.length+' clips). Put it in the folder with your video file and run it to get '+(($('#hlInd')&&$('#hlInd').checked)?'the clips in the folder '+base+'_clips.':base+'.mp4. Only the merged file is kept.')+(noTrk?' Crop follows the ball is ticked, but no ball positions are loaded yet, so the crop stays in the centre. Click Find the ball in my video first.':''),noTrk);
 }
 function hlMsg(t,bad){var m=$('#hlMsg');if(m){m.textContent=t;m.className='msg '+(bad?'err':'');}}
 function setPage(p){
