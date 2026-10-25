@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-25 20:55 (Europe/London)**: New feature today:
+  - **Steps to make a highlight reel (Korf Lab):** a short checklist at the top of the Highlights page ticks off each step (pick the shots, add the video, find the ball, choose the look, make it) and highlights the next one. Also: long captions in the ffmpeg script now shrink to fit the picture.
+
 - **2026-10-25 11:30 (Europe/London)**: Fix today:
   - **Find the ball in my video (Korf Lab):** the ball finder now loads when Korf Lab is opened from GitHub Pages (it failed with a "Failed to resolve module specifier" message). If Crop follows the ball is ticked but no ball positions are loaded, saving the script or recording now says so instead of quietly centring the crop.
 

@@ -56,6 +56,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline
 .pill{display:inline-flex;align-items:center;gap:.4rem;font-size:.8rem;font-weight:600;padding:.15rem .6rem;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);white-space:nowrap}
 .pill.ok{color:var(--ok);border-color:var(--ok)} .pill.bad{color:var(--danger);border-color:var(--danger)} .pill.warn{color:var(--warn);border-color:var(--warn)}
 .note{margin:0;color:var(--muted);font-size:.88rem}
+.hlsteps{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:10px 14px;margin:0 0 4px}.hlsteps summary{cursor:pointer;font-weight:650;font-size:.95rem}.hlsteps ol{list-style:none;margin:10px 0 2px;padding:0;display:flex;flex-direction:column;gap:8px}.hlsteps li{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:start;font-size:.9rem;line-height:1.35}.hlsteps .ic{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:inline-grid;place-items:center;font-size:.75rem;font-weight:700;color:var(--muted)}.hlsteps li.done .ic{background:var(--accent);border-color:var(--accent);color:#fff}.hlsteps li.next .ic{border-color:var(--accent);color:var(--accent)}.hlsteps li.next{font-weight:600}.hlsteps .tag{font-size:.72rem;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:0 7px;margin-left:6px;white-space:nowrap}.hlsteps .sub{display:block;color:var(--muted);font-weight:400;font-size:.84rem}
 .msg{margin:0;font-size:.9rem;font-weight:500}
 .msg.bad{color:var(--danger)} .msg.ok{color:var(--ok)}
 ul.src{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
@@ -1565,6 +1566,7 @@ function hlMount(ms){
   var hasAtt=HL.rows.some(function(x){return x.an!=null;});
   var opt=function(v,l,cur){return '<option value="'+esc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+esc(l)+'</option>';};
   var h='<section class="card wide"><div class="card-head"><div class="ch"><h2>Highlights list</h2><span class="sub">Every logged shot, filtered. Add the video times to get clip start and end times and YouTube links.</span></div></div>';
+  h+='<details class="hlsteps" open><summary>Steps to make a highlight reel</summary><ol id="hlSteps"></ol></details>';
   h+='<div class="hlf">';
   h+='<div class="grp"><label class="lbl" for="hlHf">Half</label><select id="hlHf">'+opt('','Whole match',HL.half)+opt('1','1st half',HL.half)+opt('2','2nd half',HL.half)+'</select></div>';
   if(tms.length>1) h+='<div class="grp"><label class="lbl" for="hlTm">Team</label><select id="hlTm">'+opt('','Both teams',HL.team)+tms.map(function(t){return opt(t,t,HL.team);}).join('')+'</select></div>';
@@ -1642,7 +1644,27 @@ function hlText(){
 /* ---------- highlight reel: YouTube play-all, local video file reel, ffmpeg script ---------- */
 var PA={on:false,i:0,list:[],id:'',armed:false,ready:false,adv:0},RC={on:false,stop:false};
 var YTO='https://www.youtube.com';
+function hlSteps(L){
+  var el=$('#hlSteps');if(!el) return;
+  var vOk=L.some(function(z){return z.v;}),fOk=L.some(function(z){return z.v&&(z.file||z.v.id);}),names=[];
+  L.forEach(function(z){if(z.v&&!z.file&&!z.v.id&&z.fname&&names.indexOf(z.fname)<0) names.push(z.fname);});
+  var pen=L.some(function(z){return z.x.k==='penalty'||z.x.k==='freepass';});
+  var s1=L.length>0,s2=vOk&&fOk,s3=!!(HLTRK||SHOTDT.size),
+      nx=!s1?1:(!s2?2:5);
+  var steps=[
+    {t:'Pick the shots',d:s1?(L.length+(L.length===1?' shot':' shots')+' selected. Narrow them down with the filters above (half, team, shooter, shot type, outcome), or keep them all.'):'No shots match the filters above. Change a filter.',ok:s1},
+    {t:'Add the video',d:!vOk?'Fill in the video time at which each half starts, and add a YouTube link or choose your video file(s) below.':(!fOk?'Choose your video file'+(names.length?' (the log only remembers its name, '+names.join(', ')+', so choose it again each time you open Korf Lab).':' below, or paste a YouTube link.'):'Video and start times are set.'),ok:s2},
+    {t:'Find the ball in my video',opt:1,d:'Needed for the exact moment of penalty and free pass shots'+(pen?' (some are in your selection)':'')+' and for the crop that follows the ball. Do it after steps 1 and 2, and again if you change the shots. Works on your computer and takes a few minutes; keep the tab open.'+(s3?' Done.':''),ok:s3},
+    {t:'Choose the look',opt:1,d:'Tick Captions, Portrait 10:16 (Instagram) and Crop follows the ball as you like.',ok:false,info:1},
+    {t:'Make it',d:'Click Make highlight video (records in the browser; keep the tab open and visible), or an ffmpeg script (faster: save it, put it next to your video file and run it), or Play all on YouTube.',ok:false}
+  ];
+  el.innerHTML=steps.map(function(st,i){
+    var cls=st.ok?'done':((i+1)===nx?'next':'');
+    return '<li class="'+cls+'"><span class="ic" aria-hidden="true">'+(st.ok?'\u2713':(i+1))+'</span><span>'+esc(st.t)+(st.opt?'<span class="tag">optional</span>':'')+(st.ok?'<span class="tag">done</span>':'')+'<span class="sub">'+esc(st.d)+'</span></span></li>';
+  }).join('');
+}
 function hlReelInfo(L){
+  try{hlSteps(L);}catch(e){}
   var yt=L.filter(function(z){return z.v&&z.v.id;}).length,lc=L.filter(function(z){return z.v&&z.file;}).length,sc=L.filter(function(z){return z.v&&z.fname;}).length;
   var i=$('#hlReelInfo');if(!i) return;
   var parts=[];
@@ -1972,8 +1994,10 @@ function hlScript(win){
     var chain=[];if(fr) chain.push(fr);
     if(cap){
       var t1=ce((x.player||'Unknown shooter')+' - '+x.team),t2=ce((TYPE_LABEL[x.k]||x.k)+' - '+x.oc+' - '+(x.half===1?'1st':'2nd')+' half '+(x.r.time||mmss(x.s.t)));
-      chain.push('drawtext='+ff+"text='"+t1+"':fontsize="+fs1+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=10:x=(w-text_w)/2:y="+y1);
-      chain.push('drawtext='+ff+"text='"+t2+"':fontsize="+fs2+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8:x=(w-text_w)/2:y="+y2);
+      /* shrink long captions so they fit the width of the picture */
+      var wmax=(port?1200:1280)-70,fit=function(t,sz){var n=t.replace(/\\/g,'').length;return Math.max(18,Math.min(sz,Math.floor(wmax/(0.58*Math.max(1,n)))));};
+      chain.push('drawtext='+ff+"text='"+t1+"':fontsize="+fit(t1,fs1)+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=10:x=(w-text_w)/2:y="+y1);
+      chain.push('drawtext='+ff+"text='"+t2+"':fontsize="+fit(t2,fs2)+":fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=8:x=(w-text_w)/2:y="+y2);
     }
     var vf=chain.length?' -vf "'+chain.join(',')+'"':'';
     o.push((win?'rem ':'# ')+ct((x.player||'Unknown shooter')+' - '+(TYPE_LABEL[x.k]||x.k)+' - '+x.oc));
