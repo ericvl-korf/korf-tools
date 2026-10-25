@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-25 11:08 (Europe/London)**: New feature today:
+  - **Penalty and free pass clips (Korf Lab):** these shots are logged at the referee's call, but taken seconds later. Their clips are now longer (marked ~), and **Find the ball in my video** finds the exact moment of the shot from the ball's first big arc and moves the clip there (marked ✓).
+
 - **2026-10-25 10:09 (Europe/London)**: New feature today:
   - **Portrait and ball-following in Make highlight video (Korf Lab):** with **Portrait 10:16** ticked, the in-browser Make highlight video now makes a 720 × 1152 portrait video, and with **Crop follows the ball** the window follows the ball (after **Find the ball in my video** or a ball track file). Long captions shrink to fit.
 

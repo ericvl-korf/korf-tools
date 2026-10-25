@@ -1522,13 +1522,17 @@ function hlSpans(m){
   });
   m._hlsp={spans:out,idx:idx};return m._hlsp;
 }
-function hlVid(x){
+/* Penalties and free passes are logged when the referee calls them; the shot is taken later. SHOTDT holds the measured delay (from the ball finder) per shot; until it is known, a typical delay is used and the clip is made longer. */
+var SHOTDT=new Map();
+function hlShotDt(x){if(SHOTDT.has(x.r)) return {dt:SHOTDT.get(x.r),known:true};return {dt:x.k==='penalty'?4:(x.k==='freepass'?2:0),known:false};}
+function hlVid(x,raw){
   var o=HL.off[x.m.id];if(!o) return null;
   var base=hlParse(x.half===1?o.h1:o.h2);if(base==null) return null;
   var el=Math.max(0,x.s.t-(x.half-1)*x.m.half)+num(x.r.extra_time_s);
   var sp=hlSpans(x.m),si=sp.idx.get(x.r),add=0;
   if(si!=null) sp.spans.forEach(function(z){if(z.half===x.half&&z.i<si) add+=z.dur;});
-  var t=base+el+add;return {t:t,a:Math.max(0,t-HL.pre),b:t+HL.post,id:hlYt(x.half===2&&o.url2?o.url2:o.url)};
+  var t=base+el+add,sd=raw?{dt:0,known:true}:hlShotDt(x);t+=sd.dt;
+  return {t:t,a:Math.max(0,t-HL.pre),b:t+HL.post+((!sd.known&&(x.k==='penalty'||x.k==='freepass'))?3:0),id:hlYt(x.half===2&&o.url2?o.url2:o.url),moved:sd.dt,found:sd.known&&(x.k==='penalty'||x.k==='freepass')};
 }
 function hlFiltered(){
   return HL.rows.filter(function(x){
@@ -1616,7 +1620,7 @@ function hlList(){
   el.innerHTML='<table><thead><tr>'+head.map(function(t){return '<th>'+t+'</th>';}).join('')+'</tr></thead><tbody>'+shown.map(function(q){
     var x=q.x,r=x.r;
     return '<tr><td>'+esc(mShort(x.m,cut(x.m.name,14)))+'</td><td>'+(x.half===1?'1st':'2nd')+'</td><td>'+esc(r.time||mmss(x.s.t))+'</td><td>'+esc(x.team)+'</td><td>'+esc(x.player||'–')+'</td><td>'+esc(TYPE_LABEL[x.k]||x.k)+'</td><td>'+esc(x.oc)+'</td><td>'+(x.an==null?'–':x.an+(x.multi?' · '+x.ns+' shots':''))+'</td>'+
-      (anyV?'<td>'+(q.v?hlClock(q.v.a)+'–'+hlClock(q.v.b):'')+'</td><td>'+(q.link?'<a href="'+esc(q.link)+'" target="_blank" rel="noopener noreferrer">Open</a>':'')+'</td>':'')+'</tr>';
+      (anyV?'<td>'+(q.v?hlClock(q.v.a)+'–'+hlClock(q.v.b)+(q.v.found?' <span title="The shot moment was found with the ball finder: '+q.v.moved.toFixed(1)+' s after the referee call.">✓</span>':(q.x.k==='penalty'||q.x.k==='freepass'?' <span title="Estimated: the shot is taken some seconds after the referee call. Click Find the ball in my video to find the exact moment.">~</span>':'')):'')+'</td><td>'+(q.link?'<a href="'+esc(q.link)+'" target="_blank" rel="noopener noreferrer">Open</a>':'')+'</td>':'')+'</tr>';
   }).join('')+'</tbody></table>'+(L.length>shown.length?'<p class="note">Showing the first '+shown.length+'. The CSV has all '+L.length+'.</p>':'');
 }
 function hlCsv(){
@@ -1816,48 +1820,88 @@ async function hlDetect(vid){
   var d=g.getImageData(0,0,960,544).data,n=960*544,f=new Float32Array(3*n);
   for(var i=0;i<n;i++){f[i]=d[4*i+2];f[n+i]=d[4*i+1];f[2*n+i]=d[4*i];}
   var out=(await DET.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])})).out,a=out.data,N=out.dims[1],best=null;
-  for(var k=0;k<N;k++){var sco=a[6*k+4]*a[6*k+5];if(sco>=0.25&&(!best||sco>best.s)) best={x:a[6*k]/dw,s:sco};}
+  for(var k=0;k<N;k++){var sco=a[6*k+4]*a[6*k+5];if(sco>=0.25&&(!best||sco>best.s)) best={x:a[6*k]/dw,y:a[6*k+1]/dh,s:sco};}
   return best;
 }
 function hlSeek(vid,t){return new Promise(function(ok){var done=false,fin=function(){if(done) return;done=true;vid.removeEventListener('seeked',fin);ok();};vid.addEventListener('seeked',fin);vid.currentTime=Math.max(0,t);setTimeout(fin,8000);});}
+/* The first big arc in a series of ball positions (the ball going high and coming down): returns the time of its top, or null. y is 0 at the top of the picture. */
+function hlFirstApex(pts,t0,t1){
+  var P=pts.filter(function(p){return p.t>=t0&&p.t<=t1&&p.y!=null;});if(P.length<4) return null;
+  var step=1/3,n=Math.floor((t1-t0)/step)+1,ys=[],i,j,k;
+  for(i=0;i<n;i++){var t=t0+i*step,a=null,b=null;
+    for(j=0;j<P.length;j++){if(P[j].t<=t) a=P[j];if(P[j].t>=t){b=P[j];break;}}
+    var v=null;if(a&&b&&b.t-a.t<=1.01) v=(b.t===a.t)?a.y:a.y+(b.y-a.y)*(t-a.t)/(b.t-a.t);
+    ys.push(v);}
+  for(i=1;i<n-1;i++){
+    if(ys[i]==null) continue;
+    var lm=true;for(j=Math.max(0,i-2);j<=Math.min(n-1,i+2);j++){if(ys[j]!=null&&ys[j]<ys[i]) lm=false;}
+    if(!lm) continue;
+    var L=ys[i],R=ys[i];
+    for(k=i;k>=0&&(ys[k]==null||ys[k]>=ys[i]);k--){if(ys[k]!=null) L=Math.max(L,ys[k]);}
+    for(k=i;k<n&&(ys[k]==null||ys[k]>=ys[i]);k++){if(ys[k]!=null) R=Math.max(R,ys[k]);}
+    if(Math.min(L,R)-ys[i]>=0.25) return t0+i*step;
+  }
+  return null;
+}
 async function hlFind(){
   var btn=$('#hlFind');
   if(DET.on){DET.stop=true;return;}
-  var L=hlRows().filter(function(z){return z.v&&z.file;});
-  if(!L.length){hlReelMsg('Choose the video file and the video start times first.',true);return;}
+  var L0=hlRows().filter(function(z){return z.v&&z.file;});
+  if(!L0.length){hlReelMsg('Choose the video file and the video start times first.',true);return;}
   DET.on=true;DET.stop=false;if(btn) btn.textContent='Stop finding the ball';
-  var groups=[],seen={};
-  L.forEach(function(z){var gi=groups.findIndex(function(g){return g.file===z.file;});if(gi<0){gi=groups.length;groups.push({file:z.file,items:[]});}
-    for(var t=Math.floor((z.v.a-1)*3)/3;t<=z.v.b+1;t+=1/3){t=Math.round(t*3)/3;if(t<0) continue;var key=gi+'|'+z.x.half+'|'+Math.round(t*3);if(seen[key]) continue;seen[key]=1;groups[gi].items.push({t:t,h:z.x.half});}});
-  var total=groups.reduce(function(s,g){return s+g.items.length;},0),done=0,found=0,pts=[],t0=Date.now(),url=null;
+  var pts=[],seen={},vids=new Map(),files=[],done=0,found=0,total=0,t0=Date.now(),label='';
+  function items(list,range){
+    var out=[];
+    list.forEach(function(z){var r=range(z),fi=files.indexOf(z.file);if(fi<0){fi=files.length;files.push(z.file);}
+      for(var t=Math.floor(r[0]*3)/3;t<=r[1];t+=1/3){t=Math.round(t*3)/3;if(t<0) continue;var key=fi+'|'+z.x.half+'|'+Math.round(t*3);if(seen[key]) continue;seen[key]=1;out.push({file:z.file,t:t,h:z.x.half});}});
+    return out;
+  }
+  async function scan(list){
+    var byFile=new Map();list.forEach(function(it){if(!byFile.has(it.file)) byFile.set(it.file,[]);byFile.get(it.file).push(it);});
+    total+=list.length;
+    for(var ent of byFile){
+      if(DET.stop) break;
+      var file=ent[0],arr=ent[1].sort(function(a,b){return a.t-b.t;}),vv=vids.get(file);
+      if(!vv){var u=URL.createObjectURL(file),vid=document.createElement('video');vid.muted=true;vid.preload='auto';vid.playsInline=true;vid.src=u;
+        await new Promise(function(ok,no){vid.onloadeddata=ok;vid.onerror=function(){no(new Error('the browser could not open '+file.name));};});
+        vv={vid:vid,url:u};vids.set(file,vv);}
+      for(var q=0;q<arr.length&&!DET.stop;q++){
+        var it=arr[q];await hlSeek(vv.vid,it.t);var r=await hlDetect(vv.vid);done++;
+        if(r){found++;pts.push({t:it.t,x:Math.max(0,Math.min(1,r.x)),y:r.y,h:it.h});}
+        if(done%3===0||done===total){var el=(Date.now()-t0)/1000,left=Math.max(0,Math.round(el/done*(total-done)/60));hlReelMsg(label+': '+done+' of '+total+' frames · about '+(left<1?'under a minute':left+(left===1?' minute':' minutes'))+' left. Keep this tab open.',false);}
+      }
+    }
+  }
+  var shotsFound=0,shotsTotal=0;
   try{
     hlReelMsg('Loading the ball finder (20 MB, downloaded once)…',false);
     await hlLoadDetector();
     t0=Date.now();
-    for(var gi=0;gi<groups.length&&!DET.stop;gi++){
-      var g=groups[gi];g.items.sort(function(p,q){return p.t-q.t;});
-      var vid=document.createElement('video');vid.muted=true;vid.preload='auto';vid.playsInline=true;url=URL.createObjectURL(g.file);vid.src=url;
-      await new Promise(function(ok,no){vid.onloadeddata=ok;vid.onerror=function(){no(new Error('the browser could not open '+g.file.name));};});
-      for(var q=0;q<g.items.length&&!DET.stop;q++){
-        var it=g.items[q];await hlSeek(vid,it.t);var r=await hlDetect(vid);done++;
-        if(r){found++;pts.push({t:it.t,x:Math.max(0,Math.min(1,r.x)),h:it.h});}
-        if(done%3===0||done===total){var el=(Date.now()-t0)/1000,left=Math.max(0,Math.round(el/done*(total-done)/60));hlReelMsg('Finding the ball: '+done+' of '+total+' frames · about '+(left<1?'under a minute':left+(left===1?' minute':' minutes'))+' left. Keep this tab open.',false);}
-      }
-      URL.revokeObjectURL(url);url=null;vid.removeAttribute('src');vid.load();
+    /* 1. Penalties and free passes: the shot comes after the referee's call, so look for the ball's first big arc after it. */
+    var PF=L0.filter(function(z){return z.x.k==='penalty'||z.x.k==='freepass';});
+    if(PF.length){
+      label='Finding the penalty and free pass shots';
+      var raw=function(z){return hlVid(z.x,true).t;};
+      await scan(items(PF,function(z){var r=raw(z);return [r-1,r+(z.x.k==='penalty'?16:8)];}));
+      PF.forEach(function(z){shotsTotal++;var r=raw(z),a=hlFirstApex(pts.filter(function(p){return p.h===z.x.half;}),r-1,r+(z.x.k==='penalty'?16:8));if(a!=null){SHOTDT.set(z.x.r,Math.max(-1,a-r));shotsFound++;}});
     }
+    /* 2. Follow the ball through the clips (now at the right times). */
+    label='Following the ball in the clips';
+    if(!DET.stop){var L1=hlRows().filter(function(z){return z.v&&z.file;});await scan(items(L1,function(z){return [z.v.a-1,z.v.b+1];}));}
     pts.sort(function(a,b){return a.t-b.t;});
-    var stopped=DET.stop;
+    var stopped=DET.stop,sm=shotsTotal?' Shot moment found for '+shotsFound+' of '+shotsTotal+' penalties and free passes.':'';
     if(pts.length>=2){
       HLTRK={name:'Found in your video',pts:pts,n:pts.length};
       var fo=$('#hlFollow');if(fo) fo.checked=true;var po=$('#hl169');if(po) po.checked=true;
       var inf=$('#hlTrkInfo');if(inf) inf.innerHTML=hlTrkInfo();
-      hlReelMsg((stopped?'Stopped. ':'')+'Found the ball in '+found+' of '+done+' frames. Portrait 10:16 and Crop follows the ball are ticked for the ffmpeg script.',false);
+      hlReelMsg((stopped?'Stopped. ':'')+'Found the ball in '+found+' of '+done+' frames.'+sm+' Portrait 10:16 and Crop follows the ball are ticked for the portrait video.',false);
     }else hlReelMsg(stopped?'Stopped before the ball was found.':'The ball finder did not find the ball in these clips.',!stopped);
   }catch(err){
     hlReelMsg('Could not find the ball: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);
   }finally{
-    if(url) URL.revokeObjectURL(url);
+    vids.forEach(function(v){try{URL.revokeObjectURL(v.url);v.vid.removeAttribute('src');v.vid.load();}catch(e){}});
     DET.on=false;DET.stop=false;var b2=$('#hlFind');if(b2) b2.textContent='Find the ball in my video';
+    try{hlList();}catch(e){}
   }
 }
 /* ffmpeg script: cut every clip from the local file and join them */
