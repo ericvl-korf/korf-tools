@@ -231,6 +231,7 @@ table.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-num
 #log .kids .row:last-child{border-bottom:0}
 #log .empty{padding:.8rem .2rem;color:var(--muted)}
 
+.chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}#chkMsg.bad,#chk .bad{color:var(--danger)}
 details.card summary{cursor:pointer;font:700 1.15rem var(--f-display);letter-spacing:.06em;text-transform:uppercase}
 .exp{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .exp textarea{width:100%;min-height:9rem;padding:.5rem;font:400 .8rem ui-monospace,Menlo,Consolas,monospace;resize:vertical}
@@ -507,6 +508,26 @@ details>summary{transition:color .16s var(--ease)}
           </div>
           <ul id="log"></ul>
         </section>
+        <details class="card" id="chk">
+          <summary>Check times against the video</summary>
+          <div class="exp">
+            <p class="hint">Works from the match video file on this computer; the video is not uploaded. It only changes event times when you apply the result, and the original times are kept so you can restore them.</p>
+            <div class="chkfiles"><label class="lbl" for="chkF1" id="chkL1">Video file</label><input type="file" id="chkF1" accept="video/*"><span id="chkN1" class="fnm"></span>
+              <label class="lbl" for="chkF2" id="chkL2">2nd half video file</label><input type="file" id="chkF2" accept="video/*"><span id="chkN2" class="fnm"></span></div>
+            <p id="chkNeed" class="bad" hidden></p>
+            <div class="chkstep"><span class="lbl">1. Re-time the log</span>
+              <p class="hint">For a log whose times drift from the video. The camera pans with the play, and the logged ball positions move along the court: matching the two over the whole half finds the offset, including steps where the clock was stopped. Reads the whole half (several minutes).</p>
+              <div class="row-actions"><button class="btn" id="rtGo" type="button">Find the video offset</button><button class="btn" id="rtApply" type="button" hidden>Apply re-timing</button></div>
+              <div id="rtOut"></div></div>
+            <div class="chkstep"><span class="lbl">2. Suggest shot times</span>
+              <p class="hint">Finds the ball in the video around each shot and proposes the time of the top of its flight. Penalties and free passes are logged at the referee's call, so their suggestion is the time of the shot that follows. You choose which suggestions to apply.</p>
+              <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each); otherwise only penalties and free passes</label>
+              <div class="row-actions"><button class="btn" id="sgGo" type="button">Look for shot times</button><button class="btn" id="sgApply" type="button" hidden>Apply ticked times</button></div>
+              <div id="sgOut"></div></div>
+            <p id="chkMsg" role="status"></p>
+            <div class="row-actions"><button class="btn sm" id="chkRestore" type="button" hidden>Restore original times</button></div>
+          </div>
+        </details>
         <details class="card" id="exp">
           <summary>Export and import</summary>
           <div class="exp">
@@ -859,6 +880,7 @@ function normEvent(e,cfg,i,fresh){
   if(!isFinite(t)||t<0) t=i*10;
   var o={id:(fresh||!e.id)?uid():String(e.id),t:t,ts:Number(e.ts)||Date.now(),team:(e.team==='H'||e.team==='A')?e.team:null};
   if(e.ot!=null&&e.ot!==''&&isFinite(Number(e.ot))&&Number(e.ot)>=0) o.ot=Math.floor(Number(e.ot));
+  if(e.t0!=null&&e.t0!==''&&isFinite(Number(e.t0))&&Number(e.t0)>=0) o.t0=Math.floor(Number(e.t0));
   function xy(k1,k2){var x=Number(e[k1]),y=Number(e[k2]);if(!isFinite(x)||!isFinite(y)) return null;return [rd2(clamp(x,0,L)),rd2(clamp(y,0,H))];}
   if(ty==='pass'){
     var a=xy('x','y'),b=xy('x2','y2');
@@ -1257,7 +1279,7 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s','time_original_s'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
@@ -1266,7 +1288,7 @@ function toCSV(m){
     return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,evClock(e),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg),[e.vt==null?'':e.vt]);
+      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg),[e.vt==null?'':e.vt,e.t0==null?'':e.t0]);
   });
   /* Starting line-up: one row per named player and substitute, so Korf Lab can work out minutes in attack and in defence. */
   var lrows=[];
@@ -1276,7 +1298,7 @@ function toCSV(m){
       if(!p||!p.name) return;
       var bench=i>=tm.players.length;
       lrows.push([name,cfg.meta.league,cfg.meta.date,cfg.meta.week,'00:00',0,pLong(cfg,1),tn,'','lineup',bench?'bench':(p.div===ad?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player',
-        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg),['']));
+        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg),['','']));
     });
   });
   return [head].concat(lrows,rows).map(function(r){return r.map(q).join(',');}).join('\n');
@@ -1332,7 +1354,7 @@ function csvToBackup(txt){
   var countPass=false;
   recs.forEach(function(o,i){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
-    var e={t:t,ts:ts,type:o.event,team:team};if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
+    var e={t:t,ts:ts,type:o.event,team:team};if(o.time_original_s!==undefined&&String(o.time_original_s).trim()!=='') e.t0=num(o.time_original_s,undefined);if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
     if(o.event==='lineup'){if(team){person(team,o.player,{no:o.player_no,div:Number(o.division)||null,g:o.gender,sub:o.role==='substitute'});if(o.detail==='attack'&&Number(o.division)) lineDiv[team]=Number(o.division);}return;}
     if(o.event==='timeout'){if(o.detail==='start'||o.detail==='end') e.sub=o.detail;if(String(o.video_time_s==null?'':o.video_time_s).trim()!=='') e.vt=num(o.video_time_s,undefined);}
     if(o.event!=='timeout'&&!team) return;
@@ -1671,6 +1693,7 @@ function renderVideo(){
   var mt=m.config.meta||{},fnh=(mt.split&&vidHalf()===2)?mt.fn2:mt.fn1,vm=$('#vidMsg');
   if(!lf&&!v&&fnh&&!ui.vidEdit){vm.textContent='Choose the video file again: '+fnh+' (a file has to be chosen each time Korf Log is opened).';vm.hidden=false;}
   else if(vm.textContent.indexOf('Choose the video file again')===0){vm.hidden=true;vm.textContent='';}
+  klvUi();
 }
 var vlocal={url:''};
 function vidFile(m){var mt=m.config.meta||{};return (mt.split&&vidHalf()===2)?vfiles[2]:vfiles[1];}
@@ -1777,9 +1800,355 @@ function render(){
   var m=cur();setGeom();
   var R=replay(m,periodOf(m.config,nowSec()));ui.R=R;ui.per=periodOf(m.config,nowSec());ui.V=currentView(m,R);
   renderMatchBar();renderScore(m,R);renderPoss(m,R);renderTiles(m,R);renderPanels(m,R);
-  renderFilters(m);renderLog(m,R);renderLastEv(m,R);renderHint(m,R);updateExport();renderModal(m,R);renderVideo();
+  renderFilters(m);renderLog(m,R);renderLastEv(m,R);renderHint(m,R);updateExport();renderModal(m,R);renderVideo();klvRender();
   resize();
 }
+
+/* ---------- check times against the video ---------- */
+/* Two helpers that work from the match video file on this computer (nothing is uploaded):
+   1. Re-time the log: the camera pans with play, and the logged ball positions move up and down the court. Matching the two over the match finds how far the logged times are from the video, including steps where the clock was stopped.
+   2. Suggest shot times: a small ball detector finds the top of each shot's flight in the video and proposes a better time. Nothing changes until the person applies it, and the original times are kept so they can be restored. */
+var KLV_FPS=3;
+var KLV={on:false,stop:false,res:null,sug:null,det:{sess:null,ortP:null},canv:null};
+function klvFile(m,h){var mt=m.config.meta||{};return mt.split?vfiles[h]:vfiles[1];}
+function klvHalfLen(cfg){return cfg.length*30;}
+function klvHalf(cfg,e){return halfOfPeriod(cfg,periodOf(cfg,e.t));}
+function klvMsg(t,bad){var el=$('#chkMsg');if(!el) return;el.textContent=t||'';el.className=bad?'bad':'';}
+function klvSeek(vid,t){return new Promise(function(ok){var done=false,fin=function(){if(done) return;done=true;vid.removeEventListener('seeked',fin);ok();};vid.addEventListener('seeked',fin);vid.currentTime=Math.max(0,t);setTimeout(fin,8000);});}
+function klvOpen(file){
+  var u=URL.createObjectURL(file),vid=document.createElement('video');vid.muted=true;vid.preload='auto';vid.playsInline=true;vid.src=u;
+  return new Promise(function(ok,no){vid.onloadeddata=function(){ok({vid:vid,url:u});};vid.onerror=function(){URL.revokeObjectURL(u);no(new Error('the browser could not open '+file.name));};});
+}
+function klvClose(v){try{URL.revokeObjectURL(v.url);v.vid.removeAttribute('src');v.vid.load();}catch(e){}}
+/* ----- camera movement: phase correlation of the upper part of the picture (walls and baskets) between neighbouring frames ----- */
+var KFW=256,KFH=64,KFT=null,KFN=KFW*KFH;
+function klvTab(n){var cs=new Float64Array(n/2),sn=new Float64Array(n/2),rev=new Uint16Array(n),i,b=Math.round(Math.log(n)/Math.LN2);
+  for(i=0;i<n/2;i++){cs[i]=Math.cos(2*Math.PI*i/n);sn[i]=Math.sin(2*Math.PI*i/n);}
+  for(i=0;i<n;i++){var r=0;for(var k=0;k<b;k++) if(i&(1<<k)) r|=1<<(b-1-k);rev[i]=r;}
+  return {n:n,cs:cs,sn:sn,rev:rev};}
+function klvFFT(re,im,T,inv){
+  var n=T.n,i,j,t;
+  for(i=0;i<n;i++){j=T.rev[i];if(j>i){t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t;}}
+  for(var len=2;len<=n;len<<=1){var h=len>>1,st=n/len;
+    for(i=0;i<n;i+=len){for(var k=0;k<h;k++){
+      var wr=T.cs[k*st],wi=(inv?1:-1)*T.sn[k*st],a=i+k,b=a+h,xr=re[b]*wr-im[b]*wi,xi=re[b]*wi+im[b]*wr;
+      re[b]=re[a]-xr;im[b]=im[a]-xi;re[a]+=xr;im[a]+=xi;}}}
+}
+function klvFFT2(re,im,inv){
+  if(!KFT) KFT={w:klvTab(KFW),h:klvTab(KFH),hann:null,cr:new Float64Array(KFH),ci:new Float64Array(KFH)};
+  var y,x;
+  for(y=0;y<KFH;y++) klvFFT(re.subarray(y*KFW,(y+1)*KFW),im.subarray(y*KFW,(y+1)*KFW),KFT.w,inv);
+  for(x=0;x<KFW;x++){
+    for(y=0;y<KFH;y++){KFT.cr[y]=re[y*KFW+x];KFT.ci[y]=im[y*KFW+x];}
+    klvFFT(KFT.cr,KFT.ci,KFT.h,inv);
+    for(y=0;y<KFH;y++){re[y*KFW+x]=KFT.cr[y];im[y*KFW+x]=KFT.ci[y];}
+  }
+}
+function klvSpec(vid){
+  if(!KLV.canv){KLV.canv=document.createElement('canvas');KLV.canv.width=KFW;KLV.canv.height=KFH;}
+  var g=KLV.canv.getContext('2d',{willReadFrequently:true});
+  g.drawImage(vid,0,0,vid.videoWidth,Math.round(vid.videoHeight*0.556),0,0,KFW,KFH);
+  var d=g.getImageData(0,0,KFW,KFH).data,re=new Float64Array(KFN),im=new Float64Array(KFN),i,s=0;
+  if(!KFT) klvFFT2(new Float64Array(KFN),new Float64Array(KFN),false);
+  if(!KFT.hann){KFT.hann=new Float64Array(KFN);for(var y=0;y<KFH;y++)for(var x=0;x<KFW;x++) KFT.hann[y*KFW+x]=0.5*(1-Math.cos(2*Math.PI*x/(KFW-1)))*0.5*(1-Math.cos(2*Math.PI*y/(KFH-1)));}
+  for(i=0;i<KFN;i++){re[i]=0.299*d[4*i]+0.587*d[4*i+1]+0.114*d[4*i+2];s+=re[i];}
+  s/=KFN;for(i=0;i<KFN;i++) re[i]=(re[i]-s)*KFT.hann[i];
+  klvFFT2(re,im,false);
+  return {re:re,im:im};
+}
+/* sideways shift of picture B compared with picture A, in pixels of a 1280 wide picture, and how clear the match is (0 to 1) */
+function klvShift(A,B){
+  var cr=new Float64Array(KFN),ci=new Float64Array(KFN),i;
+  for(i=0;i<KFN;i++){var r=A.re[i]*B.re[i]+A.im[i]*B.im[i],q=A.re[i]*B.im[i]-A.im[i]*B.re[i],m=Math.sqrt(r*r+q*q)+1e-9;cr[i]=r/m;ci[i]=q/m;}
+  klvFFT2(cr,ci,true);
+  var best=-1e9,bi=0;for(i=0;i<KFN;i++){cr[i]/=KFN;if(cr[i]>best){best=cr[i];bi=i;}}
+  var px=bi%KFW,py=(bi-px)/KFW,sw=0,sx=0,sy=0;
+  for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++){
+    var xx=(px+dx+KFW)%KFW,yy=(py+dy+KFH)%KFH,w=Math.max(0,cr[yy*KFW+xx]);sw+=w;sx+=w*(px+dx);sy+=w*(py+dy);}
+  var sh=sw>0?sx/sw:px;if(sh>KFW/2) sh-=KFW;
+  return {dx:sh*(1280/KFW),resp:sw};
+}
+/* Cumulative camera pan, one value per second of video from t0, sampled 'fps' times a second. */
+async function klvPan(vid,t0,t1,fps,prog){
+  var n=Math.floor((t1-t0)*fps)+1,cum=0,prev=null,out=[],i,t00=Date.now();
+  for(i=0;i<n&&!KLV.stop;i++){
+    await klvSeek(vid,t0+i/fps);var sp=klvSpec(vid);
+    if(prev){var s=klvShift(prev,sp);if(s.resp>0.05) cum+=s.dx;}
+    prev=sp;
+    if(i%fps===0) out.push(cum);
+    if(i%25===0&&prog) prog(i/n,(Date.now()-t00)/1000);
+  }
+  return out;
+}
+/* ----- aligning the pan with the logged ball positions ----- */
+function klvUnif(x,w){var n=x.length,p=new Float64Array(n+1),i;for(i=0;i<n;i++) p[i+1]=p[i]+x[i];
+  var out=new Float64Array(n),lo=Math.floor(w/2),hi=w-lo;
+  for(i=0;i<n;i++){var a=i-lo,b=i+hi,s=0;
+    // window a..b-1 with the edge value repeated outside the data
+    var ca=Math.max(0,a),cb=Math.min(n,b);s=p[cb]-p[ca];s+=Math.max(0,-a)*x[0]+Math.max(0,b-n)*x[n-1];out[i]=s/w;}
+  return out;}
+function klvGauss(x,sg){var n=x.length,r=Math.ceil(4*sg),k=[],s=0,i,j;for(i=-r;i<=r;i++){var v=Math.exp(-i*i/(2*sg*sg));k.push(v);s+=v;}
+  var out=new Float64Array(n);
+  for(i=0;i<n;i++){var a=0;for(j=-r;j<=r;j++){var q=i+j;if(q<0) q=-q-1;if(q>=n) q=2*n-q-1;q=Math.max(0,Math.min(n-1,q));a+=k[j+r]*x[q];}out[i]=a/s;}
+  return out;}
+function klvHP(x){var u=klvUnif(x,60),o=new Float64Array(x.length);for(var i=0;i<x.length;i++) o[i]=x[i]-u[i];return o;}
+function klvCorr(a,ai,b,bi,w){var ma=0,mb=0,i;for(i=0;i<w;i++){ma+=a[ai+i];mb+=b[bi+i];}ma/=w;mb/=w;
+  var sab=0,saa=0,sbb=0;for(i=0;i<w;i++){var u=a[ai+i]-ma,v=b[bi+i]-mb;sab+=u*v;saa+=u*u;sbb+=v*v;}
+  var d=Math.sqrt(saa*sbb);return d>0?sab/d:0;}
+/* pts: ball positions [{t,x}] with t in seconds from the half start; pan1: cumulative pan per second starting at video time tb; vs: video time of the half start. Returns windows {mid,off,c}: offset in seconds (video ahead of the log) and how well it matches. */
+function klvAlign(pts,pan1,tb,vs){
+  var T=pan1.length,W=90,STEP=30,L0=-60,L1=120,K=L1-L0+1,i,j,k;
+  var ts=pts.map(function(p){return p.t;}),M=Math.max.apply(null,ts)+1;
+  if(M<W+STEP||T<W) return null;
+  var xt=new Float64Array(M),pi=0;
+  for(i=0;i<M;i++){while(pi<pts.length-1&&pts[pi+1].t<=i) pi++;
+    var a=pts[pi],b=pts[Math.min(pi+1,pts.length-1)];
+    if(i<=pts[0].t) xt[i]=pts[0].x;else if(i>=pts[pts.length-1].t) xt[i]=pts[pts.length-1].x;
+    else xt[i]=(b.t===a.t)?a.x:a.x+(b.x-a.x)*(i-a.t)/(b.t-a.t);}
+  var xh=klvGauss(klvHP(xt),2),ph=klvGauss(klvHP(Float64Array.from(pan1)),2);
+  var starts=[];for(i=0;i+W<M;i+=STEP) starts.push(i);
+  var C=starts.map(function(s){var row=new Float64Array(K);
+    for(j=0;j<K;j++){var lo=Math.round(s+vs+L0+j-tb);row[j]=(lo>=0&&lo+W<=T)?Math.abs(klvCorr(xh,s,ph,lo,W)):0;}return row;});
+  var pen=0.004,D=[Float64Array.from(C[0])],Bk=[new Int32Array(K)];
+  for(i=1;i<starts.length;i++){var d=new Float64Array(K),bk=new Int32Array(K);
+    for(j=0;j<K;j++){var bv=-1e18,bj=0;for(k=0;k<=j;k++){var v=D[i-1][k]-pen*(j-k);if(v>bv){bv=v;bj=k;}}d[j]=C[i][j]+bv;bk[j]=bj;}
+    D.push(d);Bk.push(bk);}
+  var last=D[D.length-1],jj=0;for(j=1;j<K;j++) if(last[j]>last[jj]) jj=j;
+  var path=[jj];for(i=starts.length-1;i>0;i--){jj=Bk[i][jj];path.push(jj);}path.reverse();
+  return starts.map(function(s,i){return {mid:s+W/2,off:L0+path[i],c:C[i][path[i]]};});
+}
+function klvOffAt(wins,t){
+  var bi=0,i;for(i=1;i<wins.length;i++) if(Math.abs(wins[i].mid-t)<Math.abs(wins[bi].mid-t)) bi=i;
+  var near=wins.filter(function(w){return Math.abs(w.mid-t)<=75;});if(!near.length) near=[wins[bi]];
+  var mn=Math.min.apply(null,near.map(function(w){return w.off;})),mx=Math.max.apply(null,near.map(function(w){return w.off;}));
+  if(wins[bi].c===0) return {off:0,conf:'none',none:true};
+  var c=wins[bi].c,conf=((mx-mn)>2||c<0.6)?'low':(c>=0.8?'high':'medium');
+  return {off:wins[bi].off,conf:conf};
+}
+function klvFmt(s){s=Math.max(0,Math.round(s));return fmtClock(s);}
+/* ----- step 1: re-time ----- */
+async function klvRetime(){
+  var m=cur(),cfg=m.config,out=[],opened=[];
+  if(KLV.on){KLV.stop=true;return;}
+  var halves=[1,2].filter(function(h){return klvFile(m,h);});
+  if(!halves.length){klvMsg('Choose the match video file first (Match video, above the pitch).',true);return;}
+  KLV.on=true;KLV.stop=false;klvUi();
+  var res={};
+  try{
+    for(var hi=0;hi<halves.length&&!KLV.stop;hi++){
+      var h=halves[hi],base=(h-1)*klvHalfLen(cfg),pts=[];
+      m.events.forEach(function(e){if(e.ot!=null||e.x==null||e.y==null) return;if(klvHalf(cfg,e)!==h) return;var t=e.t-base;if(t>=0) pts.push({t:t,x:e.x});});
+      pts.sort(function(a,b){return a.t-b.t;});
+      if(pts.length<12){res[h]={err:'Not enough ball positions in the '+(h===1?'1st':'2nd')+' half to match (need at least 12).'};continue;}
+      var v=await klvOpen(klvFile(m,h));opened.push(v);
+      var vs=vStartOf(cfg,h),M=pts[pts.length-1].t+1,dur=v.vid.duration||0,tb=Math.max(0,vs-65),te=Math.min(dur-1,vs+M+125);
+      if(te-tb<100){res[h]={err:'The video is too short to match the '+(h===1?'1st':'2nd')+' half.'};continue;}
+      var pan=await klvPan(v.vid,tb,te,KLV_FPS,function(f,el){var left=el/Math.max(f,0.001)*(1-f)/60;
+        klvMsg('Reading the camera movement, '+(h===1?'1st':'2nd')+' half: '+Math.round(f*100)+'% · about '+(left<1?'under a minute':Math.round(left)+' min')+' left. Keep this tab open.',false);});
+      if(KLV.stop) break;
+      var wins=klvAlign(pts,pan,tb,vs);
+      res[h]=wins?{wins:wins,base:base}:{err:'Could not match the '+(h===1?'1st':'2nd')+' half.'};
+    }
+  }catch(err){klvMsg('Could not re-time: '+((err&&err.message)||'something went wrong')+'.',true);}
+  finally{opened.forEach(klvClose);}
+  var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
+  if(stopped){klvMsg('Stopped.',false);KLV.res=null;klvUi();return;}
+  klvMsg('',false);KLV.res=res;klvRetimeShow();klvUi();
+}
+/* the new time for each event under the found offsets */
+function klvPlan(m,res){
+  var cfg=m.config,hl=klvHalfLen(cfg),plan=[],prev=-1;
+  m.events.forEach(function(e,i){
+    if(e.ot!=null){return;}
+    var h=klvHalf(cfg,e),r=res[h];if(!r||!r.wins) return;
+    var o=klvOffAt(r.wins,e.t-r.base);if(o.none) return;var nt=Math.max(r.base,Math.min(r.base+hl-1,e.t+o.off));
+    plan.push({i:i,e:e,nt:nt,off:o.off,conf:o.conf});
+  });
+  var run=-1;plan.forEach(function(p){if(p.nt<run) p.nt=run;run=p.nt;});
+  return plan;
+}
+function klvRetimeShow(){
+  var el=$('#rtOut'),m=cur();if(!el||!m) return;
+  var res=KLV.res;if(!res){el.innerHTML='';return;}
+  var h='',any=false;
+  [1,2].forEach(function(k){
+    var r=res[k];if(!r) return;
+    var nm=k===1?'1st half':'2nd half';
+    if(r.err){h+='<p class="bad">'+esc(r.err)+'</p>';return;}
+    any=true;
+    var segs=[],cur0=null;r.wins.forEach(function(w,i){
+      var from=i?(r.wins[i-1].mid+w.mid)/2:0,to=i<r.wins.length-1?(w.mid+r.wins[i+1].mid)/2:w.mid+45;
+      if(cur0&&cur0.off===w.off){cur0.to=to;cur0.c=Math.min(cur0.c,w.c);}else{cur0={off:w.off,from:from,to:to,c:w.c};segs.push(cur0);}});
+    h+='<p class="lbl">'+nm+': the video is ahead of the log by</p><ul class="rtseg">'+segs.map(function(s){
+      return '<li><b>'+(s.off>=0?'+':'')+s.off+' s</b> from '+klvFmt(s.from)+' to '+klvFmt(s.to)+(s.c<0.6?' <span class="bad">(weak match)</span>':'')+'</li>';}).join('')+'</ul>';
+  });
+  if(any){
+    var pl=klvPlan(m,res),cnt={high:0,medium:0,low:0},moved=0;res.weak=false;pl.forEach(function(p){cnt[p.conf]++;if(p.nt!==p.e.t) moved++;});
+    var all=0;m.events.forEach(function(e){if(e.ot==null&&res[klvHalf(m.config,e)]&&res[klvHalf(m.config,e)].wins) all++;});
+    h+='<p>'+moved+' of '+pl.length+' events would move'+(all>pl.length?' ('+(all-pl.length)+' events are past the end of the video and stay as they are)':'')+'. Match confidence: '+cnt.high+' high, '+cnt.medium+' medium, '+cnt.low+' low. Low ones sit near a change of offset or where the camera movement matched the ball weakly; check them in the video.</p>';
+  }
+  if(any){var tot=pl2(m,res);if(tot.low>0.6*tot.n){res.weak=true;h+='<p class="bad">Most of the match is weak, so nothing will be applied. Check that this is the right video file for the half and that its start time is about right.</p>';}}
+  el.innerHTML=h;
+}
+function pl2(m,res){var pl=klvPlan(m,res),low=0;pl.forEach(function(p){if(p.conf==='low') low++;});return {n:pl.length,low:low};}
+function klvApplyRetime(){
+  var m=cur();if(!m||!KLV.res) return;
+  var pl=klvPlan(m,KLV.res),n=0;
+  pl.forEach(function(p){if(p.nt!==p.e.t){if(p.e.t0==null) p.e.t0=p.e.t;p.e.t=p.nt;n++;}});
+  KLV.res=null;save();render();klvMsg('Re-timed '+n+' events. The original times are kept; use Restore original times to go back.',false);klvUi();
+}
+function klvRestore(){
+  var m=cur();if(!m) return;var n=0;
+  m.events.forEach(function(e){if(e.t0!=null){e.t=e.t0;delete e.t0;n++;}});
+  KLV.res=null;KLV.sug=null;save();render();klvMsg('Restored the original time of '+n+' events.',false);klvUi();
+}
+/* ----- step 2: suggest shot times (needs the ball finder) ----- */
+function klvBase(){
+  var raw=window.KORF_BALL_BASE||((/^https?:$/.test(location.protocol)&&/github\.io$/.test(location.hostname))?'ball/':'https://ericvl-korf.github.io/korf-tools/ball/');
+  try{return new URL(raw,location.href).href;}catch(e){return raw;}
+}
+function klvLoadDet(){
+  if(KLV.det.sess) return Promise.resolve(KLV.det.sess);
+  if(KLV.det.ortP) return KLV.det.ortP;
+  var base=klvBase();
+  KLV.det.ortP=new Promise(function(ok,no){var sc=document.createElement('script');sc.src=base+'ort.wasm.min.js';sc.onload=ok;sc.onerror=function(){no(new Error('could not download the ball finder'));};document.head.appendChild(sc);})
+  .then(function(){
+    ort.env.wasm.wasmPaths=base;ort.env.wasm.proxy=true;ort.env.wasm.numThreads=window.crossOriginIsolated?Math.min(4,navigator.hardwareConcurrency||2):1;
+    return ort.InferenceSession.create(base+'ball960.onnx',{executionProviders:['wasm']});
+  }).then(function(s){KLV.det.sess=s;return s;},function(e){KLV.det.ortP=null;throw e;});
+  return KLV.det.ortP;
+}
+var KDC=null;
+async function klvDetect(vid){
+  var vw=vid.videoWidth,vh=vid.videoHeight,sc=Math.min(960/vw,544/vh),dw=Math.round(vw*sc),dh=Math.round(vh*sc);
+  if(!KDC){KDC=document.createElement('canvas');KDC.width=960;KDC.height=544;}
+  var g=KDC.getContext('2d',{willReadFrequently:true});g.fillStyle='rgb(114,114,114)';g.fillRect(0,0,960,544);g.drawImage(vid,0,0,dw,dh);
+  var d=g.getImageData(0,0,960,544).data,n=960*544,f=new Float32Array(3*n);
+  for(var i=0;i<n;i++){f[i]=d[4*i+2];f[n+i]=d[4*i+1];f[2*n+i]=d[4*i];}
+  var out=(await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])})).out,a=out.data,N=out.dims[1],best=null;
+  for(var k=0;k<N;k++){var sco=a[6*k+4]*a[6*k+5];if(sco>=0.25&&(!best||sco>best.s)) best={x:a[6*k]/dw,y:a[6*k+1]/dh,s:sco};}
+  return best;
+}
+/* Top of the ball's flight in a series of positions (y is 0 at the top of the picture). first: the first big arc; otherwise the biggest one. minP: how far the ball must rise, as a fraction of the picture height. */
+function klvApex(pts,t0,t1,minP,first){
+  var P=pts.filter(function(p){return p.t>=t0&&p.t<=t1;});if(P.length<4) return null;
+  var step=1/3,n=Math.floor((t1-t0)/step)+1,ys=[],i,j,k;
+  for(i=0;i<n;i++){var t=t0+i*step,a=null,b=null;
+    for(j=0;j<P.length;j++){if(P[j].t<=t) a=P[j];if(P[j].t>=t){b=P[j];break;}}
+    var v=null;if(a&&b&&b.t-a.t<=1.01) v=(b.t===a.t)?a.y:a.y+(b.y-a.y)*(t-a.t)/(b.t-a.t);
+    ys.push(v);}
+  var best=null;
+  for(i=1;i<n-1;i++){
+    if(ys[i]==null) continue;
+    var lm=true;for(j=Math.max(0,i-2);j<=Math.min(n-1,i+2);j++){if(ys[j]!=null&&ys[j]<ys[i]) lm=false;}
+    if(!lm) continue;
+    var L=ys[i],R=ys[i];
+    for(k=i;k>=0&&(ys[k]==null||ys[k]>=ys[i]);k--){if(ys[k]!=null) L=Math.max(L,ys[k]);}
+    for(k=i;k<n&&(ys[k]==null||ys[k]>=ys[i]);k++){if(ys[k]!=null) R=Math.max(R,ys[k]);}
+    var pr=Math.min(L,R)-ys[i];
+    if(pr>=minP){if(first) return t0+i*step;if(!best||pr>best.p) best={t:t0+i*step,p:pr};}
+  }
+  return best?best.t:null;
+}
+function klvExpected(m,e){var h=klvHalf(m.config,e);return vTarget(m.config,h,e.t)+toAdd(m,h,e.t);}
+async function klvSuggest(){
+  var m=cur(),cfg=m.config;
+  if(KLV.on){KLV.stop=true;return;}
+  var all=$('#sgAll')&&$('#sgAll').checked;
+  var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&klvFile(m,klvHalf(cfg,e))&&(all||e.kind==='penalty'||e.kind==='freepass');});
+  if(!shots.length){klvMsg(all?'No shots with a video file to check. Choose the match video file first.':'No penalties or free passes with a video file to check. Choose the match video file first, or tick All shots.',true);return;}
+  KLV.on=true;KLV.stop=false;KLV.sug=[];klvUi();klvSugShow();
+  var opened=new Map(),done=0,total=0,t0=Date.now(),frames=0;
+  try{
+    klvMsg('Loading the ball finder (20 MB, downloaded once)…',false);
+    await klvLoadDet();
+    var jobs=shots.map(function(e){
+      var pf=e.kind==='penalty'||e.kind==='freepass',v=klvExpected(m,e),w=pf?[v-1,v+(e.kind==='penalty'?16:8)]:[v-3,v+4];
+      return {e:e,pf:pf,v:v,w:w,n:Math.floor((w[1]-w[0])*3)+1};});
+    total=jobs.reduce(function(s,j){return s+j.n;},0);
+    t0=Date.now();
+    for(var q=0;q<jobs.length&&!KLV.stop;q++){
+      var j=jobs[q],h=klvHalf(cfg,j.e),f=klvFile(m,h),vv=opened.get(f);
+      if(!vv){vv=await klvOpen(f);opened.set(f,vv);}
+      var pts=[];
+      for(var i=0;i<j.n&&!KLV.stop;i++){
+        var t=j.w[0]+i/3;if(t<0||t>vv.vid.duration) {frames++;continue;}
+        await klvSeek(vv.vid,t);var r=await klvDetect(vv.vid);frames++;
+        if(r) pts.push({t:t,x:r.x,y:r.y});
+        if(frames%3===0){var el=(Date.now()-t0)/1000,left=Math.max(0,Math.round(el/frames*(total-frames)/60));
+          klvMsg('Looking at shot '+(q+1)+' of '+jobs.length+' · about '+(left<1?'under a minute':left+(left===1?' minute':' minutes'))+' left. Keep this tab open. You can stop at any time and keep what was found.',false);}
+      }
+      if(KLV.stop) break;
+      var ap=j.pf?klvApex(pts,j.w[0],j.w[1],0.25,true):klvApex(pts,j.w[0],j.w[1],0.16,false);
+      done++;
+      KLV.sug.push({id:j.e.id,dt:ap==null?null:ap-j.v});
+      if(done%3===0) klvSugShow();
+    }
+  }catch(err){klvMsg('Could not check the shots: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);}
+  finally{opened.forEach(klvClose);}
+  var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
+  var found=KLV.sug.filter(function(s){return s.dt!=null;}).length;
+  klvMsg((stopped?'Stopped. ':'')+'Looked at '+KLV.sug.length+' shots and found the top of the shot in '+found+'.',false);
+  klvSugShow();klvUi();
+}
+function klvSugRows(){
+  var m=cur(),rows=[];if(!m||!KLV.sug) return rows;
+  KLV.sug.forEach(function(s){
+    if(s.dt==null) return;
+    var e=m.events.filter(function(x){return x.id===s.id;})[0];if(!e) return;
+    var pf=e.kind==='penalty'||e.kind==='freepass',d=Math.round(s.dt);
+    if(d===0) return;
+    rows.push({e:e,s:s,d:d,tick:pf?Math.abs(d)>=1:Math.abs(d)>=2});
+  });
+  return rows;
+}
+function klvSugShow(){
+  var el=$('#sgOut'),m=cur();if(!el||!m) return;
+  if(!KLV.sug){el.innerHTML='';return;}
+  var rows=klvSugRows();
+  el.innerHTML=rows.length?'<ul class="sglist">'+rows.map(function(r,i){var e=r.e;
+    return '<li><label><input type="checkbox" data-sg="'+esc(e.id)+'"'+(r.tick?' checked':'')+'> <b>'+esc(evClock(e))+'</b> '+esc(e.team==='H'?m.home:m.away)+' '+(e.kind==='penalty'?'penalty':(e.kind==='freepass'?'free pass':'shot'))+(e.shooter?' · '+esc(e.shooter.name):'')+' → <b>'+esc(klvFmt(e.t+r.d))+'</b> ('+(r.d>0?'+':'')+r.d+' s)</label></li>';}).join('')+'</ul>':(KLV.on?'':'<p>No shot needs a different time.</p>');
+}
+function klvApplySug(){
+  var m=cur();if(!m||!KLV.sug) return;
+  var ticks={};document.querySelectorAll('#sgOut input[data-sg]').forEach(function(c){if(c.checked) ticks[c.getAttribute('data-sg')]=1;});
+  var cfg=m.config,hl=klvHalfLen(cfg),n=0;
+  klvSugRows().forEach(function(r){
+    if(!ticks[r.e.id]) return;
+    var i=m.events.indexOf(r.e),h=klvHalf(cfg,r.e),base=(h-1)*hl;
+    var lo=Math.max(base,i>0?m.events[i-1].t:base),hi=Math.min(base+hl-1,i<m.events.length-1?m.events[i+1].t:base+hl-1);
+    var nt=Math.max(lo,Math.min(hi,r.e.t+r.d));
+    if(nt!==r.e.t){if(r.e.t0==null) r.e.t0=r.e.t;r.e.t=nt;n++;}
+  });
+  KLV.sug=null;save();render();klvMsg('Changed the time of '+n+' shots. The original times are kept; use Restore original times to go back.',false);klvUi();
+}
+/* ----- panel state ----- */
+function klvUi(){
+  var m=cur();if(!m||!$('#chk')) return;
+  var have=[1,2].filter(function(h){return klvFile(m,h);}),mt=m.config.meta||{};
+  var sp=!!mt.split;
+  $('#chkL1').textContent=sp?'1st half video file':'Match video file';$('#chkL2').hidden=!sp;$('#chkF2').hidden=!sp;$('#chkN2').hidden=!sp;
+  [1,2].forEach(function(k){var f=vfiles[k],n=mt['fn'+k];$('#chkN'+k).textContent=f?'':(n?'Choose again: '+n:'');});
+  var need=$('#chkNeed');
+  need.textContent=have.length?'':'Choose the match video file above. It stays on this computer.';
+  need.hidden=!!have.length;
+  var busy=KLV.on;
+  $('#rtGo').textContent=busy?'Stop':'Find the video offset';$('#rtGo').disabled=!have.length&&!busy;
+  $('#sgGo').textContent=busy?'Stop':'Look for shot times';$('#sgGo').disabled=!have.length&&!busy;
+  $('#rtApply').hidden=!(KLV.res&&!KLV.res.weak&&(KLV.res[1]&&KLV.res[1].wins||KLV.res[2]&&KLV.res[2].wins))||busy;
+  $('#sgApply').hidden=!(KLV.sug&&klvSugRows().length)||busy;
+  var any=m.events.some(function(e){return e.t0!=null;});
+  $('#chkRestore').hidden=!any;
+}
+function klvRender(){klvUi();}
+function klvPick(k,f){var m=cur();if(!m||!f) return;var mt=m.config.meta=m.config.meta||{};vfiles[k]=f;mt['fn'+k]=f.name.slice(0,120);save();var vb=$('#vidBox');if(vb) vb.dataset.vid='';KLV.res=null;KLV.sug=null;renderVideo();klvRetimeShow();klvSugShow();}
+$('#chkF1').addEventListener('change',function(e){klvPick(1,e.target.files&&e.target.files[0]);});
+$('#chkF2').addEventListener('change',function(e){klvPick(2,e.target.files&&e.target.files[0]);});
+$('#rtGo').addEventListener('click',klvRetime);
+$('#sgGo').addEventListener('click',klvSuggest);
+$('#rtApply').addEventListener('click',klvApplyRetime);
+$('#sgApply').addEventListener('click',klvApplySug);
+$('#chkRestore').addEventListener('click',klvRestore);
 
 /* ---------- popup ---------- */
 function tileHTML(attr,p,pressed,team,pre){

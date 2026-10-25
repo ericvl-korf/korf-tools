@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-25 23:45 (Europe/London)**: New feature today:
+  - **Check times against the video (Korf Log):** a new panel under the event log. *Re-time the log* matches the camera movement in your video with the logged ball positions to find how far the logged times are from the video, including steps where the clock was stopped; you see the result and apply it. *Suggest shot times* finds the ball around each shot (penalties and free passes by default, all shots if ticked) and proposes the time of the shot; you tick which to apply. Original times are kept, can be restored, and are saved in backups and in a new `time_original_s` CSV column.
+
 - **2026-10-25 20:55 (Europe/London)**: New feature today:
   - **Steps to make a highlight reel (Korf Lab):** a short checklist at the top of the Highlights page ticks off each step (pick the shots, add the video, find the ball, choose the look, make it) and highlights the next one. Also: long captions in the ffmpeg script now shrink to fit the picture.
 
