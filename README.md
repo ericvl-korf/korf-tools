@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 18:00 (Europe/London)**: New feature today:
+  - **Crop follows the ball starts the search itself (Korf Lab):** ticking **Crop follows the ball** now starts finding the ball in your video straight away (a note beside the box says so), and ticks Portrait 10:16 for you. Unticking stops it. The separate ball track file option is removed. The box is greyed out, with the reason on hover, until the video file and start times are set.
+
 - **2026-10-31 17:40 (Europe/London)**: New feature today:
   - **Tighter ball-following in highlight clips (Korf Lab):** with Portrait 10:16 and Crop follows the ball, the crop now re-aims every third of a second (the rate the ball is found at) with light smoothing, instead of every half second with heavy smoothing. In a test with a moving ball, the ball sits much nearer the centre of the crop (average miss about 2% of the window instead of about 21%). Run the highlight script or video again to get the new crops.
 
