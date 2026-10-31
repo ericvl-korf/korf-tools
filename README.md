@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 16:10 (Europe/London)**: New feature today:
+  - **Tap sync for YouTube videos (Korf Log):** the automatic Check times needs a video file, because a YouTube video cannot be read by a web page. With a YouTube link, **Check times against the video** now offers tap sync instead: Korf Log lists a few goals and other clear events in each half, you find each one in the video (Show me jumps there) and press Now, and Korf Log works out how far the logged times are from the video, including a drift part-way through the half. You apply the result and can restore the original times. After **End match**, YouTube users are offered tap sync before the export.
+
 - **2026-10-31 15:30 (Europe/London)**: New feature today:
   - **A step-by-step start and setup (Korf Log):** Korf Log now opens with a choice: *Continue a previous match* (pick one saved in this browser or open a backup file, then say whether you want to look at the setup) or *Start a new match*. A new match is six steps (fixture, video, teams and players, format and court, events, opening attack). Missing information is flagged at each step, and doubtful choices ask you to confirm. The video step explains that a video file on this computer allows Check times against the video later. The Export and import panel is gone: save a backup any time from the top, and when you press End match you are offered Check times against the video (if you used a local video file) and then an export pop-up. Importing is done from Continue a previous match.
 

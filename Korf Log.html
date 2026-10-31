@@ -231,7 +231,7 @@ table.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-num
 #log .kids .row:last-child{border-bottom:0}
 #log .empty{padding:.8rem .2rem;color:var(--muted)}
 
-.chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}#chkMsg.bad,#chk .bad{color:var(--danger)}
+.chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}.tslist{list-style:none;margin:6px 0;padding:0;max-height:26rem;overflow:auto}.tslist li{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:.9rem}.tslist li:first-child{border-top:0}.tslist .tsw{flex:1 1 12rem;min-width:0}.tslist .tsv{color:var(--muted);flex:1 1 100%;font-size:.85rem}.tslist li.done .tsw b{color:var(--ok,inherit)}#chkMsg.bad,#chk .bad{color:var(--danger)}
 .startgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media (max-width:640px){.startgrid{grid-template-columns:minmax(0,1fr)}}
 .startopt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);font:500 .95rem var(--f-body);cursor:pointer;min-height:120px}
 .startopt b{font:700 1.4rem var(--f-display);letter-spacing:.04em;text-transform:uppercase}.startopt span{color:var(--muted)}.startopt:hover{border-color:var(--accent);background:var(--surface-2)}.startopt[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
@@ -521,7 +521,18 @@ details>summary{transition:color .16s var(--ease)}
         <details class="card" id="chk">
           <summary>Check times against the video</summary>
           <div class="exp">
-            <p class="hint">Works from the match video file on this computer; the video is not uploaded. It only changes event times when you apply the result, and the original times are kept so you can restore them.</p>
+            <p class="hint" id="chkIntro">Nothing changes until you apply a result, and the original times are kept so you can restore them.</p>
+            <div id="tsBox" hidden>
+              <div class="chkstep"><span class="lbl">Match the log to the YouTube video (tap sync)</span>
+                <p class="hint">You find a few events in the video and press Now when each one happens. Korf Log compares your taps with the logged times to find how far the log is from the video. Pause the video on the moment, then press Now: the tap is as exact as you are (about 1 to 2 seconds). Two to four events per half is enough, spread across the half so a drift shows up. Nothing is uploaded or read from the video.</p>
+                <p class="hint" id="tsNote"></p>
+                <ul class="tslist" id="tsList"></ul>
+                <div id="tsOut"></div>
+                <div class="row-actions"><button class="btn" id="tsApply" type="button" hidden>Apply re-timing</button><button class="btn sm" id="tsClear" type="button" hidden>Clear all taps</button></div>
+              </div>
+            </div>
+            <div id="chkLocal">
+            <p class="hint" id="chkLocalHint">Works from the match video file on this computer; the video is not uploaded.</p>
             <div class="chkfiles"><label class="lbl" for="chkF1" id="chkL1">Video file</label><input type="file" id="chkF1" accept="video/*"><span id="chkN1" class="fnm"></span>
               <label class="lbl" for="chkF2" id="chkL2">2nd half video file</label><input type="file" id="chkF2" accept="video/*"><span id="chkN2" class="fnm"></span></div>
             <p id="chkNeed" class="bad" hidden></p>
@@ -534,6 +545,7 @@ details>summary{transition:color .16s var(--ease)}
               <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each); otherwise only penalties and free passes</label>
               <div class="row-actions"><button class="btn" id="sgGo" type="button">Look for shot times</button><button class="btn" id="sgApply" type="button" hidden>Apply ticked times</button></div>
               <div id="sgOut"></div></div>
+            </div>
             <p id="chkMsg" role="status"></p>
             <div class="row-actions"><button class="btn sm" id="chkRestore" type="button" hidden>Restore original times</button></div>
           </div>
@@ -758,7 +770,8 @@ details>summary{transition:color .16s var(--ease)}
   <div class="dlg-card">
     <div id="endA" hidden>
       <h2 id="endTitle">Check the times against your video?</h2>
-      <p style="margin-top:8px">You used a video file on this computer, so Korf Log can compare it with your log. <b>Re-time the log</b> finds how far the logged times drift from the video. <b>Suggest shot times</b> proposes better times for shots. Nothing changes unless you apply it, and the originals are kept. Do this before you export.</p>
+      <p style="margin-top:8px" id="endAfile">You used a video file on this computer, so Korf Log can compare it with your log. <b>Re-time the log</b> finds how far the logged times drift from the video. <b>Suggest shot times</b> proposes better times for shots. Nothing changes unless you apply it, and the originals are kept. Do this before you export.</p>
+      <p style="margin-top:8px" id="endAyt">You used a YouTube video, so you can line the log up with it by hand (tap sync). Korf Log lists a few goals and other clear events; you find each one in the video and press Now. Korf Log then works out how far the logged times are from the video. It takes a few minutes, nothing changes unless you apply it, and the originals are kept. Do this before you export.</p>
       <div class="row-actions" style="margin-top:12px"><button class="btn primary" id="endCheck" type="button">Check times now</button><button class="btn" id="endSkip" type="button">Skip, go to export</button></div>
     </div>
     <div id="endB" hidden>
@@ -1808,7 +1821,7 @@ function vidState(st){
   if(st===null||st===vsync.state) return;
   var mine=Date.now()-vsync.cmdAt<1500;
   vsync.state=st;
-  if(mine||!ui||ui.view!=='track'||toOpen()) return;
+  if(mine||tsActive()||!ui||ui.view!=='track'||toOpen()) return;
   if(st===1&&!clockRunning()&&!atCap()) toggleClock();
   else if(st===2&&clockRunning()) toggleClock();
 }
@@ -1863,7 +1876,7 @@ function render(){
    1. Re-time the log: the camera pans with play, and the logged ball positions move up and down the court. Matching the two over the match finds how far the logged times are from the video, including steps where the clock was stopped.
    2. Suggest shot times: a small ball detector finds the top of each shot's flight in the video and proposes a better time. Nothing changes until the person applies it, and the original times are kept so they can be restored. */
 var KLV_FPS=3;
-var KLV={on:false,stop:false,res:null,sug:null,det:{sess:null,ortP:null},canv:null};
+var KLV={on:false,stop:false,res:null,sug:null,ts:{taps:{},res:null,sig:''},det:{sess:null,ortP:null},canv:null};
 function klvFile(m,h){var mt=m.config.meta||{};return mt.split?vfiles[h]:vfiles[1];}
 function klvHalfLen(cfg){return cfg.length*30;}
 function klvHalf(cfg,e){return halfOfPeriod(cfg,periodOf(cfg,e.t));}
@@ -2021,9 +2034,9 @@ function klvPlan(m,res){
   var run=-1;plan.forEach(function(p){if(p.nt<run) p.nt=run;run=p.nt;});
   return plan;
 }
-function klvRetimeShow(){
-  var el=$('#rtOut'),m=cur();if(!el||!m) return;
-  var res=KLV.res;if(!res){el.innerHTML='';return;}
+function klvRetimeShow(sel,res0){
+  var el=$(sel||'#rtOut'),m=cur();if(!el||!m) return;
+  var res=res0||KLV.res;if(!res){el.innerHTML='';return;}
   var h='',any=false;
   [1,2].forEach(function(k){
     var r=res[k];if(!r) return;
@@ -2176,6 +2189,90 @@ function klvApplySug(){
   });
   KLV.sug=null;save();render();klvMsg('Changed the time of '+n+' shots. The original times are kept; use Restore original times to go back.',false);klvUi();
 }
+/* ----- tap sync: match the log to a YouTube video by hand ----- */
+function tsMode(m){var mt=m.config.meta||{};return !!(ytParse(mt[vidKey(m)])&&!vidFile(m));}
+function tsActive(){var b=document.getElementById('tsBox'),c=document.getElementById('chk');return !!(b&&!b.hidden&&c&&c.open);}
+function tsHalves(m){var mt=m.config.meta||{};return mt.split?[vidHalf()]:[1,2];}
+function tsExpected(m,e){var h=klvHalf(m.config,e);return vTarget(m.config,h,e.t)+toAdd(m,h,e.t);}
+/* a few events per half that are easy to find in the video, spread across the half */
+function tsCands(m){
+  var cfg=m.config,hl=klvHalfLen(cfg),out=[];
+  tsHalves(m).forEach(function(h){
+    var base=(h-1)*hl,bins=4,w=hl/bins,best=[];
+    m.events.forEach(function(e){
+      if(e.ot!=null||klvHalf(cfg,e)!==h) return;
+      var sc=0;
+      if(e.type==='shot'&&e.out&&e.out.k==='goal') sc=4;
+      else if(e.type==='timeout'&&e.sub==='start') sc=3;
+      else if(e.type==='shot'&&(e.kind==='penalty'||e.kind==='freepass')) sc=2;
+      else if(e.type==='sub') sc=1;
+      else if(e.type==='shot') sc=1;
+      if(!sc) return;
+      var b=Math.min(bins-1,Math.floor((e.t-base)/w));
+      if(!best[b]||sc>best[b].sc) best[b]={e:e,sc:sc};
+    });
+    best.forEach(function(x){if(x) out.push({h:h,e:x.e});});
+  });
+  return out;
+}
+function tsLabel(m,e){return (e.type==='shot'&&e.out&&e.out.k==='goal'?'Goal':evLabel(m,e))+' · '+teamName(e.team);}
+function tsOffs(m,list){
+  var res={},byH={};
+  list.forEach(function(c){var V=KLV.ts.taps[c.e.id];if(typeof V!=='number') return;(byH[c.h]=byH[c.h]||[]).push({mid:c.e.t-(c.h-1)*klvHalfLen(m.config),off:Math.round(V-tsExpected(m,c.e)),id:c.e.id});});
+  var hl=klvHalfLen(m.config);
+  [1,2].forEach(function(h){
+    var a=byH[h];if(!a) return;
+    if(a.length<2){res[h]={err:'Tap at least 2 events in the '+(h===1?'1st':'2nd')+' half.'};return;}
+    a.sort(function(x,y){return x.mid-y.mid;});
+    var so=a.map(function(x){return x.off;}).sort(function(x,y){return x-y;}),med=so[Math.floor(so.length/2)];
+    var steady=a.every(function(x){return Math.abs(x.off-med)<=2;}),wins=[];
+    for(var k=0;k<hl;k+=30){var bi=0,i;for(i=1;i<a.length;i++) if(Math.abs(a[i].mid-k)<Math.abs(a[bi].mid-k)) bi=i;
+      wins.push({mid:k,off:steady?med:a[bi].off,c:0.9});}
+    res[h]={wins:wins,base:(h-1)*hl};
+  });
+  return res;
+}
+function tsRender(){
+  var m=cur(),box=document.getElementById('tsBox');if(!m||!box||box.hidden) return;
+  var mt=m.config.meta||{},list=tsCands(m),ready=!!(mt.vs1||mt.vs2);
+  var sig=JSON.stringify([m.id,vidHalf(),!!ready,list.map(function(c){return [c.e.id,c.e.t];}),KLV.ts.taps]);
+  if(sig===KLV.ts.sig) return;KLV.ts.sig=sig;
+  var note=$('#tsNote'),ul=$('#tsList'),sp=!!mt.split;
+  var n=[];
+  if(!ready) n.push('Set where the first half starts in the video first (Match setup, step 2), so Korf Log knows where to look.');
+  if(sp) n.push('This video is for the '+(vidHalf()===1?'1st':'2nd')+' half. The other half uses its own video: switch the clock to that half to tap it.');
+  if(!list.length) n.push('There are no goals, time outs, penalties or shots in this half to find in the video.');
+  note.textContent=n.join(' ');note.hidden=!n.length;
+  var h='';
+  list.forEach(function(c){
+    var e=c.e,V=KLV.ts.taps[e.id],has=typeof V==='number',off=has?Math.round(V-tsExpected(m,e)):0;
+    h+='<li data-id="'+esc(e.id)+'" class="'+(has?'done':'')+'"><span class="tsw"><b>'+fmtClock(e.t-(c.h-1)*klvHalfLen(m.config))+'</b> · '+esc(tsLabel(m,e))+'</span>'+
+      '<button class="btn sm" type="button" data-ts="go"'+(ready?'':' disabled')+'>Show me</button><button class="btn sm primary" type="button" data-ts="now"'+(ready?'':' disabled')+'>Now</button>'+(has?'<button class="btn sm" type="button" data-ts="clr">Clear</button>':'')+
+      (has?'<span class="tsv">Tapped at video time '+vFmt(V)+': the video is '+(off>=0?'ahead of':'behind')+' the log by '+Math.abs(off)+' s.</span>':'')+'</li>';
+  });
+  ul.innerHTML=h;
+  var res=tsOffs(m,list),any=Object.keys(res).some(function(k){return res[k].wins;});
+  KLV.ts.res=any?res:null;
+  if(any||Object.keys(res).length){klvRetimeShow('#tsOut',res);}else $('#tsOut').innerHTML='';
+  $('#tsApply').hidden=!(any&&!res.weak);$('#tsClear').hidden=!Object.keys(KLV.ts.taps).length;
+}
+function tsClick(e){
+  var b=e.target.closest('button[data-ts]'),li=b&&b.closest('li[data-id]');if(!li) return;
+  var m=cur(),id=li.dataset.id,ev=m.events.filter(function(x){return String(x.id)===id;})[0];if(!ev) return;
+  if(b.dataset.ts==='go'){
+    var t=Math.max(0,tsExpected(m,ev)-8);vsync.t=t;vsync.cmdAt=Date.now();
+    vidPost({event:'command',func:'seekTo',args:[t,true]});vidPost({event:'command',func:'playVideo',args:[]});
+    try{$('#vidBox').scrollIntoView({behavior:'smooth',block:'nearest'});}catch(x){}
+    klvMsg('The video is 8 seconds before the logged time. Pause it on the moment, then press Now.',false);
+  }else if(b.dataset.ts==='now'){
+    if(!vsync.ready||typeof vsync.t!=='number'){klvMsg('The video has not reported its time yet. Play or move the video for a moment, then press Now again.',true);return;}
+    KLV.ts.taps[ev.id]=vsync.t;KLV.ts.sig='';klvMsg('',false);tsRender();
+  }else if(b.dataset.ts==='clr'){delete KLV.ts.taps[ev.id];KLV.ts.sig='';tsRender();}
+}
+function tsApply(){
+  if(!KLV.ts.res) return;
+  KLV.res=KLV.ts.res;klvApplyRetime();KLV.ts.taps={};KLV.ts.res=null;KLV.ts.sig='';$('#tsOut').innerHTML='';tsRender();
+}
 /* ----- panel state ----- */
 function klvUi(){
   var m=cur();if(!m||!$('#chk')) return;
@@ -2186,6 +2283,8 @@ function klvUi(){
   var need=$('#chkNeed');
   need.textContent=have.length?'':'Choose the match video file above. It stays on this computer.';
   need.hidden=!!have.length;
+  var tm=tsMode(m);$('#tsBox').hidden=!tm;$('#chkLocal').hidden=tm&&!have.length;
+  $('#chkLocalHint').hidden=false;tsRender();
   var busy=KLV.on;
   $('#rtGo').textContent=busy?'Stop':'Find the video offset';$('#rtGo').disabled=!have.length&&!busy;
   $('#sgGo').textContent=busy?'Stop':'Look for shot times';$('#sgGo').disabled=!have.length&&!busy;
@@ -2203,6 +2302,9 @@ $('#sgGo').addEventListener('click',klvSuggest);
 $('#rtApply').addEventListener('click',klvApplyRetime);
 $('#sgApply').addEventListener('click',klvApplySug);
 $('#chkRestore').addEventListener('click',klvRestore);
+$('#tsList').addEventListener('click',tsClick);
+$('#tsApply').addEventListener('click',tsApply);
+$('#tsClear').addEventListener('click',function(){KLV.ts.taps={};KLV.ts.sig='';tsRender();});
 
 /* ---------- popup ---------- */
 function tileHTML(attr,p,pressed,team,pre){
@@ -3036,10 +3138,11 @@ $('#askNo').addEventListener('click',function(){
 $('#askYes').addEventListener('click',function(){var id=ui.askId||cur().id;ui.askId=null;openSetup(id);});
 /* ---------- End match: check times (if a local video was used), then export ---------- */
 function hasLocalVideo(m){var mt=(m&&m.config&&m.config.meta)||{};return !!(vfiles[1]||vfiles[2]||mt.fn1||mt.fn2);}
+function hasYtVideo(m){var mt=(m&&m.config&&m.config.meta)||{};return !!(ytParse(mt.video)||ytParse(mt.video2));}
 function openEnd(){
   var m=cur();if(!m||m.sample) return;
-  var dl=$('#endDlg');
-  if(hasLocalVideo(m)){$('#endA').hidden=false;$('#endB').hidden=true;}else showExport();
+  var dl=$('#endDlg'),loc=hasLocalVideo(m);
+  if(loc||hasYtVideo(m)){$('#endAfile').hidden=!loc;$('#endAyt').hidden=loc;$('#endCheck').textContent=loc?'Check times now':'Tap sync now';$('#endA').hidden=false;$('#endB').hidden=true;}else showExport();
   if(!dl.open) dl.showModal();
 }
 function showExport(fmt){
@@ -3054,7 +3157,7 @@ $('#endClose').addEventListener('click',function(){$('#endDlg').close();});
 $('#endCheck').addEventListener('click',function(){
   $('#endDlg').close();var c=$('#chk');c.open=true;
   try{c.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
-  flashMsg('Check the times against your video here. When you are done, press Export match above the pitch.');
+  flashMsg(hasLocalVideo(cur())?'Check the times against your video here. When you are done, press Export match above the pitch.':'Find each event in the video and press Now. When you are done, apply the result and press Export match above the pitch.');
 });
 $('#endDlg').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b||!b.dataset.fmt) return;
