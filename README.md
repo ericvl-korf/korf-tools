@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 17:40 (Europe/London)**: New feature today:
+  - **Tighter ball-following in highlight clips (Korf Lab):** with Portrait 10:16 and Crop follows the ball, the crop now re-aims every third of a second (the rate the ball is found at) with light smoothing, instead of every half second with heavy smoothing. In a test with a moving ball, the ball sits much nearer the centre of the crop (average miss about 2% of the window instead of about 21%). Run the highlight script or video again to get the new crops.
+
 - **2026-10-31 16:10 (Europe/London)**: New feature today:
   - **Updated Korf Log video tutorial:** the walkthrough (2:29) is re-recorded for the new start screen, six-step setup, tracking, Time outs, Check times with tap sync, End match and export.
   - **Tap sync for YouTube videos (Korf Log):** the automatic Check times needs a video file, because a YouTube video cannot be read by a web page. With a YouTube link, **Check times against the video** now offers tap sync instead: Korf Log lists a few goals and other clear events in each half, you find each one in the video (Show me jumps there) and press Now, and Korf Log works out how far the logged times are from the video, including a drift part-way through the half. You apply the result and can restore the original times. After **End match**, YouTube users are offered tap sync before the export.

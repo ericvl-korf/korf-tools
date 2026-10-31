@@ -1947,12 +1947,12 @@ function hlFollowCurve(a,d,half){
   if(!HLTRK) return null;
   var P=HLTRK.pts.filter(function(p){return !p.h||!half||p.h===half;}).filter(function(p){return p.t>=a-1.5&&p.t<=a+d+1.5;});
   if(P.length<2) return null;
-  var step=Math.max(0.5,d/24),n=Math.max(2,Math.round(d/step)+1),xs=[],ts=[],i,j,k;
+  var step=Math.max(1/3,d/60),n=Math.max(2,Math.round(d/step)+1),xs=[],ts=[],i,j,k;
   for(i=0;i<n;i++){var t=Math.min(d,i*d/(n-1)),ta=a+t;ts.push(t);
     j=0;while(j<P.length&&P[j].t<ta) j++;
     var v=j<=0?P[0].x:(j>=P.length?P[P.length-1].x:(P[j].t===P[j-1].t?P[j].x:P[j-1].x+(P[j].x-P[j-1].x)*(ta-P[j-1].t)/(P[j].t-P[j-1].t)));
     xs.push(v);}
-  for(k=0;k<3;k++){xs=xs.map(function(v,q){var s=0,c=0;for(var w=-2;w<=2;w++){var z=xs[q+w];if(z!=null){s+=z;c++;}}return s/c;});}
+  xs=xs.map(function(v,q){var s=0,c=0;for(var w=-1;w<=1;w++){var z=xs[q+w];if(z!=null){s+=z;c++;}}return s/c;});
   return {ts:ts,xs:xs};
 }
 /* The ball's x (0 to 1 of the picture width) at time t seconds into a clip, from a curve made by hlFollowCurve. */
