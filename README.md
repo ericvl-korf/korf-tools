@@ -6,6 +6,10 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 23:40 (Europe/London)**: New today:
+  - **Korf Lab starts with a question (Korf Lab):** "Which files do you want to load?" with Korf Log files, Yellow Bucket files or Sample file. Korf Log files and Yellow Bucket files each have one **Load file(s)** button that takes one or more files; the folder picker is gone. Several Yellow Bucket files are converted one after another.
+  - **Dropdown filters and print menu (Korf Lab):** Team is a dropdown (the common team only, Opponents only or All teams; with one match, its two teams and All teams). Match is a multi-select with Select all. The three print buttons are one Print dropdown.
+  - **Shot map dropdowns (Korf Lab):** the shot map's buttons are now single-select dropdowns.
 - **2026-10-31 20:00 (Europe/London)**: New features today:
   - **Flag shots that look mistimed (Korf Log):** in Check times, one button compares each shot's logged time with the top of the ball's flight in the positions saved while tracking, lists the shots that are 2 or more seconds off (1 for penalties and free passes) and lets you move them. It is instant and needs no video file. If most shots are off by the same amount it suggests re-timing the whole log.
   - **Best clips (Korf Lab):** a new filter keeps the best 5, 10, 15, 20 or 30 clips: goals first, then harder shots, longer goals, rallies and clips where the ball was found in flight. With Crop follows the ball, only those clips are searched.
@@ -53,7 +57,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
   - **Video follows the clock speed (Korf Log):** the Speed buttons (0.5×, 0.75×, 1×, 1.25×) now set the video's playback speed too, so clock and video stay lined up at any speed. Works for YouTube links and local video files, and changing the speed in the video player moves the clock to match.
 
 - **2026-10-21 00:07 (Europe/London)**: New features today:
-  - **Video tutorials:** a short captioned walkthrough of each app (Korf Log 1:28, Korf Lab 1:29, in the [tutorials](tutorials/) folder) behind a new **Video tutorial** button at the top of Korf Log and Korf Lab. The Korf Log one includes the match video and the Time out buttons.
+  - **Video tutorials:** a short captioned walkthrough of each app (Korf Log 1:28, Korf Lab 1:46, in the [tutorials](tutorials/) folder) behind a new **Video tutorial** button at the top of Korf Log and Korf Lab. The Korf Log one includes the match video and the Time out buttons.
   - **Match video at setup (Korf Log):** add a YouTube link or a local video file in match setup, as one video or one per half, with the video time each half starts. Start moves the video to the right moment, and the video and clock ±1 s buttons keep the alignment saved. Links, file names and start times carry into Korf Lab.
   - **Time out start / end (Korf Log):** two Time out buttons replace the single one. The match clock stops and restarts while the video keeps running, and the video time of each time out is saved so clock and video stay lined up, including in Korf Lab highlight reels.
   - **Highlights page (Korf Lab):** list and filter every shot by half, team, division, gender, shooter, shot type, outcome and attack number, with clip start and end times and YouTube links.
@@ -83,7 +87,7 @@ Then double-click the saved file to open it. Matches are stored per browser and 
 ## Notes
 
 - Everything runs in your browser; nothing is uploaded. Matches are stored in the browser on the page's address, so export a backup before switching address or device.
-- Korf Lab has a **Load a sample match** button to try it without data.
+- Korf Lab has a **Sample file** option to try it without data.
 - Both apps are plain HTML files: save the file and open it locally if you prefer.
 
 **Privacy.** This site counts anonymous page visits and file downloads (no cookies, no personal data). Your match data never leaves your browser.
