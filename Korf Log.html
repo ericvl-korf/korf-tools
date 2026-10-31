@@ -231,6 +231,7 @@ table.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-num
 #log .kids .row:last-child{border-bottom:0}
 #log .empty{padding:.8rem .2rem;color:var(--muted)}
 
+.bgbox{margin:6px 0;font-size:.88rem}.bgbox .chkopt{display:inline-block;margin:0 8px 0 0}.bgbox .note{color:var(--muted)}
 .chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}.tslist{list-style:none;margin:6px 0;padding:0;max-height:26rem;overflow:auto}.tslist li{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:.9rem}.tslist li:first-child{border-top:0}.tslist .tsw{flex:1 1 12rem;min-width:0}.tslist .tsv{color:var(--muted);flex:1 1 100%;font-size:.85rem}.tslist li.done .tsw b{color:var(--ok,inherit)}#chkMsg.bad,#chk .bad{color:var(--danger)}
 .startgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media (max-width:640px){.startgrid{grid-template-columns:minmax(0,1fr)}}
 .startopt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);font:500 .95rem var(--f-body);cursor:pointer;min-height:120px}
@@ -499,6 +500,7 @@ details>summary{transition:color .16s var(--ease)}
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
+            <div class="bgbox" id="bgBox" hidden><label class="chkopt"><input type="checkbox" id="bgOn" checked> Find the ball for highlights while you track</label><span class="note" id="bgNote" role="status"></span></div>
             <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
@@ -784,6 +786,7 @@ details>summary{transition:color .16s var(--ease)}
       </div>
       <label class="sr" for="exText">Export text</label>
       <textarea id="exText" readonly></textarea>
+      <p class="note" id="bgExp" hidden></p>
       <p class="note">Korf Lab opens both formats. Use Save backup at the top at any time to keep a copy.</p>
     </div>
     <div class="row-actions"><button class="btn" id="endClose" type="button">Close</button></div>
@@ -946,6 +949,7 @@ function normEvent(e,cfg,i,fresh){
   var o={id:(fresh||!e.id)?uid():String(e.id),t:t,ts:Number(e.ts)||Date.now(),team:(e.team==='H'||e.team==='A')?e.team:null};
   if(e.ot!=null&&e.ot!==''&&isFinite(Number(e.ot))&&Number(e.ot)>=0) o.ot=Math.floor(Number(e.ot));
   if(e.t0!=null&&e.t0!==''&&isFinite(Number(e.t0))&&Number(e.t0)>=0) o.t0=Math.floor(Number(e.t0));
+  if(ty==='shot'&&typeof e.bt==='string'&&e.bt.length<8000&&/^[12]\|\d{1,7}\|[0-9., ]+$/.test(e.bt)) o.bt=e.bt;
   function xy(k1,k2){var x=Number(e[k1]),y=Number(e[k2]);if(!isFinite(x)||!isFinite(y)) return null;return [rd2(clamp(x,0,L)),rd2(clamp(y,0,H))];}
   if(ty==='pass'){
     var a=xy('x','y'),b=xy('x2','y2');
@@ -1345,7 +1349,7 @@ function catOf(e){return {pass:'pass',shot:'shot',turnover:'turnover',freepass:'
 function q(v){v=(v==null)?'':String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}
 function toCSV(m){
   var R=replay(m),cfg=m.config;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s','time_original_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s','time_original_s','ball_track'];
   var name=m.home+' v '+m.away;
   var rows=m.events.map(function(e){
     var pl=e.type==='shot'?e.shooter:null,shot=e.type==='shot',o=shot?e.out:null;
@@ -1354,7 +1358,7 @@ function toCSV(m){
     return [name,cfg.meta.league,cfg.meta.date,cfg.meta.week,evClock(e),e.t,pLong(cfg,periodOf(cfg,e.t)),e.team?(e.team==='H'?m.home:m.away):'',R.ann[e.id]?R.ann[e.id].att:'',e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot?e.r:'',shot?e.a:'',shot?zoneOf(e.r):'',shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg),[e.vt==null?'':e.vt,e.t0==null?'':e.t0]);
+      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?m.home:m.away):'',new Date(e.ts).toISOString(),cfg.court.len,cfg.length,cfg.periods,e.team?(e.team==='H'?cfg.home.color:cfg.away.color):'',cfg.look.court,cfg.look.zone,e.ot==null?'':e.ot,cfg.meta.video||''].concat(vCols(cfg),[e.vt==null?'':e.vt,e.t0==null?'':e.t0,e.bt||'']);
   });
   /* Starting line-up: one row per named player and substitute, so Korf Lab can work out minutes in attack and in defence. */
   var lrows=[];
@@ -1364,7 +1368,7 @@ function toCSV(m){
       if(!p||!p.name) return;
       var bench=i>=tm.players.length;
       lrows.push([name,cfg.meta.league,cfg.meta.date,cfg.meta.week,'00:00',0,pLong(cfg,1),tn,'','lineup',bench?'bench':(p.div===ad?'attack':'defence'),p.name,p.no||'',bench?'':(p.div||''),p.g||'',bench?'substitute':'player',
-        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg),['','']));
+        '','','','','','','','','','','',new Date(m.created||Date.now()).toISOString(),cfg.court.len,cfg.length,cfg.periods,t==='H'?cfg.home.color:cfg.away.color,cfg.look.court,cfg.look.zone,'',cfg.meta.video||''].concat(vCols(cfg),['','','']));
     });
   });
   return [head].concat(lrows,rows).map(function(r){return r.map(q).join(',');}).join('\n');
@@ -1420,7 +1424,7 @@ function csvToBackup(txt){
   var countPass=false;
   recs.forEach(function(o,i){
     var team=tk(o.team),t=num(o.seconds,i*10),ts=Date.parse(o.time_iso)||undefined;
-    var e={t:t,ts:ts,type:o.event,team:team};if(o.time_original_s!==undefined&&String(o.time_original_s).trim()!=='') e.t0=num(o.time_original_s,undefined);if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
+    var e={t:t,ts:ts,type:o.event,team:team};if(o.time_original_s!==undefined&&String(o.time_original_s).trim()!=='') e.t0=num(o.time_original_s,undefined);if(o.ball_track) e.bt=String(o.ball_track).trim();if((o.extra_time_s!==undefined&&o.extra_time_s!==''||o.overtime_s!==undefined&&o.overtime_s!=='')) e.ot=num(o.extra_time_s!==undefined&&o.extra_time_s!==''?o.extra_time_s:o.overtime_s,undefined);
     if(o.event==='lineup'){if(team){person(team,o.player,{no:o.player_no,div:Number(o.division)||null,g:o.gender,sub:o.role==='substitute'});if(o.detail==='attack'&&Number(o.division)) lineDiv[team]=Number(o.division);}return;}
     if(o.event==='timeout'){if(o.detail==='start'||o.detail==='end') e.sub=o.detail;if(String(o.video_time_s==null?'':o.video_time_s).trim()!=='') e.vt=num(o.video_time_s,undefined);}
     if(o.event!=='timeout'&&!team) return;
@@ -2273,9 +2277,68 @@ function tsApply(){
   if(!KLV.ts.res) return;
   KLV.res=KLV.ts.res;klvApplyRetime();KLV.ts.taps={};KLV.ts.res=null;KLV.ts.sig='';$('#tsOut').innerHTML='';tsRender();
 }
+/* ----- finding the ball in the background while you track (video file only): the positions are kept on each shot, so Korf Lab does not have to search ----- */
+var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0};
+function bgPref(){try{return localStorage.getItem('klBg')!=='0';}catch(e){return true;}}
+function bgWin(m,e){
+  var cfg=m.config,h=klvHalf(cfg,e),r=vTarget(cfg,h,e.t)+toAdd(m,h,e.t),pf=e.kind==='penalty'||e.kind==='freepass';
+  return {h:h,a:Math.max(0,Math.round((r-9)*3)),b:Math.round((r+(pf?22:6))*3)};
+}
+function bgHas(e,w){
+  if(!e.bt) return false;
+  var q=e.bt.split('|');if(q.length<3||+q[0]!==w.h) return false;
+  var a0=+q[1],n=q[2].trim().split(' ').length;return a0<=w.a&&a0+n-1>=w.b;
+}
+function bgPending(m){
+  var out=[];if(!m||m.sample) return out;
+  m.events.forEach(function(e){if(e.type!=='shot'||e.ot!=null) return;var w=bgWin(m,e);if(!klvFile(m,w.h)||bgHas(e,w)) return;out.push({e:e,w:w});});
+  return out;
+}
+function bgWant(){var m=cur();return bgPref()&&m&&!m.sample&&ui.view==='track'&&!KLV.on&&!document.hidden;}
+async function bgLoop(){
+  if(BG.run||!bgWant()||(BG.err&&Date.now()-BG.errAt<60000)) return;
+  var m0=cur(),pend=bgPending(m0);if(!pend.length) return;
+  BG.run=true;BG.err='';bgUi();
+  try{
+    await klvLoadDet();
+    while(bgWant()&&cur()===m0){
+      var q=bgPending(m0)[0];if(!q) break;
+      var file=klvFile(m0,q.w.h),v=BG.vids.get(file);
+      if(!v){v=await klvOpen(file);BG.vids.set(file,v);}
+      var arr=[],ok=true;
+      for(var t=q.w.a;t<=q.w.b;t++){
+        if(!bgWant()||cur()!==m0||m0.events.indexOf(q.e)<0){ok=false;break;}
+        await klvSeek(v.vid,t/3);
+        var t0=performance.now(),r=await klvDetect(v.vid);
+        arr.push(r?Math.round(r.x*1000)+','+Math.round(r.y*1000):'.');
+        var dur=performance.now()-t0;await new Promise(function(f){setTimeout(f,Math.max(25,dur*0.5));});
+      }
+      if(!ok) break;
+      q.e.bt=q.w.h+'|'+q.w.a+'|'+arr.join(' ');BG.done++;save();bgUi();
+    }
+  }catch(err){BG.err=(err&&err.message)||'something went wrong';BG.errAt=Date.now();}
+  finally{BG.run=false;bgUi();}
+}
+function bgUi(){
+  var m=cur(),box=$('#bgBox');if(!box) return;
+  var has=!!(m&&!m.sample&&(vfiles[1]||vfiles[2]));
+  box.hidden=!has;if(!has) return;
+  var on=bgPref();$('#bgOn').checked=on;
+  var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null;}).length,pend=bgPending(m).length;
+  var t='';
+  if(!on) t='Off.';
+  else if(BG.err) t='Stopped: '+BG.err+'.';
+  else if(!shots) t='Starts when you log shots.';
+  else if(!pend) t='Done for all '+shots+' shots.';
+  else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done. Keep this tab open and visible.';
+  $('#bgNote').textContent=t;
+}
+$('#bgOn').addEventListener('change',function(e){try{localStorage.setItem('klBg',e.target.checked?'1':'0');}catch(x){}bgUi();bgLoop();});
+setInterval(function(){bgUi();bgLoop();},4000);
 /* ----- panel state ----- */
 function klvUi(){
   var m=cur();if(!m||!$('#chk')) return;
+  if(typeof BG!=='undefined'&&BG) bgUi();
   var have=[1,2].filter(function(h){return klvFile(m,h);}),mt=m.config.meta||{};
   var sp=!!mt.split;
   $('#chkL1').textContent=sp?'1st half video file':'Match video file';$('#chkL2').hidden=!sp;$('#chkF2').hidden=!sp;$('#chkN2').hidden=!sp;
@@ -3148,6 +3211,7 @@ function openEnd(){
 function showExport(fmt){
   var dl=$('#endDlg');if(fmt) ui.fmt=fmt==='csv'?'csv':'json';
   $('#endA').hidden=true;$('#endB').hidden=false;
+  (function(){var m=cur(),n=(typeof BG!=='undefined'&&BG&&m&&bgPref()&&(vfiles[1]||vfiles[2]))?bgPending(m).length:0,el=$('#bgExp');el.hidden=!n;if(n) el.textContent='Korf Log is still finding the ball for '+n+' shots. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.';})();
   setPressed('[data-fmt]','data-fmt',function(v){return v===ui.fmt;});syncBackupLabel();
   if(!dl.open) dl.showModal();
   updateExport();

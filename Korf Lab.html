@@ -424,7 +424,7 @@ function jsonToCsv(txt){
   function pLong(p){return per===4?'Quarter '+p:(p===1?'1st half':'2nd half');}
   function lab(p){return (p&&p.no?'#'+p.no+' ':'')+(p?p.name:'');}
   var att={H:0,A:0},cur=startTeam,lastP=1,halfP=per===4?3:2;att[startTeam]=1;
-  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s'];
+  var head=['match','league','fixture_date','fixture_week','time','seconds','period','team','attack','event','detail','player','player_no','division','gender','role','x_m','y_m','x2_m','y2_m','distance_from_post_m','angle_deg','range','shot_type','outcome','rebounder','rebounder_team','time_iso','court_length_m','match_minutes','periods','team_color','court_color','zone_color','extra_time_s','video_url','video_url_2','video_start_1','video_start_2','video_file_1','video_file_2','video_time_s','ball_track'];
   var vc=(function(){
     function pv(t){t=String(t==null?'':t).trim();var q=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);if(q) return (q[1]?+q[1]*3600:0)+(+q[2])*60+(+q[3]);return /^\d{1,6}$/.test(t)?parseInt(t,10):null;}
     var v1=String(meta.video||''),v2=String(meta.video2||''),f1=String(meta.fn1||''),f2=String(meta.fn2||'');if(!v1&&!v2&&!f1&&!f2) return ['','','','','',''];
@@ -445,7 +445,7 @@ function jsonToCsv(txt){
     rows.push([name,meta.league||'',meta.date||'',meta.week||'',e.ot!=null?clock(t+1)+' +'+clock(e.ot):clock(t),t,pOf(t)&&pLong(pOf(t)),tn,a==null?'':a,e.type,detail,
       pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot&&e.r!=null?e.r:'',shot&&e.a!=null?e.a:'',zone,shot?(e.stype||''):'',
-      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'',e.ot!=null?e.ot:''].concat(vc,[e.vt==null?'':e.vt]));
+      o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'',e.ot!=null?e.ot:''].concat(vc,[e.vt==null?'':e.vt,(shot&&e.bt)||'']));
     var oth=function(x){return x==='H'?'A':'H';};
     if(e.type==='turnover'){origin=e.team;cur=oth(e.team);}
     else if(shot){
@@ -1679,7 +1679,7 @@ function hlReelInfo(L){
   var base=!L.length?'No shots match the current filters.':(noV?'Fill in the video start time for each half first.':'');
   why('#hlMake',RC.on?'A highlight video is already being made. Stop it first.':(PA.on?'Stop the YouTube play-through first.':(base||(lc?'':(names.length?'Choose the video file on this computer first. The log only remembers the file name ('+names.join(', ')+'), so pick it again each time you open the page.':'Choose a video file on this computer first.'))))); 
   var fb0=$('#hlFind');if(fb0){fb0.disabled=!DET.on&&!lc;if(fb0.disabled) fb0.title=base||'Choose the video file on this computer first.';else fb0.title='Finds the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded.';}
-  var fb=$('#hlFollow');if(fb){fb.disabled=!DET.on&&!lc&&!HLTRK;if(fb.disabled){fb.title=base||'Choose the video file on this computer first: the ball is found in your video.';var lb=fb.closest('label');if(lb) lb.title=fb.title;}else{fb.removeAttribute('title');var lb2=fb.closest('label');if(lb2) lb2.title='Ticking this starts finding the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded. Needs the Portrait option.';}}
+  var fb=$('#hlFollow');if(fb){fb.disabled=!DET.on&&!lc&&!HLTRK&&!hlStored().ivs.length;if(fb.disabled){fb.title=base||'Choose the video file on this computer first: the ball is found in your video.';var lb=fb.closest('label');if(lb) lb.title=fb.title;}else{fb.removeAttribute('title');var lb2=fb.closest('label');if(lb2) lb2.title='Ticking this starts finding the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded. Needs the Portrait option.';}}
   why('#hlPlayAll',RC.on?'A highlight video is being made. Stop it first.':(base||'Paste a YouTube link for the match first.'));
 }
 function hlReelMsg(t,bad){var m=$('#hlReelMsg');if(m){m.textContent=t||'';m.className='msg '+(bad?'err':'');}}
@@ -1869,13 +1869,29 @@ function hlFirstApex(pts,t0,t1){
   }
   return null;
 }
+/* Ball positions saved in the log by Korf Log (column ball_track): "half|first frame in thirds of a second|x,y x,y . ..." with x and y in thousandths of the picture, "." for a frame where the ball was not found. */
+var HLST=null;
+function hlStored(){
+  if(HLST&&HLST.rows===HL.rows&&HLST.n===HL.rows.length) return HLST.st;
+  var pts=[],ivs=[];
+  HL.rows.forEach(function(x){
+    var s=x.r&&x.r.ball_track;if(!s||typeof s!=='string') return;
+    var q=s.split('|');if(q.length<3) return;var h=+q[0],a=+q[1],tk=q[2].trim().split(' ');if(!(h>0)||!isFinite(a)) return;
+    tk.forEach(function(z,i){if(z==='.'||z==='') return;var c=z.split(','),px=+c[0]/1000,py=+c[1]/1000;if(isFinite(px)&&isFinite(py)) pts.push({t:(a+i)/3,x:Math.max(0,Math.min(1,px)),y:py,h:h});});
+    ivs.push([h,a/3,(a+tk.length-1)/3]);
+  });
+  ivs.sort(function(p,q){return p[0]-q[0]||p[1]-q[1];});
+  var mg=[];ivs.forEach(function(v){var l=mg[mg.length-1];if(l&&l[0]===v[0]&&v[1]<=l[2]+0.4) l[2]=Math.max(l[2],v[2]);else mg.push(v.slice());});
+  var st={pts:pts,ivs:mg};HLST={rows:HL.rows,n:HL.rows.length,st:st};return st;
+}
+function hlCovered(st,h,a,b){return st.ivs.some(function(v){return v[0]===h&&a>=v[1]-0.7&&b<=v[2]+0.7;});}
 async function hlFind(){
   var btn=$('#hlFind');
   if(DET.on){DET.stop=true;return;}
-  var L0=hlRows().filter(function(z){return z.v&&z.file;});
+  var ST=hlStored(),L0=hlRows().filter(function(z){return z.v&&(z.file||hlCovered(ST,z.x.half,z.v.a-1,z.v.b+1));});
   if(!L0.length){hlReelMsg('Choose the video file and the video start times first.',true);return;}
   DET.on=true;DET.stop=false;if(btn) btn.textContent='Stop finding the ball';
-  var pts=[],seen={},vids=new Map(),files=[],done=0,found=0,total=0,t0=Date.now(),label='';
+  var pts=ST.pts.slice(),seen={},vids=new Map(),files=[],done=0,found=0,total=0,t0=Date.now(),label='',detOk=false;
   function items(list,range){
     var out=[];
     list.forEach(function(z){var r=range(z),fi=files.indexOf(z.file);if(fi<0){fi=files.length;files.push(z.file);}
@@ -1883,6 +1899,8 @@ async function hlFind(){
     return out;
   }
   async function scan(list){
+    if(!list.length) return;
+    if(!detOk){hlReelMsg('Loading the ball finder (20 MB, downloaded once)\u2026',false);await hlLoadDetector();detOk=true;t0=Date.now();}
     var byFile=new Map();list.forEach(function(it){if(!byFile.has(it.file)) byFile.set(it.file,[]);byFile.get(it.file).push(it);});
     total+=list.length;
     for(var ent of byFile){
@@ -1900,27 +1918,24 @@ async function hlFind(){
   }
   var shotsFound=0,shotsTotal=0;
   try{
-    hlReelMsg('Loading the ball finder (20 MB, downloaded once)…',false);
-    await hlLoadDetector();
-    t0=Date.now();
     /* 1. Penalties and free passes: the shot comes after the referee's call, so look for the ball's first big arc after it. */
     var PF=L0.filter(function(z){return z.x.k==='penalty'||z.x.k==='freepass';});
     if(PF.length){
       label='Finding the penalty and free pass shots';
       var raw=function(z){return hlVid(z.x,true).t;};
-      await scan(items(PF,function(z){var r=raw(z);return [r-1,r+(z.x.k==='penalty'?16:8)];}));
+      await scan(items(PF.filter(function(z){var r=raw(z);return z.file&&!hlCovered(ST,z.x.half,r-1,r+(z.x.k==='penalty'?16:8));}),function(z){var r=raw(z);return [r-1,r+(z.x.k==='penalty'?16:8)];}));
       PF.forEach(function(z){shotsTotal++;var r=raw(z),a=hlFirstApex(pts.filter(function(p){return p.h===z.x.half;}),r-1,r+(z.x.k==='penalty'?16:8));if(a!=null){SHOTDT.set(z.x.r,Math.max(-1,a-r));shotsFound++;}});
     }
     /* 2. Follow the ball through the clips (now at the right times). */
     label='Following the ball in the clips';
-    if(!DET.stop){var L1=hlRows().filter(function(z){return z.v&&z.file;});await scan(items(L1,function(z){return [z.v.a-1,z.v.b+1];}));}
+    if(!DET.stop){var L1=hlRows().filter(function(z){return z.v&&z.file&&!hlCovered(ST,z.x.half,z.v.a-1,z.v.b+1);});await scan(items(L1,function(z){return [z.v.a-1,z.v.b+1];}));}
     pts.sort(function(a,b){return a.t-b.t;});
     var stopped=DET.stop,sm=shotsTotal?' Shot moment found for '+shotsFound+' of '+shotsTotal+' penalties and free passes.':'';
     if(pts.length>=2){
-      HLTRK={name:'Found in your video',pts:pts,n:pts.length};
+      HLTRK={name:done?'Found in your video':'Saved in your log',pts:pts,n:pts.length};
       var fo=$('#hlFollow');if(fo) fo.checked=true;var po=$('#hl169');if(po) po.checked=true;
       var inf=$('#hlTrkInfo');if(inf) inf.innerHTML=hlTrkInfo();
-      hlReelMsg((stopped?'Stopped. ':'')+'Found the ball in '+found+' of '+done+' frames.'+sm+' Portrait 10:16 and Crop follows the ball are ticked for the portrait video.',false);
+      hlReelMsg((stopped?'Stopped. ':'')+(done?'Found the ball in '+found+' of '+done+' frames'+(ST.pts.length?' (the rest came from your log)':'')+'.':'The ball positions come from your log; nothing had to be searched.')+sm+' Portrait 10:16 and Crop follows the ball are ticked for the portrait video.',false);
     }else hlReelMsg(stopped?'Stopped before the ball was found.':'The ball finder did not find the ball in these clips.',!stopped);
   }catch(err){
     hlReelMsg('Could not find the ball: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);

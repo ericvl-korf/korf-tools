@@ -6,6 +6,10 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 19:00 (Europe/London)**: New features today:
+  - **Korf Log finds the ball while you track (video file only):** with a video file on this computer, Korf Log now works in the background to find the ball around each shot you log and saves the positions on the shot (JSON backup and CSV column `ball_track`). A tick box and a progress line sit under the video, and End match says how many shots are still waiting.
+  - **Korf Lab uses them:** Crop follows the ball uses the saved positions and searches only the clips without any. If every clip has saved positions, nothing is searched and the video file is not needed.
+
 - **2026-10-31 18:00 (Europe/London)**: New feature today:
   - **Crop follows the ball starts the search itself (Korf Lab):** ticking **Crop follows the ball** now starts finding the ball in your video straight away (a note beside the box says so), and ticks Portrait 10:16 for you. Unticking stops it. The separate ball track file option is removed. The box is greyed out, with the reason on hover, until the video file and start times are set.
 
