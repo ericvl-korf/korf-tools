@@ -232,6 +232,15 @@ table.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-num
 #log .empty{padding:.8rem .2rem;color:var(--muted)}
 
 .chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}#chkMsg.bad,#chk .bad{color:var(--danger)}
+.startgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media (max-width:640px){.startgrid{grid-template-columns:minmax(0,1fr)}}
+.startopt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);font:500 .95rem var(--f-body);cursor:pointer;min-height:120px}
+.startopt b{font:700 1.4rem var(--f-display);letter-spacing:.04em;text-transform:uppercase}.startopt span{color:var(--muted)}.startopt:hover{border-color:var(--accent);background:var(--surface-2)}.startopt[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+#contList{display:flex;flex-direction:column;gap:6px;margin:6px 0 12px}#contList .btn{text-align:left;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}#contList .btn span{color:var(--muted);font-weight:400;font-size:.85rem}
+.wsteps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}.wsteps button{font:600 .8rem var(--f-body);padding:.25rem .65rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);min-height:30px;cursor:pointer}.wsteps button[disabled]{opacity:.5;cursor:default}.wsteps button[aria-current=step]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+#startView{display:flex;flex-direction:column;gap:14px;min-width:0}.issues{scroll-margin-bottom:110px}#vdMode,#plWho{flex-wrap:wrap}#vdMode button,#plWho button{white-space:normal}.warnbox{border-color:var(--warn)}.warnbox .row-actions{margin-top:8px}
+.vdgrid.m-yt .f1,.vdgrid.m-yt .f2,.vdgrid.m-file .l1,.vdgrid.m-file .l2{display:none!important}
+.enddlg{border:0;padding:0;background:transparent;color:var(--fg);width:min(560px,94vw);max-width:94vw}.enddlg::backdrop{background:rgba(6,14,11,.6)}
+.enddlg .dlg-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px}.enddlg h2{margin:0}.enddlg p{margin:0}.enddlg textarea{width:100%;min-height:8rem;padding:.5rem;font:400 .8rem ui-monospace,Menlo,Consolas,monospace;resize:vertical}
 details.card summary{cursor:pointer;font:700 1.15rem var(--f-display);letter-spacing:.06em;text-transform:uppercase}
 .exp{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .exp textarea{width:100%;min-height:9rem;padding:.5rem;font:400 .8rem ui-monospace,Menlo,Consolas,monospace;resize:vertical}
@@ -435,7 +444,7 @@ details>summary{transition:color .16s var(--ease)}
       <button class="btn" id="startMine" type="button">Set up my match</button>
     </div>
     <div class="banner warn" id="storeNote" hidden>
-      <p>Saving is not available in this view, so matches disappear when you leave. Use Export below to keep your data.</p>
+      <p>Saving is not available in this view, so matches disappear when you leave. Use Save backup (above) to keep your data.</p>
     </div>
 
 
@@ -452,6 +461,7 @@ details>summary{transition:color .16s var(--ease)}
           <button class="btn" id="clkBack" type="button" title="Go back 1 second. Events after that time are removed.">−1 s</button>
           <button class="btn primary" id="clkToggle" type="button" title="Start or pause the clock (Space bar)">Start</button>
           <button class="btn" id="clkFwd" type="button" title="Go forward 1 second">+1 s</button>
+          <button class="btn primary" id="clkExport" type="button" title="Export this match as a CSV or backup file" hidden>Export match</button>
           <button class="btn primary" id="clkNext" type="button" title="End this half. The next half is set up with the clock stopped until you press Start." hidden>End 1st half</button>
         </div>
         <div class="cboth" id="cboth" role="group" aria-label="Move the video and the clock together"><span class="lbl">Video + clock</span><button type="button" id="clkBothBack" title="Rewind the video and the clock together by 1 second. Events after that time are removed.">−1 s</button><button type="button" id="clkBothFwd" title="Fast forward the video and the clock together by 1 second">+1 s</button></div>
@@ -528,45 +538,41 @@ details>summary{transition:color .16s var(--ease)}
             <div class="row-actions"><button class="btn sm" id="chkRestore" type="button" hidden>Restore original times</button></div>
           </div>
         </details>
-        <details class="card" id="exp">
-          <summary>Export and import</summary>
-          <div class="exp">
-            <div class="row-actions">
-              <div class="seg" role="group" aria-label="Export format">
-                <button type="button" data-fmt="csv" aria-pressed="true">CSV</button>
-                <button type="button" data-fmt="json" aria-pressed="false">JSON</button>
-              </div>
-              <button class="btn" id="copyBtn" type="button">Copy</button>
-              <button class="btn" id="backupBtn2" type="button">Save backup file</button>
-              <span id="exMsg"></span>
-            </div>
-            <label class="sr" for="exText">Export text</label>
-            <textarea id="exText" readonly></textarea>
-            <span class="lbl">Import a match (backup file or pasted JSON or CSV)</span>
-            <input type="file" id="imFile" accept=".json,.csv,application/json,text/csv" aria-label="Import a backup file">
-            <label class="sr" for="imText">Import text</label>
-            <textarea id="imText" placeholder="Paste JSON or CSV exported from this tracker"></textarea>
-            <div class="row-actions"><button class="btn" id="importBtn" type="button">Import match</button><span id="imMsg"></span></div>
-          </div>
-        </details>
       </div>
     </div>
+  </div>
+
+  <div id="startView" hidden>
+    <div class="intro"><h2>What would you like to do?</h2></div>
+    <div class="startgrid">
+      <button type="button" class="startopt" id="stNew"><b>Start a new match</b><span>Set up the fixture, video, teams, format and what to track, one step at a time.</span></button>
+      <button type="button" class="startopt" id="stCont" aria-pressed="false"><b>Continue a previous match</b><span>Carry on a match saved in this browser, or open a backup file.</span></button>
+    </div>
+    <section class="card" id="contCard" hidden aria-label="Continue a previous match">
+      <div class="card-head"><h2>Continue a previous match</h2></div>
+      <span class="lbl">Saved in this browser</span>
+      <div id="contList"></div>
+      <span class="lbl">Or open a backup file (.json or .csv)</span>
+      <div class="row-actions"><input type="file" id="startImFile" accept=".json,.csv,application/json,text/csv" aria-label="Open a backup file"><span id="startImMsg" role="status"></span></div>
+    </section>
+    <section class="card" id="askCard" hidden aria-label="Match setup">
+      <div class="card-head"><h2 id="askTitle">Match loaded</h2></div>
+      <p>Do you want to look at, or change, this match's setup (teams, players, format, events)?</p>
+      <div class="row-actions"><button class="btn" id="askYes" type="button">Yes, show the setup</button><button class="btn primary" id="askNo" type="button">No, go to the tracker</button></div>
+    </section>
+    <div class="row-actions"><button class="btn" id="stBack" type="button">Back</button></div>
   </div>
 
   <div id="setupView" hidden>
     <div class="intro">
       <h2 id="setupTitle">New match setup</h2>
-      <p class="stepno" id="stepLbl">Step 1 of 2</p>
-      <p id="stepIntro" hidden></p>
+      <p class="stepno" id="stepLbl">Step 1 of 6</p>
+      <p id="stepIntro"></p>
+      <ol class="wsteps" id="wsteps" aria-label="Setup steps"></ol>
     </div>
 
     <div id="setupStep1">
-      <section class="card" id="setupImport" aria-label="Continue a saved match">
-        <div class="card-head"><h2>Continue a saved match</h2><span class="sub">Optional</span></div>
-        <p class="note">Already tracked part of a match? Import its backup file (.json or .csv) to carry on where you stopped. Skip this to set up a new match below.</p>
-        <div class="row-actions"><input type="file" id="setupImFile" accept=".json,.csv,application/json,text/csv" aria-label="Import a backup file and continue tracking"><span id="setupImMsg" role="status"></span></div>
-      </section>
-      <section class="card" aria-label="Fixture">
+      <section class="card" aria-label="Fixture" data-wstep="1">
         <div class="card-head"><h2>Fixture</h2><span class="sub">League and date are required</span></div>
         <div class="fixgrid">
           <div class="grp"><label class="lbl" for="fxLeague">League name *</label><select id="fxLeague" required aria-required="true"></select><input id="fxLeagueOther" type="text" maxlength="60" autocomplete="off" placeholder="Type the league name" aria-label="Other league name" hidden></div>
@@ -574,8 +580,16 @@ details>summary{transition:color .16s var(--ease)}
           <div class="grp"><label class="lbl" for="fxWeek">Fixture week <span style="font-weight:500;text-transform:none;letter-spacing:0">(optional)</span></label><input id="fxWeek" type="text" inputmode="numeric" maxlength="2" placeholder="e.g. 5" autocomplete="off"></div>
         </div>
       </section>
-      <section class="card" aria-label="Match video">
+      <section class="card" aria-label="Match video" data-wstep="2">
         <div class="card-head"><h2>Match video</h2><span class="sub">Optional. Lets the clock and the video start together</span></div>
+        <div class="form-row"><span class="lbl">Do you want to add a match video?</span>
+          <div class="seg" role="group" aria-label="Match video" id="vdMode">
+            <button type="button" data-vdm="none" aria-pressed="false">No video</button>
+            <button type="button" data-vdm="yt" aria-pressed="false">YouTube link</button>
+            <button type="button" data-vdm="file" aria-pressed="false">Video file on this computer</button>
+          </div></div>
+        <p class="note" id="vdWhy"></p>
+        <div id="vdBody">
         <label class="vdsplit"><input type="checkbox" id="vdSplit"> The match video is split into one video per half</label>
         <div class="vdgrid">
           <div class="grp l1"><label class="lbl" for="vdLink1" id="vdLbl1">YouTube link</label><input id="vdLink1" type="text" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link"></div>
@@ -586,10 +600,24 @@ details>summary{transition:color .16s var(--ease)}
           <div class="grp f2" id="vdFG2" hidden><label class="lbl" for="vdF2">2nd half video file</label><input id="vdF2" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn2"></p></div>
         </div>
         <p class="note" id="vdNote" style="margin-top:10px">Enter the video time at which the clock starts for each half. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved.</p>
+        </div>
       </section>
-      <div class="sgrid" id="teamsGrid"></div>
+      <div data-wstep="3" class="wstep3" style="display:flex;flex-direction:column;gap:14px">
+        <section class="card" aria-label="Player names">
+          <div class="card-head"><h2>Teams and players</h2></div>
+          <div class="form-row"><span class="lbl">Do you want to add player names?</span>
+            <div class="seg" role="group" aria-label="Add player names for" id="plWho">
+              <button type="button" data-plw="none" aria-pressed="false">No player names</button>
+              <button type="button" data-plw="home" aria-pressed="false">Home team</button>
+              <button type="button" data-plw="away" aria-pressed="false">Away team</button>
+              <button type="button" data-plw="both" aria-pressed="false">Both teams</button>
+            </div></div>
+          <p class="note">With player names you can log who shoots, rebounds and is substituted. Without them the tracker logs team events only. Every team needs a name and a colour.</p>
+        </section>
+        <div class="sgrid" id="teamsGrid"></div>
+      </div>
 
-      <div class="sgrid">
+      <div class="sgrid" data-wstep="4">
         <section class="card" aria-label="Match format">
           <div class="card-head"><h2>Match format</h2></div>
           <div class="form-row">
@@ -635,7 +663,7 @@ details>summary{transition:color .16s var(--ease)}
         </section>
       </div>
 
-      <section class="card" aria-label="Events to track">
+      <section class="card" aria-label="Events to track" data-wstep="5">
         <div class="card-head"><h2>Events to track</h2><span class="sub">Only ticked events appear while tracking</span></div>
         <div class="evlist">
           <div class="evgroup">
@@ -675,7 +703,7 @@ details>summary{transition:color .16s var(--ease)}
       </section>
     </div>
 
-    <div id="setupStep2" hidden>
+    <div id="setupStep2" data-wstep="6">
       <section class="card" aria-label="Opening attack">
         <div class="card-head"><h2>Opening attack</h2></div>
         <div class="form-row">
@@ -713,17 +741,41 @@ details>summary{transition:color .16s var(--ease)}
     </div>
 
     <div class="issues" id="issues" role="status" hidden></div>
+    <div class="issues warnbox" id="warns" role="status" hidden></div>
     <div class="actionbar">
       <span id="barStatus"></span>
       <div class="row-actions">
         <button class="btn" id="setupCancel" type="button">Cancel</button>
-        <button class="btn" id="setupBack" type="button" hidden>Back</button>
-        <button class="btn primary" id="setupNext" type="button">Next: opening attack</button>
+        <button class="btn" id="setupBack" type="button">Back</button>
+        <button class="btn primary" id="setupNext" type="button">Next</button>
         <button class="btn primary" id="setupStart" type="button" hidden>Start match</button>
       </div>
     </div>
   </div>
 </div>
+
+<dialog id="endDlg" class="enddlg" aria-labelledby="endTitle">
+  <div class="dlg-card">
+    <div id="endA" hidden>
+      <h2 id="endTitle">Check the times against your video?</h2>
+      <p style="margin-top:8px">You used a video file on this computer, so Korf Log can compare it with your log. <b>Re-time the log</b> finds how far the logged times drift from the video. <b>Suggest shot times</b> proposes better times for shots. Nothing changes unless you apply it, and the originals are kept. Do this before you export.</p>
+      <div class="row-actions" style="margin-top:12px"><button class="btn primary" id="endCheck" type="button">Check times now</button><button class="btn" id="endSkip" type="button">Skip, go to export</button></div>
+    </div>
+    <div id="endB" hidden>
+      <h2>Export this match</h2>
+      <div class="row-actions" style="margin-top:8px">
+        <div class="seg" role="group" aria-label="Export format"><button type="button" data-fmt="csv" aria-pressed="true">CSV</button><button type="button" data-fmt="json" aria-pressed="false">JSON</button></div>
+        <button class="btn primary" id="backupBtn2" type="button">Save CSV file</button>
+        <button class="btn" id="copyBtn" type="button">Copy</button>
+        <span id="exMsg"></span>
+      </div>
+      <label class="sr" for="exText">Export text</label>
+      <textarea id="exText" readonly></textarea>
+      <p class="note">Korf Lab opens both formats. Use Save backup at the top at any time to keep a copy.</p>
+    </div>
+    <div class="row-actions"><button class="btn" id="endClose" type="button">Close</button></div>
+  </div>
+</dialog>
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="sheet">
@@ -1084,7 +1136,7 @@ function toggleClock(){
 /* The End button ends the half (or quarter) and sets up the next one with the clock stopped, or at the end of the match stops extra time. The next period only starts when the user presses Start. */
 function startNextPeriod(){
   if(!atCap()) return;
-  if(lastPeriod()){if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}clk.done=true;ui.popup=null;persistClock();render();return;}
+  if(lastPeriod()){if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}clk.done=true;ui.popup=null;persistClock();render();openEnd();return;}
   clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otOn=false;clk.otSince=null;clk.since=null;clk.done=false;ui.popup=null;ui.restore=null;
   persistClock();render();
 }
@@ -1133,6 +1185,7 @@ function renderClock(){
   $('#clkToggle').textContent=cap?(clk.otSince?'Pause':(otFlag()?'Resume':'Start extra time')):(clk.since?'Pause':(t>periodStart()+0.5?'Resume':'Start'));
   $('#clkToggle').title=cap?'Pause or resume the extra time stopwatch (Space bar). Events are logged as '+fmtClock(Math.ceil(t))+' + extra time.':'Start or pause the clock (Space bar)';
   $('#clkNext').hidden=!(cap&&!(last&&clk.done));
+  $('#clkExport').hidden=!(cap&&last&&clk.done);
   $('#clkNext').textContent=last?'End match':'End '+pBtn(cfg,clk.go);
   $('#clkFwd').disabled=cap;
   $('#clkBack').disabled=otOn?(Math.floor(o+1e-6)<1):(Math.floor(t)<=periodStart());
@@ -1418,7 +1471,7 @@ function parseImport(txt){
   return {id:uid(),home:cfg.home.name,away:cfg.away.name,created:Number(src.created)||Date.now(),events:evs,config:cfg,clock:{t:inOt?last+0.999:last,running:false,ot:inOt?lastEv.ot:0,otOn:!!inOt}};
 }
 function updateExport(){
-  if(!$('#exp').open) return;
+  if(!$('#endDlg').open) return;
   var m=cur();$('#exText').value=ui.fmt==='csv'?toCSV(m):toJSON(m);
 }
 function syncBackupLabel(){var b=$('#backupBtn2');if(b) b.textContent=ui.fmt==='csv'?'Save CSV file':'Save backup file';}
@@ -1794,6 +1847,7 @@ function setVideo(){
 function render(){
   var cc=(draft&&ui.view==='setup')?draft:(cur()&&cur().config);applyTeamColor(cc&&cc.home.color,cc&&cc.away.color);applyLook(cc&&cc.look);
   $('#setupView').hidden=ui.view!=='setup';
+  $('#startView').hidden=ui.view!=='start';
   $('#trackView').hidden=ui.view!=='track';
   $('#matchbar').hidden=ui.view!=='track';
   if(ui.view!=='track'){$('#modal').hidden=true;$('#fixLine').hidden=true;$('#fixLine').textContent='';return;}
@@ -2497,13 +2551,14 @@ function teamCardHTML(side){
     TB_PRESETS.map(function(c){return '<button type="button" data-tc="'+side+'" data-c="'+c+'" style="background:'+c+'" aria-label="Colour '+c+'" aria-pressed="'+(c===col)+'"></button>';}).join('')+
     '<input type="color" data-tcpick="'+side+'" value="'+col+'" aria-label="Custom colour for '+tl+'"></div>'+
     '<p class="note">Fills this team\'s buttons when no player names are logged, and outlines player buttons when they are.</p></div>';
+  h+='<div class="tplayers"'+(ui.plWho&&ui.plWho[side]?'':' hidden')+'>';
   h+='<div class="lhead"><h3>Players</h3><span class="opt">optional</span></div>';
   h+='<div class="plist">'+t.players.map(function(p){return playerRow(side,'players',p);}).join('')+'</div>';
   h+='<button type="button" class="btn sm" data-addp="'+side+'">+ Add player</button>';
   h+='<p class="counts" data-counts="'+side+'"></p>';
   h+='<div class="lhead"><h3>Substitutes</h3><span class="opt">optional</span></div>';
   h+='<div class="plist">'+t.subs.map(function(p){return playerRow(side,'subs',p);}).join('')+'</div>';
-  h+='<button type="button" class="btn sm" data-adds="'+side+'">+ Add substitute</button>';
+  h+='<button type="button" class="btn sm" data-adds="'+side+'">+ Add substitute</button></div>';
   return h+'</section>';
 }
 function capSVG(xa,xb,y){
@@ -2543,27 +2598,48 @@ function dirSVG(){
   return o+'</svg>';
 }
 function computeIssues(){
-  var out=[],bad={},ev=draft.events,t=ev.to;
-  if(!(ev.pass||ev.shot||ev.referee||ev.turnover)) out.push('Tick at least one event to track.');
-  if(ev.referee&&!ev.penalty&&!ev.freepass) out.push('Referee calls: pick Penalty, Free pass, or both.');
-  if(ev.turnover&&!(t.general||t.attack||t.forced||t.unforced||t.attfoul||t.shotclock)) out.push('Turnovers: pick General turnover or at least one detailed type.');
-  var L=draft.court.len;
-  if(!(isFinite(L)&&L>=30&&L<=40)) out.push('Court length must be between 30 and 40 m.');
-  ['home','away'].forEach(function(side){
-    var inc=0;
-    draft[side].players.forEach(function(p){if(isEmptyRow(p)) return;if(!p.name.trim()||!p.div||!p.g){inc++;bad[p.id]=1;}});
-    draft[side].subs.forEach(function(p){if(isEmptyRow(p)) return;if(!p.name.trim()||!p.g){inc++;bad[p.id]=1;}});
-    lineupAlerts(side).forEach(function(m){out.push(teamLabel(side)+': '+m);});
-    if(inc) out.push(teamLabel(side)+': '+inc+' incomplete '+(inc===1?'row':'rows')+'. Players need a name, division and gender; substitutes need a name and gender.');
-  });
+  var out=[],bad={},items=[],ev=draft.events,t=ev.to;
+  function add(st,m,w){items.push({s:st,m:m,w:!!w});if(!w) out.push(m);}
   var mt0=draft.meta||{};
-  if(!String(mt0.league||'').trim()){out.push('Enter the league name.');bad.fxLeague=1;}
-  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(mt0.date||''))){out.push('Enter the fixture date.');bad.fxDate=1;}
-  [['video','vdLink1','1st half video'],['video2','vdLink2','2nd half video']].forEach(function(x){var v=String(mt0[x[0]]||'').trim();if(v&&!ytParse(v)){out.push('The '+(x[0]==='video'&&!mt0.split?'match video':x[2])+' link does not look like a YouTube link. Paste the address from the YouTube share button.');bad[x[1]]=1;}});
-  [['vs1','vdS1','1st half'],['vs2','vdS2','2nd half']].forEach(function(x){var v=String(mt0[x[0]]||'').trim();if(v&&vParse(v)==null){out.push('The '+x[2]+' video start time must look like 04:10 (minutes:seconds).');bad[x[1]]=1;}});
-  if(teamLabel('home').toLowerCase()===teamLabel('away').toLowerCase()) out.push('Give the two teams different names.');
-  if(draft.home.color===draft.away.color) out.push('Give the two teams different colours.');
-  return {list:out,bad:bad};
+  /* 1 fixture */
+  if(!String(mt0.league||'').trim()){add(1,'Enter the league name.');bad.fxLeague=1;}
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(mt0.date||''))){add(1,'Enter the fixture date.');bad.fxDate=1;}
+  /* 2 video */
+  var vm=ui.vdMode;
+  if(vm==null) add(2,'Choose whether to add a match video (or No video).');
+  if(vm==='yt'){
+    if(!String(mt0.video||'').trim()){add(2,'Paste the '+(mt0.split?'1st half ':'')+'YouTube link, or choose No video.');bad.vdLink1=1;}
+    if(mt0.split&&!String(mt0.video2||'').trim()){add(2,'Paste the 2nd half YouTube link.');bad.vdLink2=1;}
+  }
+  if(vm==='file'){
+    if(!vfiles[1]&&!mt0.fn1) add(2,'Choose the '+(mt0.split?'1st half ':'')+'video file, or choose No video.');
+    if(mt0.split&&!vfiles[2]&&!mt0.fn2) add(2,'Choose the 2nd half video file.');
+  }
+  [['video','vdLink1','1st half video'],['video2','vdLink2','2nd half video']].forEach(function(x){var v=String(mt0[x[0]]||'').trim();if(v&&!ytParse(v)){add(2,'The '+(x[0]==='video'&&!mt0.split?'match video':x[2])+' link does not look like a YouTube link. Paste the address from the YouTube share button.');bad[x[1]]=1;}});
+  [['vs1','vdS1','1st half'],['vs2','vdS2','2nd half']].forEach(function(x){var v=String(mt0[x[0]]||'').trim();if(v&&vParse(v)==null){add(2,'The '+x[2]+' video start time must look like 04:10 (minutes:seconds).');bad[x[1]]=1;}});
+  if((vm==='yt'||vm==='file')&&!String(mt0.vs1||'').trim()) add(2,'You have not said when the 1st half starts in the video. 00:00 (the very start of the video) will be used, so the video will be out of step with the clock if the match starts later.',true);
+  /* 3 teams */
+  ['home','away'].forEach(function(side){
+    var nm=String(draft[side].name||'').trim(),def=side==='home'?'Home':'Away';
+    if(!nm||nm===def) add(3,'The '+side+' team name has not been entered; it will be called "'+def+'".',true);
+    var inc=0,named=0;
+    draft[side].players.forEach(function(p){if(isEmptyRow(p)) return;if(p.name.trim()) named++;if(!p.name.trim()||!p.div||!p.g){inc++;bad[p.id]=1;}});
+    draft[side].subs.forEach(function(p){if(isEmptyRow(p)) return;if(p.name.trim()) named++;if(!p.name.trim()||!p.g){inc++;bad[p.id]=1;}});
+    lineupAlerts(side).forEach(function(m){add(3,teamLabel(side)+': '+m);});
+    if(inc) add(3,teamLabel(side)+': '+inc+' incomplete '+(inc===1?'row':'rows')+'. Players need a name, division and gender; substitutes need a name and gender.');
+    if(ui.plWho&&ui.plWho[side]&&!named) add(3,'You chose to add player names for '+teamLabel(side)+' but have not added any.',true);
+  });
+  if(teamLabel('home').toLowerCase()===teamLabel('away').toLowerCase()) add(3,'Give the two teams different names.');
+  if(draft.home.color===draft.away.color) add(3,'Give the two teams different colours.');
+  /* 4 format and court */
+  var L=draft.court.len;
+  if(!(isFinite(L)&&L>=30&&L<=40)) add(4,'Court length must be between 30 and 40 m.');
+  /* 5 events */
+  if(!(ev.pass||ev.shot||ev.referee||ev.turnover)) add(5,'Tick at least one event to track.');
+  if(ev.referee&&!ev.penalty&&!ev.freepass) add(5,'Referee calls: pick Penalty, Free pass, or both.');
+  if(ev.turnover&&!(t.general||t.attack||t.forced||t.unforced||t.attfoul||t.shotclock)) add(5,'Turnovers: pick General turnover or at least one detailed type.');
+  if((ev.pass||ev.referee||ev.turnover)&&!ev.shot) add(5,'Shots are not ticked, so the log will have no shots, shot maps or highlights.',true);
+  return {list:out,bad:bad,items:items};
 }
 function lineupAlerts(side){
   var rows=draft[side].players.filter(function(p){return !isEmptyRow(p)&&String(p.name||'').trim();}),al=[];
@@ -2635,22 +2711,31 @@ function syncVideoSetup(){
   [['#vdLink1','video'],['#vdLink2','video2'],['#vdS1','vs1'],['#vdS2','vs2']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=mt[x[1]]||'';});
   $('#vdSplit').checked=sp;$('#vdG2').hidden=!sp;$('#vdFG2').hidden=!sp;
   $('#vdFl1').textContent=sp?'1st half video file':'Or a video file on this computer';
-  [1,2].forEach(function(k){var f=vfiles[k],n=mt['fn'+k];$('#vdFn'+k).textContent=f?f.name:(n?'Choose again when tracking: '+n:'');});
+  [1,2].forEach(function(k){var f=vfiles[k],n=mt['fn'+k];$('#vdFn'+k).textContent=f?'':(n?'Choose again when tracking: '+n:'');});
   $('#vdLbl1').textContent=sp?'1st half YouTube link':'YouTube link';
   $('#vdS2').placeholder=sp?'mm:ss, e.g. 00:30':'mm:ss, e.g. 38:20';
   var h=$('#vdNote');
   h.textContent=sp?'Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).':'Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved. A file stays on your computer and has to be chosen again each time Korf Log is opened.';
 }
+var WSTEPS=[
+  ['Fixture','Which match is this? The league and date are needed.'],
+  ['Video','Add the match video if you have one, so the clock and the video can start together.'],
+  ['Teams','Name the teams, pick their colours and choose whether to add player names.'],
+  ['Format and court','How long is the match, how is it split, and how big is the court?'],
+  ['Events','Choose what you want to track. Only ticked events appear while tracking.'],
+  ['Opening attack','Choose which team starts in possession, which of its divisions attacks first, and which way it attacks.']];
+function stepIssues(n,r){r=r||computeIssues();return {errs:r.items.filter(function(i){return i.s===n&&!i.w;}).map(function(i){return i.m;}),warns:r.items.filter(function(i){return i.s===n&&i.w;}).map(function(i){return i.m;})};}
 function syncIssues(){
-  var r=computeIssues(),box=$('#issues');
+  var r=computeIssues(),box=$('#issues'),wb=$('#warns'),si=stepIssues(setupStep,r);
   qa('.prow').forEach(function(row){row.classList.toggle('bad',!!r.bad[row.dataset.id]);});
   ['vdLink1','vdLink2','vdS1','vdS2'].forEach(function(id){var i=$('#'+id);if(i) i.classList.toggle('bad',!!r.bad[id]);});
-  var show=r.list.length>0&&setupStep===1;
-  box.hidden=!show;
-  box.innerHTML=show?'<strong>Before you continue</strong><ul>'+r.list.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'';
-  $('#setupNext').disabled=r.list.length>0;
-  $('#setupStart').disabled=r.list.length>0;
-  $('#barStatus').textContent=setupStep===2?'Ready to go':(r.list.length?(r.list.length===1?'1 thing to fix':r.list.length+' things to fix'):'Step 1 complete');
+  var showE=!!ui.tried[setupStep]&&si.errs.length>0;
+  box.hidden=!showE;
+  box.innerHTML=showE?'<strong>Before you continue</strong><ul>'+si.errs.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'';
+  var showW=ui.warnShow===setupStep&&si.warns.length>0&&!si.errs.length;
+  wb.hidden=!showW;
+  wb.innerHTML=showW?'<strong>Check before you continue</strong><ul>'+si.warns.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul><div class="row-actions"><button class="btn" id="warnFix" type="button">Go back and fill it in</button><button class="btn primary" id="warnGo" type="button">Continue anyway</button></div>':'';
+  $('#barStatus').textContent='Step '+setupStep+' of 6 · '+WSTEPS[setupStep-1][0];
 }
 function syncTeamPick(){
   var list=TEAMS[draft.meta.league||''];ui.teamOther=ui.teamOther||{};
@@ -2681,19 +2766,55 @@ function syncSetup(){
   var per=draft.length/draft.periods;
   $('#fmtNote').textContent=draft.periods+' '+(draft.periods===2?'halves':'quarters')+' of '+fmtN(Math.round(per*10)/10)+' min each.';
   syncCourt();syncEvents();
-  if(setupStep===2) syncStep2();
-  syncIssues();
+  if(setupStep===6) syncStep2();
+  syncTeamsUi();syncIssues();
 }
-function persistDraft(){db.draft={target:setupTarget,config:draft,step:setupStep,v:2};save();}
+function persistDraft(){db.draft={target:setupTarget,config:draft,step:setupStep,reach:ui.reach,vd:ui.vdMode,pl:ui.plWho,v:3};save();}
 function showStep(n){
-  setupStep=n;
-  $('#setupStep1').hidden=n!==1;$('#setupStep2').hidden=n!==2;
-  $('#setupNext').hidden=n!==1;$('#setupBack').hidden=n!==2;$('#setupStart').hidden=n!==2;
-  $('#stepLbl').textContent='Step '+n+' of 2';
-  $('#stepIntro').hidden=n===1;$('#stepIntro').textContent=n===1?'':
-    'Choose which team starts in possession, which of its divisions attacks first, and which way it attacks.';
+  setupStep=Math.max(1,Math.min(6,n));ui.warnShow=null;
+  qa('#setupView [data-wstep]').forEach(function(el){el.hidden=Number(el.dataset.wstep)!==setupStep;});
+  var isNew=setupTarget==='new',last=setupStep===6;
+  $('#setupNext').hidden=last;$('#setupStart').hidden=!last;
+  $('#setupNext').textContent='Next: '+(last?'':WSTEPS[setupStep][0]).toLowerCase();
+  $('#setupBack').hidden=(!isNew&&setupStep===1);
+  $('#stepLbl').textContent='Step '+setupStep+' of 6 · '+WSTEPS[setupStep-1][0];
+  $('#stepIntro').textContent=WSTEPS[setupStep-1][1];
+  $('#wsteps').innerHTML=WSTEPS.map(function(w,i){var k=i+1,ok=!isNew||k<=ui.reach;
+    return '<li><button type="button" data-wgo="'+k+'"'+(k===setupStep?' aria-current="step"':'')+(ok?'':' disabled')+'>'+k+'. '+esc(w[0])+'</button></li>';}).join('');
   syncSetup();persistDraft();
   try{window.scrollTo(0,0);}catch(e){}
+}
+function nextStep(){
+  var si=stepIssues(setupStep);
+  if(si.errs.length){ui.tried[setupStep]=true;ui.warnShow=null;syncIssues();var bx=$('#issues');if(bx&&bx.scrollIntoView) bx.scrollIntoView({block:'nearest'});return;}
+  if(si.warns.length&&ui.ack[setupStep]!==si.warns.join('|')){ui.warnShow=setupStep;syncIssues();var wx=$('#warns');if(wx&&wx.scrollIntoView) wx.scrollIntoView({block:'nearest'});return;}
+  ui.reach=Math.max(ui.reach,setupStep+1);showStep(setupStep+1);
+}
+function backStep(){
+  if(setupStep>1){showStep(setupStep-1);return;}
+  if(setupTarget==='new') openStart();
+}
+function setVdMode(m){
+  ui.vdMode=m;var mt=draft.meta;
+  if(m==='none'){mt.video='';mt.video2='';mt.vs1='';mt.vs2='';mt.split=false;mt.fn1='';mt.fn2='';vfiles[1]=null;vfiles[2]=null;}
+  else if(m==='yt'){mt.fn1='';mt.fn2='';vfiles[1]=null;vfiles[2]=null;}
+  else if(m==='file'){mt.video='';mt.video2='';}
+}
+function hasRows(side){return draft[side].players.some(function(p){return !isEmptyRow(p);})||draft[side].subs.some(function(p){return !isEmptyRow(p);});}
+function setPlW(c){
+  ui.plWho={home:c==='home'||c==='both',away:c==='away'||c==='both'};
+  ['home','away'].forEach(function(sd){if(hasRows(sd)) ui.plWho[sd]=true;});
+}
+function syncTeamsUi(){
+  var w=ui.plWho||{home:false,away:false},c=w.home&&w.away?'both':(w.home?'home':(w.away?'away':'none'));
+  qa('[data-plw]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.plw===c?'true':'false');
+    if(b.dataset.plw==='home') b.textContent=teamLabel('home');else if(b.dataset.plw==='away') b.textContent=teamLabel('away');});
+  ['home','away'].forEach(function(sd){var el=document.querySelector('#teamsGrid [data-side="'+sd+'"] .tplayers');if(el) el.hidden=!w[sd];});
+  qa('[data-vdm]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.vdm===ui.vdMode?'true':'false');});
+  var vm=ui.vdMode,body=$('#vdBody'),g=document.querySelector('.vdgrid'),why=$('#vdWhy');
+  if(body) body.hidden=!(vm==='yt'||vm==='file');
+  if(g){g.classList.toggle('m-yt',vm==='yt');g.classList.toggle('m-file',vm==='file');}
+  if(why) why.textContent=vm==='file'?'A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later (it finds how far the logged times drift from the video and suggests better shot times). The file never leaves your computer, and you choose it again each time you open Korf Log.':(vm==='yt'?'The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.':(vm==='none'?'No video. You can add one later from Match setup.':'Choose one of the options above.'));
 }
 function lookHTML(){
   var h='';
@@ -2715,16 +2836,22 @@ function buildSetup(){
   $('#lookRow').innerHTML=lookHTML();
   $('#teamsGrid').innerHTML=teamCardHTML('home')+teamCardHTML('away');
   $('#setupTitle').textContent=setupTarget==='new'?'New match setup':'Match setup';
-  $('#setupImport').hidden=setupTarget!=='new';$('#setupImMsg').textContent='';
   $('#setupStart').textContent=setupTarget==='new'?'Start match':'Save setup';
   $('#setupCancel').textContent=(setupTarget==='new'&&cur().sample)?'Look at the sample match':'Cancel';
   showStep(setupStep);
 }
+function deriveWizard(isNew){
+  var mt=draft.meta||{};
+  ui.vdMode=isNew?null:((mt.video||mt.video2)?'yt':((mt.fn1||mt.fn2||vfiles[1]||vfiles[2])?'file':'none'));
+  ui.plWho={home:hasRows('home'),away:hasRows('away')};
+}
 function openSetup(target){ui.leagueOther=false;ui.teamOther={};
   var m=cur();pauseQuiet();
-  setupTarget=target;setupStep=1;
-  draft=(target==='new'&&m.sample)?defaultConfig():cloneCfg(m.config);
+  setupTarget=target;setupStep=1;ui.ack={};ui.tried={};ui.warnShow=null;ui.reach=target==='new'?1:6;
+  draft=(target==='new'&&m.sample)?defaultConfig():cloneCfg(target==='new'?m.config:(matchById(target)||m).config);
+  if(target==='new'){vfiles[1]=null;vfiles[2]=null;draft.meta=Object.assign({},draft.meta,{date:'',week:'',video:'',video2:'',vs1:'',vs2:'',split:false,fn1:'',fn2:''});}
   if(target==='new') draft.length=60;
+  deriveWizard(target==='new');
   if(ui.max) setMax(false);
   ui.view='setup';ui.pending=null;ui.down=null;ui.chain=null;ui.popup=null;ui.review=null;
   persistDraft();render();buildSetup();
@@ -2734,7 +2861,8 @@ function closeSetup(){
 }
 function trimP(p){return {id:p.id,name:p.name.trim(),no:p.no,div:p.div,g:p.g};}
 function finishSetup(){
-  var r=computeIssues();if(r.list.length) return;
+  var r=computeIssues();
+  if(r.list.length){var fs=r.items.filter(function(i){return !i.w;})[0].s;ui.tried[fs]=true;showStep(fs);return;}
   var cfg=cloneCfg(draft);
   ['home','away'].forEach(function(side){
     var t=cfg[side];
@@ -2806,6 +2934,8 @@ sv.addEventListener('click',function(e){
   else if(d.stteam){draft.start.team=d.stteam;}
   else if(d.stdiv){draft.start.divs[d.stdt]=Number(d.stdiv);}
   else if(d.stdir){draft.start.dir=d.stdir;}
+  else if(d.vdm){setVdMode(d.vdm);}
+  else if(d.plw){setPlW(d.plw);}
   else return;
   syncSetup();persistDraft();
 });
@@ -2858,11 +2988,78 @@ sv.addEventListener('change',function(e){
   }else return;
   syncEvents();syncIssues();persistDraft();
 });
-$('#setupNext').addEventListener('click',function(){if(!computeIssues().list.length) showStep(2);});
-$('#setupBack').addEventListener('click',function(){showStep(1);});
+$('#setupNext').addEventListener('click',nextStep);
+$('#setupBack').addEventListener('click',backStep);
+sv.addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b) return;
+  if(b.id==='warnFix'){ui.warnShow=null;syncIssues();return;}
+  if(b.id==='warnGo'){var si=stepIssues(setupStep);ui.ack[setupStep]=si.warns.join('|');ui.warnShow=null;ui.reach=Math.max(ui.reach,setupStep+1);showStep(setupStep+1);return;}
+  if(b.dataset.wgo&&!b.disabled){var k=Number(b.dataset.wgo);if(k!==setupStep) showStep(k);}
+});
 $('#setupStart').addEventListener('click',finishSetup);
 $('#setupCancel').addEventListener('click',closeSetup);
 
+/* ---------- start screen: continue a previous match or start a new one ---------- */
+function openStart(){
+  pauseQuiet();if(ui.max) setMax(false);
+  ui.view='start';ui.startMode=null;ui.askId=null;ui.popup=null;ui.review=null;ui.pending=null;ui.down=null;ui.chain=null;
+  draft=null;delete db.draft;save();render();renderStart();
+  try{window.scrollTo(0,0);}catch(e){}
+}
+function renderStart(){
+  if(ui.view!=='start') return;
+  var cont=ui.startMode==='cont';
+  $('#stCont').setAttribute('aria-pressed',cont?'true':'false');
+  $('#contCard').hidden=!cont;
+  $('#stBack').textContent=cur().sample?'Look at the sample match':'Back to the tracker';
+  var ms=db.matches.filter(function(m){return !m.sample;});
+  $('#contList').innerHTML=ms.length?ms.map(function(m){
+    var mt=(m.config&&m.config.meta)||{};
+    return '<button type="button" class="btn" data-pick="'+esc(m.id)+'"><b>'+esc(m.home+' v '+m.away)+'</b><span>'+esc((mt.date||'')+(mt.date?' · ':'')+m.events.length+' events')+'</span></button>';}).join(''):'<p class="note">No matches saved in this browser yet. Open a backup file below.</p>';
+  var ak=ui.askId&&matchById(ui.askId);
+  $('#askCard').hidden=!ak;
+  if(ak) $('#askTitle').textContent=ak.home+' v '+ak.away;
+}
+$('#stNew').addEventListener('click',function(){openSetup('new');});
+$('#stCont').addEventListener('click',function(){ui.startMode='cont';ui.askId=null;renderStart();});
+$('#stBack').addEventListener('click',function(){ui.view='track';ui.askId=null;render();});
+$('#contList').addEventListener('click',function(e){
+  var b=e.target.closest('[data-pick]');if(!b) return;
+  pauseQuiet();db.current=b.dataset.pick;ui.review=null;ui.popup=null;ui.restore=null;ui.confirmDel=false;resetFilters();loadClock();save();
+  ui.askId=db.current;renderStart();
+});
+$('#startImFile').addEventListener('change',function(e){readBackupFile(e.target,$('#startImMsg'),'ask');});
+$('#askNo').addEventListener('click',function(){
+  var m=cur();ui.view='track';ui.askId=null;render();
+  flashMsg(atCap()?(lastPeriod()?'The match is at full time.':'Press Resume on the clock to carry on, or End '+pBtn(m.config,clk.go)+' to set up the next half.'):'Press Resume on the clock to carry on tracking.');
+});
+$('#askYes').addEventListener('click',function(){var id=ui.askId||cur().id;ui.askId=null;openSetup(id);});
+/* ---------- End match: check times (if a local video was used), then export ---------- */
+function hasLocalVideo(m){var mt=(m&&m.config&&m.config.meta)||{};return !!(vfiles[1]||vfiles[2]||mt.fn1||mt.fn2);}
+function openEnd(){
+  var m=cur();if(!m||m.sample) return;
+  var dl=$('#endDlg');
+  if(hasLocalVideo(m)){$('#endA').hidden=false;$('#endB').hidden=true;}else showExport();
+  if(!dl.open) dl.showModal();
+}
+function showExport(fmt){
+  var dl=$('#endDlg');if(fmt) ui.fmt=fmt==='csv'?'csv':'json';
+  $('#endA').hidden=true;$('#endB').hidden=false;
+  setPressed('[data-fmt]','data-fmt',function(v){return v===ui.fmt;});syncBackupLabel();
+  if(!dl.open) dl.showModal();
+  updateExport();
+}
+$('#endSkip').addEventListener('click',function(){showExport();});
+$('#endClose').addEventListener('click',function(){$('#endDlg').close();});
+$('#endCheck').addEventListener('click',function(){
+  $('#endDlg').close();var c=$('#chk');c.open=true;
+  try{c.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
+  flashMsg('Check the times against your video here. When you are done, press Export match above the pitch.');
+});
+$('#endDlg').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b||!b.dataset.fmt) return;
+  ui.fmt=b.dataset.fmt;setPressed('[data-fmt]','data-fmt',function(v){return v===ui.fmt;});syncBackupLabel();updateExport();
+});
 /* ---------- tracker wiring ---------- */
 $('#trackView').addEventListener('click',function(e){
   var b=e.target.closest('button');if(!b||b.disabled) return;
@@ -2918,6 +3115,7 @@ $('#backLive').addEventListener('click',function(){ui.review=null;render();});
 $('#restoreBtn').addEventListener('click',restoreWiped);
 $('#clkToggle').addEventListener('click',function(){toggleClock();});
 $('#clkNext').addEventListener('click',startNextPeriod);
+$('#clkExport').addEventListener('click',function(){openEnd();});
 $('#vidSet').addEventListener('click',setVideo);
 $('#vidFile').addEventListener('change',function(e){vidPickFile(e.target.files&&e.target.files[0]);e.target.value='';});
 $('#vidUrl').addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();setVideo();}});
@@ -2945,8 +3143,8 @@ function setMax(on){
 $('#maxBtn').addEventListener('click',function(){setMax(!ui.max);});
 $('#maxExit').addEventListener('click',function(){setMax(false);});
 $('#maxUndo').addEventListener('click',undo);
-$('#newMatch').addEventListener('click',function(){openSetup('new');});
-$('#startMine').addEventListener('click',function(){openSetup('new');});
+$('#newMatch').addEventListener('click',openStart);
+$('#startMine').addEventListener('click',openStart);
 $('#editSetup').addEventListener('click',function(){openSetup(cur().id);});
 $('#delMatch').addEventListener('click',deleteMatch);
 $('#matchSel').addEventListener('change',function(e){
@@ -2956,7 +3154,6 @@ $('#matchSel').addEventListener('change',function(e){
 function setName(side,val){var m=cur();if(side==='home'){m.home=val;m.config.home.name=val;}else{m.away=val;m.config.away.name=val;}save();render();}
 $('#homeName').addEventListener('input',function(e){setName('home',e.target.value);});
 $('#awayName').addEventListener('input',function(e){setName('away',e.target.value);});
-$('#exp').addEventListener('toggle',updateExport);
 function saveBackup(fmt){
   fmt=(fmt==='csv')?'csv':'json';var isCsv=fmt==='csv',what=isCsv?'CSV file':'Backup';
   var m=cur();
@@ -2969,13 +3166,13 @@ function saveBackup(fmt){
       var url=URL.createObjectURL(new Blob([txt],{type:isCsv?'text/csv':'application/json'})),a=document.createElement('a');
       a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();gcEvent(isCsv?'download-log-csv':'download-log-backup');
       setTimeout(function(){URL.revokeObjectURL(url);},4000);
-      flashMsg(what+' saved as '+fn+' ('+m.events.length+' events). If no file appeared, use Export, Copy instead.');
+      flashMsg(what+' saved as '+fn+' ('+m.events.length+' events). If no file appeared, press Export match when the match has ended and use Copy.');
     }catch(err){fallbackBox();}
     renderHint(m,ui.R);
   };
   var fallbackBox=function(){
-    ui.fmt=fmt;$('#exp').open=true;updateExport();
-    flashMsg('Could not download here. The '+(isCsv?'CSV':'JSON')+' is in the Export box: copy it and keep it somewhere safe.');
+    showExport(fmt);
+    flashMsg('Could not download here. The '+(isCsv?'CSV':'JSON')+' is in the export box: copy it and keep it somewhere safe.');
   };
   var dl=null;
   try{dl=(window.claude&&window.claude.use)?window.claude.use('downloads'):null;}catch(e){dl=null;}
@@ -3008,9 +3205,10 @@ function readBackupFile(inp,msg,fromSetup){
   var rd=new FileReader();
   rd.onload=function(){
     try{
-      var nm=importMatchText(rd.result,fromSetup);
+      var nm=importMatchText(rd.result,fromSetup===true);
       var txt='Imported '+nm.events.length+' events from '+f.name+'.';
-      if(fromSetup){flashMsg(txt+(atCap()?(lastPeriod()?' The match is at full time.':' Press Resume on the clock to carry on, or End '+pBtn(nm.config,clk.go)+' to set up the next half.'):' Press Resume on the clock to carry on tracking.'));render();}
+      if(fromSetup==='ask'){msg.textContent=txt;ui.startMode='cont';ui.askId=nm.id;renderStart();}
+      else if(fromSetup===true){flashMsg(txt+(atCap()?(lastPeriod()?' The match is at full time.':' Press Resume on the clock to carry on, or End '+pBtn(nm.config,clk.go)+' to set up the next half.'):' Press Resume on the clock to carry on tracking.'));render();}
       else{msg.textContent=txt;render();}
     }catch(err){msg.textContent=(err&&err.message)?err.message:'Could not read that file.';}
     inp.value='';
@@ -3018,21 +3216,11 @@ function readBackupFile(inp,msg,fromSetup){
   rd.onerror=function(){msg.textContent='Could not read that file.';};
   rd.readAsText(f);
 }
-$('#imFile').addEventListener('change',function(e){readBackupFile(e.target,$('#imMsg'),false);});
-$('#setupImFile').addEventListener('change',function(e){readBackupFile(e.target,$('#setupImMsg'),true);});
 $('#copyBtn').addEventListener('click',function(){
   var ta=$('#exText'),msg=$('#exMsg');
-  if(!$('#exp').open) return;
   var done=function(t){msg.textContent=t;setTimeout(function(){msg.textContent='';},3000);};
   var fallback=function(){ta.focus();ta.select();done('Press Ctrl or ⌘ + C to copy the selected text.');};
   try{navigator.clipboard.writeText(ta.value).then(function(){done('Copied.');},fallback);}catch(err){fallback();}
-});
-$('#importBtn').addEventListener('click',function(){
-  var msg=$('#imMsg');
-  try{
-    var nm=importMatchText($('#imText').value,false);$('#imText').value='';
-    msg.textContent='Imported '+nm.events.length+' events.';render();
-  }catch(err){msg.textContent=(err&&err.message)?err.message:'Could not read that text.';}
 });
 document.addEventListener('keydown',function(e){
   if(ui.view!=='track') return;
@@ -3082,16 +3270,20 @@ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(draw);}
   var dr=db.draft;
   if(dr&&dr.config){
     setupTarget=(dr.target==='new'||matchById(dr.target))?dr.target:'new';
-    setupStep=dr.step===2?2:1;
+    setupStep=dr.v>=3?Math.max(1,Math.min(6,Number(dr.step)||1)):(dr.step===2?6:1);
     draft=normCfg(dr.config);
     if(!dr.v&&setupTarget==='new') draft.length=60;
+    ui.ack={};ui.tried={};ui.reach=dr.v>=3?Math.max(1,Number(dr.reach)||setupStep):(dr.step===2?6:1);
+    deriveWizard(setupTarget==='new');
+    if(dr.v>=3){ui.vdMode=dr.vd||null;if(dr.pl&&typeof dr.pl==='object'){ui.plWho={home:!!dr.pl.home||hasRows('home'),away:!!dr.pl.away||hasRows('away')};}}
     ui.view='setup';
   }else if(cur().sample){
-    setupTarget='new';setupStep=1;draft=defaultConfig();ui.view='setup';
+    ui.view='start';
   }
   save();
   render();
   if(ui.view==='setup'){buildSetup();}
+  if(ui.view==='start'){renderStart();}
 })();
 })();
 </script>

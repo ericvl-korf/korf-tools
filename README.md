@@ -6,6 +6,9 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 15:30 (Europe/London)**: New feature today:
+  - **A step-by-step start and setup (Korf Log):** Korf Log now opens with a choice: *Continue a previous match* (pick one saved in this browser or open a backup file, then say whether you want to look at the setup) or *Start a new match*. A new match is six steps (fixture, video, teams and players, format and court, events, opening attack). Missing information is flagged at each step, and doubtful choices ask you to confirm. The video step explains that a video file on this computer allows Check times against the video later. The Export and import panel is gone: save a backup any time from the top, and when you press End match you are offered Check times against the video (if you used a local video file) and then an export pop-up. Importing is done from Continue a previous match.
+
 - **2026-10-25 23:45 (Europe/London)**: New feature today:
   - **Check times against the video (Korf Log):** a new panel under the event log. *Re-time the log* matches the camera movement in your video with the logged ball positions to find how far the logged times are from the video, including steps where the clock was stopped; you see the result and apply it. *Suggest shot times* finds the ball around each shot (penalties and free passes by default, all shots if ticked) and proposes the time of the shot; you tick which to apply. Original times are kept, can be restored, and are saved in backups and in a new `time_original_s` CSV column.
 
