@@ -545,7 +545,8 @@ details>summary{transition:color .16s var(--ease)}
             <div class="chkstep"><span class="lbl">2. Suggest shot times</span>
               <p class="hint">Finds the ball in the video around each shot and proposes the time of the top of its flight. Penalties and free passes are logged at the referee's call, so their suggestion is the time of the shot that follows. You choose which suggestions to apply.</p>
               <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each); otherwise only penalties and free passes</label>
-              <div class="row-actions"><button class="btn" id="sgGo" type="button">Look for shot times</button><button class="btn" id="sgApply" type="button" hidden>Apply ticked times</button></div>
+              <div class="row-actions"><button class="btn" id="sgGo" type="button">Look for shot times</button><button class="btn" id="sgSaved" type="button" title="Uses the ball positions Korf Log saved while you tracked. Instant, and needs no video file.">Flag shots that look mistimed</button><button class="btn" id="sgApply" type="button" hidden>Apply ticked times</button></div>
+              <p class="hint" id="sgSavedNote"></p>
               <div id="sgOut"></div></div>
             </div>
             <p id="chkMsg" role="status"></p>
@@ -2335,6 +2336,29 @@ function bgUi(){
 }
 $('#bgOn').addEventListener('change',function(e){try{localStorage.setItem('klBg',e.target.checked?'1':'0');}catch(x){}bgUi();bgLoop();});
 setInterval(function(){bgUi();bgLoop();},4000);
+/* flag the shots whose logged time is off, from the ball positions saved while tracking (no video needed) */
+function btPts(e){
+  if(!e.bt) return null;var q=e.bt.split('|');if(q.length<3) return null;var a=+q[1],tk=q[2].trim().split(' '),pts=[];
+  tk.forEach(function(z,i){if(z==='.'||z==='') return;var c=z.split(','),x=+c[0]/1000,y=+c[1]/1000;if(isFinite(x)&&isFinite(y)) pts.push({t:(a+i)/3,x:x,y:y});});
+  return pts;
+}
+function klvFlagSaved(){
+  var m=cur();if(!m) return;
+  var sug=[],n=0;
+  m.events.forEach(function(e){
+    if(e.type!=='shot'||e.ot!=null||!e.bt) return;
+    var pts=btPts(e);if(!pts) return;n++;
+    var pf=e.kind==='penalty'||e.kind==='freepass',v=klvExpected(m,e),w=pf?[v-1,v+(e.kind==='penalty'?20:12)]:[v-6,v+6];
+    var ap=pf?klvApex(pts,w[0],w[1],0.25,true):klvApex(pts,w[0],w[1],0.16,false);
+    sug.push({id:e.id,dt:ap==null?null:ap-v});
+  });
+  KLV.sug=sug;klvSugShow();klvUi();
+  var found=sug.filter(function(s){return s.dt!=null;}),rows=klvSugRows(),flagged=rows.filter(function(r){return r.tick;}).length;
+  var ds=found.map(function(s){return s.dt;}).sort(function(a,b){return a-b;}),med=ds.length?ds[Math.floor(ds.length/2)]:0;
+  var txt='Looked at '+n+' shots with saved ball positions and found the top of the shot in '+found.length+'. '+flagged+' look mistimed (by 2 seconds or more; 1 second for penalties and free passes).';
+  if(found.length>=5&&Math.abs(med)>=2) txt+=' Most shots are about '+Math.abs(Math.round(med))+' seconds '+(med<0?'late':'early')+' in the log, so step 1 (re-time the log) may fit better than moving shots one by one.';
+  klvMsg(txt,false);
+}
 /* ----- panel state ----- */
 function klvUi(){
   var m=cur();if(!m||!$('#chk')) return;
@@ -2351,6 +2375,8 @@ function klvUi(){
   var busy=KLV.on;
   $('#rtGo').textContent=busy?'Stop':'Find the video offset';$('#rtGo').disabled=!have.length&&!busy;
   $('#sgGo').textContent=busy?'Stop':'Look for shot times';$('#sgGo').disabled=!have.length&&!busy;
+  var nbt=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&e.bt;}).length;
+  $('#sgSaved').disabled=busy||!nbt;$('#sgSavedNote').textContent=nbt?'Saved ball positions for '+nbt+' shots.':'No saved ball positions yet: they are found while you track with a video file.';
   $('#rtApply').hidden=!(KLV.res&&!KLV.res.weak&&(KLV.res[1]&&KLV.res[1].wins||KLV.res[2]&&KLV.res[2].wins))||busy;
   $('#sgApply').hidden=!(KLV.sug&&klvSugRows().length)||busy;
   var any=m.events.some(function(e){return e.t0!=null;});
@@ -2362,6 +2388,7 @@ $('#chkF1').addEventListener('change',function(e){klvPick(1,e.target.files&&e.ta
 $('#chkF2').addEventListener('change',function(e){klvPick(2,e.target.files&&e.target.files[0]);});
 $('#rtGo').addEventListener('click',klvRetime);
 $('#sgGo').addEventListener('click',klvSuggest);
+$('#sgSaved').addEventListener('click',klvFlagSaved);
 $('#rtApply').addEventListener('click',klvApplyRetime);
 $('#sgApply').addEventListener('click',klvApplySug);
 $('#chkRestore').addEventListener('click',klvRestore);

@@ -6,6 +6,10 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-10-31 20:00 (Europe/London)**: New features today:
+  - **Flag shots that look mistimed (Korf Log):** in Check times, one button compares each shot's logged time with the top of the ball's flight in the positions saved while tracking, lists the shots that are 2 or more seconds off (1 for penalties and free passes) and lets you move them. It is instant and needs no video file. If most shots are off by the same amount it suggests re-timing the whole log.
+  - **Best clips (Korf Lab):** a new filter keeps the best 5, 10, 15, 20 or 30 clips: goals first, then harder shots, longer goals, rallies and clips where the ball was found in flight. With Crop follows the ball, only those clips are searched.
+
 - **2026-10-31 19:00 (Europe/London)**: New features today:
   - **Korf Log finds the ball while you track (video file only):** with a video file on this computer, Korf Log now works in the background to find the ball around each shot you log and saves the positions on the shot (JSON backup and CSV column `ball_track`). A tick box and a progress line sit under the video, and End match says how many shots are still waiting.
   - **Korf Lab uses them:** Crop follows the ball uses the saved positions and searches only the clips without any. If every clip has saved positions, nothing is searched and the video file is not needed.

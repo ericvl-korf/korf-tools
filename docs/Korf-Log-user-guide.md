@@ -85,3 +85,7 @@ When the match uses a video file on this computer, Korf Log can find the ball in
 - The positions travel with the match: they are in the JSON backup and in the CSV (column `ball_track`). Korf Lab uses them when you tick **Crop follows the ball** and only searches the clips that have none.
 - This works only with a video file, not a YouTube link. If your computer is slow it may not keep up; **End match** tells you how many shots are still waiting, and you can export anyway because Korf Lab finds the rest itself.
 - If you re-time the log afterwards (Check times), the saved positions stay valid, because they belong to the video, not the clock.
+
+### Flag shots that look mistimed (saved ball positions)
+
+If Korf Log saved ball positions while you tracked (section 6), the **Check times** panel has a **Flag shots that look mistimed** button in step 2. It is instant and needs no video file. For each shot it finds the top of the ball's flight in the saved positions and compares it with the logged time. Shots that are 2 or more seconds off (1 second for penalties and free passes) are listed with the time they would move to, ticked ready to apply with **Apply ticked times**; untick any you do not want. If most shots are off by about the same amount, it suggests re-timing the whole log (step 1) instead. The originals are kept, so **Restore original times** still works.

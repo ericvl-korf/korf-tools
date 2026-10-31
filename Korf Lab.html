@@ -1471,7 +1471,7 @@ function printReport(){
   setPage(prev);
 }
 /* ---------- highlights list ---------- */
-var HL={ms:[],rows:[],half:'',team:'',div:'',gen:'',player:'',type:'',out:'',att:'',attNo:'',pre:8,post:4,off:{}};
+var HL={ms:[],rows:[],best:'',half:'',team:'',div:'',gen:'',player:'',type:'',out:'',att:'',attNo:'',pre:8,post:4,off:{}};
 function hlParse(t){
   t=String(t||'').trim();if(!t) return null;
   var m=/^(?:(\d+):)?(\d{1,3}):(\d{1,2})$/.exec(t);
@@ -1535,7 +1535,28 @@ function hlVid(x,raw){
   var t=base+el+add,sd=raw?{dt:0,known:true}:hlShotDt(x);t+=sd.dt;
   return {t:t,a:Math.max(0,t-HL.pre),b:t+HL.post+((!sd.known&&(x.k==='penalty'||x.k==='freepass'))?3:0),id:hlYt(x.half===2&&o.url2?o.url2:o.url),moved:sd.dt,found:sd.known&&(x.k==='penalty'||x.k==='freepass')};
 }
+/* How good a clip is likely to be, for picking the best clips: goals first, then harder shots, longer goals and rallies; clips where the ball was found in flight (saved in the log, or found in the video) get a little more. */
+function hlScore(x){
+  var s=0,sh=x.s||{};
+  if(x.goal) s+=100;
+  s+=({distance:12,runner:10,open:6,freepass:4,penalty:3})[x.k]||0;
+  if(x.goal&&sh.d!=null&&isFinite(sh.d)) s+=2*Math.min(sh.d,8);
+  if(x.ns>1) s+=4;
+  var vv=null;try{vv=hlVid(x,true);}catch(e){}
+  if(vv){
+    var P=(HLTRK?HLTRK.pts:hlStored().pts).filter(function(p){return (!p.h||p.h===x.half)&&p.t>=vv.t-1&&p.t<=vv.t+3;});
+    if(P.length>=4){var lo=1,hi=0;P.forEach(function(p){if(p.y!=null){lo=Math.min(lo,p.y);hi=Math.max(hi,p.y);}});s+=Math.min(15,Math.max(0,hi-lo)*50)+(P.length>=7?3:0);}
+  }
+  return s;
+}
 function hlFiltered(){
+  var rows=hlFilteredAll(),n=parseInt(HL.best,10);
+  if(!(n>0)||rows.length<=n) return rows;
+  var sc=rows.map(function(x,i){return {x:x,i:i,s:hlScore(x)};});
+  sc.sort(function(a,b){return b.s-a.s||a.i-b.i;});
+  return sc.slice(0,n).sort(function(a,b){return a.i-b.i;}).map(function(z){return z.x;});
+}
+function hlFilteredAll(){
   return HL.rows.filter(function(x){
     if(HL.half&&String(x.half)!==HL.half) return false;
     if(HL.team&&x.team!==HL.team) return false;
@@ -1574,6 +1595,7 @@ function hlMount(ms){
   if(hasGen) h+='<div class="grp"><label class="lbl" for="hlGn">Gender</label><select id="hlGn">'+opt('','Female and male players',HL.gen)+opt('F','Female players only',HL.gen)+opt('M','Male players only',HL.gen)+'</select></div>';
   if(plKeys.length) h+='<div class="grp"><label class="lbl" for="hlPl">Shooter</label><select id="hlPl">'+opt('','All shooters',HL.player)+plKeys.map(function(k){return opt(k,pl[k],HL.player);}).join('')+'</select></div>';
   h+='<div class="grp"><label class="lbl" for="hlTy">Shot type</label><select id="hlTy">'+opt('','All types',HL.type)+types.map(function(k){return opt(k,TYPE_LABEL[k]||k,HL.type);}).join('')+'</select></div>';
+  h+='<div class="grp"><label class="lbl" for="hlBest">Best clips</label><select id="hlBest" title="Picks the clips most worth showing, from the shots left after the other filters: goals first, then harder shots (distance, runner), longer goals and rallies, and clips where the ball was found in flight.">'+opt('','All shots',HL.best)+opt('5','Best 5',HL.best)+opt('10','Best 10',HL.best)+opt('15','Best 15',HL.best)+opt('20','Best 20',HL.best)+opt('30','Best 30',HL.best)+'</select></div>';
   h+='<div class="grp"><label class="lbl" for="hlOu">Outcome</label><select id="hlOu">'+opt('','Goals and misses',HL.out)+opt('goal','Goals only',HL.out)+opt('miss','Misses only',HL.out)+'</select></div>';
   if(hasAtt){
     h+='<div class="grp"><label class="lbl" for="hlAt">Attack</label><select id="hlAt">'+opt('','All attacks',HL.att)+opt('multi','Multi-shot attacks',HL.att)+opt('single','Single-shot attacks',HL.att)+'</select></div>';
@@ -2057,7 +2079,7 @@ document.addEventListener('change',function(e){
   }
   if(t.id==='hlTrk'){var tf=t.files&&t.files[0];if(!tf) return;var rd=new FileReader();rd.onload=function(){var r=hlTrkParse(rd.result);if(r){r.name=tf.name;HLTRK=r;var fo=$('#hlFollow');if(fo) fo.checked=true;var po=$('#hl169');if(po) po.checked=true;hlReelMsg('Loaded '+r.n+' ball positions from '+tf.name+'. Portrait 10:16 and Crop follows the ball are ticked for the ffmpeg script.',false);}else{HLTRK=null;hlReelMsg('That file has no ball positions. It needs the columns time_s and x (or x_norm).',true);}var inf=$('#hlTrkInfo');if(inf) inf.innerHTML=hlTrkInfo();};rd.readAsText(tf);return;}
   if(t.dataset&&t.dataset.f){var mm=t.closest('[data-m]');if(mm&&HL.off[mm.dataset.m]){HL.off[mm.dataset.m][t.dataset.f]=(t.files&&t.files[0])||null;hlMount(HL.ms);}return;}
-  if(t.id==='hlHf') HL.half=t.value;else if(t.id==='hlTm') HL.team=t.value;else if(t.id==='hlDv') HL.div=t.value;else if(t.id==='hlGn') HL.gen=t.value;else if(t.id==='hlPl') HL.player=t.value;else if(t.id==='hlTy') HL.type=t.value;else if(t.id==='hlOu') HL.out=t.value;else if(t.id==='hlAt') HL.att=t.value;else return;
+  if(t.id==='hlHf') HL.half=t.value;else if(t.id==='hlTm') HL.team=t.value;else if(t.id==='hlDv') HL.div=t.value;else if(t.id==='hlGn') HL.gen=t.value;else if(t.id==='hlPl') HL.player=t.value;else if(t.id==='hlTy') HL.type=t.value;else if(t.id==='hlOu') HL.out=t.value;else if(t.id==='hlBest') HL.best=t.value;else if(t.id==='hlAt') HL.att=t.value;else return;
   hlList();
 });
 document.addEventListener('click',function(e){
