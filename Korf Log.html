@@ -47,6 +47,7 @@ h2{font-size:1.15rem;font-weight:700;letter-spacing:.06em;text-transform:upperca
 .fixgrid input{width:100%}
 .vdgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}@media (max-width:640px){.vdgrid{grid-template-columns:minmax(0,1fr)}}.vdgrid input[type=text],.vdgrid input[type=url]{width:100%}.vdsplit{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.92rem}
 .fixgrid input.bad,.vdgrid input.bad{border-color:var(--danger)}
+.vdprev{margin-top:14px;padding:12px;border:1px solid var(--line,#d9dee5);border-radius:12px;background:var(--card-2,rgba(127,127,127,.06))}.vdprev[hidden]{display:none}.vphead{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;margin-bottom:6px}.vdprev .vidframe{margin-top:8px;max-width:560px}.vptools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}.vptime{font-variant-numeric:tabular-nums;font-weight:700;min-width:4.2em}.vpmsg{margin:8px 0 0;font-size:.85rem;color:var(--muted)}.vdprev .vidnote{padding:14px;color:#fff;font-size:.9rem}.vdprev .vidnote a{margin-top:8px;display:inline-block}
 .donate{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem;margin:0 0 6px}.donate a{font-size:.82rem;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:2px}.donate a:hover{text-decoration-thickness:2px}
 @media print{.donate{display:none!important}}
 .top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
@@ -613,6 +614,16 @@ details>summary{transition:color .16s var(--ease)}
           <div class="grp t2"><label class="lbl" for="vdS2">2nd half starts at (video time)</label><input id="vdS2" type="text" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="mm:ss"></div>
           <div class="grp f1"><label class="lbl" for="vdF1" id="vdFl1">Or a video file on this computer</label><input id="vdF1" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn1"></p></div>
           <div class="grp f2" id="vdFG2" hidden><label class="lbl" for="vdF2">2nd half video file</label><input id="vdF2" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn2"></p></div>
+        </div>
+        <div class="vdprev" id="vdPrev" hidden>
+          <div class="vphead"><span class="lbl">Find when the match starts</span>
+            <div class="seg" role="group" aria-label="Which half" id="vpHalf"><button type="button" data-vph="1" aria-pressed="true">1st half</button><button type="button" data-vph="2" aria-pressed="false">2nd half</button></div></div>
+          <p class="note" id="vpHint"></p>
+          <div class="vidframe" id="vpFrame"></div>
+          <div class="vptools"><span class="vptime" id="vpTime" aria-live="off">0:00</span>
+            <button class="btn sm" type="button" data-vpn="-10">−10 s</button><button class="btn sm" type="button" data-vpn="-1">−1 s</button><button class="btn sm" type="button" id="vpPlay">Play</button><button class="btn sm" type="button" data-vpn="1">+1 s</button><button class="btn sm" type="button" data-vpn="10">+10 s</button>
+            <button class="btn sm primary" type="button" id="vpSet">Set as 1st half start</button><button class="btn sm" type="button" id="vpGo">Go to start</button></div>
+          <p class="vpmsg" id="vpMsg" role="status"></p>
         </div>
         <p class="note" id="vdNote" style="margin-top:10px">Enter the video time at which the clock starts for each half. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved.</p>
         </div>
@@ -2898,6 +2909,98 @@ function syncStep2(){
   $('#stNote').textContent=tn+' start in possession'+(cur0?' with Division '+s0.divs[s0.team]:'')+' attacking '+zone+' in the '+(four?'first two quarters':'1st half')+'. '+on+(oth0?' have Division '+s0.divs[s0.team==='H'?'A':'H']+' attacking ':' attack ')+oz+'. Directions flip at the start of the '+(four?'3rd quarter':'2nd half')+'.'+((kh||ka)?' Divisions swap between attack and defence after every two goals.':'');
   qa('#setupStep2 .lockn').forEach(function(p){p.hidden=!lock;});
 }
+/* ---------- setup step 2: preview player to find the start of each half ---------- */
+var pv={half:1,key:'',t:0,ready:false,playing:false,kind:''};
+function pvSrc(h){
+  var mt=draft.meta,sp=!!mt.split,k=(sp&&h===2)?2:1;
+  if(ui.vdMode==='file'){var f=vfiles[k];return f?{kind:'file',file:f,key:'file:'+k+':'+f.name+':'+f.size+':'+f.lastModified}:null;}
+  if(ui.vdMode==='yt'){var v=ytParse(k===2?mt.video2:mt.video);return v?{kind:'yt',v:v,key:'yt:'+k+':'+v.id}:null;}
+  return null;
+}
+function pvWin(){var f=document.querySelector('#vpFrame iframe');return f?f.contentWindow:null;}
+function pvPost(o){
+  var lv=document.querySelector('#vpFrame video');
+  if(lv){try{if(o.func==='seekTo') lv.currentTime=o.args[0];else if(o.func==='playVideo'){var pr=lv.play();if(pr&&pr.catch) pr.catch(function(){});}else if(o.func==='pauseVideo') lv.pause();}catch(e){}return;}
+  var w=pvWin();if(!w) return;try{w.postMessage(JSON.stringify(o),YTO);}catch(e){}
+}
+function pvShowTime(){var el=$('#vpTime');if(el) el.textContent=vFmt(Math.floor(pv.t));}
+function pvDestroy(){
+  var fr=$('#vpFrame');if(fr) fr.innerHTML='';
+  if(pv.url){URL.revokeObjectURL(pv.url);pv.url='';}
+  pv.key='';pv.ready=false;pv.playing=false;pv.t=0;pvShowTime();
+}
+function pvSync(){
+  var box=$('#vdPrev');if(!box||!draft) return;
+  var on=setupStep===2&&(ui.vdMode==='yt'||ui.vdMode==='file');
+  var sp=!!draft.meta.split;
+  var src=on?pvSrc(pv.half):null,other=on&&sp?pvSrc(pv.half===1?2:1):null;
+  if(!on||(!src&&!other)){box.hidden=true;if(pv.key) pvDestroy();return;}
+  box.hidden=false;
+  if(!src){
+    /* the other half has a video, this one does not yet */
+    if(pv.key) pvDestroy();
+    qa('#vpHalf [data-vph]').forEach(function(b){b.setAttribute('aria-pressed',Number(b.dataset.vph)===pv.half?'true':'false');});
+    $('#vpHint').textContent='Add the '+(pv.half===1?'1st':'2nd')+' half '+(ui.vdMode==='yt'?'YouTube link':'video file')+' above to preview it here.';
+    $('#vpFrame').hidden=true;qa('#vdPrev .vptools button').forEach(function(b){b.disabled=true;});return;
+  }
+  $('#vpFrame').hidden=false;qa('#vdPrev .vptools button').forEach(function(b){b.disabled=false;});
+  qa('#vpHalf [data-vph]').forEach(function(b){b.setAttribute('aria-pressed',Number(b.dataset.vph)===pv.half?'true':'false');});
+  $('#vpHint').textContent='Play the video, or step through it, until the whistle that starts the '+(pv.half===1?'1st':'2nd')+' half, then press Set. The time goes straight into the field above.'+(sp?'':' The same video carries on into the 2nd half, so pick the 2nd half to set its start too (or leave it blank to follow straight after the 1st).');
+  $('#vpSet').textContent='Set as '+(pv.half===1?'1st':'2nd')+' half start';
+  var st=vParse(draft.meta['vs'+pv.half]);
+  $('#vpGo').disabled=st==null;$('#vpGo').textContent=st==null?'Go to start':'Go to '+vFmt(st);
+  if(pv.key===src.key) return;
+  pvDestroy();pv.key=src.key;pv.kind=src.kind;
+  var fr=$('#vpFrame');
+  if(src.kind==='file'){
+    pv.url=URL.createObjectURL(src.file);
+    fr.innerHTML='<video controls playsinline preload="auto"></video>';
+    var vd=fr.firstChild;vd.src=pv.url;pv.ready=true;
+    vd.addEventListener('timeupdate',function(){pv.t=vd.currentTime;pvShowTime();});
+    vd.addEventListener('seeked',function(){pv.t=vd.currentTime;pvShowTime();});
+    vd.addEventListener('play',function(){pv.playing=true;pvPlayLbl();});
+    vd.addEventListener('pause',function(){pv.playing=false;pvPlayLbl();});
+    vd.addEventListener('loadedmetadata',function(){var s0=vParse(draft.meta['vs'+pv.half]);if(s0!=null){try{vd.currentTime=s0;}catch(e){}}});
+  }else if(!/^https?:$/.test(location.protocol)){
+    fr.innerHTML='<div class="vidnote"><p>YouTube does not play embedded videos in a page opened as a file on this computer. Open Korf Log from its web address to preview here, or open the video on YouTube and type the time in.</p><a href="'+src.v.url+'" target="_blank" rel="noopener noreferrer" class="btn sm primary">Watch on YouTube</a></div>';
+  }else{
+    var s1=vParse(draft.meta['vs'+pv.half]);
+    fr.innerHTML='<iframe src="https://www.youtube.com/embed/'+src.v.id+'?rel=0&playsinline=1&enablejsapi=1&origin='+encodeURIComponent(location.origin)+'&start='+(s1!=null?s1:(src.v.start||0))+'" title="Match video preview" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    pv.t=s1!=null?s1:(src.v.start||0);pvShowTime();
+    var fi=fr.querySelector('iframe'),n=0;
+    fi.addEventListener('load',function(){(function ping(){if(pv.ready||n++>20||!pvWin()) return;pvPost({event:'listening',id:2,channel:'widget'});setTimeout(ping,500);})();});
+  }
+  pvPlayLbl();
+}
+function pvPlayLbl(){var b=$('#vpPlay');if(b) b.textContent=pv.playing?'Pause':'Play';}
+window.addEventListener('message',function(e){
+  if(e.origin!==YTO||!pvWin()||e.source!==pvWin()) return;
+  var d;try{d=typeof e.data==='string'?JSON.parse(e.data):e.data;}catch(x){return;}
+  if(!d||typeof d!=='object') return;
+  pv.ready=true;
+  if(d.event==='onStateChange'&&typeof d.info==='number'){pv.playing=(d.info===1||d.info===3);pvPlayLbl();}
+  if(d.event==='infoDelivery'&&d.info){
+    if(typeof d.info.playerState==='number'){pv.playing=(d.info.playerState===1||d.info.playerState===3);pvPlayLbl();}
+    if(typeof d.info.currentTime==='number'){pv.t=d.info.currentTime;pvShowTime();}
+  }
+});
+function pvNudge(dt){
+  var t=Math.max(0,(pv.t||0)+dt);pv.t=t;pvShowTime();pvPost({event:'command',func:'seekTo',args:[t,true]});
+}
+function pvSet(){
+  var h=pv.half,t=Math.floor(pv.t||0),id=h===1?'vdS1':'vdS2',inp=$('#'+id);
+  draft.meta['vs'+h]=vFmt(t);if(inp) inp.value=draft.meta['vs'+h];
+  $('#vpMsg').textContent='The '+(h===1?'1st':'2nd')+' half now starts at '+vFmt(t)+' in the video.';
+  pvSync();syncIssues();persistDraft();
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest?e.target.closest('#vdPrev button'):null;if(!t||!draft) return;
+  if(t.dataset.vph){pv.half=Number(t.dataset.vph);$('#vpMsg').textContent='';pvSync();var s0=vParse(draft.meta['vs'+pv.half]);if(s0!=null&&pv.key) pvNudge(s0-(pv.t||0));return;}
+  if(t.dataset.vpn){pvNudge(Number(t.dataset.vpn));return;}
+  if(t.id==='vpPlay'){pvPost({event:'command',func:pv.playing?'pauseVideo':'playVideo',args:[]});if(pv.kind==='yt'){pv.playing=!pv.playing;pvPlayLbl();}return;}
+  if(t.id==='vpSet'){pvSet();return;}
+  if(t.id==='vpGo'){var s=vParse(draft.meta['vs'+pv.half]);if(s!=null) pvNudge(s-(pv.t||0));return;}
+});
 function syncVideoSetup(){
   var mt=draft.meta,sp=!!mt.split;
   [['#vdLink1','video'],['#vdLink2','video2'],['#vdS1','vs1'],['#vdS2','vs2']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=mt[x[1]]||'';});
@@ -2908,6 +3011,7 @@ function syncVideoSetup(){
   $('#vdS2').placeholder=sp?'mm:ss, e.g. 00:30':'mm:ss, e.g. 38:20';
   var h=$('#vdNote');
   h.textContent=sp?'Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).':'Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved. A file stays on your computer and has to be chosen again each time Korf Log is opened.';
+  pvSync();
 }
 var WSTEPS=[
   ['Fixture','Which match is this? The league and date are needed.'],
@@ -2964,6 +3068,7 @@ function syncSetup(){
 function persistDraft(){db.draft={target:setupTarget,config:draft,step:setupStep,reach:ui.reach,vd:ui.vdMode,pl:ui.plWho,v:3};save();}
 function showStep(n){
   setupStep=Math.max(1,Math.min(6,n));ui.warnShow=null;
+  if(setupStep!==2&&typeof pvDestroy==='function') pvDestroy();
   qa('#setupView [data-wstep]').forEach(function(el){el.hidden=Number(el.dataset.wstep)!==setupStep;});
   var isNew=setupTarget==='new',last=setupStep===6;
   $('#setupNext').hidden=last;$('#setupStart').hidden=!last;
@@ -3144,10 +3249,10 @@ sv.addEventListener('input',function(e){
   else if(t.id==='fxLeagueOther'){draft.meta.league=t.value;}
   else if(t.id==='fxDate'){draft.meta.date=t.value;}
   else if(t.id==='fxWeek'){t.value=t.value.replace(/\D/g,'').slice(0,2);draft.meta.week=t.value;}
-  else if(t.id==='vdLink1'){draft.meta.video=t.value.trim();}
-  else if(t.id==='vdLink2'){draft.meta.video2=t.value.trim();}
-  else if(t.id==='vdS1'){t.value=t.value.replace(/[^\d:]/g,'');draft.meta.vs1=t.value;}
-  else if(t.id==='vdS2'){t.value=t.value.replace(/[^\d:]/g,'');draft.meta.vs2=t.value;}
+  else if(t.id==='vdLink1'){draft.meta.video=t.value.trim();pvSync();}
+  else if(t.id==='vdLink2'){draft.meta.video2=t.value.trim();pvSync();}
+  else if(t.id==='vdS1'){t.value=t.value.replace(/[^\d:]/g,'');draft.meta.vs1=t.value;pvSync();}
+  else if(t.id==='vdS2'){t.value=t.value.replace(/[^\d:]/g,'');draft.meta.vs2=t.value;pvSync();}
   else if(t.id==='courtNum'){draft.court.len=t.value===''?NaN:Number(t.value);syncCourt();}
   else if(t.id==='courtRange'){draft.court.len=Number(t.value);syncCourt();}
   else return;
