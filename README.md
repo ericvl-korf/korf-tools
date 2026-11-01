@@ -6,6 +6,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-11-01 21:00 (Europe/London)**: New today: **Korf Log** setup step 2 (Match video) now shows a small preview player once a YouTube link or video file is added. Play or step through the video to the whistle, then press **Set as 1st half start** (or 2nd half) to fill in the start time straight away.
 - **2026-10-31 23:40 (Europe/London)**: New today:
   - **Korf Lab starts with a question (Korf Lab):** "Which files do you want to load?" with Korf Log files, Yellow Bucket files or Sample file. Korf Log files and Yellow Bucket files each have one **Load file(s)** button that takes one or more files; the folder picker is gone. Several Yellow Bucket files are converted one after another.
   - **Dropdown filters and print menu (Korf Lab):** Team is a dropdown (the common team only, Opponents only or All teams; with one match, its two teams and All teams). Match is a multi-select with Select all. The three print buttons are one Print dropdown.
