@@ -452,12 +452,13 @@ function jsonToCsv(txt){
     if(pe>lastP) lastP=pe;
     var a=att[e.team];
     var shot=e.type==='shot',pl=shot?e.shooter:null,o=shot?(e.out||{k:'defended'}):null,reb=(o&&o.k==='rebound'&&o.by)?o.by:null;
-    var detail=e.type==='turnover'?e.sub:(shot?e.kind:(e.type==='transfer'?e.res:(e.type==='sub'?lab(e.out)+' -> '+lab(e.in):(e.type==='timeout'?(e.sub||''):''))));
+    var detail=e.type==='turnover'?e.sub:(shot?e.kind:(e.type==='transfer'?e.res:(e.type==='sub'?(e.out?lab(e.out):'(none)')+' -> '+(e.in?lab(e.in):'(injured)'):(e.type==='timeout'?(e.sub||''):''))));
+    if(e.type==='sub'&&e.in&&(e.in.new||!e.out)) pl=e.in;
     var tn=e.team==='H'?hn:(e.team==='A'?an:'');
     var t=Number(e.t)||0,r=Number(e.r),zone=!shot||!isFinite(r)?'':(r<=2.5?'close':(r<=5?'mid':'long'));
     var ts=new Date(Number(e.ts)||Date.now());
     rows.push([name,meta.league||'',meta.date||'',meta.week||'',e.ot!=null?clock(t+1)+' +'+clock(e.ot):clock(t),t,pOf(t)&&pLong(pOf(t)),tn,a==null?'':a,e.type,detail,
-      pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(pl.sub?'substitute':'player'):'',
+      pl?pl.name:'',pl?pl.no:'',pl&&pl.div?pl.div:'',pl&&pl.g?pl.g:'',pl?(e.type==='sub'?'new':(pl.sub?'substitute':'player')):'',
       e.x==null?'':e.x,e.y==null?'':e.y,e.x2==null?'':e.x2,e.y2==null?'':e.y2,shot&&e.r!=null?e.r:'',shot&&e.a!=null?e.a:'',zone,shot?(e.stype||''):'',
       o?o.k:'',reb&&reb.pl?reb.pl.name:(o&&o.foul?'Foul':''),reb?(reb.team==='H'?hn:an):'',isNaN(ts.getTime())?'':ts.toISOString(),L,len,per,e.team==='H'?hc:(e.team==='A'?ac:''),look.court||'',look.zone||'',e.ot!=null?e.ot:''].concat(vc,[e.vt==null?'':e.vt,(shot&&e.bt)||'']));
     var oth=function(x){return x==='H'?'A':'H';};
@@ -830,7 +831,7 @@ function build(){
         q.t0=Math.min(q.t0,s);q.t1=Math.max(q.t1,s);
       }
       if(r.event==='turnover') m.turn.push({team:r.team,t:s});
-      if(r.event==='sub'){var mm=/#?(\d+)?\s*([^>\-]*?)\s*(?:->|→)\s*#?(\d+)?\s*(.*)$/.exec(r.detail||'');m.subs.push({team:r.team,t:s,out:mm?mm[2]:'',inn:mm?mm[4]:'',raw:r.detail||''});}
+      if(r.event==='sub'){var mm=/#?(\d+)?\s*([^>\-]*?)\s*(?:->|→)\s*#?(\d+)?\s*(.*)$/.exec(r.detail||'');m.subs.push({team:r.team,t:s,out:mm?mm[2]:'',inn:mm?mm[4]:'',raw:r.detail||'',div:Number(r.division)||0});}
     });
     var firstHalfEnd=0;rows.forEach(function(r){if(halfOf(r.period)===1) firstHalfEnd=Math.max(firstHalfEnd,num(r.seconds));});
     m.half=m.minutes*30;
@@ -1190,7 +1191,7 @@ function buildPlayers(ms){
 function fmtMin(x){return x>=10?Math.round(x)+' min':(Math.round(x*10)/10)+' min';}
 function perMin(n,mn){return mn>0?(n===0?'0':(n/mn).toFixed(2))+'/min':'–';}
 /* Minutes in attack and in defence, from the starting line-up, the substitutions and the goals. A player is "in attack" while their division is the attacking division of their team; the divisions swap after every second goal of the match. Needs the line-up rows of a newer event log. */
-function subNames(raw){var pr=String(raw||'').split(/\s*(?:->|→)\s*/);function nm(x){return String(x||'').replace(/^#\d+\s+/,'').trim();}return pr.length>=2?{out:nm(pr[0]),inn:nm(pr.slice(1).join(' -> '))}:null;}
+function subNames(raw){var pr=String(raw||'').split(/\s*(?:->|→)\s*/);function nm(x){x=String(x||'').replace(/^#\d+\s+/,'').trim();return (x==='(none)'||x==='(injured)')?'':x;}return pr.length>=2?{out:nm(pr[0]),inn:nm(pr.slice(1).join(' -> '))}:null;}
 function matchTime(m){
   var L=m.rows.filter(function(r){return r.event==='lineup';});
   if(!L.length) return null;
@@ -1202,7 +1203,7 @@ function matchTime(m){
   });
   var evs=[];
   m.shots.forEach(function(s){if(s.goal) evs.push({t:s.t,k:'goal'});});
-  m.subs.forEach(function(sb){var q=subNames(sb.raw);if(q) evs.push({t:sb.t,k:'sub',team:sb.team,q:q});});
+  m.subs.forEach(function(sb){var q=subNames(sb.raw);if(q) evs.push({t:sb.t,k:'sub',team:sb.team,q:q,div:sb.div});});
   evs.sort(function(a,b){return a.t-b.t;});
   var res={},goals=0,cur=0;
   function seg(to){
@@ -1217,7 +1218,7 @@ function matchTime(m){
   evs.forEach(function(e){
     seg(e.t);
     if(e.k==='goal') goals++;
-    else{var o=on[e.team]=on[e.team]||{},dv=o[e.q.out];if(dv!==undefined){delete o[e.q.out];if(e.q.inn) o[e.q.inn]=dv;}}
+    else{var o=on[e.team]=on[e.team]||{},dv=e.q.out?o[e.q.out]:(e.div||undefined);if(dv!==undefined){if(e.q.out) delete o[e.q.out];if(e.q.inn) o[e.q.inn]=dv;}}
   });
   seg(D);
   Object.keys(res).forEach(function(k){res[k].a/=60;res[k].d/=60;});
@@ -1342,11 +1343,11 @@ function playersPage(ms){
       var y=i*rowH+22,X=function(t){return l2+pw2*t/Tm;};
       ss+='<text x="0" y="'+(y+4)+'" style="font-size:11px">'+esc(cut(m.name,16))+'</text><line x1="'+l2+'" x2="'+(l2+pw2)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)" stroke-width="2"/>';
       if(m.half) ss+='<line x1="'+X(m.half)+'" x2="'+X(m.half)+'" y1="'+(y-12)+'" y2="'+(y+12)+'" stroke="var(--muted)" stroke-dasharray="3 3"/>';
-      m.subs.forEach(function(sb2){ss+='<circle cx="'+X(sb2.t)+'" cy="'+y+'" r="6" fill="'+tcol(sb2.team)+'" stroke="var(--surface)" stroke-width="2"'+tp([sb2.team+' · '+mmss(sb2.t),'Out: '+sb2.out,'In: '+sb2.inn])+'/>';});
+      m.subs.forEach(function(sb2){ss+='<circle cx="'+X(sb2.t)+'" cy="'+y+'" r="6" fill="'+tcol(sb2.team)+'" stroke="var(--surface)" stroke-width="2"'+tp([sb2.team+' · '+mmss(sb2.t),'Out: '+(sb2.out||'none'),'In: '+(sb2.inn||(/injured/.test(sb2.raw)?'nobody (injured)':'none'))])+'/>';});
     });
     [0,Tm/2,Tm].forEach(function(tt){ss+='<text class="m" x="'+(l2+pw2*tt/Tm)+'" y="12" text-anchor="middle" style="font-size:10px">'+Math.round(tt/60)+'\'</text>';});
     var st2={};smx.forEach(function(m){m.subs.forEach(function(q){st2[q.team]=1;});});
-    var srows=[];smx.forEach(function(m){m.subs.forEach(function(q){srows.push([esc(m.name),mmss(q.t),esc(q.team),esc(q.out),esc(q.inn)]);});});
+    var srows=[];smx.forEach(function(m){m.subs.forEach(function(q){srows.push([esc(m.name),mmss(q.t),esc(q.team),esc(q.out||'–'),esc(q.inn||(/injured/.test(q.raw)?'Nobody (injured)':'–'))]);});});
     out+=card('subs','Substitutions','When players were swapped; the dashed line is half time',ss+'</svg>',{table:tbl(['Match','Time','Team','Out','In'],srows),legend:leg(Object.keys(st2).sort().map(function(t){return {c:tcol(t),l:t};}))});
   }
 
