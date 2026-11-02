@@ -4,7 +4,7 @@
 
 Korf Log records a korfball match as it is played, one click at a time, and exports an event log that Korf Lab turns into team and player reports.
 
-**Video tutorial:** watch a 90-second walkthrough, including match video and the Time out buttons: [Korf Log tutorial](https://ericvl-korf.github.io/korf-tools/tutorials/korf-log-tutorial.mp4). It is also behind the **Video tutorial** button at the top of the page.
+**Video tutorial:** watch a 2 minute 45 walkthrough with music, including match video and the Time out buttons: [Korf Log tutorial](https://ericvl-korf.github.io/korf-tools/tutorials/korf-log-tutorial.mp4). It is also behind the **Video tutorial** button at the top of the page.
 
 ## 1. Start, or continue a match
 

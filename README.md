@@ -6,6 +6,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-11-02 16:00 (Europe/London)**: New today: **Music on the video tutorials:** both tutorials now have a background music track ("Tutorial" by Paul Yudin, Pixabay) and run 2:45 to match it. Korf Lab's walkthrough is re-recorded with longer pauses; Korf Log's is slightly sped up.
 - **2026-11-02 14:05 (Europe/London)**: New today: **Subs for injuries (Korf Log):** a player can go off injured with no replacement, and a new player (not in the match setup) or a bench player can come on later into the division that is a player short. Saved in CSV and JSON; Korf Lab reads them.
 - **2026-11-01 21:00 (Europe/London)**: New today: **Korf Log** setup step 2 (Match video) now shows a small preview player once a YouTube link or video file is added. Play or step through the video to the whistle, then press **Set as 1st half start** (or 2nd half) to fill in the start time straight away.
 - **2026-10-31 23:40 (Europe/London)**: New today:
