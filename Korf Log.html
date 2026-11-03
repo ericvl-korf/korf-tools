@@ -83,6 +83,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
 .cctl .btn{min-width:3.6rem}
 .cspeed{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:2px}.cspeed .lbl{margin-right:2px}.cspeed button{font:600 .8rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.15rem .6rem;min-height:30px;cursor:pointer}.cspeed button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 body.max .cspeed{margin-top:0}
+.cctl .vo{display:none}body.hasvid .cctl .vo{display:inline-flex}body.hasvid .cctl .so{display:none}
 .cboth{display:none;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;margin-top:2px}body.hasvid .cboth{display:flex}.cboth .lbl{margin-right:2px}.cboth button{font:600 .8rem var(--f-body);color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.15rem .6rem;min-height:30px;cursor:pointer}.cboth button:hover{border-color:var(--accent)}
 @media (max-width:640px){
   .score{grid-template-columns:1fr 1fr;padding:12px}
@@ -136,7 +137,7 @@ body.max .cspeed{margin-top:0}
 .tpanel{position:absolute;left:12px;right:12px;top:50%;transform:translateY(-50%);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.28)}
 .tpanel h3{margin:0;font:700 1.25rem var(--f-display);letter-spacing:.04em;text-transform:uppercase}
 .tpanel p{margin:0;color:var(--muted);font-size:.9rem}
-.tpanel .tiles{display:flex;flex-wrap:wrap;gap:8px}
+.tpanel .tiles{display:flex;flex-wrap:wrap;gap:8px}.tpclk{display:flex;justify-content:flex-end}
 .tpanel .tile{flex:1 1 9rem;min-height:50px}
 .hintrow{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;color:var(--muted);font-size:.9rem;min-height:1.4em}
 .hintrow #hint{min-width:0;flex:1 1 16rem}
@@ -461,13 +462,15 @@ details>summary{transition:color .16s var(--ease)}
         <span class="lbl" id="perLabel">1st half</span>
         <div class="clock paused" id="clock" aria-live="off">00:00</div>
         <div class="cctl">
-          <button class="btn" id="clkBack" type="button" title="Go back 1 second. Events after that time are removed.">−1 s</button>
+          <button class="btn vo" id="clkBothBack" type="button" title="Rewind the match clock and the video together by 1 second. Events after that time are removed.">−1 s</button>
+          <button class="btn so" id="clkBack" type="button" title="Go back 1 second. Events after that time are removed.">−1 s</button>
           <button class="btn primary" id="clkToggle" type="button" title="Start or pause the clock (Space bar)">Start</button>
-          <button class="btn" id="clkFwd" type="button" title="Go forward 1 second">+1 s</button>
+          <button class="btn so" id="clkFwd" type="button" title="Go forward 1 second">+1 s</button>
+          <button class="btn vo" id="clkBothFwd" type="button" title="Fast forward the match clock and the video together by 1 second">+1 s</button>
           <button class="btn primary" id="clkExport" type="button" title="Export this match as a CSV or backup file" hidden>Export match</button>
           <button class="btn primary" id="clkNext" type="button" title="End this half. The next half is set up with the clock stopped until you press Start." hidden>End 1st half</button>
         </div>
-        <div class="cboth" id="cboth" role="group" aria-label="Move the video and the clock together"><span class="lbl">Video + clock</span><button type="button" id="clkBothBack" title="Rewind the video and the clock together by 1 second. Events after that time are removed.">−1 s</button><button type="button" id="clkBothFwd" title="Fast forward the video and the clock together by 1 second">+1 s</button></div>
+        <div class="cboth" id="cboth" role="group" aria-label="Move the match clock only"><span class="lbl">Clock only (video stays)</span><button type="button" id="clkBack2" title="Go back 1 second on the match clock only. The video does not move. Events after that time are removed.">−1 s</button><button type="button" id="clkFwd2" title="Go forward 1 second on the match clock only. The video does not move.">+1 s</button></div>
         <div class="cspeed" id="cspeed" role="group" aria-label="Clock speed"><span class="lbl">Speed</span><button type="button" data-spd="0.5" aria-pressed="false" title="Run the clock at half speed">0.5×</button><button type="button" data-spd="0.75" aria-pressed="false" title="Run the clock at three quarters speed">0.75×</button><button type="button" data-spd="1" aria-pressed="true" title="Normal speed">1×</button><button type="button" data-spd="1.25" aria-pressed="false" title="Run the clock 25% faster">1.25×</button></div>
       </div>
       <div class="team away">
@@ -494,6 +497,7 @@ details>summary{transition:color .16s var(--ease)}
             <h3 id="tpTitle"></h3>
             <p id="tpText"></p>
             <div class="tiles" id="tpTiles"></div>
+            <div class="tpclk"><button type="button" class="btn sm" data-clkpause="1" title="Pause or resume the match clock (and the video with it). Space bar does the same.">Pause</button></div>
           </div>
         </div>
         <div class="hintrow"><span id="hint" aria-live="polite"></span><span id="readout"></span></div>
@@ -789,8 +793,14 @@ details>summary{transition:color .16s var(--ease)}
       <p style="margin-top:8px" id="endAyt">You used a YouTube video, so you can line the log up with it by hand (tap sync). Korf Log lists a few goals and other clear events; you find each one in the video and press Now. Korf Log then works out how far the logged times are from the video. It takes a few minutes, nothing changes unless you apply it, and the originals are kept. Do this before you export.</p>
       <div class="row-actions" style="margin-top:12px"><button class="btn primary" id="endCheck" type="button">Check times now</button><button class="btn" id="endSkip" type="button">Skip, go to export</button></div>
     </div>
+    <div id="endC" hidden>
+      <h2 id="endCTitle">Times updated</h2>
+      <p style="margin-top:8px" id="endCText"></p>
+      <div class="row-actions" style="margin-top:12px"><button class="btn primary" id="endCExport" type="button">Export the corrected event log</button><button class="btn" id="endCLater" type="button">Not now</button></div>
+    </div>
     <div id="endB" hidden>
       <h2>Export this match</h2>
+      <p class="note" id="exCorr" hidden></p>
       <div class="row-actions" style="margin-top:8px">
         <div class="seg" role="group" aria-label="Export format"><button type="button" data-fmt="csv" aria-pressed="true">CSV</button><button type="button" data-fmt="json" aria-pressed="false">JSON</button></div>
         <button class="btn primary" id="backupBtn2" type="button">Save CSV file</button>
@@ -808,7 +818,7 @@ details>summary{transition:color .16s var(--ease)}
 
 <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="sheet">
-    <div class="sheet-head"><h2 id="mTitle">Shot</h2><span class="hspace"></span><button class="btn sm" type="button" id="mBack" data-back="1" hidden>‹ Back</button><button class="btn sm" type="button" data-cancel="1">Cancel</button></div>
+    <div class="sheet-head"><h2 id="mTitle">Shot</h2><span class="hspace"></span><button class="btn sm" type="button" data-clkpause="1" id="mClk" title="Pause or resume the match clock (and the video with it)">Pause</button><button class="btn sm" type="button" id="mBack" data-back="1" hidden>‹ Back</button><button class="btn sm" type="button" data-cancel="1">Cancel</button></div>
     <p class="mmeta" id="mMeta"></p>
     <label class="cb" id="mFp" hidden><input type="checkbox" id="mFpTick"><span>This shot was the free pass<small>Untick it to log a standard shot</small></span></label>
     <div id="mBody"></div>
@@ -1229,8 +1239,11 @@ function renderClock(){
   $('#clkNext').hidden=!(cap&&!(last&&clk.done));
   $('#clkExport').hidden=!(cap&&last&&clk.done);
   $('#clkNext').textContent=last?'End match':'End '+pBtn(cfg,clk.go);
-  $('#clkFwd').disabled=cap;
-  $('#clkBack').disabled=otOn?(Math.floor(o+1e-6)<1):(Math.floor(t)<=periodStart());
+  var noBack=otOn?(Math.floor(o+1e-6)<1):(Math.floor(t)<=periodStart());
+  ['#clkFwd','#clkFwd2','#clkBothFwd'].forEach(function(q){var b=$(q);if(b) b.disabled=cap;});
+  ['#clkBack','#clkBack2','#clkBothBack'].forEach(function(q){var b=$(q);if(b) b.disabled=noBack;});
+  var pl=cap?(clk.otSince?'Pause':(otFlag()?'Resume':'Start extra time')):(clk.since?'Pause':(t>periodStart()+0.5?'Resume':'Start')),vid=document.body.classList.contains('hasvid');
+  qa('[data-clkpause]').forEach(function(b){b.textContent=pl+(vid?' match + video':' match')+' · '+fmtClock(cap?Math.ceil(t):t);});
   $('#perLabel').textContent=cap?((last?(clk.done?'Match ended':'Full time'):(cfg.periods===4?'End of Q'+clk.go:'Half time'))+(otOn?' · extra time':'')):pLong(cfg,periodOf(cfg,Math.floor(t)));
   var sb=document.querySelectorAll('#cspeed [data-spd]');for(var i=0;i<sb.length;i++) sb[i].setAttribute('aria-pressed',String(Number(sb[i].dataset.spd)===clk.speed));
 }
@@ -1910,7 +1923,7 @@ function vidNudge(d){
 }
 /* Rewind or fast forward the clock and the video together. The clock decides how far both move (it stops at the start of the half or at the cap), and the saved start is unchanged because both shift by the same amount. */
 function vidBoth(d){
-  if(!vsync.ready||typeof vsync.t!=='number') return;
+  if(!vsync.ready||typeof vsync.t!=='number'){adjustClock(d);return;}
   var a=nowT();adjustClock(d);var dv=Math.round(nowT()-a);
   if(dv) vidNudge(dv);
 }
@@ -2134,6 +2147,7 @@ function klvApplyRetime(){
   var pl=klvPlan(m,KLV.res),n=0;
   pl.forEach(function(p){if(p.nt!==p.e.t){if(p.e.t0==null) p.e.t0=p.e.t;p.e.t=p.nt;n++;}});
   KLV.res=null;save();render();klvMsg('Re-timed '+n+' events. The original times are kept; use Restore original times to go back.',false);klvUi();
+  offerExport('Re-timing',n);
 }
 function klvRestore(){
   var m=cur();if(!m) return;var n=0;
@@ -2259,6 +2273,7 @@ function klvApplySug(){
     if(nt!==r.e.t){if(r.e.t0==null) r.e.t0=r.e.t;r.e.t=nt;n++;}
   });
   KLV.sug=null;save();render();klvMsg('Changed the time of '+n+' shots. The original times are kept; use Restore original times to go back.',false);klvUi();
+  offerExport('Shot times',n);
 }
 /* ----- tap sync: match the log to a YouTube video by hand ----- */
 function tsMode(m){var mt=m.config.meta||{};return !!(ytParse(mt[vidKey(m)])&&!vidFile(m));}
@@ -3404,21 +3419,33 @@ $('#askYes').addEventListener('click',function(){var id=ui.askId||cur().id;ui.as
 /* ---------- End match: check times (if a local video was used), then export ---------- */
 function hasLocalVideo(m){var mt=(m&&m.config&&m.config.meta)||{};return !!(vfiles[1]||vfiles[2]||mt.fn1||mt.fn2);}
 function hasYtVideo(m){var mt=(m&&m.config&&m.config.meta)||{};return !!(ytParse(mt.video)||ytParse(mt.video2));}
+function timesFixed(m){return m.events.filter(function(e){return e.t0!=null;}).length;}
+/* After times were changed: offer the export straight away. */
+function offerExport(kind,n){
+  var m=cur();if(!m||m.sample||!n) return;
+  $('#endA').hidden=true;$('#endB').hidden=true;$('#endC').hidden=false;
+  $('#endCTitle').textContent=kind+' applied';
+  $('#endCText').textContent=n+(n===1?' event was':' events were')+' moved to a new time. Export the corrected event log now so the new times are saved in your file. The original times are kept in the file too (column time_original_s), and you can still export later with Export match.';
+  var dl=$('#endDlg');if(!dl.open) dl.showModal();
+}
 function openEnd(){
   var m=cur();if(!m||m.sample) return;
-  var dl=$('#endDlg'),loc=hasLocalVideo(m);
-  if(loc||hasYtVideo(m)){$('#endAfile').hidden=!loc;$('#endAyt').hidden=loc;$('#endCheck').textContent=loc?'Check times now':'Tap sync now';$('#endA').hidden=false;$('#endB').hidden=true;}else showExport();
+  var dl=$('#endDlg'),loc=hasLocalVideo(m);$('#endC').hidden=true;
+  if((loc||hasYtVideo(m))&&!timesFixed(m)){$('#endAfile').hidden=!loc;$('#endAyt').hidden=loc;$('#endCheck').textContent=loc?'Check times now':'Tap sync now';$('#endA').hidden=false;$('#endB').hidden=true;}else showExport();
   if(!dl.open) dl.showModal();
 }
 function showExport(fmt){
   var dl=$('#endDlg');if(fmt) ui.fmt=fmt==='csv'?'csv':'json';
-  $('#endA').hidden=true;$('#endB').hidden=false;
+  $('#endA').hidden=true;$('#endC').hidden=true;$('#endB').hidden=false;
+  (function(){var m=cur(),nf=timesFixed(m),ce=$('#exCorr');ce.hidden=!nf;if(nf) ce.textContent='The time of '+nf+(nf===1?' event was':' events were')+' corrected against the video. They are saved in this export, and the original times are kept in the time_original_s column.';})();
   (function(){var m=cur(),n=(typeof BG!=='undefined'&&BG&&m&&bgPref()&&(vfiles[1]||vfiles[2]))?bgPending(m).length:0,el=$('#bgExp');el.hidden=!n;if(n) el.textContent='Korf Log is still finding the ball for '+n+' shots. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.';})();
   setPressed('[data-fmt]','data-fmt',function(v){return v===ui.fmt;});syncBackupLabel();
   if(!dl.open) dl.showModal();
   updateExport();
 }
 $('#endSkip').addEventListener('click',function(){showExport();});
+$('#endCExport').addEventListener('click',function(){showExport();});
+$('#endCLater').addEventListener('click',function(){$('#endDlg').close();});
 $('#endClose').addEventListener('click',function(){$('#endDlg').close();});
 $('#endCheck').addEventListener('click',function(){
   $('#endDlg').close();var c=$('#chk');c.open=true;
@@ -3483,6 +3510,7 @@ $('#trackView').addEventListener('click',function(e){
 $('#backLive').addEventListener('click',function(){ui.review=null;render();});
 $('#restoreBtn').addEventListener('click',restoreWiped);
 $('#clkToggle').addEventListener('click',function(){toggleClock();});
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-clkpause]');if(b&&!b.disabled){e.stopPropagation();toggleClock();renderClock();}},true);
 $('#clkNext').addEventListener('click',startNextPeriod);
 $('#clkExport').addEventListener('click',function(){openEnd();});
 $('#vidSet').addEventListener('click',setVideo);
@@ -3499,6 +3527,8 @@ $('#bothFwd').addEventListener('click',function(){vidBoth(1);});
 $('#clkBothBack').addEventListener('click',function(){vidBoth(-1);});
 $('#clkBothFwd').addEventListener('click',function(){vidBoth(1);});
 $('#clkFwd').addEventListener('click',function(){adjustClock(1);});
+$('#clkBack2').addEventListener('click',function(){adjustClock(-1);});
+$('#clkFwd2').addEventListener('click',function(){adjustClock(1);});
 $('#undo')&&$('#undo').addEventListener('click',undo);
 function setMax(on){
   ui.max=!!on;document.body.classList.toggle('max',ui.max&&ui.view==='track');
