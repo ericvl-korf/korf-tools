@@ -6,6 +6,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-11-03 08:45 (Europe/London)**: New today: **Korf Log timer and export:** with a match video, the −1 s / +1 s buttons beside Start/Pause move the match and video together and the clock-only pair sits underneath; the Transfer panel and the shot and substitution pop-ups have a Pause / Resume match + video button; after Check times changes event times, Korf Log offers to export the corrected event log, and exporting afterwards no longer offers to check the times again.
 - **2026-11-03 08:20 (Europe/London)**: New today: **Only shared stats (Korf Lab):** with several matches selected, Korf Lab shows a stat only if every selected match logged it (passes, turnovers, shot types, shooter gender and division, player rebounds, minutes). A line under the filters says which stats are hidden and why.
 - **2026-11-02 16:00 (Europe/London)**: New today: **Music on the video tutorials:** both tutorials now have a background music track ("Tutorial" by Paul Yudin, Pixabay) and run 2:45 to match it. Korf Lab's walkthrough is re-recorded with longer pauses; Korf Log's is slightly sped up.
 - **2026-11-02 14:05 (Europe/London)**: New today: **Subs for injuries (Korf Log):** a player can go off injured with no replacement, and a new player (not in the match setup) or a bench player can come on later into the division that is a player short. Saved in CSV and JSON; Korf Lab reads them.
