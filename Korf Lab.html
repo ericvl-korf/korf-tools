@@ -1374,19 +1374,38 @@ function renderOverview(){
   $('#filters').style.display=loaded().length?'':'none';
   var ms=build();setCourtLook(ms);
   (function(){
-    var h={pass:0,turn:0,sub:0,gen:0,div:0,reb:0,min:0},used={};
-    ms.forEach(function(m){m.rows.forEach(function(r){
-      if(r.event==='pass') h.pass=1;
-      if(r.event==='turnover') h.turn=1;
-      if(r.event==='sub') h.sub=1;
-      if(r.event==='lineup') h.min=1;
-      if(r.event==='shot'){
-        if(r.gender) h.gen=1;
-        if(r.division) h.div=1;
-        if(r.rebounder&&r.rebounder!=='Foul') h.reb=1;
-      }
-    });m.shots.forEach(function(q){used[q.k]=1;});});
-    h.att=h.pass||h.turn;
+    /* With several matches, a stat is only shown when every selected match logged it. */
+    var per=ms.map(function(m){
+      var f={pass:0,turn:0,min:0,gen:0,div:0,reb:0,typed:0,shots:m.shots.length>0};
+      m.rows.forEach(function(r){
+        if(r.event==='pass') f.pass=1;
+        if(r.event==='turnover') f.turn=1;
+        if(r.event==='lineup') f.min=1;
+        if(r.event==='shot'){
+          if(r.gender) f.gen=1;
+          if(r.division) f.div=1;
+          if(r.rebounder&&r.rebounder!=='Foul') f.reb=1;
+        }
+      });
+      m.shots.forEach(function(q){if(q.k==='distance'||q.k==='runner') f.typed=1;});
+      f.att=f.pass||f.turn?1:0;
+      return f;
+    });
+    var h={pass:0,turn:0,sub:0,gen:0,div:0,reb:0,min:0,att:0,typed:0},hid=[];
+    function share(k,label,needShots){
+      var pool=needShots?per.filter(function(f){return f.shots;}):per;
+      var n=pool.filter(function(f){return f[k];}).length;
+      h[k]=pool.length>0&&n===pool.length?1:0;
+      if(n>0&&!h[k]&&hid.indexOf(label)<0) hid.push(label);
+    }
+    share('pass','passes');share('turn','turnovers');share('att','attacks');share('min','minutes in attack and defence');
+    share('gen','shooter gender',true);share('div','shooter division',true);share('reb','player rebounds',true);share('typed','shot types (distance shot, runner)',true);
+    if(h.att) hid=hid.filter(function(x){return x!=='attacks';});
+    window.__hiddenStats=ms.length>1?hid:[];
+    var used={};
+    /* shot types missing from some matches: every distance shot and runner counts as a plain shot */
+    if(!h.typed) ms.forEach(function(m){m.shots.forEach(function(q){if(q.k==='distance'||q.k==='runner') q.k='open';});});
+    ms.forEach(function(m){m.shots.forEach(function(q){used[q.k]=1;});});
     HAS=h;
     TKEYS.length=0;TCOL.length=0;
     CKEYS.forEach(function(k,i){if(used[k]||(!ms.length&&false)){TKEYS.push(k);TCOL.push(CCOL[i]);}});
@@ -1398,7 +1417,7 @@ function renderOverview(){
     if(view.type&&TKEYS.indexOf(view.type)<0) view.type='';
     if(view.colorBy==='type'&&TKEYS.length<2) view.colorBy='team';
   })();
-  $('#ovSub').textContent=ms.length?ms.length+(ms.length===1?' match':' matches')+(view.team?' · '+teamLabel():' loaded'):(view.team?'No matches for '+view.team:'Load a file to see numbers');
+  $('#ovSub').textContent=ms.length?ms.length+(ms.length===1?' match':' matches')+(view.team?' · '+teamLabel():' loaded')+((window.__hiddenStats&&window.__hiddenStats.length)?' · not shown, because not every match logged them: '+window.__hiddenStats.join(', '):''):(view.team?'No matches for '+view.team:'Load a file to see numbers');
   if(!ms.length){
     var e='<section class="card wide"><div class="card-head"><div class="ch"><h2>Nothing to show yet</h2></div></div><p class="note">Choose which files to load above. Team and player visuals appear here as soon as one file is loaded.</p></section>';
     $('#teamGrid').innerHTML=e;$('#playerGrid').innerHTML=e;$('#hlGrid').innerHTML=e;return;
