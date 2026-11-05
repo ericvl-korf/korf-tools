@@ -533,6 +533,7 @@ details>summary{transition:color .16s var(--ease)}
             <div id="tsBox" hidden>
               <div class="chkstep"><span class="lbl">Match the log to the YouTube video (tap sync)</span>
                 <p class="hint">You find a few events in the video and press Now when each one happens. Korf Log compares your taps with the logged times to find how far the log is from the video. Pause the video on the moment, then press Now: the tap is as exact as you are (about 1 to 2 seconds). Two to four events per half is enough, spread across the half so a drift shows up. Nothing is uploaded or read from the video.</p>
+                <div class="seg" id="tsHalf" role="group" aria-label="Which half's video" hidden style="display:flex;gap:6px;margin:6px 0"><button type="button" class="btn sm" data-tsh="1">1st half video</button><button type="button" class="btn sm" data-tsh="2">2nd half video</button></div>
                 <p class="hint" id="tsNote"></p>
                 <ul class="tslist" id="tsList"></ul>
                 <div id="tsOut"></div>
@@ -1171,7 +1172,7 @@ function nowT(){return Math.min(clk.base+(clk.since?(Date.now()-clk.since)/1000*
 function atCap(){return nowT()>=capT()-1e-6;}
 function lastPeriod(){var m=cur();return clk.go>=m.config.periods;}
 function nowSec(){return Math.floor(nowT()+1e-6);}
-function loadClock(){var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,0.75,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.done=!!c.done;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
+function loadClock(){ui.vh=null;var c=cur().clock||{t:0};clk.base=Number(c.t)||0;clk.since=null;clk.speed=[0.5,0.75,1,1.25].indexOf(Number(c.speed))>=0?Number(c.speed):1;clk.ot=Number(c.ot)||0;clk.otOn=!!c.otOn||clk.ot>0;clk.otSince=null;clk.done=!!c.done;clk.go=Math.max(Number(c.go)||1,periodOf(cur().config,Math.floor(clk.base)));}
 function persistClock(){cur().clock={t:Number(nowT().toFixed(3)),running:!!clk.since,speed:clk.speed,go:clk.go,ot:rd2(otRaw()),otOn:otFlag(),done:!!clk.done};save();}
 function setSpeed(v){v=Number(v);if([0.5,0.75,1,1.25].indexOf(v)<0||v===clk.speed) return;if(clk.since){clk.base=nowT();clk.since=Date.now();}if(clk.otSince){clk.ot=otRaw();clk.otSince=Date.now();}clk.speed=v;persistClock();renderClock();}
 function setClock(nt){clk.base=nt;if(clk.since) clk.since=Date.now();}
@@ -1189,7 +1190,7 @@ function toggleClock(){
 function startNextPeriod(){
   if(!atCap()) return;
   if(lastPeriod()){if(clk.otSince){clk.ot=otRaw();clk.otSince=null;}clk.done=true;ui.popup=null;persistClock();render();openEnd();return;}
-  clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otOn=false;clk.otSince=null;clk.since=null;clk.done=false;ui.popup=null;ui.restore=null;
+  ui.vh=null;clk.base=periodSec(cur().config)*clk.go;clk.go++;clk.ot=0;clk.otOn=false;clk.otSince=null;clk.since=null;clk.done=false;ui.popup=null;ui.restore=null;
   persistClock();render();
 }
 function adjustClock(delta){
@@ -1800,7 +1801,7 @@ function ytParse(s){
   if(mm) sec=(+mm[1]||0)*3600+(+mm[2]||0)*60+(+mm[3]||0);
   return {id:id,start:sec,url:'https://www.youtube.com/watch?v='+id+(sec?'&t='+sec+'s':'')};
 }
-function vidHalf(){var m=cur();return m?halfOfPeriod(m.config,clk.go||1):1;}
+function vidHalf(){var m=cur();if(!m) return 1;return (ui.vh===1||ui.vh===2)?ui.vh:halfOfPeriod(m.config,clk.go||1);}
 function vidKey(m){var mt=m.config.meta||{};return (mt.split&&vidHalf()===2)?'video2':'video';}
 function vidNowT(){return (vsync.ready&&typeof vsync.t==='number')?Math.round(vsync.t*10)/10:undefined;}
 /* Time outs: the match clock stops, the video does not. A closed time out is a span of video time that has no match clock time; spans before a moment in the same half push that moment later in the video. */
@@ -2318,6 +2319,7 @@ function tsOffs(m,list){
   });
   return res;
 }
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-tsh]');if(!b) return;ui.vh=Number(b.dataset.tsh);var vb=$('#vidBox');if(vb) vb.dataset.vid='';renderVideo();KLV.ts.sig='';tsRender();});
 function tsRender(){
   var m=cur(),box=document.getElementById('tsBox');if(!m||!box||box.hidden) return;
   var mt=m.config.meta||{},list=tsCands(m),ready=!!(mt.vs1||mt.vs2);
@@ -2326,7 +2328,8 @@ function tsRender(){
   var note=$('#tsNote'),ul=$('#tsList'),sp=!!mt.split;
   var n=[];
   if(!ready) n.push('Set where the first half starts in the video first (Match setup, step 2), so Korf Log knows where to look.');
-  if(sp) n.push('This video is for the '+(vidHalf()===1?'1st':'2nd')+' half. The other half uses its own video: switch the clock to that half to tap it.');
+  var th=$('#tsHalf');th.hidden=!sp;if(sp) [].forEach.call(th.querySelectorAll('button'),function(b){var on=Number(b.dataset.tsh)===vidHalf();b.classList.toggle('primary',on);b.setAttribute('aria-pressed',on?'true':'false');});
+  if(sp) n.push('This video is for the '+(vidHalf()===1?'1st':'2nd')+' half. The other half uses its own video: use the buttons above to switch to it.');
   if(!list.length) n.push('There are no goals, time outs, penalties or shots in this half to find in the video.');
   note.textContent=n.join(' ');note.hidden=!n.length;
   var h='';

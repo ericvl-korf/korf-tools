@@ -77,7 +77,7 @@ YouTube does not let a web page read the video, so for a YouTube link you line t
 3. Each tap shows how far the video is ahead of or behind the log. With at least two taps in a half you get an offset for that half. If the taps agree within 2 seconds one offset is used for the whole half; if they differ (for example the clock was stopped for a while) the offset changes between taps, and events near the change are marked low confidence. A tap that disagrees with the others is probably a mis-tap: press **Clear** on it and tap it again.
 4. Press **Apply re-timing** to move the events. The originals are kept, so **Restore original times** still works.
 
-When the match is in two videos, only the half whose video is showing can be tapped; switch the clock to the other half to tap that one.
+When the match is in two videos, only the half whose video is showing can be tapped; use the **1st half video / 2nd half video** buttons above the event list to switch to the other half (also after End match), then tap that one.
 
 ## 6. Ball positions for highlights (video file only)
 
