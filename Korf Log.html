@@ -2454,7 +2454,7 @@ function klvUi(){
   var need=$('#chkNeed');
   need.textContent=have.length?'':'Choose the match video file above. It stays on this computer.';
   need.hidden=!!have.length;
-  var tm=tsMode(m);$('#tsBox').hidden=!tm;$('#chkLocal').hidden=tm&&!have.length;
+  var tm=tsMode(m);$('#tsBox').hidden=!tm;$('#chkLocal').hidden=false;
   $('#chkLocalHint').hidden=false;tsRender();
   var busy=KLV.on;
   $('#rtGo').textContent=busy?'Stop':'Find the video offset';$('#rtGo').disabled=!have.length&&!busy;

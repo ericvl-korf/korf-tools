@@ -68,6 +68,8 @@ Under the event log, **Check times against the video** helps when logged times d
 
 *Korf Log is created by Eric Van Looy.*
 
+If the match also has a YouTube link, tap sync (below) is shown first, and the video file choosers and the automatic steps stay available underneath it: choose the file for each half and use **Find the video offset** and **Look for shot times**.
+
 ### Tap sync (YouTube videos)
 
 YouTube does not let a web page read the video, so for a YouTube link you line the log up by hand. With a YouTube video showing, the panel shows **Match the log to the YouTube video (tap sync)**. It needs the half's start time in the video (Match setup, step 2).
