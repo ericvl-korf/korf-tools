@@ -6,6 +6,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 
 ## Latest features
 
+- **2026-11-05 23:30 (Europe/London)**: New today: **Automatic checks with a YouTube link (Korf Log):** Check times now always shows the video file choosers and the automatic **Find the video offset** and **Look for shot times** steps below tap sync. Before, a match that had a YouTube link hid them, so a video file could not be chosen there.
 - **2026-11-05 23:15 (Europe/London)**: New today: **Tap sync with two videos (Korf Log):** in Check times, **1st half video / 2nd half video** buttons switch which half's video you tap, so you no longer need to move the clock (which was impossible after End match).
 - **2026-11-03 08:45 (Europe/London)**: New today: **Korf Log timer and export:** with a match video, the −1 s / +1 s buttons beside Start/Pause move the match and video together and the clock-only pair sits underneath; the Transfer panel and the shot and substitution pop-ups have a Pause / Resume match + video button; after Check times changes event times, Korf Log offers to export the corrected event log, and exporting afterwards no longer offers to check the times again.
 - **2026-11-03 08:20 (Europe/London)**: New today: **Only shared stats (Korf Lab):** with several matches selected, Korf Lab shows a stat only if every selected match logged it (passes, turnovers, shot types, shooter gender and division, player rebounds, minutes). A line under the filters says which stats are hidden and why.
