@@ -29,13 +29,6 @@ Two free, single-file web apps for korfball, created by Eric Van Looy. They run 
 - **2026-10-22**: **Korf Log:** Both −1 s / +1 s buttons move video and clock together, and the Speed buttons set the video speed too.
 - **2026-10-21**: **Video support:** video tutorials, a match video at setup (YouTube or file) in Korf Log, Time out start / end buttons, and the Highlights page and highlight reel in Korf Lab.
 
-## Contact
-
-Want something added or changed, found a problem, or have another request? Get in touch:
-
-- **Email:** [eric.vanlooy1982@gmail.com](mailto:eric.vanlooy1982@gmail.com?subject=Korf%20tools%20request&body=Hi%20Eric%2C%0A%0AWhich%20app%20is%20this%20about%20%28Korf%20Log%20or%20Korf%20Lab%29%3F%0A%0AWhat%20would%20you%20like%20%28a%20new%20feature%2C%20a%20change%2C%20a%20fix%20or%20something%20else%29%3F%0A%0AAny%20details%2C%20examples%20or%20screenshots%3A%0A%0AThanks%21) (opens a message that asks which app, what you would like and any details)
-- **GitHub:** [open an issue](https://github.com/ericvl-korf/korf-tools/issues/new) on this repository
-
 ## Download
 
 To keep a copy and open it offline in any browser:
@@ -54,3 +47,7 @@ Then double-click the saved file to open it. Matches are stored per browser and 
 - Both apps are plain HTML files: save the file and open it locally if you prefer.
 
 **Privacy.** This site counts anonymous page visits and file downloads (no cookies, no personal data). Your match data never leaves your browser.
+
+## Contact
+
+Want something added or changed, found a problem, or have another request? [Contact](mailto:eric.vanlooy1982@gmail.com?subject=Korf%20tools%20request&body=Hi%20Eric%2C%0A%0AWhich%20app%20is%20this%20about%20%28Korf%20Log%20or%20Korf%20Lab%29%3F%0A%0AWhat%20would%20you%20like%20%28a%20new%20feature%2C%20a%20change%2C%20a%20fix%20or%20something%20else%29%3F%0A%0AAny%20details%2C%20examples%20or%20screenshots%3A%0A%0AThanks%21) me.
