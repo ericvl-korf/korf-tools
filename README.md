@@ -4,6 +4,16 @@
 
 Two free, single-file web apps for korfball, created by Eric Van Looy.
 
+> ### Need your matches tracked?
+> Short on time? I can track your club's matches for you, from a video of the match, and send you the event log ready for Korf Lab.
+>
+> | Service | Price | What you get |
+> |---|---|---|
+> | **Full match tracking** | **£10 per match** | Line-ups, shots and goals, every pass and the type of each shot |
+> | **Basic match tracking** | **£5 per match** | Line-ups, shots and goals, without passes and shot types |
+>
+> To get started, email [__CONTACT_EMAIL__](mailto:__CONTACT_EMAIL__?subject=Korf%20match%20tracking).
+
 ## Latest features
 
 - **2026-11-05 23:45 (Europe/London)**: New today: **Start screen from the logo (Korf Log):** click the Korf Log icon or name to go back to the start screen (new match or continue a previous one). If a setup is half-done, Korf Log asks first. The match stays saved; **Back to the tracker** returns to it.
