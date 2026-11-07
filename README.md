@@ -12,7 +12,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy.
 > | **Basic match tracking** | **£5 per match** | Line-ups, shots and goals, without passes and shot types |
 > | **Full match tracking** | **£10 per match** | Line-ups, shots and goals, every pass and the type of each shot |
 >
-> To get started, [email me](mailto:eric.vanlooy1982@gmail.com?subject=Korf%20match%20tracking%20request&body=Hi%20Eric%2C%0A%0AI%27d%20like%20to%20book%20match%20tracking.%0A%0ATracking%20option%20%28basic%20%C2%A35%20or%20full%20%C2%A310%29%3A%0AClub%3A%0AMatch%20%28home%20v%20away%29%3A%0AMatch%20date%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20home%20team%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20away%20team%3A%0A%0AYouTube%20link%28s%29%20to%20the%20match%20video%20%28one%20per%20half%20if%20it%20is%20split%29%3A%0A%0AThanks%21): the email is pre-filled with what I need (player names for the line-up and subs, and the YouTube link to the match video).
+> To get started, [email me](mailto:eric.vanlooy1982@gmail.com?subject=Korf%20match%20tracking%20request&body=Hi%20Eric%2C%0A%0AI%27d%20like%20to%20book%20match%20tracking.%0A%0ATracking%20option%20%28basic%20%C2%A35%20or%20full%20%C2%A310%29%3A%0AClub%3A%0ALeague%3A%0ATeam%20name%3A%0AOpponent%20name%3A%0AMatch%20date%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20our%20team%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20opponent%20%28if%20known%29%3A%0A%0AYouTube%20link%28s%29%20to%20the%20match%20video%20%28one%20per%20half%20if%20it%20is%20split%29%3A%0A%0AThanks%21): the email is pre-filled with what I need (player names for the line-up and subs, and the YouTube link to the match video).
 
 ## Latest features
 
