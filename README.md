@@ -31,6 +31,22 @@ Two free, single-file web apps for korfball, created by Eric Van Looy. They run 
 
 ## Download
 
+### GitHub link or saved copy?
+
+| | Open from GitHub (the links at the top) | Saved copy on your device |
+|:---|:---:|:---:|
+| Always the latest version | ✔ | ✖ (download again to update) |
+| Nothing to download or keep track of | ✔ | ✖ |
+| Easy to share with a link or QR code | ✔ | ✖ |
+| Saved matches stay put (one fixed address) | ✔ | ✖ (tied to where the file is saved) |
+| Works with no internet connection | ✖ | ✔ |
+| Korf Lab ball finder | ✔ | ✔ (needs internet, it loads from GitHub) |
+| Your match data stays in your browser, nothing uploaded | ✔ | ✔ |
+
+✔ yes · ✖ no
+
+### Keeping a saved copy
+
 To keep a copy and open it offline in any browser:
 
 - **Direct download:** right-click a link and choose **Save link as…** (on a phone, long-press and choose Download link):
