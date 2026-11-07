@@ -23,6 +23,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy. They run 
 
 - **2026-11-05**: **Korf Log:** the logo goes back to the start screen; Check times always offers the video file choosers and the automatic checks (even with a YouTube link); tap sync can switch between the 1st and 2nd half video.
 - **2026-11-03**: **Korf Log:** the Match + video ±1 s buttons sit beside Start/Pause, with a Pause / Resume button in the Transfer panel and pop-ups, and an export prompt after times are corrected. **Korf Lab:** with several matches selected, only stats every match logged are shown.
+- **2026-11-07**: **Tutorials:** both video tutorials are re-recorded for the latest features (start screen and logo link, setup with a video preview, tap sync with the half switch, always-visible file checks, Korf Lab shared stats, Best clips and Crop follows the ball).
 - **2026-11-02**: **Korf Log:** injured players can go off without a replacement and new players can come on later. Both video tutorials have background music and run 2:45.
 - **2026-11-01**: **Korf Log:** setup step 2 has a preview player to find the start of each half and set the video offset straight away.
 - **2026-10-31**: **Korf Log:** a step-by-step start and setup, tap sync for YouTube videos, flagging of mistimed shots, ball finding while you track, and a re-recorded tutorial. **Korf Lab:** it opens with a question about which files to load, dropdown filters and a print menu, best clips, and tighter ball-following in highlight clips.

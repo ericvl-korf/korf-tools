@@ -4,7 +4,7 @@
 
 Korf Lab reads the event logs exported by Korf Log and builds team and player dashboards that you can print as PDF reports.
 
-**Video tutorial:** watch a short walkthrough with music (2 minutes 45): [Korf Lab tutorial](https://ericvl-korf.github.io/korf-tools/tutorials/korf-lab-tutorial.mp4). It is also behind the **Video tutorial** button at the top of the page.
+**Video tutorial:** watch a short walkthrough with music (1 minute 40): [Korf Lab tutorial](https://ericvl-korf.github.io/korf-tools/tutorials/korf-lab-tutorial.mp4). It is also behind the **Video tutorial** button at the top of the page.
 
 ## 1. Load your data
 
