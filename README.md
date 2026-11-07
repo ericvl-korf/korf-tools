@@ -19,7 +19,6 @@ Two free, single-file web apps for korfball, created by Eric Van Looy. They run 
 
 ## Latest features
 
-- **2026-11-07**: **Match tracking service:** a small ad here and at the top of Korf Log offers match tracking for clubs (£5 basic, £10 full), with a pre-filled request email. This page now leads with the two apps, their guides and tutorials.
 - **2026-11-05**: **Korf Log:** the logo goes back to the start screen; Check times always offers the video file choosers and the automatic checks (even with a YouTube link); tap sync can switch between the 1st and 2nd half video.
 - **2026-11-03**: **Korf Log:** the Match + video ±1 s buttons sit beside Start/Pause, with a Pause / Resume button in the Transfer panel and pop-ups, and an export prompt after times are corrected. **Korf Lab:** with several matches selected, only stats every match logged are shown.
 - **2026-11-02**: **Korf Log:** injured players can go off without a replacement and new players can come on later. Both video tutorials have background music and run 2:45.
