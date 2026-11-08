@@ -169,6 +169,12 @@ body.max .team input{font-size:1rem}
 body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
 /* Match video under the court. In the maximised view the court gives up a little height so the video fits beneath it. */
 .vidbox{margin:12px auto 0;width:min(100%,max(340px,calc(100vh - 215px)))}
+/* Video size: each +10% makes the video wider and the court smaller by the same height, so the two together stay the same height */
+body{--vz:1}
+body.hasvid:not(.max) .vidbox{width:min(100%,calc(var(--vz)*max(340px,calc(100vh - 215px))))}
+body.hasvid:not(.max) .court-box{width:min(100%,max(200px,calc((1 - .5625*(var(--vz) - 1))*max(340px,calc(100vh - 215px)))))}
+.vsz{display:inline-flex;gap:4px;align-items:center;color:var(--muted,#555);font-size:.85rem}.vsz b{min-width:3.2em;text-align:center;color:var(--fg);font-variant-numeric:tabular-nums}
+.maxvsz{display:none}
 .vidadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.vidadd label{font-weight:600;font-size:.85rem;color:var(--muted)}.vidadd input{flex:1 1 14rem;min-width:0}
 .vidmsg{margin:6px 0 0;font-size:.85rem;color:var(--muted)}
 .vidframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000}.vdgrid .vdf{font-size:.85rem}.vdgrid .fnm{margin:2px 0 0;font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}@media (max-width:640px){.vdgrid .l1{order:1}.vdgrid .t1{order:2}.vdgrid .f1{order:3}.vdgrid .l2{order:4}.vdgrid .t2{order:5}.vdgrid .f2{order:6}}.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -176,8 +182,11 @@ body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
 .vidtools a{color:var(--accent,#1f6f5a);font-weight:600}
 .vidnudge{display:inline-flex;gap:4px;align-items:center;color:var(--muted,#555)}.vidtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:.85rem}
 body.max .vidbox:not(.has){display:none}
-body.max.hasvid .court-box{width:min(100%,calc(.64*(100vh - 84px)),calc(.64*(100dvh - 84px)))}
-body.max .vidbox.has{grid-column:1;grid-row:2/-1;align-self:end;justify-self:center;margin:0;height:calc(.36*(100vh - 84px));height:calc(.36*(100dvh - 84px));width:auto;aspect-ratio:16/9;max-width:100%}
+body.max.hasvid{--vf:min(calc(.36*var(--vz)),.6)}
+body.max.hasvid .court-box{width:min(100%,calc((1 - var(--vf))*(100vh - 84px)),calc((1 - var(--vf))*(100dvh - 84px)))}
+body.max.hasvid .maxvsz{display:flex;grid-column:2;grid-row:7;align-self:end;justify-content:flex-end;padding:6px 0}
+body.max .svc{display:none}
+body.max .vidbox.has{grid-column:1;grid-row:2/-1;align-self:end;justify-self:center;margin:0;height:calc(var(--vf,.36)*(100vh - 84px));height:calc(var(--vf,.36)*(100dvh - 84px));width:auto;aspect-ratio:16/9;max-width:100%}
 body.max .vidbox.has .vidplay,body.max .vidbox.has .vidframe{height:100%}
 body.max .vidbox.has .vidtools{display:none}
 @media (max-aspect-ratio:1/1){
@@ -186,6 +195,7 @@ body.max .vidbox.has .vidtools{display:none}
   body.max .maxbar,body.max .main>.score,body.max #poss,body.max #tilebar,body.max #restoreBar,body.max #reviewBar,body.max .hintrow{grid-column:1;grid-row:auto}
   body.max .maxbar{order:0}body.max .main>.score{order:1}body.max #poss{order:2}body.max #tilebar{order:3}body.max #restoreBar,body.max #reviewBar{order:4}body.max .lastev{order:5;grid-column:1;grid-row:auto;width:100%}body.max .court-box{order:6;grid-column:1;grid-row:auto;width:min(100%,calc(100dvh - 84px))}body.max .hintrow{order:7}
   body.max.hasvid .court-box{width:min(100%,calc(100dvh - 84px))}
+  body.max.hasvid .maxvsz{display:none}
   body.max .vidbox.has{order:8;grid-column:1;grid-row:auto;height:auto;width:min(100%,calc(100dvh - 84px));margin-top:8px;aspect-ratio:auto}
   body.max .vidbox.has .vidplay,body.max .vidbox.has .vidframe{height:auto}
 }
@@ -502,13 +512,14 @@ details>summary{transition:color .16s var(--ease)}
           </div>
         </div>
         <div class="hintrow"><span id="hint" aria-live="polite"></span><span id="readout"></span></div>
+        <div class="vsz maxvsz" title="Make the video bigger; the court gets smaller by the same amount"><span>Video size</span> <button class="btn sm" type="button" data-vz="-1" aria-label="Smaller video">−10%</button><b class="vszVal">100%</b><button class="btn sm" type="button" data-vz="1" aria-label="Bigger video">+10%</button></div>
         <div class="vidbox" id="vidBox">
           <div class="vidadd" id="vidAdd"><label for="vidUrl">Match video</label><input id="vidUrl" type="url" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link (optional)"><button class="btn sm" id="vidSet" type="button">Show video</button><label class="btn sm" for="vidFile" style="cursor:pointer">Choose video file</label><input id="vidFile" type="file" accept="video/*" hidden></div>
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
             <div class="bgbox" id="bgBox" hidden><label class="chkopt"><input type="checkbox" id="bgOn" checked> Find the ball for highlights while you track</label><span class="note" id="bgNote" role="status"></span></div>
-            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
+            <div class="vidtools"><span class="vsz" title="Make the video bigger; the court gets smaller by the same amount">Video size <button class="btn sm" type="button" data-vz="-1" aria-label="Smaller video">−10%</button><b class="vszVal">100%</b><button class="btn sm" type="button" data-vz="1" aria-label="Bigger video">+10%</button></span><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
       </div>
@@ -1840,7 +1851,7 @@ function vidTargetNow(m){return vTarget(m.config,vidHalf(),nowT())+toAdd(m,vidHa
 function renderVideo(){
   var m=cur(),box=$('#vidBox');if(!m||!box) return;
   var v=ytParse(m.config.meta&&m.config.meta[vidKey(m)]),lf=vidFile(m),editing=!!ui.vidEdit,show=!!(v||lf)&&!editing;
-  box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);
+  box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);if(typeof vzWant==='number') vzApply();
   $('#vidAdd').hidden=show;$('#vidPlay').hidden=!(v||lf);
   if(editing&&(v||lf)) $('#vidPlay').hidden=true;
   var fr=$('#vidFrame'),key=lf?'file:'+lf.name+':'+lf.size+':'+lf.lastModified:(v?v.url:'');
@@ -3552,10 +3563,36 @@ function setMax(on){
     if(ui.max&&document.documentElement.requestFullscreen&&!document.fullscreenElement){var pr=document.documentElement.requestFullscreen();if(pr&&pr.catch) pr.catch(function(){});}
     if(!ui.max&&document.fullscreenElement&&document.exitFullscreen){var pr2=document.exitFullscreen();if(pr2&&pr2.catch) pr2.catch(function(){});}
   }catch(e){}
-  $('#maxBtn').textContent=ui.max?'Exit maximised':'Maximise';
+  $('#maxBtn').textContent=ui.max?'Exit maximised':'Maximise';if(typeof vzWant==='number') vzApply();
   setTimeout(resize,30);setTimeout(resize,250);
 }
 $('#maxBtn').addEventListener('click',function(){setMax(!ui.max);});
+/* Video size: 100% to 200% in steps of 10%. Remembered in this browser only. */
+var vzPct=100,vzWant=100;try{var vzs=parseInt(localStorage.getItem('klVz'),10);if(vzs>=100&&vzs<=200) vzWant=Math.round(vzs/10)*10;}catch(e){}
+/* The video can only grow as far as the space allows, so the + button stops there and the court never shrinks for nothing. */
+function vzLimit(){
+  var lim=2,mx=document.body.classList.contains('max'),box=document.getElementById('vidBox');
+  if(!document.body.classList.contains('hasvid')) return 200;
+  if(mx){
+    var mn=document.querySelector('.main'),bar=document.getElementById('maxbar'),H=Math.min(window.innerHeight,window.innerHeight)-84;
+    if(mn&&bar&&bar.offsetWidth){var colW=mn.clientWidth-bar.offsetWidth-12;lim=Math.min(.6/.36,colW/(.64*H));}
+  }else{
+    var mn2=document.querySelector('.main'),lf=document.querySelector('.col.left'),rs=document.querySelector('.col.rest'),base=Math.max(340,window.innerHeight-215);
+    if(mn2&&lf&&rs){var side=rs.offsetTop<lf.offsetTop+lf.offsetHeight-5&&rs.offsetLeft>lf.offsetLeft;var gp=parseFloat(getComputedStyle(mn2).columnGap)||0;
+      var availW=side?mn2.clientWidth-rs.offsetWidth-gp:mn2.clientWidth;if(availW>0) lim=availW/base;}
+  }
+  return Math.max(100,Math.min(200,Math.floor(lim*10+1e-6)*10));
+}
+function vzApply(){
+  var cap=vzLimit();vzPct=Math.max(100,Math.min(cap,vzWant));
+  document.body.style.setProperty('--vz',String(vzPct/100));
+  document.querySelectorAll('.vszVal').forEach(function(b){b.textContent=vzPct+'%';});
+  document.querySelectorAll('[data-vz="-1"]').forEach(function(b){b.disabled=vzPct<=100;});
+  document.querySelectorAll('[data-vz="1"]').forEach(function(b){b.disabled=vzPct>=cap;});
+}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-vz]');if(!b) return;vzWant=Math.max(100,Math.min(200,vzPct+10*Number(b.dataset.vz)));try{localStorage.setItem('klVz',String(vzWant));}catch(x){}vzApply();});
+window.addEventListener('resize',vzApply);
+vzApply();
 $('#maxExit').addEventListener('click',function(){setMax(false);});
 $('#maxUndo').addEventListener('click',undo);
 $('#newMatch').addEventListener('click',openStart);
