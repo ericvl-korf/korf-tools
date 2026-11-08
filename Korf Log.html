@@ -1197,11 +1197,22 @@ function startNextPeriod(){
 function adjustClock(delta){
   var m=cur(),t=nowT(),wiped=[];
   if(atCap()&&otFlag()){
-    /* In extra time the buttons only move the extra time stopwatch, never back into regular time. */
+    /* In extra time the buttons only move the extra time stopwatch, except that going back from +00:00 leaves extra time and returns to the last second of regular time. */
     if(delta>0) return;
     var was=Math.floor(otRaw()+1e-6),no=Math.max(0,was+delta);
-    if(no===was) return;
     var capS=Math.floor(t+1e-6);
+    if(was<1){
+      /* Back out of extra time into regular time: the clock stops one second before the end of the period; extra time events are put aside so they can be restored. */
+      wiped=m.events.filter(function(e){return e.ot!=null&&e.t===capS;});
+      if(wiped.length) m.events=m.events.filter(function(e){return wiped.indexOf(e)<0;});
+      var pr=ui.restore;
+      clk.otSince=null;clk.ot=0;clk.otOn=false;clk.done=false;
+      setClock(capS);
+      ui.popup=null;ui.review=null;
+      ui.restore={events:(pr?wiped.concat(pr.events):wiped),t:pr?pr.t:t,at:capS,ot:(pr&&pr.ot!=null)?pr.ot:was,back:true};
+      persistClock();render();return;
+    }
+    if(no===was) return;
     wiped=m.events.filter(function(e){return e.ot!=null&&e.t===capS&&e.ot>no;});
     if(wiped.length) m.events=m.events.filter(function(e){return wiped.indexOf(e)<0;});
     clk.ot=no;if(clk.otSince) clk.otSince=Date.now();
@@ -1222,14 +1233,15 @@ function adjustClock(delta){
   ui.popup=null;ui.review=null;
   if(wiped.length){
     var prev=ui.restore;
-    ui.restore={events:(prev?wiped.concat(prev.events):wiped).sort(function(a,b){return a.t-b.t;}),t:prev?prev.t:t,at:nt};
+    ui.restore={events:(prev?wiped.concat(prev.events):wiped).sort(function(a,b){return a.t-b.t;}),t:prev?prev.t:t,at:nt,ot:prev&&prev.back?prev.ot:undefined,back:!!(prev&&prev.back)};
   }else if(ui.restore){ui.restore.at=nt;}
   persistClock();render();
 }
 function restoreWiped(){
   var r=ui.restore;if(!r) return;
   var m=cur();m.events=m.events.concat(r.events);
-  if(r.ot!=null){clk.ot=r.ot;if(clk.otSince) clk.otSince=Date.now();}else setClock(r.t);
+  if(r.back){setClock(r.t);clk.otOn=true;clk.ot=r.ot||0;}
+  else if(r.ot!=null){clk.ot=r.ot;if(clk.otSince) clk.otSince=Date.now();}else setClock(r.t);
   ui.restore=null;persistClock();render();
 }
 function renderClock(){
@@ -1241,7 +1253,7 @@ function renderClock(){
   $('#clkNext').hidden=!(cap&&!(last&&clk.done));
   $('#clkExport').hidden=!(cap&&last&&clk.done);
   $('#clkNext').textContent=last?'End match':'End '+pBtn(cfg,clk.go);
-  var noBack=otOn?(Math.floor(o+1e-6)<1):(Math.floor(t)<=periodStart());
+  var noBack=otOn?false:(Math.floor(t)<=periodStart());
   ['#clkFwd','#clkFwd2','#clkBothFwd'].forEach(function(q){var b=$(q);if(b) b.disabled=cap;});
   ['#clkBack','#clkBack2','#clkBothBack'].forEach(function(q){var b=$(q);if(b) b.disabled=noBack;});
   var pl=cap?(clk.otSince?'Pause':(otFlag()?'Resume':'Start extra time')):(clk.since?'Pause':(t>periodStart()+0.5?'Resume':'Start')),vid=document.body.classList.contains('hasvid');
@@ -1659,7 +1671,7 @@ function renderPanels(m,R){
   if(rv) $('#reviewMsg').textContent='Reviewing '+teamName(rv.team)+' attack '+rv.att+' · '+pLong(m.config,rv.period);
   var rs=ui.restore;
   $('#restoreBar').hidden=!rs;
-  if(rs) $('#restoreMsg').textContent=(rs.ot!=null?'Rewound extra time to +'+fmtClock(rs.at):'Rewound to '+fmtClock(rs.at))+' and removed '+rs.events.length+(rs.events.length===1?' event.':' events.');
+  if(rs) $('#restoreMsg').textContent=(rs.ot!=null&&!rs.back?'Rewound extra time to +'+fmtClock(rs.at):'Rewound to '+fmtClock(rs.at))+' and removed '+rs.events.length+(rs.events.length===1?' event.':' events.');
 }
 function hintText(m,R){
   if(ui.msg) return ui.msg;
