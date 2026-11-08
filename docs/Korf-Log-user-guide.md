@@ -10,7 +10,7 @@ Korf Log records a korfball match as it is played, one click at a time, and expo
 
 Opening Korf Log (or pressing **New match**, or clicking the Korf Log icon or name at the top) asks what you want to do:
 
-- **Continue a previous match.** Pick a match saved in this browser, or open a backup file (.json or .csv). Korf Log then asks whether you want to look at or change the match setup. **No** takes you straight to the tracker; **Yes** opens the setup steps below with the match's details filled in.
+- **Continue a previous match.** Pick a match saved in this browser, or open a backup file (.json or .csv). Each saved match has a **Delete** button: press it, then press **Tap again to delete** within four seconds to remove that match from this browser for good (download a backup first if you may want it back). Korf Log then asks whether you want to look at or change the match setup. **No** takes you straight to the tracker; **Yes** opens the setup steps below with the match's details filled in.
 - **Start a new match.** Setup is six short steps. Each step is checked when you press Next: missing information is flagged there and then, and some things (such as a team left with the default name, no start time for the video, or ticking player names but adding none) ask you to confirm before you carry on. You can go Back at any time, and the step buttons at the top return to earlier steps.
 
 ## 2. The six setup steps
