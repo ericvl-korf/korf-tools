@@ -59,6 +59,8 @@ Team colours fill each team's buttons. Where names are logged, player buttons ge
 
 ## 5. Check times against the video
 
+**Progress timer:** while **Find the video offset** or **Look for shot times** is running, a progress bar appears under its button showing which shot (or half) it is on, the time elapsed and an estimate of the time left. When it finishes the bar turns green and says **Finished in** with the total time; if you press Stop it says **Stopped after**. (**Flag shots that look mistimed** is instant, so it has no timer.)
+
 Under the event log, **Check times against the video** helps when logged times drift from the video. Choose the match video file in the panel (it stays on your computer; nothing is uploaded; the automatic checks need a video file, not a YouTube link; for a YouTube video use tap sync, below). Nothing changes until you apply a result, and the original time of every changed event is kept: **Restore original times** puts them all back, and the originals travel with the backup and the CSV (column `time_original_s`).
 
 - **Re-time the log.** Reads the camera movement through the half (about 10 minutes for a 30 minute half; keep the tab open) and matches it with how the logged ball positions move along the court. The result lists how far the video is ahead of the log in each stretch, including steps where the clock was stopped, and how many events are matched with high, medium or low confidence. **Apply re-timing** moves the events. If most of the match is weak, nothing is offered: check that it is the right file for the half and that the half's video start time is about right.
