@@ -244,6 +244,7 @@ table.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-num
 #log .empty{padding:.8rem .2rem;color:var(--muted)}
 
 .bgbox{margin:6px 0;font-size:.88rem}.bgbox .chkopt{display:inline-block;margin:0 8px 0 0}.bgbox .note{color:var(--muted)}
+.prog{margin:8px 0}.progbar{height:10px;border-radius:6px;background:var(--line);overflow:hidden}.progbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s linear}.progtxt{margin-top:5px;font-size:.88rem;font-variant-numeric:tabular-nums}.prog.done .progtxt{font-weight:700;color:var(--accent)}.prog.stopped .progtxt{font-weight:700}.prog.failed .progtxt{font-weight:700;color:var(--danger)}
 .chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}.tslist{list-style:none;margin:6px 0;padding:0;max-height:26rem;overflow:auto}.tslist li{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:.9rem}.tslist li:first-child{border-top:0}.tslist .tsw{flex:1 1 12rem;min-width:0}.tslist .tsv{color:var(--muted);flex:1 1 100%;font-size:.85rem}.tslist li.done .tsw b{color:var(--ok,inherit)}#chkMsg.bad,#chk .bad{color:var(--danger)}
 .startgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media (max-width:640px){.startgrid{grid-template-columns:minmax(0,1fr)}}
 .startopt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);font:500 .95rem var(--f-body);cursor:pointer;min-height:120px}
@@ -560,11 +561,13 @@ details>summary{transition:color .16s var(--ease)}
             <div class="chkstep"><span class="lbl">1. Re-time the log</span>
               <p class="hint">For a log whose times drift from the video. The camera pans with the play, and the logged ball positions move along the court: matching the two over the whole half finds the offset, including steps where the clock was stopped. Reads the whole half (several minutes).</p>
               <div class="row-actions"><button class="btn" id="rtGo" type="button">Find the video offset</button><button class="btn" id="rtApply" type="button" hidden>Apply re-timing</button></div>
+              <div class="prog" id="rtProg" hidden><div class="progbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="progtxt"></div></div>
               <div id="rtOut"></div></div>
             <div class="chkstep"><span class="lbl">2. Suggest shot times</span>
               <p class="hint">Finds the ball in the video around each shot and proposes the time of the top of its flight. Penalties and free passes are logged at the referee's call, so their suggestion is the time of the shot that follows. You choose which suggestions to apply.</p>
               <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each); otherwise only penalties and free passes</label>
               <div class="row-actions"><button class="btn" id="sgGo" type="button">Look for shot times</button><button class="btn" id="sgSaved" type="button" title="Uses the ball positions Korf Log saved while you tracked. Instant, and needs no video file.">Flag shots that look mistimed</button><button class="btn" id="sgApply" type="button" hidden>Apply ticked times</button></div>
+              <div class="prog" id="sgProg" hidden><div class="progbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="progtxt"></div></div>
               <p class="hint" id="sgSavedNote"></p>
               <div id="sgOut"></div></div>
             </div>
@@ -1989,6 +1992,31 @@ var KLV={on:false,stop:false,res:null,sug:null,ts:{taps:{},res:null,sig:''},det:
 function klvFile(m,h){var mt=m.config.meta||{};return mt.split?vfiles[h]:vfiles[1];}
 function klvHalfLen(cfg){return cfg.length*30;}
 function klvHalf(cfg,e){return halfOfPeriod(cfg,periodOf(cfg,e.t));}
+/* Progress bar + running timer for the long checks, so it is clear how far along they are and when they have finished */
+var KLVP=null;
+function klvPFmt(sec){sec=Math.max(0,Math.round(sec));var m=Math.floor(sec/60),r=sec%60;return m+':'+(r<10?'0':'')+r;}
+function klvPTick(){
+  if(!KLVP) return;var el=document.getElementById(KLVP.id);if(!el) return;
+  var el_s=(Date.now()-KLVP.t0)/1000,f=KLVP.frac,txt=KLVP.label+' · '+klvPFmt(el_s)+' elapsed';
+  if(f>0.03&&f<1){var left=el_s*(1-f)/f;txt+=' · '+(left<60?'under a minute':'about '+Math.round(left/60)+' min')+' left';}
+  el.querySelector('.progtxt').textContent=txt;
+  var pct=Math.max(2,Math.min(100,Math.round(f*100)));el.querySelector('.progbar i').style.width=pct+'%';el.querySelector('.progbar').setAttribute('aria-valuenow',String(pct));
+}
+function klvPStart(id,label){
+  klvPEndTimer();var el=document.getElementById(id);if(!el) return;
+  el.hidden=false;el.className='prog';
+  KLVP={id:id,t0:Date.now(),frac:0,label:label,iv:setInterval(klvPTick,1000)};klvPTick();
+}
+function klvPSet(frac,label){if(!KLVP) return;KLVP.frac=Math.max(0,Math.min(1,frac));if(label) KLVP.label=label;klvPTick();}
+function klvPEndTimer(){if(KLVP&&KLVP.iv){clearInterval(KLVP.iv);KLVP.iv=null;}}
+function klvPEnd(kind,text){
+  if(!KLVP) return;var el=document.getElementById(KLVP.id);var secs=(Date.now()-KLVP.t0)/1000;klvPEndTimer();
+  if(!el){KLVP=null;return;}
+  el.className='prog '+kind;
+  el.querySelector('.progbar i').style.width=(kind==='done'?100:Math.max(2,Math.round(KLVP.frac*100)))+'%';
+  el.querySelector('.progtxt').textContent=(kind==='done'?'✓ Finished in ':kind==='stopped'?'Stopped after ':'Failed after ')+klvPFmt(secs)+(text?' · '+text:'');
+  KLVP=null;
+}
 function klvMsg(t,bad){var el=$('#chkMsg');if(!el) return;el.textContent=t||'';el.className=bad?'bad':'';}
 function klvSeek(vid,t){return new Promise(function(ok){var done=false,fin=function(){if(done) return;done=true;vid.removeEventListener('seeked',fin);ok();};vid.addEventListener('seeked',fin);vid.currentTime=Math.max(0,t);setTimeout(fin,8000);});}
 function klvOpen(file){
@@ -2109,7 +2137,7 @@ async function klvRetime(){
   var halves=[1,2].filter(function(h){return klvFile(m,h);});
   if(!halves.length){klvMsg('Choose the match video file first (Match video, above the pitch).',true);return;}
   KLV.on=true;KLV.stop=false;klvUi();
-  var res={};
+  var res={};klvPStart('rtProg','Reading the camera movement');
   try{
     for(var hi=0;hi<halves.length&&!KLV.stop;hi++){
       var h=halves[hi],base=(h-1)*klvHalfLen(cfg),pts=[];
@@ -2119,17 +2147,17 @@ async function klvRetime(){
       var v=await klvOpen(klvFile(m,h));opened.push(v);
       var vs=vStartOf(cfg,h),M=pts[pts.length-1].t+1,dur=v.vid.duration||0,tb=Math.max(0,vs-65),te=Math.min(dur-1,vs+M+125);
       if(te-tb<100){res[h]={err:'The video is too short to match the '+(h===1?'1st':'2nd')+' half.'};continue;}
-      var pan=await klvPan(v.vid,tb,te,KLV_FPS,function(f,el){var left=el/Math.max(f,0.001)*(1-f)/60;
+      var pan=await klvPan(v.vid,tb,te,KLV_FPS,function(f,el){klvPSet((hi+f)/halves.length,'Reading the camera movement, '+(h===1?'1st':'2nd')+' half');var left=el/Math.max(f,0.001)*(1-f)/60;
         klvMsg('Reading the camera movement, '+(h===1?'1st':'2nd')+' half: '+Math.round(f*100)+'% · about '+(left<1?'under a minute':Math.round(left)+' min')+' left. Keep this tab open.',false);});
       if(KLV.stop) break;
       var wins=klvAlign(pts,pan,tb,vs);
       res[h]=wins?{wins:wins,base:base}:{err:'Could not match the '+(h===1?'1st':'2nd')+' half.'};
     }
-  }catch(err){klvMsg('Could not re-time: '+((err&&err.message)||'something went wrong')+'.',true);}
+  }catch(err){klvPEnd('failed','');klvMsg('Could not re-time: '+((err&&err.message)||'something went wrong')+'.',true);}
   finally{opened.forEach(klvClose);}
   var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
-  if(stopped){klvMsg('Stopped.',false);KLV.res=null;klvUi();return;}
-  klvMsg('',false);KLV.res=res;klvRetimeShow();klvUi();
+  if(stopped){klvPEnd('stopped','');klvMsg('Stopped.',false);KLV.res=null;klvUi();return;}
+  klvPEnd('done','see the result below.');klvMsg('',false);KLV.res=res;klvRetimeShow();klvUi();
 }
 /* the new time for each event under the found offsets */
 function klvPlan(m,res){
@@ -2237,13 +2265,14 @@ async function klvSuggest(){
   KLV.on=true;KLV.stop=false;KLV.sug=[];klvUi();klvSugShow();
   var opened=new Map(),done=0,total=0,t0=Date.now(),frames=0;
   try{
+    klvPStart('sgProg','Loading the ball finder (20 MB, downloaded once)');
     klvMsg('Loading the ball finder (20 MB, downloaded once)…',false);
     await klvLoadDet();
     var jobs=shots.map(function(e){
       var pf=e.kind==='penalty'||e.kind==='freepass',v=klvExpected(m,e),w=pf?[v-1,v+(e.kind==='penalty'?16:8)]:[v-3,v+4];
       return {e:e,pf:pf,v:v,w:w,n:Math.floor((w[1]-w[0])*3)+1};});
     total=jobs.reduce(function(s,j){return s+j.n;},0);
-    t0=Date.now();
+    t0=Date.now();klvPStart('sgProg','Shot 1 of '+jobs.length);
     for(var q=0;q<jobs.length&&!KLV.stop;q++){
       var j=jobs[q],h=klvHalf(cfg,j.e),f=klvFile(m,h),vv=opened.get(f);
       if(!vv){vv=await klvOpen(f);opened.set(f,vv);}
@@ -2252,6 +2281,7 @@ async function klvSuggest(){
         var t=j.w[0]+i/3;if(t<0||t>vv.vid.duration) {frames++;continue;}
         await klvSeek(vv.vid,t);var r=await klvDetect(vv.vid);frames++;
         if(r) pts.push({t:t,x:r.x,y:r.y});
+        klvPSet(frames/total,'Shot '+(q+1)+' of '+jobs.length);
         if(frames%3===0){var el=(Date.now()-t0)/1000,left=Math.max(0,Math.round(el/frames*(total-frames)/60));
           klvMsg('Looking at shot '+(q+1)+' of '+jobs.length+' · about '+(left<1?'under a minute':left+(left===1?' minute':' minutes'))+' left. Keep this tab open. You can stop at any time and keep what was found.',false);}
       }
@@ -2261,11 +2291,12 @@ async function klvSuggest(){
       KLV.sug.push({id:j.e.id,dt:ap==null?null:ap-j.v});
       if(done%3===0) klvSugShow();
     }
-  }catch(err){klvMsg('Could not check the shots: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);}
+  }catch(err){klvPEnd('failed','');klvMsg('Could not check the shots: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);}
   finally{opened.forEach(klvClose);}
   var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
   var found=KLV.sug.filter(function(s){return s.dt!=null;}).length;
   klvMsg((stopped?'Stopped. ':'')+'Looked at '+KLV.sug.length+' shots and found the top of the shot in '+found+'.',false);
+  klvPEnd(stopped?'stopped':'done','looked at '+KLV.sug.length+' shots, found the top of the shot in '+found+'.');
   klvSugShow();klvUi();
 }
 function klvSugRows(){
