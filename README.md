@@ -21,7 +21,7 @@ Two free, single-file web apps for korfball, created by Eric Van Looy. They run 
 
 ## Latest features
 
-- **2026-11-09**: **Korf Log:** a separate 2nd half video file now starts at 0:00, so the Check times shot checks and the exported 2nd half start time are right when each half has its own video file.
+- **2026-11-09**: **Korf Log:** a separate 2nd half video file now starts at 0:00, so the Check times shot checks and the exported 2nd half start time are right when each half has its own video file. Check times also reports its results for each half, and says when a half's start time is past the end of its video or has no saved ball positions.
 - **2026-11-08**: **Korf Log:** video size buttons (+10% steps, court gets smaller as the video grows) in the tracker and in Maximise; saved matches can be deleted from Continue a previous match; Find the video offset and Look for shot times show a progress bar, running timer and a Finished message; −1 s at extra time +00:00 returns to regular time.
 - **2026-11-07**: **Tutorials:** both video tutorials are re-recorded for the latest features (start screen and logo link, setup with a video preview, tap sync with the half switch, always-visible file checks, Korf Lab shared stats, Best clips and Crop follows the ball).
 - **2026-11-05**: **Korf Log:** the logo goes back to the start screen; Check times always offers the video file choosers and the automatic checks (even with a YouTube link); tap sync can switch between the 1st and 2nd half video.
