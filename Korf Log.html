@@ -122,6 +122,8 @@ body.max .cspeed{margin-top:0}
 .tile{font:600 .9rem var(--f-body);min-height:44px;padding:.4rem .8rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);cursor:pointer;text-align:left}
 .tile:hover{background:var(--surface-2)}
 .tile.ref{border-color:var(--accent)}
+/* Time out buttons stand out: the clock stops for a time out, and the video does not, so pressing them keeps the log in step with the video */
+.tile.to{background:#f5a623;border-color:#b87400;color:#2a1a00;font-weight:700}.tile.to:hover{background:#ffb845}
 .tile[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .tile[disabled]{opacity:.45;cursor:not-allowed}
 .tile .sub{display:block;font-weight:400;font-size:.75rem;opacity:.85}
@@ -559,10 +561,9 @@ details>summary{transition:color .16s var(--ease)}
             <div class="chkfiles"><label class="lbl" for="chkF1" id="chkL1">Video file</label><input type="file" id="chkF1" accept="video/*"><span id="chkN1" class="fnm"></span>
               <label class="lbl" for="chkF2" id="chkL2">2nd half video file</label><input type="file" id="chkF2" accept="video/*"><span id="chkN2" class="fnm"></span></div>
             <p id="chkNeed" class="bad" hidden></p>
-            <div class="chkstep"><span class="lbl">Check the logged times against the video</span>
-              <p class="hint"><b>Check times</b> compares the log with the video in two steps and then shows what it would change. Nothing changes until you press <b>Apply changes</b>.</p>
-              <ol class="hint chkhow"><li><b>Overall offset.</b> The camera pans with the play, and the logged ball positions move along the court. Matching the two over each half shows how far the logged times are from the video, including jumps where the clock was stopped. This needs the video file and reads the whole half, so it takes several minutes per half.</li>
-              <li><b>Shot times.</b> For each shot it looks at the ball (the positions saved while you tracked, or, where there are none, by finding the ball in the video) and works out the time of the top of its flight. Penalties and free passes are logged at the referee's call, so their time is that of the shot that follows. You can untick any shot you do not want to move.</li></ol>
+            <div class="chkstep"><span class="lbl">Check the shot times against the video</span>
+              <p class="hint"><b>Check times</b> looks at the ball around each shot and works out the exact time of the top of its flight. It uses the ball positions saved while you tracked and, for shots that have none, finds the ball in the video. Penalties and free passes are logged at the referee's call, so their time is that of the shot that follows. It then lists the shots whose logged time is off, with the time they would move to; untick any you do not want to move. Nothing changes until you press <b>Apply changes</b>.</p>
+              <p class="hint">To keep the whole log in step with the video, press the orange <b>Time out start</b> and <b>Time out end</b> buttons whenever the clock is stopped: the video keeps running, and Korf Log adds the time out to the video time.</p>
               <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each when the ball has to be found in the video); otherwise only penalties and free passes</label>
               <div class="row-actions"><button class="btn" id="chkGo" type="button">Check times</button><button class="btn" id="chkApply" type="button" hidden>Apply changes</button></div>
               <div class="prog" id="chkProg" hidden><div class="progbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="progtxt"></div></div>
@@ -1663,7 +1664,7 @@ function renderTiles(m,R){
     return '<button type="button" class="tile ref" data-ref="'+t[0]+'" aria-pressed="'+on+'"'+((can&&!on)?'':' disabled')+'>'+esc(t[1])+'</button>';}).join('')+'</div>';
   var hasSubs=['H','A'].some(function(t){var r=st.ros[t];return r.players.length>0||r.subs.length>0;});
   var dis=(ui.popup||ui.review)?' disabled':'';
-  h+='<div class="tgrp" role="group" aria-label="Match"><button type="button" class="tile ref" data-timeout="start"'+(dis||(toOpen()?' disabled':''))+'>Time out start</button><button type="button" class="tile ref" data-timeout="end"'+(dis||(toOpen()?'':' disabled'))+'>Time out end</button>'+
+  h+='<div class="tgrp" role="group" aria-label="Match"><button type="button" class="tile ref to" data-timeout="start"'+(dis||(toOpen()?' disabled':''))+'>Time out start</button><button type="button" class="tile ref to" data-timeout="end"'+(dis||(toOpen()?'':' disabled'))+'>Time out end</button>'+
     (hasSubs?'<button type="button" class="tile ref" data-subs="1"'+dis+'>Subs</button>':'')+'</div>';
   setHTML($('#tilebar'),h);$('#tilebar').hidden=!h;
 }
@@ -2023,103 +2024,6 @@ function klvOpen(file){
   return new Promise(function(ok,no){var to=setTimeout(function(){URL.revokeObjectURL(u);no(new Error('the browser took too long to open '+file.name));},45000);vid.onloadeddata=function(){clearTimeout(to);ok({vid:vid,url:u});};vid.onerror=function(){clearTimeout(to);URL.revokeObjectURL(u);no(new Error('the browser could not open '+file.name));};});
 }
 function klvClose(v){try{URL.revokeObjectURL(v.url);v.vid.removeAttribute('src');v.vid.load();}catch(e){}}
-/* ----- camera movement: phase correlation of the upper part of the picture (walls and baskets) between neighbouring frames ----- */
-var KFW=256,KFH=64,KFT=null,KFN=KFW*KFH;
-function klvTab(n){var cs=new Float64Array(n/2),sn=new Float64Array(n/2),rev=new Uint16Array(n),i,b=Math.round(Math.log(n)/Math.LN2);
-  for(i=0;i<n/2;i++){cs[i]=Math.cos(2*Math.PI*i/n);sn[i]=Math.sin(2*Math.PI*i/n);}
-  for(i=0;i<n;i++){var r=0;for(var k=0;k<b;k++) if(i&(1<<k)) r|=1<<(b-1-k);rev[i]=r;}
-  return {n:n,cs:cs,sn:sn,rev:rev};}
-function klvFFT(re,im,T,inv){
-  var n=T.n,i,j,t;
-  for(i=0;i<n;i++){j=T.rev[i];if(j>i){t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t;}}
-  for(var len=2;len<=n;len<<=1){var h=len>>1,st=n/len;
-    for(i=0;i<n;i+=len){for(var k=0;k<h;k++){
-      var wr=T.cs[k*st],wi=(inv?1:-1)*T.sn[k*st],a=i+k,b=a+h,xr=re[b]*wr-im[b]*wi,xi=re[b]*wi+im[b]*wr;
-      re[b]=re[a]-xr;im[b]=im[a]-xi;re[a]+=xr;im[a]+=xi;}}}
-}
-function klvFFT2(re,im,inv){
-  if(!KFT) KFT={w:klvTab(KFW),h:klvTab(KFH),hann:null,cr:new Float64Array(KFH),ci:new Float64Array(KFH)};
-  var y,x;
-  for(y=0;y<KFH;y++) klvFFT(re.subarray(y*KFW,(y+1)*KFW),im.subarray(y*KFW,(y+1)*KFW),KFT.w,inv);
-  for(x=0;x<KFW;x++){
-    for(y=0;y<KFH;y++){KFT.cr[y]=re[y*KFW+x];KFT.ci[y]=im[y*KFW+x];}
-    klvFFT(KFT.cr,KFT.ci,KFT.h,inv);
-    for(y=0;y<KFH;y++){re[y*KFW+x]=KFT.cr[y];im[y*KFW+x]=KFT.ci[y];}
-  }
-}
-function klvSpec(vid){
-  if(!KLV.canv){KLV.canv=document.createElement('canvas');KLV.canv.width=KFW;KLV.canv.height=KFH;}
-  var g=KLV.canv.getContext('2d',{willReadFrequently:true});
-  g.drawImage(vid,0,0,vid.videoWidth,Math.round(vid.videoHeight*0.556),0,0,KFW,KFH);
-  var d=g.getImageData(0,0,KFW,KFH).data,re=new Float64Array(KFN),im=new Float64Array(KFN),i,s=0;
-  if(!KFT) klvFFT2(new Float64Array(KFN),new Float64Array(KFN),false);
-  if(!KFT.hann){KFT.hann=new Float64Array(KFN);for(var y=0;y<KFH;y++)for(var x=0;x<KFW;x++) KFT.hann[y*KFW+x]=0.5*(1-Math.cos(2*Math.PI*x/(KFW-1)))*0.5*(1-Math.cos(2*Math.PI*y/(KFH-1)));}
-  for(i=0;i<KFN;i++){re[i]=0.299*d[4*i]+0.587*d[4*i+1]+0.114*d[4*i+2];s+=re[i];}
-  s/=KFN;for(i=0;i<KFN;i++) re[i]=(re[i]-s)*KFT.hann[i];
-  klvFFT2(re,im,false);
-  return {re:re,im:im};
-}
-/* sideways shift of picture B compared with picture A, in pixels of a 1280 wide picture, and how clear the match is (0 to 1) */
-function klvShift(A,B){
-  var cr=new Float64Array(KFN),ci=new Float64Array(KFN),i;
-  for(i=0;i<KFN;i++){var r=A.re[i]*B.re[i]+A.im[i]*B.im[i],q=A.re[i]*B.im[i]-A.im[i]*B.re[i],m=Math.sqrt(r*r+q*q)+1e-9;cr[i]=r/m;ci[i]=q/m;}
-  klvFFT2(cr,ci,true);
-  var best=-1e9,bi=0;for(i=0;i<KFN;i++){cr[i]/=KFN;if(cr[i]>best){best=cr[i];bi=i;}}
-  var px=bi%KFW,py=(bi-px)/KFW,sw=0,sx=0,sy=0;
-  for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++){
-    var xx=(px+dx+KFW)%KFW,yy=(py+dy+KFH)%KFH,w=Math.max(0,cr[yy*KFW+xx]);sw+=w;sx+=w*(px+dx);sy+=w*(py+dy);}
-  var sh=sw>0?sx/sw:px;if(sh>KFW/2) sh-=KFW;
-  return {dx:sh*(1280/KFW),resp:sw};
-}
-/* Cumulative camera pan, one value per second of video from t0, sampled 'fps' times a second. */
-async function klvPan(vid,t0,t1,fps,prog){
-  var n=Math.floor((t1-t0)*fps)+1,cum=0,prev=null,out=[],i,t00=Date.now();
-  for(i=0;i<n&&!KLV.stop;i++){
-    await klvSeek(vid,t0+i/fps);var sp=klvSpec(vid);
-    if(prev){var s=klvShift(prev,sp);if(s.resp>0.05) cum+=s.dx;}
-    prev=sp;
-    if(i%fps===0) out.push(cum);
-    if(i%25===0&&prog) prog(i/n,(Date.now()-t00)/1000);
-  }
-  return out;
-}
-/* ----- aligning the pan with the logged ball positions ----- */
-function klvUnif(x,w){var n=x.length,p=new Float64Array(n+1),i;for(i=0;i<n;i++) p[i+1]=p[i]+x[i];
-  var out=new Float64Array(n),lo=Math.floor(w/2),hi=w-lo;
-  for(i=0;i<n;i++){var a=i-lo,b=i+hi,s=0;
-    // window a..b-1 with the edge value repeated outside the data
-    var ca=Math.max(0,a),cb=Math.min(n,b);s=p[cb]-p[ca];s+=Math.max(0,-a)*x[0]+Math.max(0,b-n)*x[n-1];out[i]=s/w;}
-  return out;}
-function klvGauss(x,sg){var n=x.length,r=Math.ceil(4*sg),k=[],s=0,i,j;for(i=-r;i<=r;i++){var v=Math.exp(-i*i/(2*sg*sg));k.push(v);s+=v;}
-  var out=new Float64Array(n);
-  for(i=0;i<n;i++){var a=0;for(j=-r;j<=r;j++){var q=i+j;if(q<0) q=-q-1;if(q>=n) q=2*n-q-1;q=Math.max(0,Math.min(n-1,q));a+=k[j+r]*x[q];}out[i]=a/s;}
-  return out;}
-function klvHP(x){var u=klvUnif(x,60),o=new Float64Array(x.length);for(var i=0;i<x.length;i++) o[i]=x[i]-u[i];return o;}
-function klvCorr(a,ai,b,bi,w){var ma=0,mb=0,i;for(i=0;i<w;i++){ma+=a[ai+i];mb+=b[bi+i];}ma/=w;mb/=w;
-  var sab=0,saa=0,sbb=0;for(i=0;i<w;i++){var u=a[ai+i]-ma,v=b[bi+i]-mb;sab+=u*v;saa+=u*u;sbb+=v*v;}
-  var d=Math.sqrt(saa*sbb);return d>0?sab/d:0;}
-/* pts: ball positions [{t,x}] with t in seconds from the half start; pan1: cumulative pan per second starting at video time tb; vs: video time of the half start. Returns windows {mid,off,c}: offset in seconds (video ahead of the log) and how well it matches. */
-function klvAlign(pts,pan1,tb,vs){
-  var T=pan1.length,W=90,STEP=30,L0=-60,L1=120,K=L1-L0+1,i,j,k;
-  var ts=pts.map(function(p){return p.t;}),M=Math.max.apply(null,ts)+1;
-  if(M<W+STEP||T<W) return null;
-  var xt=new Float64Array(M),pi=0;
-  for(i=0;i<M;i++){while(pi<pts.length-1&&pts[pi+1].t<=i) pi++;
-    var a=pts[pi],b=pts[Math.min(pi+1,pts.length-1)];
-    if(i<=pts[0].t) xt[i]=pts[0].x;else if(i>=pts[pts.length-1].t) xt[i]=pts[pts.length-1].x;
-    else xt[i]=(b.t===a.t)?a.x:a.x+(b.x-a.x)*(i-a.t)/(b.t-a.t);}
-  var xh=klvGauss(klvHP(xt),2),ph=klvGauss(klvHP(Float64Array.from(pan1)),2);
-  var starts=[];for(i=0;i+W<M;i+=STEP) starts.push(i);
-  var C=starts.map(function(s){var row=new Float64Array(K);
-    for(j=0;j<K;j++){var lo=Math.round(s+vs+L0+j-tb);row[j]=(lo>=0&&lo+W<=T)?Math.abs(klvCorr(xh,s,ph,lo,W)):0;}return row;});
-  var pen=0.004,D=[Float64Array.from(C[0])],Bk=[new Int32Array(K)];
-  for(i=1;i<starts.length;i++){var d=new Float64Array(K),bk=new Int32Array(K);
-    for(j=0;j<K;j++){var bv=-1e18,bj=0;for(k=0;k<=j;k++){var v=D[i-1][k]-pen*(j-k);if(v>bv){bv=v;bj=k;}}d[j]=C[i][j]+bv;bk[j]=bj;}
-    D.push(d);Bk.push(bk);}
-  var last=D[D.length-1],jj=0;for(j=1;j<K;j++) if(last[j]>last[jj]) jj=j;
-  var path=[jj];for(i=starts.length-1;i>0;i--){jj=Bk[i][jj];path.push(jj);}path.reverse();
-  return starts.map(function(s,i){return {mid:s+W/2,off:L0+path[i],c:C[i][path[i]]};});
-}
 function klvOffAt(wins,t){
   var bi=0,i;for(i=1;i<wins.length;i++) if(Math.abs(wins[i].mid-t)<Math.abs(wins[bi].mid-t)) bi=i;
   var near=wins.filter(function(w){return Math.abs(w.mid-t)<=75;});if(!near.length) near=[wins[bi]];
@@ -2140,31 +2044,10 @@ async function klvCheck(){
   if(!halves.length&&!shots.length){klvMsg('Choose the match video file first (Match video, above the pitch).',true);return;}
   KLV.on=true;KLV.stop=false;KLV.res=null;KLV.sug=[];KLV.plan={};klvUi();klvRetimeShow();klvSugShow();
   var failMsg='',opened=new Map(),notes=[],res={},bad={},perHalf={1:{n:0,f:0,s:0},2:{n:0,f:0,s:0}},hn=function(h){return h===1?'1st':'2nd';};
-  var wA=halves.length?0.5:0;
-  klvPStart('chkProg','Step 1 of 2: reading the camera movement');
+  var wA=0;
+  klvPStart('chkProg','Looking at the shots');
   try{
-    /* step 1: the offset of each half (needs the video file and the logged ball positions) */
-    for(var hi=0;hi<halves.length&&!KLV.stop;hi++){
-      var h=halves[hi],base=(h-1)*klvHalfLen(cfg),pts=[];
-      m.events.forEach(function(e){if(e.ot!=null||e.x==null||e.y==null) return;if(klvHalf(cfg,e)!==h) return;var t=e.t-base;if(t>=0) pts.push({t:t,x:e.x});});
-      pts.sort(function(a,b){return a.t-b.t;});
-      if(pts.length<12){res[h]={err:'Not enough ball positions in the '+hn(h)+' half to read its overall offset (need at least 12).'};continue;}
-      var v=opened.get(klvFile(m,h));if(!v){v=await klvOpen(klvFile(m,h));opened.set(klvFile(m,h),v);}
-      var vs=vStartOf(cfg,h),M=pts[pts.length-1].t+1,dur=v.vid.duration||0,tb=Math.max(0,vs-65),te=Math.min(dur-1,vs+M+125);
-      if(te-tb<100){res[h]={err:'The video is too short to read the '+hn(h)+' half\'s overall offset.'};continue;}
-      var pan=await klvPan(v.vid,tb,te,KLV_FPS,function(f,el){klvPSet(wA*(hi+f)/halves.length,'Step 1 of 2: reading the camera movement, '+hn(h)+' half');});
-      if(KLV.stop) break;
-      var wins=klvAlign(pts,pan,tb,vs);
-      res[h]=wins?{wins:wins,base:base}:{err:'Could not read the '+hn(h)+' half\'s overall offset.'};
-    }
-    if(!KLV.stop){
-      KLV.res=res;
-      var any1=[1,2].some(function(k){return res[k]&&res[k].wins;});
-      if(any1){var tot=pl2(m,res);if(tot.low>0.6*tot.n) res.weak=true;}
-      if(any1&&!res.weak) klvPlan(m,res).forEach(function(p){KLV.plan[p.e.id]=p.nt-p.e.t;});
-      klvRetimeShow();
-    }
-    /* step 2: the exact time of each shot */
+    /* the exact time of each shot */
     if(!KLV.stop&&shots.length){
       var jobs=[];
       shots.forEach(function(e){
@@ -2177,7 +2060,7 @@ async function klvCheck(){
       });
       var total=jobs.reduce(function(s2,j){return s2+j.n;},0),frames=0,t0=Date.now();
       if(jobs.length){
-        klvPStart('chkProg','Step 2 of 2: loading the ball finder (20 MB, downloaded once)');klvPSet(wA,'Step 2 of 2: loading the ball finder (20 MB, downloaded once)');
+        klvPStart('chkProg','Loading the ball finder (20 MB, downloaded once)');klvPSet(wA,'Loading the ball finder (20 MB, downloaded once)');
         await klvLoadDet();
         for(var q=0;q<jobs.length&&!KLV.stop;q++){
           var j=jobs[q],h2=j.h,f=klvFile(m,h2),vv=opened.get(f);
@@ -2189,7 +2072,7 @@ async function klvCheck(){
             var t=j.w[0]+i/3;if(t<0||t>vv.vid.duration){frames++;continue;}
             await klvSeek(vv.vid,t);var r=await klvDetect(vv.vid);frames++;
             if(r) pts2.push({t:t,x:r.x,y:r.y});
-            klvPSet(wA+(1-wA)*frames/total,'Step 2 of 2: finding the ball, shot '+(q+1)+' of '+jobs.length);
+            klvPSet(wA+(1-wA)*frames/total,'Finding the ball, shot '+(q+1)+' of '+jobs.length);
           }
           if(KLV.stop) break;
           var ap2=j.pf?klvApex(pts2,j.w[0],j.w[1],0.25,true):klvApex(pts2,j.w[0],j.w[1],0.16,false);
@@ -2316,7 +2199,7 @@ function klvSugShow(){
   if(!KLV.sug){el.innerHTML='';return;}
   var rows=klvSugRows();
   el.innerHTML=rows.length?'<ul class="sglist">'+rows.map(function(r,i){var e=r.e;
-    return '<li><label><input type="checkbox" data-sg="'+esc(e.id)+'"'+(r.tick?' checked':'')+'> <b>'+esc(evClock(e))+'</b> '+esc(e.team==='H'?m.home:m.away)+' '+(e.kind==='penalty'?'penalty':(e.kind==='freepass'?'free pass':'shot'))+(e.shooter?' · '+esc(e.shooter.name):'')+' → <b>'+esc(klvFmt(e.t+r.off+r.d))+'</b> ('+((r.off+r.d)>0?'+':'')+(r.off+r.d)+' s)</label></li>';}).join('')+'</ul>':(KLV.on?'':'<p>No shot needs a different time on top of the overall offset.</p>');
+    return '<li><label><input type="checkbox" data-sg="'+esc(e.id)+'"'+(r.tick?' checked':'')+'> <b>'+esc(evClock(e))+'</b> '+esc(e.team==='H'?m.home:m.away)+' '+(e.kind==='penalty'?'penalty':(e.kind==='freepass'?'free pass':'shot'))+(e.shooter?' · '+esc(e.shooter.name):'')+' → <b>'+esc(klvFmt(e.t+r.off+r.d))+'</b> ('+((r.off+r.d)>0?'+':'')+(r.off+r.d)+' s)</label></li>';}).join('')+'</ul>':(KLV.on?'':'<p>No shot needs a different time.</p>');
 }
 function klvApplyCheck(){
   var m=cur();if(!m) return;
