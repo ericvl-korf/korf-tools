@@ -2139,7 +2139,7 @@ async function klvCheck(){
   var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&(all||isPf(e))&&(e.bt||klvFile(m,klvHalf(cfg,e)));});
   if(!halves.length&&!shots.length){klvMsg('Choose the match video file first (Match video, above the pitch).',true);return;}
   KLV.on=true;KLV.stop=false;KLV.res=null;KLV.sug=[];KLV.plan={};klvUi();klvRetimeShow();klvSugShow();
-  var opened=new Map(),notes=[],res={},bad={},perHalf={1:{n:0,f:0,s:0},2:{n:0,f:0,s:0}},hn=function(h){return h===1?'1st':'2nd';};
+  var failMsg='',opened=new Map(),notes=[],res={},bad={},perHalf={1:{n:0,f:0,s:0},2:{n:0,f:0,s:0}},hn=function(h){return h===1?'1st':'2nd';};
   var wA=halves.length?0.5:0;
   klvPStart('chkProg','Step 1 of 2: reading the camera movement');
   try{
@@ -2149,7 +2149,7 @@ async function klvCheck(){
       m.events.forEach(function(e){if(e.ot!=null||e.x==null||e.y==null) return;if(klvHalf(cfg,e)!==h) return;var t=e.t-base;if(t>=0) pts.push({t:t,x:e.x});});
       pts.sort(function(a,b){return a.t-b.t;});
       if(pts.length<12){res[h]={err:'Not enough ball positions in the '+hn(h)+' half to read its overall offset (need at least 12).'};continue;}
-      var v=await klvOpen(klvFile(m,h));opened.set('pan'+h,v);
+      var v=opened.get(klvFile(m,h));if(!v){v=await klvOpen(klvFile(m,h));opened.set(klvFile(m,h),v);}
       var vs=vStartOf(cfg,h),M=pts[pts.length-1].t+1,dur=v.vid.duration||0,tb=Math.max(0,vs-65),te=Math.min(dur-1,vs+M+125);
       if(te-tb<100){res[h]={err:'The video is too short to read the '+hn(h)+' half\'s overall offset.'};continue;}
       var pan=await klvPan(v.vid,tb,te,KLV_FPS,function(f,el){klvPSet(wA*(hi+f)/halves.length,'Step 1 of 2: reading the camera movement, '+hn(h)+' half');});
@@ -2198,7 +2198,7 @@ async function klvCheck(){
         }
       }
     }
-  }catch(err){klvPEnd('failed','');klvMsg('Could not check the times: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time it is needed.',true);}
+  }catch(err){var em=(err&&err.message)||'something went wrong';failMsg='Could not check the times: '+em+'. The ball finder is downloaded from the internet the first time it is needed.'+(KLV.res?' The overall offset from step 1 is still listed below and can be applied.':'');klvPEnd('failed',em);}
   finally{opened.forEach(klvClose);}
   var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
   var found=KLV.sug.filter(function(x){return x.dt!=null;}).length;
@@ -2206,8 +2206,8 @@ async function klvCheck(){
   var badTxt=[1,2].filter(function(k){return bad[k]!=null;}).map(function(k){return 'The '+hn(k)+' half video is shorter than its start time ('+vFmt(bad[k])+'), so its shots were skipped. Check the '+hn(k)+' half video start time in Match setup (a separate 2nd half video usually starts at 0:00).';}).join(' ');
   var split=[1,2].filter(function(k){return perHalf[k].n;}).map(function(k){return hn(k)+' half: '+perHalf[k].f+' of '+perHalf[k].n;}).join('; ');
   var sumTxt=(shots.length?'Found the top of the shot in '+found+' of '+(KLV.sug.length-KLV.sug.filter(function(x){return x.skipped;}).length)+' shots'+(split?' ('+split+')':'')+'. ':'')+badTxt;
-  klvMsg((stopped?'Stopped. ':'')+sumTxt.trim(),!!badTxt);
-  klvPEnd(stopped?'stopped':(badTxt?'failed':'done'),sumTxt.trim());
+  if(failMsg) klvMsg(failMsg,true);else{klvMsg((stopped?'Stopped. ':'')+sumTxt.trim(),!!badTxt);
+  klvPEnd(stopped?'stopped':(badTxt?'failed':'done'),sumTxt.trim());}
   klvRetimeShow();klvSugShow();klvUi();
 }
 /* the new time for each event under the found offsets */
