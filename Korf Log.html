@@ -2141,6 +2141,8 @@ function klvBase(){
   var raw=window.KORF_BALL_BASE||((/^https?:$/.test(location.protocol)&&/github\.io$/.test(location.hostname))?'ball/':'https://ericvl-korf.github.io/korf-tools/ball/');
   try{return new URL(raw,location.href).href;}catch(e){return raw;}
 }
+/* The graphics chip (WebGPU) path is built but switched off: it made the video stutter while tracking. Set to true to use it again. */
+var KLV_GPU=false;
 function klvScript(src){return new Promise(function(ok,no){var sc=document.createElement('script');sc.src=src;sc.onload=ok;sc.onerror=function(){no(new Error('could not download the ball finder'));};document.head.appendChild(sc);});}
 /* Uses the graphics chip (WebGPU) when the browser has one and it passes a test run, otherwise the processor (WebAssembly). */
 function klvLoadDet(){
@@ -2148,7 +2150,7 @@ function klvLoadDet(){
   if(KLV.det.ortP) return KLV.det.ortP;
   var base=klvBase();
   KLV.det.ortP=(async function(){
-    if(navigator.gpu&&!KLV.det.noGpu){
+    if(KLV_GPU&&navigator.gpu&&!KLV.det.noGpu){
       try{
         await klvScript(base+'ort.webgpu.min.js');
         ort.env.wasm.wasmPaths=base;
@@ -2325,7 +2327,7 @@ var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0,gen:0,cur:null,ski
 function bgPref(){try{return localStorage.getItem('klBg')==='1';}catch(e){return false;}}
 function bgWin(m,e){
   var cfg=m.config,h=klvHalf(cfg,e),r=vTarget(cfg,h,e.t)+toAdd(m,h,e.t),pf=e.kind==='penalty'||e.kind==='freepass';
-  return pf?{h:h,a:Math.max(0,Math.round((r-1)*3)),b:Math.round((r+(e.kind==='penalty'?20:12))*3)}:{h:h,a:Math.max(0,Math.round((r-6)*3)),b:Math.round((r+4)*3)};
+  return pf?{h:h,a:Math.max(0,Math.round((r-1)*3)),b:Math.round((r+(e.kind==='penalty'?20:12))*3)}:{h:h,a:Math.max(0,Math.round((r-4)*3)),b:Math.round((r+4)*3)};
 }
 function bgHas(e,w){
   if(!e.bt) return false;
