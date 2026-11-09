@@ -2021,7 +2021,7 @@ function klvMsg(t,bad){var el=$('#chkMsg');if(!el) return;el.textContent=t||'';e
 function klvSeek(vid,t){return new Promise(function(ok){var done=false,fin=function(){if(done) return;done=true;vid.removeEventListener('seeked',fin);ok();};vid.addEventListener('seeked',fin);vid.currentTime=Math.max(0,t);setTimeout(fin,8000);});}
 function klvOpen(file){
   var u=URL.createObjectURL(file),vid=document.createElement('video');vid.muted=true;vid.preload='auto';vid.playsInline=true;vid.src=u;
-  return new Promise(function(ok,no){vid.onloadeddata=function(){ok({vid:vid,url:u});};vid.onerror=function(){URL.revokeObjectURL(u);no(new Error('the browser could not open '+file.name));};});
+  return new Promise(function(ok,no){var to=setTimeout(function(){URL.revokeObjectURL(u);no(new Error('the browser took too long to open '+file.name));},45000);vid.onloadeddata=function(){clearTimeout(to);ok({vid:vid,url:u});};vid.onerror=function(){clearTimeout(to);URL.revokeObjectURL(u);no(new Error('the browser could not open '+file.name));};});
 }
 function klvClose(v){try{URL.revokeObjectURL(v.url);v.vid.removeAttribute('src');v.vid.load();}catch(e){}}
 /* ----- camera movement: phase correlation of the upper part of the picture (walls and baskets) between neighbouring frames ----- */
@@ -2423,7 +2423,7 @@ function tsApply(){
   KLV.res=KLV.ts.res;klvApplyRetime();KLV.ts.taps={};KLV.ts.res=null;KLV.ts.sig='';$('#tsOut').innerHTML='';tsRender();
 }
 /* ----- finding the ball in the background while you track (video file only): the positions are kept on each shot, so Korf Lab does not have to search ----- */
-var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0};
+var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0,gen:0,cur:null,skip:new Set(),hang:{},badFile:new Set(),skipped:0};
 function bgPref(){try{return localStorage.getItem('klBg')!=='0';}catch(e){return true;}}
 function bgWin(m,e){
   var cfg=m.config,h=klvHalf(cfg,e),r=vTarget(cfg,h,e.t)+toAdd(m,h,e.t),pf=e.kind==='penalty'||e.kind==='freepass';
@@ -2436,23 +2436,25 @@ function bgHas(e,w){
 }
 function bgPending(m){
   var out=[];if(!m||m.sample) return out;
-  m.events.forEach(function(e){if(e.type!=='shot'||e.ot!=null) return;var w=bgWin(m,e);if(!klvFile(m,w.h)||bgHas(e,w)) return;out.push({e:e,w:w});});
+  m.events.forEach(function(e){if(e.type!=='shot'||e.ot!=null||BG.skip.has(e.id)) return;var w=bgWin(m,e);var f=klvFile(m,w.h);if(!f||BG.badFile.has(f)||bgHas(e,w)) return;out.push({e:e,w:w});});
   return out;
 }
 function bgWant(){var m=cur();return bgPref()&&m&&!m.sample&&ui.view==='track'&&!KLV.on&&!document.hidden;}
 async function bgLoop(){
   if(BG.run||!bgWant()||(BG.err&&Date.now()-BG.errAt<60000)) return;
   var m0=cur(),pend=bgPending(m0);if(!pend.length) return;
-  BG.run=true;BG.err='';bgUi();
+  var gen=++BG.gen;BG.run=true;BG.err='';BG.last=Date.now();bgUi();
   try{
     await klvLoadDet();
-    while(bgWant()&&cur()===m0){
+    while(bgWant()&&cur()===m0&&gen===BG.gen){
       var q=bgPending(m0)[0];if(!q) break;
+      BG.cur=q;BG.last=Date.now();
       var file=klvFile(m0,q.w.h),v=BG.vids.get(file);
-      if(!v){v=await klvOpen(file);BG.vids.set(file,v);}
+      if(!v){v=await klvOpen(file);if(gen!==BG.gen){klvClose(v);break;}BG.vids.set(file,v);BG.hang[file.name]=0;}
       var arr=[],ok=true;
       for(var t=q.w.a;t<=q.w.b;t++){
-        if(!bgWant()||cur()!==m0||m0.events.indexOf(q.e)<0){ok=false;break;}
+        if(!bgWant()||cur()!==m0||m0.events.indexOf(q.e)<0||gen!==BG.gen){ok=false;break;}
+        BG.last=Date.now();
         await klvSeek(v.vid,t/3);
         var t0=performance.now(),r=await klvDetect(v.vid);
         arr.push(r?Math.round(r.x*1000)+','+Math.round(r.y*1000):'.');
@@ -2461,8 +2463,20 @@ async function bgLoop(){
       if(!ok) break;
       q.e.bt=q.w.h+'|'+q.w.a+'|'+arr.join(' ');BG.done++;save();bgUi();
     }
-  }catch(err){BG.err=(err&&err.message)||'something went wrong';BG.errAt=Date.now();}
-  finally{BG.run=false;bgUi();}
+  }catch(err){if(gen===BG.gen){BG.err=(err&&err.message)||'something went wrong';BG.errAt=Date.now();}}
+  finally{if(gen===BG.gen){BG.run=false;BG.cur=null;}bgUi();}
+}
+/* if the ball finder stops moving for a minute and a half it is stuck: give up on that shot (or on that video file after two hangs) and carry on with the rest */
+function bgWatchdog(){
+  if(!BG.run||!bgWant()||Date.now()-BG.last<90000) return;
+  var q=BG.cur;BG.gen++;BG.run=false;BG.last=Date.now();
+  if(q){
+    var f=klvFile(cur(),q.w.h),nm=f?f.name:'';
+    BG.skip.add(q.e.id);BG.skipped++;
+    BG.hang[nm]=(BG.hang[nm]||0)+1;
+    if(f&&BG.hang[nm]>=2){BG.badFile.add(f);BG.err='the browser got stuck reading '+nm+' (it may be a format the browser cannot seek in; try a different copy of the video, for example an MP4 with H.264 video). Its shots are skipped';BG.errAt=Date.now();}
+  }
+  BG.cur=null;bgUi();
 }
 function bgUi(){
   var m=cur(),box=$('#bgBox');if(!box) return;
@@ -2474,12 +2488,12 @@ function bgUi(){
   if(!on) t='Off.';
   else if(BG.err) t='Stopped: '+BG.err+'.';
   else if(!shots) t='Starts when you log shots.';
-  else if(!pend) t='Done for all '+shots+' shots.';
-  else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done. Keep this tab open and visible.';
+  else if(!pend) t=BG.skipped?'Done. '+BG.skipped+' of '+shots+' shots were skipped because the video would not read there'+(BG.err?' ('+BG.err+')':'')+'.':'Done for all '+shots+' shots.';
+  else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done'+(BG.skipped?' ('+BG.skipped+' skipped because the video would not read there)':'')+'. Keep this tab open and visible.'+(BG.err&&pend?' Stopped on one video: '+BG.err+'.':'');
   $('#bgNote').textContent=t;
 }
 $('#bgOn').addEventListener('change',function(e){try{localStorage.setItem('klBg',e.target.checked?'1':'0');}catch(x){}bgUi();bgLoop();});
-setInterval(function(){bgUi();bgLoop();},4000);
+setInterval(function(){bgWatchdog();bgUi();bgLoop();},4000);
 /* flag the shots whose logged time is off, from the ball positions saved while tracking (no video needed) */
 function btPts(e){
   if(!e.bt) return null;var q=e.bt.split('|');if(q.length<3) return null;var a=+q[1],tk=q[2].trim().split(' '),pts=[];
