@@ -2170,7 +2170,8 @@ async function klvDetect(vid){
   var g=KDC.getContext('2d',{willReadFrequently:true});g.fillStyle='rgb(114,114,114)';g.fillRect(0,0,960,544);g.drawImage(vid,0,0,dw,dh);
   var d=g.getImageData(0,0,960,544).data,n=960*544,f=new Float32Array(3*n);
   for(var i=0;i<n;i++){f[i]=d[4*i+2];f[n+i]=d[4*i+1];f[2*n+i]=d[4*i];}
-  var out=(await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])})).out,a=out.data,N=out.dims[1],best=null;
+  var res;try{res=await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])});}catch(er){if(!KLV.det.gpu) throw er;KLV.det.gpuErr=(er&&er.message)||'';KLV.det.noGpu=true;KLV.det.gpu=false;KLV.det.sess=null;KLV.det.ortP=null;await klvLoadDet();res=await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])});}
+  var out=res.out,a=out.data,N=out.dims[1],best=null;
   for(var k=0;k<N;k++){var sco=a[6*k+4]*a[6*k+5];if(sco>=0.25&&(!best||sco>best.s)) best={x:a[6*k]/dw,y:a[6*k+1]/dh,s:sco};}
   return best;
 }
