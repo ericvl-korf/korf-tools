@@ -1805,12 +1805,12 @@ function vNorm(t){var n=vParse(t);return n==null?'':vFmt(n);}
 function vCols(cfg){var mt=cfg.meta||{};if(!mt.video&&!mt.video2&&!mt.fn1&&!mt.fn2) return ['','','','',''];return [(mt.split&&mt.video2)?mt.video2:'',vStartOf(cfg,1),vStartOf(cfg,2),mt.fn1||'',mt.split?(mt.fn2||''):''];}
 function halfLenOf(cfg){return cfg.length*30;}
 function halfOfPeriod(cfg,go){return go>cfg.periods/2?2:1;}
-/* video time (s) at which the given half starts: start 1 defaults to 0; start 2 defaults to 0 for a separate video, or straight after the 1st half for one video */
+/* video time (s) at which the given half starts: start 1 defaults to 0; start 2 defaults to 0 for a separate video (a 2nd half YouTube link or video file), or straight after the 1st half for one video */
 function vStartOf(cfg,h){
   var mt=cfg.meta||{},a=vParse(mt.vs1),b=vParse(mt.vs2);
   if(h===1) return a==null?0:a;
   if(b!=null) return b;
-  return (mt.split&&mt.video2)?0:(a==null?0:a)+halfLenOf(cfg);
+  return (mt.split&&(mt.video2||mt.fn2||vfiles[2]))?0:(a==null?0:a)+halfLenOf(cfg);
 }
 function vTarget(cfg,h,t){return Math.max(0,vStartOf(cfg,h)+t-(h-1)*halfLenOf(cfg));}
 function ytParse(s){
