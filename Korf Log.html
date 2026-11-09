@@ -522,7 +522,7 @@ details>summary{transition:color .16s var(--ease)}
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
-            <div class="bgbox" id="bgBox" hidden><label class="chkopt"><input type="checkbox" id="bgOn"> Find the ball while I track (quicker Check times, and ball positions for Korf Lab)</label><span class="note" id="bgNote" role="status"></span></div>
+            <div class="bgbox" id="bgBox" hidden><span class="note" id="bgNote" role="status"></span></div>
             <div class="vidtools"><span class="vsz" title="Make the video bigger; the court gets smaller by the same amount">Video size <button class="btn sm" type="button" data-vz="-1" aria-label="Smaller video">−10%</button><b class="vszVal">100%</b><button class="btn sm" type="button" data-vz="1" aria-label="Bigger video">+10%</button></span><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
@@ -2379,19 +2379,16 @@ function bgWatchdog(){
 function bgUi(){
   var m=cur(),box=$('#bgBox');if(!box) return;
   var has=!!(m&&!m.sample&&(vfiles[1]||vfiles[2]));
-  box.hidden=!has;if(!has) return;
-  var on=bgPref();$('#bgOn').checked=on;
+  var on=bgPref();box.hidden=!(has&&on);if(!has||!on) return;
   var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null;}).length,pend=bgPending(m).length;
   var t='';
-  if(!on) t='Off.';
-  else if(BG.err) t='Stopped: '+BG.err+'.';
+  if(BG.err) t='Stopped: '+BG.err+'.';
   else if(!shots) t='Starts when you log shots.';
   else if(!pend) t=BG.skipped?'Done. '+BG.skipped+' of '+shots+' shots were skipped because the video would not read there'+(BG.err?' ('+BG.err+')':'')+'.':'Done for all '+shots+' shots.';
   else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done'+(BG.skipped?' ('+BG.skipped+' skipped because the video would not read there)':'')+'. Keep this tab open and visible.'+(BG.err&&pend?' Stopped on one video: '+BG.err+'.':'');
-  $('#bgNote').textContent=t;
+  $('#bgNote').textContent='Ball tracking is on (turn it off in Match setup, step 2). '+t;
 }
 function bgSet(on){try{localStorage.setItem('klBg',on?'1':'0');}catch(x){}var a=$('#vdBg');if(a) a.checked=on;bgUi();bgLoop();}
-$('#bgOn').addEventListener('change',function(e){bgSet(e.target.checked);});
 $('#vdBg').addEventListener('change',function(e){bgSet(e.target.checked);});
 setInterval(function(){bgWatchdog();bgUi();bgLoop();},4000);
 /* flag the shots whose logged time is off, from the ball positions saved while tracking (no video needed) */
