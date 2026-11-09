@@ -45,7 +45,7 @@ h2{font-size:1.15rem;font-weight:700;letter-spacing:.06em;text-transform:upperca
 .fixgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
 @media (max-width:640px){.fixgrid{grid-template-columns:minmax(0,1fr)}}
 .fixgrid input{width:100%}
-.vdgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}@media (max-width:640px){.vdgrid{grid-template-columns:minmax(0,1fr)}}.vdgrid input[type=text],.vdgrid input[type=url]{width:100%}.vdsplit{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.92rem}
+.vdbg{margin-top:12px}.vdbg .note{margin:4px 0 0 26px}.vdgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}@media (max-width:640px){.vdgrid{grid-template-columns:minmax(0,1fr)}}.vdgrid input[type=text],.vdgrid input[type=url]{width:100%}.vdsplit{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.92rem}
 .fixgrid input.bad,.vdgrid input.bad{border-color:var(--danger)}
 .vdprev{margin-top:14px;padding:12px;border:1px solid var(--line,#d9dee5);border-radius:12px;background:var(--card-2,rgba(127,127,127,.06))}.vdprev[hidden]{display:none}.vphead{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;margin-bottom:6px}.vdprev .vidframe{margin-top:8px;max-width:560px}.vptools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}.vptime{font-variant-numeric:tabular-nums;font-weight:700;min-width:4.2em}.vpmsg{margin:8px 0 0;font-size:.85rem;color:var(--muted)}.vdprev .vidnote{padding:14px;color:#fff;font-size:.9rem}.vdprev .vidnote a{margin-top:8px;display:inline-block}
 .donate{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem;margin:0 0 6px}.donate a{font-size:.82rem;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:2px}.donate a:hover{text-decoration-thickness:2px}
@@ -522,7 +522,7 @@ details>summary{transition:color .16s var(--ease)}
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
-            <div class="bgbox" id="bgBox" hidden><label class="chkopt"><input type="checkbox" id="bgOn" checked> Find the ball for highlights while you track</label><span class="note" id="bgNote" role="status"></span></div>
+            <div class="bgbox" id="bgBox" hidden><label class="chkopt"><input type="checkbox" id="bgOn"> Find the ball while I track (quicker Check times, and ball positions for Korf Lab)</label><span class="note" id="bgNote" role="status"></span></div>
             <div class="vidtools"><span class="vsz" title="Make the video bigger; the court gets smaller by the same amount">Video size <button class="btn sm" type="button" data-vz="-1" aria-label="Smaller video">−10%</button><b class="vszVal">100%</b><button class="btn sm" type="button" data-vz="1" aria-label="Bigger video">+10%</button></span><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
@@ -636,6 +636,8 @@ details>summary{transition:color .16s var(--ease)}
           <div class="grp f1"><label class="lbl" for="vdF1" id="vdFl1">Or a video file on this computer</label><input id="vdF1" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn1"></p></div>
           <div class="grp f2" id="vdFG2" hidden><label class="lbl" for="vdF2">2nd half video file</label><input id="vdF2" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn2"></p></div>
         </div>
+        <div class="vdbg" id="vdBgBox" hidden><label class="chkopt"><input type="checkbox" id="vdBg"> Find the ball while I track</label>
+          <p class="note">Optional. While you log shots, Korf Log quietly looks through your video file for the ball around each shot and remembers where it was. That makes "Check times" later much quicker, and gives Korf Lab ready-made ball positions for "Crop follows the ball" in highlight reels. It uses your computer for as long as you track, so keep this tab open and visible, and it can slow older computers down a little. Nothing leaves your computer. Leave it off if you only want to track.</p></div>
         <div class="vdprev" id="vdPrev" hidden>
           <div class="vphead"><span class="lbl">Find when the match starts</span>
             <div class="seg" role="group" aria-label="Which half" id="vpHalf"><button type="button" data-vph="1" aria-pressed="true">1st half</button><button type="button" data-vph="2" aria-pressed="false">2nd half</button></div></div>
@@ -2308,7 +2310,7 @@ function tsApply(){
 }
 /* ----- finding the ball in the background while you track (video file only): the positions are kept on each shot, so Korf Lab does not have to search ----- */
 var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0,gen:0,cur:null,skip:new Set(),hang:{},badFile:new Set(),skipped:0};
-function bgPref(){try{return localStorage.getItem('klBg')!=='0';}catch(e){return true;}}
+function bgPref(){try{return localStorage.getItem('klBg')==='1';}catch(e){return false;}}
 function bgWin(m,e){
   var cfg=m.config,h=klvHalf(cfg,e),r=vTarget(cfg,h,e.t)+toAdd(m,h,e.t),pf=e.kind==='penalty'||e.kind==='freepass';
   return {h:h,a:Math.max(0,Math.round((r-9)*3)),b:Math.round((r+(pf?22:6))*3)};
@@ -2376,7 +2378,9 @@ function bgUi(){
   else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done'+(BG.skipped?' ('+BG.skipped+' skipped because the video would not read there)':'')+'. Keep this tab open and visible.'+(BG.err&&pend?' Stopped on one video: '+BG.err+'.':'');
   $('#bgNote').textContent=t;
 }
-$('#bgOn').addEventListener('change',function(e){try{localStorage.setItem('klBg',e.target.checked?'1':'0');}catch(x){}bgUi();bgLoop();});
+function bgSet(on){try{localStorage.setItem('klBg',on?'1':'0');}catch(x){}var a=$('#vdBg');if(a) a.checked=on;bgUi();bgLoop();}
+$('#bgOn').addEventListener('change',function(e){bgSet(e.target.checked);});
+$('#vdBg').addEventListener('change',function(e){bgSet(e.target.checked);});
 setInterval(function(){bgWatchdog();bgUi();bgLoop();},4000);
 /* flag the shots whose logged time is off, from the ball positions saved while tracking (no video needed) */
 function btPts(e){
@@ -3134,8 +3138,9 @@ function syncTeamsUi(){
   qa('[data-vdm]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.vdm===ui.vdMode?'true':'false');});
   var vm=ui.vdMode,body=$('#vdBody'),g=document.querySelector('.vdgrid'),why=$('#vdWhy');
   if(body) body.hidden=!(vm==='yt'||vm==='file');
+  var bb=$('#vdBgBox');if(bb){bb.hidden=vm!=='file';$('#vdBg').checked=bgPref();}
   if(g){g.classList.toggle('m-yt',vm==='yt');g.classList.toggle('m-file',vm==='file');}
-  if(why) why.textContent=vm==='file'?'A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later (it finds how far the logged times drift from the video and suggests better shot times). The file never leaves your computer, and you choose it again each time you open Korf Log.':(vm==='yt'?'The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.':(vm==='none'?'No video. You can add one later from Match setup.':'Choose one of the options above.'));
+  if(why) why.textContent=vm==='file'?'A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later, which suggests better shot times. The file never leaves your computer, and you choose it again each time you open Korf Log.':(vm==='yt'?'The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.':(vm==='none'?'No video. You can add one later from Match setup.':'Choose one of the options above.'));
 }
 function lookHTML(){
   var h='';

@@ -86,7 +86,7 @@ When the match is in two videos, only the half whose video is showing can be tap
 
 ## 6. Ball positions for highlights (video file only)
 
-When the match uses a video file on this computer, Korf Log can find the ball in your video while you track, so Korf Lab's **Crop follows the ball** needs no search later. Under the video you see **Find the ball for highlights while you track** (on by default) and a progress line.
+When the match uses a video file on this computer, Korf Log can find the ball in your video while you track, so Korf Lab's **Crop follows the ball** needs no search later. It is off by default. Switch it on with **Find the ball while I track** in step 2 (Video) of the match setup when you choose a video file; the same tick box and a progress line then appear under the video. It makes Check times much quicker and gives Korf Lab ready-made ball positions, at the cost of your computer working in the background while you track.
 
 - After you log a shot, Korf Log looks for the ball in a hidden copy of the video around that shot (a few seconds before and after it; longer for penalties and free passes) and saves the positions on the shot. It works through the shots at whatever speed your computer allows. Keep the tab open and visible; untick the box to turn it off. The first time it downloads a 20 MB ball finder; nothing of your video is uploaded.
 - The positions travel with the match: they are in the JSON backup and in the CSV (column `ball_track`). Korf Lab uses them when you tick **Crop follows the ball** and only searches the clips that have none.
