@@ -42,10 +42,12 @@ h2{font-size:1.15rem;font-weight:700;letter-spacing:.06em;text-transform:upperca
 .lbl{font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 
 .fixline{margin:3px 0 0;color:var(--muted);font-size:.9rem;font-weight:500}
-.fixgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.fixgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:12px}
+.fixgrid select{width:100%}
+@media (max-width:900px) and (min-width:641px){.fixgrid{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}}
 @media (max-width:640px){.fixgrid{grid-template-columns:minmax(0,1fr)}}
 .fixgrid input{width:100%}
-.vdgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}@media (max-width:640px){.vdgrid{grid-template-columns:minmax(0,1fr)}}.vdgrid input[type=text],.vdgrid input[type=url]{width:100%}.vdsplit{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.92rem}
+.vdbg{margin-top:12px}.vdbg .note{margin:4px 0 0 26px}.vdgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}@media (max-width:640px){.vdgrid{grid-template-columns:minmax(0,1fr)}}.vdgrid input[type=text],.vdgrid input[type=url]{width:100%}.vdsplit{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:.92rem}
 .fixgrid input.bad,.vdgrid input.bad{border-color:var(--danger)}
 .vdprev{margin-top:14px;padding:12px;border:1px solid var(--line,#d9dee5);border-radius:12px;background:var(--card-2,rgba(127,127,127,.06))}.vdprev[hidden]{display:none}.vphead{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;margin-bottom:6px}.vdprev .vidframe{margin-top:8px;max-width:560px}.vptools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}.vptime{font-variant-numeric:tabular-nums;font-weight:700;min-width:4.2em}.vpmsg{margin:8px 0 0;font-size:.85rem;color:var(--muted)}.vdprev .vidnote{padding:14px;color:#fff;font-size:.9rem}.vdprev .vidnote a{margin-top:8px;display:inline-block}
 .donate{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem;margin:0 0 6px}.donate a{font-size:.82rem;font-weight:600;color:var(--accent);text-decoration:underline;text-underline-offset:2px}.donate a:hover{text-decoration-thickness:2px}
@@ -130,6 +132,8 @@ body.max .cspeed{margin-top:0}
 .tile{font:600 .9rem var(--f-body);min-height:44px;padding:.4rem .8rem;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);cursor:pointer;text-align:left}
 .tile:hover{background:var(--surface-2)}
 .tile.ref{border-color:var(--accent)}
+/* Time out buttons stand out: the clock stops for a time out, and the video does not, so pressing them keeps the log in step with the video */
+.tile.to{background:#f5a623;border-color:#b87400;color:#2a1a00;font-weight:700}.tile.to:hover{background:#ffb845}
 .tile[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 .tile[disabled]{opacity:.45;cursor:not-allowed}
 .tile .sub{display:block;font-weight:400;font-size:.75rem;opacity:.85}
@@ -177,6 +181,12 @@ body.max .team input{font-size:1rem}
 body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
 /* Match video under the court. In the maximised view the court gives up a little height so the video fits beneath it. */
 .vidbox{margin:12px auto 0;width:min(100%,max(340px,calc(100vh - 215px)))}
+/* Video size: each +10% makes the video wider and the court smaller by the same height, so the two together stay the same height */
+body{--vz:1}
+body.hasvid:not(.max) .vidbox{width:min(100%,calc(var(--vz)*max(340px,calc(100vh - 215px))))}
+body.hasvid:not(.max) .court-box{width:min(100%,max(200px,calc((1 - .5625*(var(--vz) - 1))*max(340px,calc(100vh - 215px)))))}
+.vsz{display:inline-flex;gap:4px;align-items:center;color:var(--muted,#555);font-size:.85rem}.vsz b{min-width:3.2em;text-align:center;color:var(--fg);font-variant-numeric:tabular-nums}
+.maxvsz{display:none}
 .vidadd{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.vidadd label{font-weight:600;font-size:.85rem;color:var(--muted)}.vidadd input{flex:1 1 14rem;min-width:0}
 .vidmsg{margin:6px 0 0;font-size:.85rem;color:var(--muted)}
 .vidframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000}.vdgrid .vdf{font-size:.85rem}.vdgrid .fnm{margin:2px 0 0;font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}@media (max-width:640px){.vdgrid .l1{order:1}.vdgrid .t1{order:2}.vdgrid .f1{order:3}.vdgrid .l2{order:4}.vdgrid .t2{order:5}.vdgrid .f2{order:6}}.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -184,8 +194,11 @@ body.max .clock{font-size:clamp(1.6rem,4vw,2.1rem)}
 .vidtools a{color:var(--accent,#1f6f5a);font-weight:600}
 .vidnudge{display:inline-flex;gap:4px;align-items:center;color:var(--muted,#555)}.vidtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px;font-size:.85rem}
 body.max .vidbox:not(.has){display:none}
-body.max.hasvid .court-box{width:min(100%,calc(.64*(100vh - 84px)),calc(.64*(100dvh - 84px)))}
-body.max .vidbox.has{grid-column:1;grid-row:2/-1;align-self:end;justify-self:center;margin:0;height:calc(.36*(100vh - 84px));height:calc(.36*(100dvh - 84px));width:auto;aspect-ratio:16/9;max-width:100%}
+body.max.hasvid{--vf:min(calc(.36*var(--vz)),.6)}
+body.max.hasvid .court-box{width:min(100%,calc((1 - var(--vf))*(100vh - 84px)),calc((1 - var(--vf))*(100dvh - 84px)))}
+body.max.hasvid .maxvsz{display:flex;grid-column:2;grid-row:7;align-self:end;justify-content:flex-end;padding:6px 0}
+body.max .svc{display:none}
+body.max .vidbox.has{grid-column:1;grid-row:2/-1;align-self:end;justify-self:center;margin:0;height:calc(var(--vf,.36)*(100vh - 84px));height:calc(var(--vf,.36)*(100dvh - 84px));width:auto;aspect-ratio:16/9;max-width:100%}
 body.max .vidbox.has .vidplay,body.max .vidbox.has .vidframe{height:100%}
 body.max .vidbox.has .vidtools{display:none}
 @media (max-aspect-ratio:1/1){
@@ -194,6 +207,7 @@ body.max .vidbox.has .vidtools{display:none}
   body.max .maxbar,body.max .main>.score,body.max #poss,body.max #tilebar,body.max #restoreBar,body.max #reviewBar,body.max .hintrow{grid-column:1;grid-row:auto}
   body.max .maxbar{order:0}body.max .main>.score{order:1}body.max #poss{order:2}body.max #tilebar{order:3}body.max #restoreBar,body.max #reviewBar{order:4}body.max .lastev{order:5;grid-column:1;grid-row:auto;width:100%}body.max .court-box{order:6;grid-column:1;grid-row:auto;width:min(100%,calc(100dvh - 84px))}body.max .hintrow{order:7}
   body.max.hasvid .court-box{width:min(100%,calc(100dvh - 84px))}
+  body.max.hasvid .maxvsz{display:none}
   body.max .vidbox.has{order:8;grid-column:1;grid-row:auto;height:auto;width:min(100%,calc(100dvh - 84px));margin-top:8px;aspect-ratio:auto}
   body.max .vidbox.has .vidplay,body.max .vidbox.has .vidframe{height:auto}
 }
@@ -242,11 +256,13 @@ table.stats{width:100%;border-collapse:collapse;font-variant-numeric:tabular-num
 #log .empty{padding:.8rem .2rem;color:var(--muted)}
 
 .bgbox{margin:6px 0;font-size:.88rem}.bgbox .chkopt{display:inline-block;margin:0 8px 0 0}.bgbox .note{color:var(--muted)}
+.prog{margin:8px 0}.progbar{height:10px;border-radius:6px;background:var(--line);overflow:hidden}.progbar i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s linear}.progtxt{margin-top:5px;font-size:.88rem;font-variant-numeric:tabular-nums}.prog.done .progtxt{font-weight:700;color:var(--accent)}.prog.stopped .progtxt{font-weight:700}.prog.failed .progtxt{font-weight:700;color:var(--danger)}
+.chkhow{margin:6px 0 8px;padding-left:1.3em}.chkhow li{margin:4px 0}
 .chkstep{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.chkstep:first-of-type{border-top:0;margin-top:6px;padding-top:0}.chkopt{display:block;margin:6px 0;font-size:.9rem}.rtseg,.sglist{margin:6px 0;padding-left:1.1rem;font-size:.9rem}.sglist{list-style:none;padding-left:0;max-height:18rem;overflow:auto}.sglist li{padding:2px 0}#chk .hint{color:var(--muted);font-size:.88rem;margin:4px 0 8px}#chkMsg{margin:8px 0 0;color:var(--muted)}.tslist{list-style:none;margin:6px 0;padding:0;max-height:26rem;overflow:auto}.tslist li{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:.9rem}.tslist li:first-child{border-top:0}.tslist .tsw{flex:1 1 12rem;min-width:0}.tslist .tsv{color:var(--muted);flex:1 1 100%;font-size:.85rem}.tslist li.done .tsw b{color:var(--ok,inherit)}#chkMsg.bad,#chk .bad{color:var(--danger)}
 .startgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media (max-width:640px){.startgrid{grid-template-columns:minmax(0,1fr)}}
 .startopt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);font:500 .95rem var(--f-body);cursor:pointer;min-height:120px}
 .startopt b{font:700 1.4rem var(--f-display);letter-spacing:.04em;text-transform:uppercase}.startopt span{color:var(--muted)}.startopt:hover{border-color:var(--accent);background:var(--surface-2)}.startopt[aria-pressed=true]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-#contList{display:flex;flex-direction:column;gap:6px;margin:6px 0 12px}#contList .btn{text-align:left;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}#contList .btn span{color:var(--muted);font-weight:400;font-size:.85rem}
+#contList{display:flex;flex-direction:column;gap:6px;margin:6px 0 12px}#contList .btn{text-align:left;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}#contList .controw{display:flex;gap:6px;align-items:stretch}#contList .controw>[data-pick]{flex:1;min-width:0}#contList .controw>[data-delsaved]{flex:none;justify-content:center;align-items:center;text-align:center}#contList .btn span{color:var(--muted);font-weight:400;font-size:.85rem}
 .wsteps{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}.wsteps button{font:600 .8rem var(--f-body);padding:.25rem .65rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted);min-height:30px;cursor:pointer}.wsteps button[disabled]{opacity:.5;cursor:default}.wsteps button[aria-current=step]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 #startView{display:flex;flex-direction:column;gap:14px;min-width:0}.issues{scroll-margin-bottom:110px}#vdMode,#plWho{flex-wrap:wrap}#vdMode button,#plWho button{white-space:normal}.warnbox{border-color:var(--warn)}.warnbox .row-actions{margin-top:8px}
 .vdgrid.m-yt .f1,.vdgrid.m-yt .f2,.vdgrid.m-file .l1,.vdgrid.m-file .l2{display:none!important}
@@ -510,13 +526,14 @@ details>summary{transition:color .16s var(--ease)}
           </div>
         </div>
         <div class="hintrow"><span id="hint" aria-live="polite"></span><span id="readout"></span></div>
+        <div class="vsz maxvsz" title="Make the video bigger; the court gets smaller by the same amount"><span>Video size</span> <button class="btn sm" type="button" data-vz="-1" aria-label="Smaller video">−10%</button><b class="vszVal">100%</b><button class="btn sm" type="button" data-vz="1" aria-label="Bigger video">+10%</button></div>
         <div class="vidbox" id="vidBox">
           <div class="vidadd" id="vidAdd"><label for="vidUrl">Match video</label><input id="vidUrl" type="url" inputmode="url" autocomplete="off" placeholder="Paste a YouTube link (optional)"><button class="btn sm" id="vidSet" type="button">Show video</button><label class="btn sm" for="vidFile" style="cursor:pointer">Choose video file</label><input id="vidFile" type="file" accept="video/*" hidden></div>
           <p class="vidmsg" id="vidMsg" role="status" hidden></p>
           <div class="vidplay" id="vidPlay" hidden>
             <div class="vidframe" id="vidFrame"></div>
-            <div class="bgbox" id="bgBox" hidden><label class="chkopt"><input type="checkbox" id="bgOn" checked> Find the ball for highlights while you track</label><span class="note" id="bgNote" role="status"></span></div>
-            <div class="vidtools"><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
+            <div class="bgbox" id="bgBox" hidden><span class="note" id="bgNote" role="status"></span></div>
+            <div class="vidtools"><span class="vsz" title="Make the video bigger; the court gets smaller by the same amount">Video size <button class="btn sm" type="button" data-vz="-1" aria-label="Smaller video">−10%</button><b class="vszVal">100%</b><button class="btn sm" type="button" data-vz="1" aria-label="Bigger video">+10%</button></span><a id="vidLink" href="#" target="_blank" rel="noopener noreferrer">Open on YouTube</a><span class="vidnudge" title="Move the video only, to line it up with the clock">Video <button class="btn sm" id="vidBack" type="button">−1 s</button><button class="btn sm" id="vidFwd" type="button">+1 s</button></span><span class="vidnudge" title="Move the video and the clock together, so they stay lined up">Both <button class="btn sm" id="bothBack" type="button">−1 s</button><button class="btn sm" id="bothFwd" type="button">+1 s</button></span><button class="btn sm" id="vidChange" type="button">Change link</button><button class="btn sm" id="vidHide" type="button">Remove video</button></div>
           </div>
         </div>
       </div>
@@ -554,15 +571,14 @@ details>summary{transition:color .16s var(--ease)}
             <div class="chkfiles"><label class="lbl" for="chkF1" id="chkL1">Video file</label><input type="file" id="chkF1" accept="video/*"><span id="chkN1" class="fnm"></span>
               <label class="lbl" for="chkF2" id="chkL2">2nd half video file</label><input type="file" id="chkF2" accept="video/*"><span id="chkN2" class="fnm"></span></div>
             <p id="chkNeed" class="bad" hidden></p>
-            <div class="chkstep"><span class="lbl">1. Re-time the log</span>
-              <p class="hint">For a log whose times drift from the video. The camera pans with the play, and the logged ball positions move along the court: matching the two over the whole half finds the offset, including steps where the clock was stopped. Reads the whole half (several minutes).</p>
-              <div class="row-actions"><button class="btn" id="rtGo" type="button">Find the video offset</button><button class="btn" id="rtApply" type="button" hidden>Apply re-timing</button></div>
-              <div id="rtOut"></div></div>
-            <div class="chkstep"><span class="lbl">2. Suggest shot times</span>
-              <p class="hint">Finds the ball in the video around each shot and proposes the time of the top of its flight. Penalties and free passes are logged at the referee's call, so their suggestion is the time of the shot that follows. You choose which suggestions to apply.</p>
-              <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each); otherwise only penalties and free passes</label>
-              <div class="row-actions"><button class="btn" id="sgGo" type="button">Look for shot times</button><button class="btn" id="sgSaved" type="button" title="Uses the ball positions Korf Log saved while you tracked. Instant, and needs no video file.">Flag shots that look mistimed</button><button class="btn" id="sgApply" type="button" hidden>Apply ticked times</button></div>
+            <div class="chkstep"><span class="lbl">Check the shot times against the video</span>
+              <p class="hint"><b>Check times</b> looks at the ball around each shot and works out the exact time of the top of its flight. It uses the ball positions saved while you tracked and, for shots that have none, finds the ball in the video. Penalties and free passes are logged at the referee's call, so their time is that of the shot that follows. It then lists the shots whose logged time is off, with the time they would move to; untick any you do not want to move. Nothing changes until you press <b>Apply changes</b>.</p>
+              <p class="hint">To keep the whole log in step with the video, press the orange <b>Time out start</b> and <b>Time out end</b> buttons whenever the clock is stopped: the video keeps running, and Korf Log adds the time out to the video time.</p>
+              <label class="chkopt"><input type="checkbox" id="sgAll"> All shots (about 15 seconds each when the ball has to be found in the video); otherwise only penalties and free passes</label>
+              <div class="row-actions"><button class="btn" id="chkGo" type="button">Check times</button><button class="btn" id="chkApply" type="button" hidden>Apply changes</button></div>
+              <div class="prog" id="chkProg" hidden><div class="progbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><div class="progtxt"></div></div>
               <p class="hint" id="sgSavedNote"></p>
+              <div id="rtOut"></div>
               <div id="sgOut"></div></div>
             </div>
             <p id="chkMsg" role="status"></p>
@@ -606,6 +622,7 @@ details>summary{transition:color .16s var(--ease)}
       <section class="card" aria-label="Fixture" data-wstep="1">
         <div class="card-head"><h2>Fixture</h2><span class="sub">League and date are required</span></div>
         <div class="fixgrid">
+          <div class="grp"><label class="lbl" for="fxCountry">Country</label><select id="fxCountry" aria-label="Country, to shorten the league list"></select></div>
           <div class="grp"><label class="lbl" for="fxLeague">League name *</label><select id="fxLeague" required aria-required="true"></select><input id="fxLeagueOther" type="text" maxlength="60" autocomplete="off" placeholder="Type the league name" aria-label="Other league name" hidden></div>
           <div class="grp"><label class="lbl" for="fxDate">Fixture date *</label><input id="fxDate" type="date" required aria-required="true"></div>
           <div class="grp"><label class="lbl" for="fxWeek">Fixture week <span style="font-weight:500;text-transform:none;letter-spacing:0">(optional)</span></label><input id="fxWeek" type="text" inputmode="numeric" maxlength="2" placeholder="e.g. 5" autocomplete="off"></div>
@@ -630,6 +647,8 @@ details>summary{transition:color .16s var(--ease)}
           <div class="grp f1"><label class="lbl" for="vdF1" id="vdFl1">Or a video file on this computer</label><input id="vdF1" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn1"></p></div>
           <div class="grp f2" id="vdFG2" hidden><label class="lbl" for="vdF2">2nd half video file</label><input id="vdF2" type="file" accept="video/*" class="vdf"><p class="fnm" id="vdFn2"></p></div>
         </div>
+        <div class="vdbg" id="vdBgBox" hidden><label class="chkopt"><input type="checkbox" id="vdBg"> Find the ball while I track</label>
+          <p class="note">Optional. While you log shots, Korf Log quietly looks through your video file for the ball around each shot and remembers where it was. That makes "Check times" later much quicker, and gives Korf Lab ready-made ball positions for "Crop follows the ball" in highlight reels. It uses your computer for as long as you track, so keep this tab open and visible, and it can slow older computers down a little. Nothing leaves your computer. Leave it off if you only want to track.</p></div>
         <div class="vdprev" id="vdPrev" hidden>
           <div class="vphead"><span class="lbl">Find when the match starts</span>
             <div class="seg" role="group" aria-label="Which half" id="vpHalf"><button type="button" data-vph="1" aria-pressed="true">1st half</button><button type="button" data-vph="2" aria-pressed="false">2nd half</button></div></div>
@@ -1597,9 +1616,20 @@ function syncBackupLabel(){var b=$('#backupBtn2');if(b) b.textContent=ui.fmt==='
 
 /* League names, in the order of the England Korfball "Select Competition" page (left to right, top to bottom). */
 var LEAGUES=["National League Premier", "National League North & West Promo", "National League South & East Promo", "London Regional League", "Midlands Regional League", "Northern Regional League", "South East Regional League", "Southern Regional League", "Western Regional League", "Cambridgeshire Korfball League 1", "East Midlands Korfball League 1", "Kent Korfball League", "London Korfball League 2", "Norfolk Korfball League 1", "North East Korfball League", "North West Korfball League 1", "Oxfordshire Korfball League", "South Midlands Korfball League", "South West Korfball League 1", "Southern Counties Korfball League 1", "West Midlands Korfball League", "Yorkshire Korfball League 1", "Cambridgeshire Korfball League 2", "East Midlands Korfball League 2", "London Korfball League 3 (Central)", "London Korfball League 3 (South)", "Norfolk Korfball League 2", "North West Korfball League 2", "South West Korfball League 2 North", "South West Korfball League 2 South", "Southern Counties Korfball League 2", "Yorkshire Korfball League 2", "North West Korfball League 3", "Yorkshire Korfball League 3", "Kent Korfball U13 League", "Kent Korfball U13 Mono League", "Kent Korfball U11 League", "Kent Korfball U9 League"];
-(function(){var sl=document.getElementById('fxLeague');if(!sl) return;sl.innerHTML='<option value="">Select the league…</option>'+LEAGUES.map(function(n){return '<option>'+n.replace(/&/g,'&amp;')+'</option>';}).join('')+'<option value="__other">Other (type a name)…</option>';})();
+/* Leagues per country. England: England Korfball; Netherlands: korfbalinc.nl (top and senior A-category, zaal 2026-27); Belgium: korfbal.be (zaal and veld 2026-27). */
+var LEAGUES_BY={"England":LEAGUES,"Netherlands":["Korfbal League", "Korfbal League 2", "Topklasse dames zaal", "Hoofdklasse dames zaal", "Hoofdklasse zaal A", "Hoofdklasse zaal B", "Overgangsklasse dames zaal A", "Overgangsklasse dames zaal B", "Overgangsklasse zaal A", "Overgangsklasse zaal B", "Overgangsklasse zaal C", "Overgangsklasse zaal D", "1e klasse dames zaal A", "1e klasse dames zaal B", "1e klasse zaal A", "1e klasse zaal B", "1e klasse zaal C", "1e klasse zaal D", "1e klasse zaal E", "1e klasse zaal F", "1e klasse zaal G", "1e klasse zaal H", "2e klasse zaal A", "2e klasse zaal B", "2e klasse zaal C", "2e klasse zaal D", "2e klasse zaal E", "2e klasse zaal F", "2e klasse zaal G", "2e klasse zaal H", "3e klasse zaal A", "3e klasse zaal B", "3e klasse zaal C", "3e klasse zaal D", "3e klasse zaal E", "3e klasse zaal F", "3e klasse zaal G", "3e klasse zaal H", "3e klasse zaal I", "3e klasse zaal J"],"Belgium":["Topleague A (zaal)", "Promoleague A (zaal)", "Hoofdklasse 1 A (zaal)", "Hoofdklasse 2 A (zaal)", "Hoofdklasse 3 A (zaal)", "Overgangsklasse 1 (zaal)", "Topleague B (zaal)", "Promoleague B (zaal)", "Hoofdklasse 1 B (zaal)", "Hoofdklasse 2 B (zaal)", "Hoofdklasse 3 B (zaal)", "Gewestelijke 1A (zaal)", "Gewestelijke 1B (zaal)", "Gewestelijke 1C (zaal)", "Gewestelijke 1D (zaal)", "Gewestelijke 1E (zaal)", "Gewestelijke 1F (zaal)", "U19 Topleague (zaal)", "U19 Promoleague (zaal)", "U19 2A (zaal)", "U17 Topleague (zaal)", "U17 Promoleague (zaal)", "U17 2A (zaal)", "U17 2B (zaal)", "U17 2C (zaal)", "U15 Topleague (zaal)", "U15 Promoleague A (zaal)", "U15 Promoleague B (zaal)", "U15 2A (zaal)", "U15 2B (zaal)", "U15 2C (zaal)", "U15 OZ A (zaal)", "U13 Topleague (zaal)", "U13 Promoleague (zaal)", "U13 2A (zaal)", "U13 2B (zaal)", "U13 2C (zaal)", "U13 OZ A (zaal)", "U13 OZ B (zaal)", "U11 Challenge A1 (zaal)", "U11 Challenge B1 (zaal)", "U11 Challenge C1 (zaal)", "U11 Challenge C2 (zaal)", "U11 Challenge C3 (zaal)", "U11 Challenge D1 (zaal)", "U11 Challenge A1 (veld)", "U11 Challenge A2 (veld)", "U11 Challenge B1 (veld)", "U11 Challenge C1 (veld)", "U11 Challenge C2 (veld)", "U11 Challenge C3 (veld)", "U11 Challenge D1 (veld)", "Topleague A (veld)", "Promoleague A (veld)", "Hoofdklasse 1 A (veld)", "Hoofdklasse 2 A (veld)", "Hoofdklasse 3 A (veld)", "Overgangsklasse 1 (veld)", "Topleague B (veld)", "Promoleague B (veld)", "Hoofdklasse 1 B (veld)", "Hoofdklasse 2 B (veld)", "Hoofdklasse 3 B (veld)", "Gewestelijke 1A (veld)", "Gewestelijke 1B (veld)", "Gewestelijke 1C (veld)", "Gewestelijke 1D (veld)", "Gewestelijke 1E (veld)", "Gewestelijke 1F (veld)", "U19 1A (veld)", "U19 1B (veld)", "U19 2A (veld)", "U17 1A (veld)", "U17 1B (veld)", "U17 1C (veld)", "U17 2A (veld)", "U17 2B (veld)", "U17 2C (veld)", "U15 1A (veld)", "U15 1B (veld)", "U15 1C (veld)", "U15 2A (veld)", "U15 2B (veld)", "U15 2C (veld)", "U15 2D (veld)", "U15 OZ A (veld)", "U13 1A (veld)", "U13 1B (veld)", "U13 2A (veld)", "U13 2B (veld)", "U13 2C (veld)", "U13 2D (veld)", "U13 OZ A (veld)", "U13 OZ B (veld)"]};
+var COUNTRIES=["England","Netherlands","Belgium"],LEAGUE_COUNTRY={};
+COUNTRIES.forEach(function(c){LEAGUES_BY[c].forEach(function(n){LEAGUE_COUNTRY[n]=c;});});
+LEAGUES=LEAGUES_BY.England.concat(LEAGUES_BY.Netherlands,LEAGUES_BY.Belgium);
+function countryPref(){try{var c=localStorage.getItem('klCountry');if(COUNTRIES.indexOf(c)>=0) return c;}catch(e){}return 'England';}
+var leagueCountryShown=null;
+function fillLeagues(c){var sl=document.getElementById('fxLeague');if(!sl) return;if(COUNTRIES.indexOf(c)<0) c='England';leagueCountryShown=c;
+  sl.innerHTML='<option value="">Select the league…</option>'+LEAGUES_BY[c].map(function(n){return '<option>'+n.replace(/&/g,'&amp;')+'</option>';}).join('')+'<option value="__other">Other (type a name)…</option>';}
+(function(){var cs=document.getElementById('fxCountry');if(cs) cs.innerHTML=COUNTRIES.map(function(c){return '<option>'+c+'</option>';}).join('');fillLeagues(countryPref());})();
 /* Team names per league, as listed on the England Korfball League Republic competition pages. */
 var TEAMS={"National League Premier": ["Tornadoes 1", "Bromley 1", "Norwich Knights 1", "Bec 1", "Trojans 1", "Kingfisher 1", "Cambridge Tigers 1", "Nomads 1", "Bristol Thunder 1", "Birmingham City 1"], "National League North & West Promo": ["Cardiff Raptors 1", "Leicester 1", "Manchester Hawks 1", "Sheffield City 1"], "National League South & East Promo": ["Bearsted 1", "Cambridge City 1", "Oxford City 1", "Supernova 1"], "London Regional League": ["Supernova 1", "Bec 2", "Bromley 2", "Trojans 2", "Highbury 1", "Nomads 2", "East London 1", "Croydon 1", "Highbury 2"], "Midlands Regional League": ["Nottingham 1", "Leicester 1", "Nottingham Magic 1", "Birmingham City 2", "University of Loughborough 1", "University of Nottingham 1", "University of Nottingham 2", "Birmingham Panthers 1", "University of Birmingham 1"], "Northern Regional League": ["Leeds Hurricanes 2", "Leeds City 1", "Manchester Hawks 1", "Manchester Warriors 1", "University of Manchester 1", "Sheffield City 1", "Leeds Hurricanes 1", "Manchester Hawks 2", "Manchester KC 1"], "South East Regional League": ["Bearsted 1", "Tornadoes 2", "Kingfisher 2", "Cambridge City 1", "Norwich Knights 2", "Cambridge Tigers 2", "Bearsted 2", "Norfolk Dragons 1"], "Southern Regional League": ["Oxford City 1", "Basingstoke Bulls 1", "Abingdon Atoms 1", "Oxford City 2", "MK Matrix 1", "Guildford Thunder 1", "Oxford City 3", "Basingstoke Bulls 2", "Reading Rooks 1"], "Western Regional League": ["Cardiff Raptors 1", "Exeter City 1", "Bristol Thunder 2", "Cardiff Raptors 2", "Bristol City 1", "Newport Centurions 1", "Bristol Thunder 3", "University of Exeter 1", "Exeter City 2"], "Cambridgeshire Korfball League 1": ["Cambridge City 2", "Cambridge Tigers 3", "Ely Vikings 1", "Cambridge Phoenix 1", "Cambridge Tigers 4", "Cambridge Tigers 5", "Cambridge City 3", "Littleport Lions 1", "Cambridge University 1", "Cambridge City 4"], "East Midlands Korfball League 1": ["Leicester 2", "Nottingham 2", "Nottingham Magic 2", "Nottingham Trent University 1", "University of Loughborough 2", "University of Loughborough 3", "University of Nottingham 3"], "Kent Korfball League": ["Tornadoes Vortex", "K-Kingfisher", "Bearsted Grizzlies", "Bearsted BKC", "Bearsted Suns", "University of Kent 1", "Kingfisher Kookaburras", "Tornadoes Typhoons"], "London Korfball League 2": ["Harrow Vultrix 1", "Bromley 3", "Nomads 3", "Supernova 2", "Croydon 2", "Highbury 3", "Trojans 3", "Supernova 3"], "Norfolk Korfball League 1": ["Norwich Knights 3", "Norfolk Dragons 2", "Norwich City 1", "Norwich Knights 4", "Norwich Knights 5", "UEA 1"], "North East Korfball League": ["Northern Storm 1", "Tyneside Titans 1", "Newcastle University 1", "Newcastle University 3", "Northern Storm 2", "Northern Storm 3", "Newcastle University 2", "Tyneside Titans 2"], "North West Korfball League 1": ["Manchester Warriors 2", "Manchester Hawks 3", "Liver Birds 1", "Lancaster Phoenix 1", "Lancaster University 1", "University of Liverpool 1", "University of Manchester 2", "Manchester Warriors Barbarians", "Manchester KC 2"], "Oxfordshire Korfball League": ["Abingdon Atoms 2", "Abingdon Atoms 3", "Abingdon Atoms 4", "Oxford University 1", "Didcot Dragons 1", "Oxford City 4", "Oxford University 2", "Didcot Dragons 2", "Oxford City 5", "Oxford Isis 1", "Oxford Isis 2"], "South Midlands Korfball League": ["MK Matrix 2", "MK Matrix 3", "UOB Royals 1", "Watford", "MK Lakers 1"], "South West Korfball League 1": ["University of Bath 1", "Bristol Thunder 4", "Taunton Soul 1", "Bristol City 2", "University of Bristol 1", "University of Exeter 2", "Gloucester Lions 1", "Bristol Thunder 5", "Exeter City 3"], "Southern Counties Korfball League 1": ["Basingstoke Bulls 3", "Reading Rooks 2", "Southampton Spartans 1", "Guildford Thunder 3", "Guildford Thunder 2", "Southampton Spartans 2"], "West Midlands Korfball League": ["Leamington 2", "Leamington 1", "Birmingham Panthers 2", "Castle 1", "University of Birmingham 2", "University of Birmingham 3", "University of Birmingham 4", "University of Birmingham 5", "Warwick University 1", "Birmingham City 3"], "Yorkshire Korfball League 1": ["Snakebite 1", "Leeds Hurricanes 3", "Snakebite 2", "Sheffield City 2", "Leeds City 2", "Leeds Hurricanes 4", "Leeds City Owls", "Leeds Beckett 1", "Sheffield University 1"], "Cambridgeshire Korfball League 2": ["Cambridge Phoenix 2", "Cambridge University 2", "Ely Vikings 2", "Ely Vikings 3", "Littleport Lions 2", "Cambridge Phoenix 3", "Cambridge City 5", "Cambridge Tigers 6"], "East Midlands Korfball League 2": ["Leicester 3", "Nottingham 3", "Nottingham Trent University 2", "University of Lincoln 1", "University of Loughborough 4", "University of Nottingham 4", "University of Nottingham 5", "University of Nottingham 6"], "London Korfball League 3 (Central)": ["Bec 3", "Supernova 4", "Highbury 4", "East London 2", "Supernova 6", "Highbury 5"], "London Korfball League 3 (South)": ["Bromley 4", "Bromley 5", "Croydon 4", "Nomads 4", "Croydon 3", "Supernova 5"], "Norfolk Korfball League 2": ["Norwich City 2", "Norfolk Dragons 3", "UEA 2", "Norwich City 3", "Norwich Knights 6", "UEA 3"], "North West Korfball League 2": ["Manchester Hawks Vibes", "Liver Birds 2", "Lancaster Phoenix 2", "Manchester KC Bengals", "Manchester Hawks 4", "Lancaster University 2", "Manchester Warriors 3", "University of Liverpool 2", "University of Manchester 3"], "South West Korfball League 2 North": ["Bristol City 3", "University of Bath 2", "Gloucester Lions 2", "University of Bristol 2"], "South West Korfball League 2 South": ["Taunton Soul 2", "University of Exeter 3", "University of Exeter 4", "Taunton Soul 3"], "Southern Counties Korfball League 2": ["Southampton Spartans 3", "Reading Rooks 3", "Southampton Spartans 4", "Basingstoke Bulls 4", "Southampton University 1", "University of Reading Knights 1", "University Brighton 1", "University Brighton 2"], "Yorkshire Korfball League 2": ["Leeds University 1", "Sheffield City 3", "Leeds City 3", "Sheffield Hallam University 1", "York 1", "Leeds University 2", "Sheffield University 2", "Snakebite 3"], "North West Korfball League 3": ["Lancaster Phoenix 3", "Crewe & Nantwich 1", "Manchester Hawks 5", "Liver Birds 3", "Lancaster University 3", "University of Manchester 4", "Manchester KC 4", "University of Manchester Bees", "University of Liverpool 3", "Manchester Warriors 4"], "Yorkshire Korfball League 3": ["Sheffield Hallam University 3", "Sheffield Hallam University 2", "Leeds City 4", "Leeds University 3", "Sheffield University 3", "Sheffield University 4", "Leeds Beckett University 2", "Sheffield City 4"], "Kent Korfball U13 League": ["Kingfisher 1 U13", "KV U13", "Bearsted U13", "Kingfisher Falcons U13"], "Kent Korfball U13 Mono League": ["Kingfisher Falcons U13", "Bearsted U13", "KV U13", "Kingfisher 1 U13", "Tornadoes U13"], "Kent Korfball U11 League": ["Bearsted 1 U11", "Kingfisher 1 U11", "Tornadoes 1 U11", "Tornadoes Cyclones U11", "KV U11", "KV Knights U11", "Bearsted Rams U11", "Kingfisher Eagles U11"], "Kent Korfball U9 League": ["Bearsted U9", "KV U9", "Kingfisher U9", "Tornadoes U9"]};
+/* Dutch and Belgian team names, from korfbalinc.nl and korfbal.be (November 2026). */
+(function(x){for(var k in x) TEAMS[k]=x[k];})({"Korfbal League": ["Fortuna", "PKC", "KZ", "TOP Sassenheim", "DVO", "DOS '46", "LDODK", "DeetosSnel", "Dalto", "Unitas"], "Korfbal League 2": ["Wageningen", "Blauw-Wit", "HKC", "GG", "DSC", "Mid-Fryslân", "AWDTV", "Die Haghe", "Spirit", "KCC"], "Topklasse dames zaal": ["VIOS", "Velox Nuland", "De Korfrakkers", "Melderslo", "De Peelkorf", "Rosolo", "DAKOS", "DDW"], "Hoofdklasse dames zaal": ["Altior", "Rooi", "Bladella", "ONA", "Prinses Irene", "DAW Schaijk", "Oranje Wit", "SVO"], "Hoofdklasse zaal A": ["KVA", "AVO", "De Meeuwen", "Nic.", "Dindoa", "OVVO", "Fiks", "KIOS (Ruinerwold)"], "Hoofdklasse zaal B": ["KVS", "Valto", "Nieuwerkerk", "GKV (Gorinchem)", "Oost-Arnhem", "Albatros", "Achilles (Den Haag)", "TOP (Arnemuiden)"], "Overgangsklasse dames zaal A": ["Swift", "KVC", "VMS '21", "Millingen", "DOT", "VDS '25", "Klimop", "KVS '17 Dames"], "Overgangsklasse dames zaal B": ["Sportclub Loosbroek", "DES", "SVOC '01", "Nijnsel", "Oxalis", "MKV", "Merselo", "Stormvogels"], "Overgangsklasse zaal A": ["CSL", "Wit-Blauw", "Ritola", "Noordenveld", "Heerenveen", "WKS", "Sparta", "OKO"], "Overgangsklasse zaal B": ["Amicitia", "Synergo", "Antilopen", "Apeldoorn", "NKC '51", "SKF", "DOT", "NRC '22"], "Overgangsklasse zaal C": ["Avanti", "Tempo", "KVZ '23", "Rohda", "ONDO", "Maassluis", "Pernix", "VEO"], "Overgangsklasse zaal D": ["Swift", "Sporting Delta", "Fortis", "Oranje Wit", "Vitesse", "Tilburg", "Kinderdijk", "DES"], "1e klasse dames zaal A": ["Sportiva", "Flash", "Vessem", "DSV", "Arcades", "Spoordonkse Girls", "Tovido", "Tuldania"], "1e klasse dames zaal B": ["Heumen", "Diosa", "De Horst", "SCMH", "BMC", "JES", "Vesta '19"], "1e klasse zaal A": ["Kinea", "Rood-Wit", "Flamingo's", "ASVD", "Drachten", "De Wâlden", "ROG", "Harich"], "1e klasse zaal B": ["ZKC '19", "DOS Kampen", "De Granaet", "De Parabool", "Hoogkerk", "KVW '22", "De Pein", "Wêz Handich"], "1e klasse zaal C": ["Juventa", "Telstar", "KVZ", "Reehorst '45", "Sparta", "DOS-WK", "Exakwa", "Devinco"], "1e klasse zaal D": ["Victum", "Viking", "Woudenberg", "Tiel '72", "SDO", "Nijmegen", "Animo", "Rust Roest"], "1e klasse zaal E": ["BEP", "KIOS", "KZ Danaïden", "Haarlem", "Swift", "Tweemaal Zes", "De Vinken", "Velocitas"], "1e klasse zaal F": ["SDO", "Excelsior", "Refleks", "Atlantis", "De Meervogels", "Fiducia", "Sporting Trigon", "ALO"], "1e klasse zaal G": ["HKV", "Korbis", "ACKC", "Trekvogels", "Vriendenschaar", "RWA", "Weidevogels", "NIO"], "1e klasse zaal H": ["KOAG", "KCR", "Merwede", "Juliana", "Tjoba", "Atlas", "ONDO", "TOGO"], "2e klasse zaal A": ["Sparta", "HHV", "DTL", "Pallas '08", "MN en W", "Joure", "Spannum", "Leeuwarden"], "2e klasse zaal B": ["IFC '25", "Lintjo", "Thrianta", "Stadskanaal '74", "It Fean", "WWC", "VDDO", "Quick '21"], "2e klasse zaal C": ["Elburg", "AKC", "Elko", "Blauw Zwart", "Hellas '63", "HKC", "SDO", "Zwart Wit"], "2e klasse zaal D": ["HKC", "DWS", "ODIK", "Duko", "PSV", "Zwaluwen", "Kesteren", "Arena"], "2e klasse zaal E": ["MIA", "Sporting West", "Roda", "Nova", "Revival", "Fortissimo", "OKV", "Wolderwijd"], "2e klasse zaal F": ["DKV Victoria", "Fluks", "Apollo", "EKVA", "HBC", "Phoenix", "Sporting Badhoevedorp", "Madjoe"], "2e klasse zaal G": ["Movado", "DVS '69", "IJsselvogels", "ODO", "Good Luck", "Erasmus", "Triade", "Korbatjo"], "2e klasse zaal H": ["Vriendenschaar", "DSO", "Blauw Wit", "OZC", "Reeuwijk", "ADO", "Zuid '27", "Zaamslag"], "3e klasse zaal A": ["Olympia", "DTG", "Lemmer", "Westergo", "In Fundo", "Deinum", "De Waterpoort", "WIK '34"], "3e klasse zaal B": ["DWA", "DTS", "Wees Kwiek", "WSS", "Vitesse", "Noveas", "Wordt Kwiek", "Oerterp"], "3e klasse zaal C": ["Oranje Zwart", "TOP", "Regio '72", "Olympia '22", "Centrum", "SDO", "Roreko", "EKC 2000"], "3e klasse zaal D": ["EKCA", "Rivalen", "Rheko", "KCD", "SkunK", "DKOD", "SEV", "Hemur Enge"], "3e klasse zaal E": ["Luno", "Thor", "Huizen", "RDZ", "Hebbes", "DOS", "ESDO", "Koveni"], "3e klasse zaal F": ["DTS", "Furore", "ADOS", "Helios", "Stormvogels", "De Corvers", "DSO", "Kleine Sluis"], "3e klasse zaal G": ["Dijkvogels", "Dunas", "VZOD", "GKV", "Aurora", "Oosterkwartier", "Rapid", "Paal Centraal"], "3e klasse zaal H": ["DKB", "NKV", "OJC '98", "OEC", "Ready '60", "Attila", "VIKO", "KVS '17"], "3e klasse zaal I": ["Twist", "Gemini", "'t Capproen", "Nexus", "Conventus", "WION", "Ventura Sport", "Olympia"], "3e klasse zaal J": ["Seolto", "Keep Fit '70", "KVK", "Oranje Zwart", "Scheldevogels", "Luctor", "SKV", "Focus"], "Topleague A (zaal)": ["AKC/LUMA A", "BOECKENBERG A", "BORGERHOUT/GW A", "FLORIANT A", "KWIK A", "MEEUWEN A", "TEMSE A", "VOORWAARTS A"], "Promoleague A (zaal)": ["BLAUW WIT A", "GANDA A", "LEUVEN 1 A", "MINERVA A", "PUTSE 1 A", "SIKOPI/CHASE A", "SPARTACUS/NDN/RI4A A", "VOBAKO 1 A"], "Hoofdklasse 1 A (zaal)": ["AGO AALST 1 A", "ASKC A", "BGW NEXT A", "CATBA A", "EDEGEM/VOORWAARTS A", "KCBJ A", "RIJKO 1 A", "VERDE A"], "Hoofdklasse 2 A (zaal)": ["HMKC A", "HOEVENEN A", "NEERLANDIA A", "PAARS WIT A", "PUTSE 2 A", "SCALDIS A", "VOBAKO 2 A"], "Hoofdklasse 3 A (zaal)": ["APPELS 1 A", "ATBS A", "BOOMSE A", "JONG FLORIANT A", "KCOV A", "LEUVEN 2 A", "RIJKO 2 A"], "Overgangsklasse 1 (zaal)": ["AGO AALST 2 A", "APPELS 2 A", "BOECHOUT/VREMDE A", "BORNEM A", "JOKI A", "NEERLANDIA 3", "RKC A"], "Topleague B (zaal)": ["AKC/LUMA B", "BOECKENBERG B", "BORGERHOUT/GW B", "FLORIANT B", "KWIK B", "MEEUWEN B", "TEMSE B", "VOORWAARTS B"], "Promoleague B (zaal)": ["BLAUW WIT B", "GANDA B", "LEUVEN 1 B", "MINERVA B", "PUTSE 1 B", "SIKOPI/CHASE B", "SPARTACUS/NDN/RI4A B", "VOBAKO 1 B"], "Hoofdklasse 1 B (zaal)": ["AGO AALST 1 B", "ASKC B", "BGW NEXT B", "CATBA B", "EDEGEM/VOORWAARTS B", "KCBJ B", "RIJKO 1 B", "VERDE B"], "Hoofdklasse 2 B (zaal)": ["HMKC B", "HOEVENEN B", "NEERLANDIA B", "PAARS WIT B", "PUTSE 2 B", "SCALDIS B", "VOBAKO 2 B"], "Hoofdklasse 3 B (zaal)": ["APPELS 1 B", "ATBS B", "BOOMSE B", "JONG FLORIANT B", "KCOV B", "LEUVEN 2 B", "RIJKO 2 B"], "Gewestelijke 1A (zaal)": ["AKC/LUMA C", "BOECKENBERG 2", "KWIK 2", "MEEUWEN 2", "SPARTACUS/NDN/RI4A 2", "TEMSE 2"], "Gewestelijke 1B (zaal)": ["AKC/LUMA 2", "ASKC 2", "EDEGEM/VOORWAARTS 2", "KWIK 3", "PUTSE 3", "SPARTACUS/NDN/RI4A 2C", "VERDE 2", "VOBAKO 3"], "Gewestelijke 1C (zaal)": ["BLAUW WIT 2", "CATBA 2", "FLORIANT 2", "HMKC 2", "MINERVA 2", "RIJKO 3", "SCALDIS 2", "SIKOPI/CHASE 2"], "Gewestelijke 1D (zaal)": ["ASKC 3", "CATBA 3", "HMKC 3", "JOKI 2", "PUTSE 4", "SIKOPI/CHASE 3", "SPARTACUS/NDN 4"], "Gewestelijke 1E (zaal)": ["APPELS 3", "ASKC 4", "ATBS 2", "BORGERHOUT/GW 2", "KCBJ 2", "O.ANDERLECHT A"], "Gewestelijke 1F (zaal)": ["ATBS 3", "GANDA 2", "MINERVA 3", "SPARTACUS/NDN/RI4A 5", "VOBAKO 4", "VOSKO A"], "U19 Topleague (zaal)": ["AKC/LUMA U19 A", "ASKC U19 A", "BOECKENBERG U19 A", "LEUVEN U19 A", "SPARTACUS/NDN U19 A", "TEMSE U19 A", "VOBAKO U19 A", "VOORWAARTS U19 A"], "U19 Promoleague (zaal)": ["BORGERHOUT/GW U19 A", "GANDA U19 A", "HOEVENEN U19 A", "PUTSE U19 A", "RIJKO U19 A", "SCALDIS/MINERVA U19 A", "SPARTACUS/NDN U19 B"], "U19 2A (zaal)": ["ASKC U19 B", "LEUVEN U19 B", "PUTSE U19 B", "RIJKO U19 B", "SCALDIS/MINERVA U19 B", "VOBAKO U19 B"], "U17 Topleague (zaal)": ["BOECKENBERG/HMKC U17 A", "FLORIANT U17 A", "KCBJ U17 A", "PUTSE U17 A", "RIJKO U17 A", "SPARTACUS/NDN U17 A", "VOBAKO U17 A", "VOORWAARTS U17 A"], "U17 Promoleague (zaal)": ["ASKC U17 A", "LEUVEN U17 A", "MINERVA/SCALDIS U17 A", "NEERLANDIA U17 A", "TEMSE U17 A", "VOBAKO U17 B", "AKC/LUMA U17 A", "BORGERHOUT/GW U17 A"], "U17 2A (zaal)": ["APPELS U17 A", "GANDA U17 A", "HMKC/BOECKENBERG U17 A", "HOEVENEN U17 A", "RIJKO U17 B", "VOORWAARTS U17 B", "VOSKO U17 A OZ"], "U17 2B (zaal)": ["ASKC U17 B", "FLORIANT U17 B", "KAPELLEN/LIMES U17 A OZ", "MINERVA/SCALDIS U17 B", "SPARTACUS/NDN U17 B", "TEMSE U17 B", "VERDE U17 A"], "U17 2C (zaal)": ["AGO AALST U17 A", "BORNEM U17 A OZ", "CATBA U17 A", "HOEVENEN U17 B OZ", "KCBJ U17 B", "RKC U17 A", "VOBAKO U17 C"], "U15 Topleague (zaal)": ["AKC/LUMA U15 A", "BORGERHOUT/GW U15 A", "HMKC U15 A", "LEUVEN U15 A", "NEERLANDIA U15 A", "TEMSE U15 A", "VOBAKO U15 A", "VOORWAARTS U15 A"], "U15 Promoleague A (zaal)": ["BOECKENBERG U15 A", "FLORIANT U15 A", "HOEVENEN U15 A", "KCBJ U15 A", "PUTSE U15 A", "SPARTACUS/NDN U15 A", "AKC/LUMA U15 B", "BORGERHOUT/GW U15 B"], "U15 Promoleague B (zaal)": ["AGO AALST U15 A", "APPELS U15 A", "ASKC U15 A", "FLORIANT U15 B", "HMKC U15 B", "LEUVEN U15 B", "VERDE U15 A", "VOBAKO U15 B"], "U15 2A (zaal)": ["BORGERHOUT/GW U15 C", "BOECKENBERG U15 B", "RIJKO U15 A", "SIKOPI/CHASE U15 A", "SPARTA RANST U15 A", "VOORWAARTS U15 B"], "U15 2B (zaal)": ["ASKC U15 B", "HOEVENEN U15 B", "KCBJ U15 B", "NEERLANDIA U15 B", "SPARTACUS/NDN U15 B", "TEMSE U15 B"], "U15 2C (zaal)": ["ATBS U15 A", "BOOMSE U15 A", "KCOV U15 A OZ", "MINERVA U15 A", "NEERLANDIA U15 C OZ", "RIJKO U15 B", "VOBAKO U15 C"], "U15 OZ A (zaal)": ["AGO AALST U15 B", "BOECHOUT/VREMDE U15 A", "JOKI U15 A", "KAPELLEN/LIMES U15 A", "KWIK U15 A", "O.ANDERLECHT U15 A", "PUTSE U15 B", "SIKOPI/CHASE U15 B"], "U13 Topleague (zaal)": ["AKC/LUMA U13 A", "ASKC U13 A", "BOECKENBERG U13 A", "LEUVEN U13 A", "SIKOPI/CHASE U13 A", "TEMSE U13 A", "VOBAKO U13 A", "VOORWAARTS U13 A"], "U13 Promoleague (zaal)": ["FLORIANT U13 A", "GANDA U13 A", "KCBJ U13 A", "NEERLANDIA U13 A", "RIJKO U13 A", "SPARTACUS/NDN U13 A", "VERDE U13 A", "VOSKO U13 A"], "U13 2A (zaal)": ["AKC/LUMA U13 B", "ATBS U13 A", "BOECKENBERG U13 B", "HMKC U13 A", "HOEVENEN U13 A", "NEERLANDIA U13 B", "VERDE/SCALDIS U13 B", "VOBAKO U13 B"], "U13 2B (zaal)": ["APPELS U13 A", "BORGERHOUT/GW U13 A", "FLORIANT U13 B", "GANDA U13 B", "KCOV U13 A", "LEUVEN U13 B", "MINERVA U13 A", "TEMSE U13 B"], "U13 2C (zaal)": ["ASKC U13 B", "CATBA U13 A", "HOEVENEN U13 B", "KWIK U13 A", "SIKOPI/CHASE U13 B", "SPARTA RANST U13 A", "VOORWAARTS U13 B"], "U13 OZ A (zaal)": ["AGO AALST U13 A", "KAPELLEN/LIMES U13 A", "MINERVA U13 B", "O.ANDERLECHT U13 A", "RIJKO U13 B", "BOECKENBERG U13 C"], "U13 OZ B (zaal)": ["ATBS U13 B", "BORNEM U13 A", "RKC U13 A", "SPARTACUS/NDN U13 B", "VOBAKO U13 C", "VOSKO U13 B"], "U11 Challenge A1 (zaal)": ["AKC/LUMA ROOD U11", "BOECKENBERG U11 A", "BORGERHOUT/GW ROOD U11", "NEERLANDIA U11 A", "PUTSE GEEL U11", "RIJKO WIT U11", "SIKOPI/CHASE ROOD U11", "TEMSE U11 A"], "U11 Challenge B1 (zaal)": ["APPELS U11 A", "ASKC ROOD U11", "ATBS U11 A", "FLORIANT BLAUW U11", "LEUVEN GROEN U11", "RIJKO BLAUW U11", "VERDE U11 A", "VOBAKO ORANJE U11"], "U11 Challenge C1 (zaal)": ["ASKC BLAUW U11", "GANDA BLAUW U11", "HMKC U11 A", "KCBJ U11 A", "SIKOPI/CHASE BLAUW U11", "SPARTACUS/NDN U11 A", "TEMSE U11 B", "VOORWAARTS GROEN U11"], "U11 Challenge C2 (zaal)": ["BOECKENBERG U11 B", "FLORIANT GEEL U11", "JOKI U11 A", "KCOV U11 A", "KWIK U11 A", "MINERVA U11 A", "NEERLANDIA U11 B", "VOORWAARTS WIT U11 OZ"], "U11 Challenge C3 (zaal)": ["APPELS U11 B OZ", "BORGERHOUT/GW WIT U11", "CATBA U11 A", "GANDA WIT U11", "HOEVENEN GEEL U11", "LEUVEN ZWART U11", "RIJKO RICO U11"], "U11 Challenge D1 (zaal)": ["ATBS U11 B oz", "BOECHOUT/VREMDE U11 A", "GANDA PANDA U11", "MINERVA U11 B oz", "PUTSE BLAUW U11", "VOBAKO ZWART U11", "VOSKO U11 A", "AKC/LUMA WIT U11 OZ"], "U11 Challenge A1 (veld)": ["ASKC ROOD U11", "ATBS U11 A", "BORGERHOUT/GW ROOD U11", "NEERLANDIA U11 A", "RIJKO WIT U11", "SIKOPI/CHASE ROOD U11", "AKC/LUMA ROOD U11"], "U11 Challenge A2 (veld)": ["RIJKO BLAUW U11", "TEMSE U11 A", "PUTSE GEEL U11", "LEUVEN GROEN U11", "BOECKENBERG U11 A", "VERDE U11 A"], "U11 Challenge B1 (veld)": ["APPELS U11 A", "FLORIANT BLAUW U11", "GANDA U11 BLAUW", "JOKI U11 A", "TEMSE U11 B", "VOBAKO ORANJE U11"], "U11 Challenge C1 (veld)": ["NEERLANDIA U11 B", "GANDA WIT U11", "VOORWAARTS GROEN U11", "BOECKENBERG U11 B", "CATBA U11 A", "FLORIANT GEEL U11"], "U11 Challenge C2 (veld)": ["BORGERHOUT/GW WIT U11", "HMKC U11 A", "HOEVENEN GEEL U11", "KWIK U11 A", "MINERVA U11 A", "SIKOPI/CHASE U11 BLAUW"], "U11 Challenge C3 (veld)": ["LEUVEN ZWART U11", "RIJKO RICO U11", "KCOV U11 A", "KCBJ U11 A", "ASKC BLAUW U11", "SPARTACUS/NDN U11 A"], "U11 Challenge D1 (veld)": ["APPELS U11 B", "BOECHOUT/VREMDE U11 A", "KAPELLEN U11 A", "PUTSE BLAUW U11", "VOBAKO ZWART U11", "VOORWAARTS WIT U11", "VOSKO U11 A"], "Topleague A (veld)": ["BOECKENBERG A", "FLORIANT A", "KWIK A", "MEEUWEN A", "PUTSE 1 A", "TEMSE A", "VOORWAARTS A", "AKC/LUMA A"], "Promoleague A (veld)": ["BLAUW WIT A", "BORGERHOUT/GW A", "GANDA A", "LEUVEN 1 A", "MINERVA A", "SIKOPI/CHASE A", "SPARTACUS/NDN/RI4A A", "VOBAKO 1 A"], "Hoofdklasse 1 A (veld)": ["ASKC A", "CATBA A", "EDEGEM/VOORWAARTS A", "KCBJ A", "NEERLANDIA 1 A", "RIJKO 1 A", "SCALDIS A", "VERDE A"], "Hoofdklasse 2 A (veld)": ["AGO AALST 1 A", "BGW NEXT A", "HMKC A", "HOEVENEN A", "LEUVEN 2 A", "PAARS WIT 1 A", "PUTSE 2 A", "VOBAKO 2 A"], "Hoofdklasse 3 A (veld)": ["APPELS 1 A", "ATBS A", "BOOMSE A", "JONG FLORIANT A", "KCOV A", "RIJKO 2 A"], "Overgangsklasse 1 (veld)": ["AGO AALST 2 A", "APPELS 2 A", "BOECHOUT/VREMDE A", "BORNEM A", "JOKI A", "RKC A"], "Topleague B (veld)": ["AKC/LUMA B", "BOECKENBERG B", "FLORIANT B", "KWIK B", "MEEUWEN B", "PUTSE 1 B", "TEMSE B", "VOORWAARTS B"], "Promoleague B (veld)": ["BLAUW WIT B", "BORGERHOUT/GW B", "GANDA B", "LEUVEN 1 B", "MINERVA B", "SIKOPI/CHASE B", "SPARTACUS/NDN/RI4A B", "VOBAKO 1 B"], "Hoofdklasse 1 B (veld)": ["ASKC B", "CATBA B", "EDEGEM/VOORWAARTS B", "KCBJ B", "NEERLANDIA 1 B", "RIJKO 1 B", "SCALDIS B", "VERDE B"], "Hoofdklasse 2 B (veld)": ["AGO AALST 1 B", "BGW NEXT B", "HMKC B", "HOEVENEN B", "LEUVEN 2 B", "PAARS WIT 1 B", "PUTSE 2 B", "VOBAKO 2 B"], "Hoofdklasse 3 B (veld)": ["APPELS 1 B", "ATBS B", "BOOMSE B", "JONG FLORIANT B", "KCOV B", "RIJKO 2 B"], "Gewestelijke 1A (veld)": ["AKC/LUMA C", "BOECKENBERG 2", "KWIK 2", "MEEUWEN 2", "SIKOPI/CHASE 2", "SPARTACUS/NDN/RI4A 2", "TEMSE 2"], "Gewestelijke 1B (veld)": ["AKC/LUMA 2", "ASKC 2", "FLORIANT 2", "HMKC 2", "MINERVA 2", "PUTSE 3", "RIJKO 3", "SPARTACUS/NDN/RI4A 2C"], "Gewestelijke 1C (veld)": ["ASKC 3", "ATBS 2", "BLAUW WIT 2", "CATBA 2", "EDEGEM/VOORWAARTS 2", "SCALDIS 2", "VERDE 2", "VOBAKO 3"], "Gewestelijke 1D (veld)": ["APPELS 3", "CATBA 3", "HMKC 3", "KCBJ 2", "KWIK 3", "O.ANDERLECHT A", "PUTSE 4", "SPARTACUS/NDN 4"], "Gewestelijke 1E (veld)": ["ASKC 4", "ATBS 3", "BORGERHOUT/GW 2", "JOKI 2", "SIKOPI/CHASE 3", "SPARTACUS/NDN/RI4A 5"], "Gewestelijke 1F (veld)": ["BOECHOUT/VREMDE 2", "GANDA 2", "HMKC 4", "HOEVENEN 2", "MINERVA 3", "NEERLANDIA 3", "VOSKO A"], "U19 1A (veld)": ["BORGERHOUT/GW U19 A", "LEUVEN U19 A", "PUTSE U19 A", "SPARTACUS/NDN U19 A", "TEMSE U19 B", "VOORWAARTS U19 A", "BOECKENBERG U19 A"], "U19 1B (veld)": ["GANDA U19 A", "VOBAKO U19 A", "TEMSE U19 A", "SPARTACUS/NDN U19 B", "RIJKO U19 A", "ASKC U19 A", "AKC/LUMA U19 A", "SCALDIS/MINERVA U19 A"], "U19 2A (veld)": ["VOBAKO U19 B", "ASKC U19 B", "HOEVENEN U19 A", "LEUVEN U19 B", "PUTSE U19 B", "RIJKO U19 B", "SCALDIS/MINERVA U19 B"], "U17 1A (veld)": ["BORGERHOUT/GW U17 A", "FLORIANT U17 A", "HOEVENEN U17 A", "LEUVEN U17 A", "SPARTACUS/NDN U17 A", "TEMSE U17 A", "VOBAKO U17 A"], "U17 1B (veld)": ["AKC/LUMA U17 A", "VOORWAARTS U17 A", "RIJKO U17 B", "ASKC U17 A", "NEERLANDIA U17 A", "PUTSE U17 A"], "U17 1C (veld)": ["GANDA U17 A", "HMKC/BOECKENBERG U17 A", "KCBJ U17 A", "MINERVA/SCALDIS U17 A", "RIJKO U17 A", "VOBAKO U17 B"], "U17 2A (veld)": ["FLORIANT U17 B", "VOORWAARTS U17 B", "VERDE U17 A", "TEMSE U17 B", "HMKC/BOECKENBERG U17 B", "CATBA U17 A", "APPELS U17 A", "SPARTACUS/NDN U17 B"], "U17 2B (veld)": ["HOEVENEN U17 B OZ", "LIMES/KAPELLEN U17 A OZ", "RKC U17 A", "VOBAKO U17 C", "VOSKO U17 A"], "U17 2C (veld)": ["KCBJ U17 B", "AGO AALST U17 A", "ASKC U17 B", "MINERVA/SCALDIS U17 B"], "U15 1A (veld)": ["VOORWAARTS U15 A", "AKC/LUMA U15 B", "ASKC U15 A", "BORGERHOUT/GW U15 A", "FLORIANT U15 A", "SPARTACUS/NDN U15 A", "HOEVENEN U15 A"], "U15 1B (veld)": ["AKC/LUMA U15 A", "BORGERHOUT/GW U15 B", "FLORIANT U15 B", "LEUVEN U15 A", "PUTSE U15 A", "TEMSE U15 A", "VERDE U15 A"], "U15 1C (veld)": ["KCBJ U15 A", "NEERLANDIA U15 A", "AGO AALST U15 A", "BOECKENBERG U15 A", "VOBAKO U15 A", "HMKC U15 A"], "U15 2A (veld)": ["VOBAKO U15 B", "VOORWAARTS U15 B", "RIJKO U15 A", "HMKC U15 B", "BOECKENBERG U15 B"], "U15 2B (veld)": ["KCBJ U15 B", "LEUVEN U15 B", "SIKOPI/CHASE U15 A", "APPELS U15 A"], "U15 2C (veld)": ["NEERLANDIA U15 B", "VOBAKO U15 C", "MINERVA U15 A", "ATBS U15 A", "ASKC U15 B", "TEMSE U15 B"], "U15 2D (veld)": ["BOOMSE U15 A", "BORGERHOUT/GW U15 C", "HOEVENEN U15 B", "RIJKO U15 B", "SPARTA RANST U15 A", "SPARTACUS/NDN U15 B"], "U15 OZ A (veld)": ["KCOV U15 A", "PUTSE U15 B", "O.ANDERLECHT U15 A", "KWIK U15 A", "JOKI U15 A", "BOECHOUT/VREMDE U15 A", "AGO AALST U15 B", "LIMES/KAPELLEN U15 A"], "U13 1A (veld)": ["SIKOPI/CHASE U13 A", "VOBAKO U13 A", "TEMSE U13 A", "FLORIANT U13 A", "ASKC U13 A", "NEERLANDIA U13 A"], "U13 1B (veld)": ["AKC/LUMA U13 A", "BOECKENBERG U13 A", "LEUVEN U13 A", "SPARTACUS/NDN U13 A", "VERDE U13 A", "VOORWAARTS U13 A"], "U13 2A (veld)": ["GANDA U13 A", "VERDE/SCALDIS U13 B", "SIKOPI/CHASE U13 B", "HMKC U13 A", "HOEVENEN U13 A"], "U13 2B (veld)": ["VOSKO U13 A", "AKC/LUMA U13 B", "ATBS U13 A", "BOECKENBERG U13 B", "KCBJ U13 A", "RIJKO U13 A"], "U13 2C (veld)": ["KCOV U13 A", "VOORWAARTS U13 B", "NEERLANDIA U13 B", "BORGERHOUT/GW U13 A", "ASKC U13 B", "AGO AALST U13 A", "CATBA U13 A", "VOBAKO U13 B"], "U13 2D (veld)": ["GANDA U13 B", "TEMSE U13 B", "RIJKO U13 B", "MINERVA U13 A", "HOEVENEN U13 B", "FLORIANT U13 B", "APPELS U13 A", "LEUVEN U13 B"], "U13 OZ A (veld)": ["KAPELLEN/LIMES U13 A", "VOBAKO U13 C", "VOSKO U13 B", "KWIK U13 A", "RKC U13 A", "Boeckenberg U13 C"], "U13 OZ B (veld)": ["BORNEM U13 A", "MINERVA U13 B", "O.ANDERLECHT U13 A", "SPARTA RANST U13 A", "THE VIKINGS U13 A"]});
 /* ---------- tracker rendering ---------- */
 function setPressed(sel,attr,test){qa(sel).forEach(function(b){b.setAttribute('aria-pressed',test(b.getAttribute(attr))?'true':'false');});}
 function matchLabel(m){
@@ -1658,7 +1688,7 @@ function renderTiles(m,R){
     return '<button type="button" class="tile ref" data-ref="'+t[0]+'" aria-pressed="'+on+'"'+((can&&!on)?'':' disabled')+'>'+esc(t[1])+'</button>';}).join('')+'</div>';
   var hasSubs=['H','A'].some(function(t){var r=st.ros[t];return r.players.length>0||r.subs.length>0;});
   var dis=(ui.popup||ui.review)?' disabled':'';
-  h+='<div class="tgrp" role="group" aria-label="Match"><button type="button" class="tile ref" data-timeout="start"'+(dis||(toOpen()?' disabled':''))+'>Time out start</button><button type="button" class="tile ref" data-timeout="end"'+(dis||(toOpen()?'':' disabled'))+'>Time out end</button>'+
+  h+='<div class="tgrp" role="group" aria-label="Match"><button type="button" class="tile ref to" data-timeout="start"'+(dis||(toOpen()?' disabled':''))+'>Time out start</button><button type="button" class="tile ref to" data-timeout="end"'+(dis||(toOpen()?'':' disabled'))+'>Time out end</button>'+
     (hasSubs?'<button type="button" class="tile ref" data-subs="1"'+dis+'>Subs</button>':'')+'</div>';
   setHTML($('#tilebar'),h);$('#tilebar').hidden=!h;
 }
@@ -1799,12 +1829,12 @@ function vNorm(t){var n=vParse(t);return n==null?'':vFmt(n);}
 function vCols(cfg){var mt=cfg.meta||{};if(!mt.video&&!mt.video2&&!mt.fn1&&!mt.fn2) return ['','','','',''];return [(mt.split&&mt.video2)?mt.video2:'',vStartOf(cfg,1),vStartOf(cfg,2),mt.fn1||'',mt.split?(mt.fn2||''):''];}
 function halfLenOf(cfg){return cfg.length*30;}
 function halfOfPeriod(cfg,go){return go>cfg.periods/2?2:1;}
-/* video time (s) at which the given half starts: start 1 defaults to 0; start 2 defaults to 0 for a separate video, or straight after the 1st half for one video */
+/* video time (s) at which the given half starts: start 1 defaults to 0; start 2 defaults to 0 for a separate video (a 2nd half YouTube link or video file), or straight after the 1st half for one video */
 function vStartOf(cfg,h){
   var mt=cfg.meta||{},a=vParse(mt.vs1),b=vParse(mt.vs2);
   if(h===1) return a==null?0:a;
   if(b!=null) return b;
-  return (mt.split&&mt.video2)?0:(a==null?0:a)+halfLenOf(cfg);
+  return (mt.split&&(mt.video2||mt.fn2||vfiles[2]))?0:(a==null?0:a)+halfLenOf(cfg);
 }
 function vTarget(cfg,h,t){return Math.max(0,vStartOf(cfg,h)+t-(h-1)*halfLenOf(cfg));}
 function ytParse(s){
@@ -1848,7 +1878,7 @@ function vidTargetNow(m){return vTarget(m.config,vidHalf(),nowT())+toAdd(m,vidHa
 function renderVideo(){
   var m=cur(),box=$('#vidBox');if(!m||!box) return;
   var v=ytParse(m.config.meta&&m.config.meta[vidKey(m)]),lf=vidFile(m),editing=!!ui.vidEdit,show=!!(v||lf)&&!editing;
-  box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);
+  box.classList.toggle('has',show);document.body.classList.toggle('hasvid',show);if(typeof vzWant==='number') vzApply();
   $('#vidAdd').hidden=show;$('#vidPlay').hidden=!(v||lf);
   if(editing&&(v||lf)) $('#vidPlay').hidden=true;
   var fr=$('#vidFrame'),key=lf?'file:'+lf.name+':'+lf.size+':'+lf.lastModified:(v?v.url:'');
@@ -1986,110 +2016,38 @@ var KLV={on:false,stop:false,res:null,sug:null,ts:{taps:{},res:null,sig:''},det:
 function klvFile(m,h){var mt=m.config.meta||{};return mt.split?vfiles[h]:vfiles[1];}
 function klvHalfLen(cfg){return cfg.length*30;}
 function klvHalf(cfg,e){return halfOfPeriod(cfg,periodOf(cfg,e.t));}
+/* Progress bar + running timer for the long checks, so it is clear how far along they are and when they have finished */
+var KLVP=null;
+function klvPFmt(sec){sec=Math.max(0,Math.round(sec));var m=Math.floor(sec/60),r=sec%60;return m+':'+(r<10?'0':'')+r;}
+function klvPTick(){
+  if(!KLVP) return;var el=document.getElementById(KLVP.id);if(!el) return;
+  var el_s=(Date.now()-KLVP.t0)/1000,f=KLVP.frac,txt=KLVP.label+' · '+klvPFmt(el_s)+' elapsed';
+  if(f>0.03&&f<1){var left=el_s*(1-f)/f;txt+=' · '+(left<60?'under a minute':'about '+Math.round(left/60)+' min')+' left';}
+  el.querySelector('.progtxt').textContent=txt;
+  var pct=Math.max(2,Math.min(100,Math.round(f*100)));el.querySelector('.progbar i').style.width=pct+'%';el.querySelector('.progbar').setAttribute('aria-valuenow',String(pct));
+}
+function klvPStart(id,label){
+  klvPEndTimer();var el=document.getElementById(id);if(!el) return;
+  el.hidden=false;el.className='prog';
+  KLVP={id:id,t0:Date.now(),frac:0,label:label,iv:setInterval(klvPTick,1000)};klvPTick();
+}
+function klvPSet(frac,label){if(!KLVP) return;KLVP.frac=Math.max(0,Math.min(1,frac));if(label) KLVP.label=label;klvPTick();}
+function klvPEndTimer(){if(KLVP&&KLVP.iv){clearInterval(KLVP.iv);KLVP.iv=null;}}
+function klvPEnd(kind,text){
+  if(!KLVP) return;var el=document.getElementById(KLVP.id);var secs=(Date.now()-KLVP.t0)/1000;klvPEndTimer();
+  if(!el){KLVP=null;return;}
+  el.className='prog '+kind;
+  el.querySelector('.progbar i').style.width=(kind==='done'?100:Math.max(2,Math.round(KLVP.frac*100)))+'%';
+  el.querySelector('.progtxt').textContent=(kind==='done'?'✓ Finished in ':kind==='stopped'?'Stopped after ':'Failed after ')+klvPFmt(secs)+(text?' · '+text:'');
+  KLVP=null;
+}
 function klvMsg(t,bad){var el=$('#chkMsg');if(!el) return;el.textContent=t||'';el.className=bad?'bad':'';}
 function klvSeek(vid,t){return new Promise(function(ok){var done=false,fin=function(){if(done) return;done=true;vid.removeEventListener('seeked',fin);ok();};vid.addEventListener('seeked',fin);vid.currentTime=Math.max(0,t);setTimeout(fin,8000);});}
 function klvOpen(file){
   var u=URL.createObjectURL(file),vid=document.createElement('video');vid.muted=true;vid.preload='auto';vid.playsInline=true;vid.src=u;
-  return new Promise(function(ok,no){vid.onloadeddata=function(){ok({vid:vid,url:u});};vid.onerror=function(){URL.revokeObjectURL(u);no(new Error('the browser could not open '+file.name));};});
+  return new Promise(function(ok,no){var to=setTimeout(function(){URL.revokeObjectURL(u);no(new Error('the browser took too long to open '+file.name));},45000);vid.onloadeddata=function(){clearTimeout(to);ok({vid:vid,url:u});};vid.onerror=function(){clearTimeout(to);URL.revokeObjectURL(u);no(new Error('the browser could not open '+file.name));};});
 }
 function klvClose(v){try{URL.revokeObjectURL(v.url);v.vid.removeAttribute('src');v.vid.load();}catch(e){}}
-/* ----- camera movement: phase correlation of the upper part of the picture (walls and baskets) between neighbouring frames ----- */
-var KFW=256,KFH=64,KFT=null,KFN=KFW*KFH;
-function klvTab(n){var cs=new Float64Array(n/2),sn=new Float64Array(n/2),rev=new Uint16Array(n),i,b=Math.round(Math.log(n)/Math.LN2);
-  for(i=0;i<n/2;i++){cs[i]=Math.cos(2*Math.PI*i/n);sn[i]=Math.sin(2*Math.PI*i/n);}
-  for(i=0;i<n;i++){var r=0;for(var k=0;k<b;k++) if(i&(1<<k)) r|=1<<(b-1-k);rev[i]=r;}
-  return {n:n,cs:cs,sn:sn,rev:rev};}
-function klvFFT(re,im,T,inv){
-  var n=T.n,i,j,t;
-  for(i=0;i<n;i++){j=T.rev[i];if(j>i){t=re[i];re[i]=re[j];re[j]=t;t=im[i];im[i]=im[j];im[j]=t;}}
-  for(var len=2;len<=n;len<<=1){var h=len>>1,st=n/len;
-    for(i=0;i<n;i+=len){for(var k=0;k<h;k++){
-      var wr=T.cs[k*st],wi=(inv?1:-1)*T.sn[k*st],a=i+k,b=a+h,xr=re[b]*wr-im[b]*wi,xi=re[b]*wi+im[b]*wr;
-      re[b]=re[a]-xr;im[b]=im[a]-xi;re[a]+=xr;im[a]+=xi;}}}
-}
-function klvFFT2(re,im,inv){
-  if(!KFT) KFT={w:klvTab(KFW),h:klvTab(KFH),hann:null,cr:new Float64Array(KFH),ci:new Float64Array(KFH)};
-  var y,x;
-  for(y=0;y<KFH;y++) klvFFT(re.subarray(y*KFW,(y+1)*KFW),im.subarray(y*KFW,(y+1)*KFW),KFT.w,inv);
-  for(x=0;x<KFW;x++){
-    for(y=0;y<KFH;y++){KFT.cr[y]=re[y*KFW+x];KFT.ci[y]=im[y*KFW+x];}
-    klvFFT(KFT.cr,KFT.ci,KFT.h,inv);
-    for(y=0;y<KFH;y++){re[y*KFW+x]=KFT.cr[y];im[y*KFW+x]=KFT.ci[y];}
-  }
-}
-function klvSpec(vid){
-  if(!KLV.canv){KLV.canv=document.createElement('canvas');KLV.canv.width=KFW;KLV.canv.height=KFH;}
-  var g=KLV.canv.getContext('2d',{willReadFrequently:true});
-  g.drawImage(vid,0,0,vid.videoWidth,Math.round(vid.videoHeight*0.556),0,0,KFW,KFH);
-  var d=g.getImageData(0,0,KFW,KFH).data,re=new Float64Array(KFN),im=new Float64Array(KFN),i,s=0;
-  if(!KFT) klvFFT2(new Float64Array(KFN),new Float64Array(KFN),false);
-  if(!KFT.hann){KFT.hann=new Float64Array(KFN);for(var y=0;y<KFH;y++)for(var x=0;x<KFW;x++) KFT.hann[y*KFW+x]=0.5*(1-Math.cos(2*Math.PI*x/(KFW-1)))*0.5*(1-Math.cos(2*Math.PI*y/(KFH-1)));}
-  for(i=0;i<KFN;i++){re[i]=0.299*d[4*i]+0.587*d[4*i+1]+0.114*d[4*i+2];s+=re[i];}
-  s/=KFN;for(i=0;i<KFN;i++) re[i]=(re[i]-s)*KFT.hann[i];
-  klvFFT2(re,im,false);
-  return {re:re,im:im};
-}
-/* sideways shift of picture B compared with picture A, in pixels of a 1280 wide picture, and how clear the match is (0 to 1) */
-function klvShift(A,B){
-  var cr=new Float64Array(KFN),ci=new Float64Array(KFN),i;
-  for(i=0;i<KFN;i++){var r=A.re[i]*B.re[i]+A.im[i]*B.im[i],q=A.re[i]*B.im[i]-A.im[i]*B.re[i],m=Math.sqrt(r*r+q*q)+1e-9;cr[i]=r/m;ci[i]=q/m;}
-  klvFFT2(cr,ci,true);
-  var best=-1e9,bi=0;for(i=0;i<KFN;i++){cr[i]/=KFN;if(cr[i]>best){best=cr[i];bi=i;}}
-  var px=bi%KFW,py=(bi-px)/KFW,sw=0,sx=0,sy=0;
-  for(var dy=-2;dy<=2;dy++)for(var dx=-2;dx<=2;dx++){
-    var xx=(px+dx+KFW)%KFW,yy=(py+dy+KFH)%KFH,w=Math.max(0,cr[yy*KFW+xx]);sw+=w;sx+=w*(px+dx);sy+=w*(py+dy);}
-  var sh=sw>0?sx/sw:px;if(sh>KFW/2) sh-=KFW;
-  return {dx:sh*(1280/KFW),resp:sw};
-}
-/* Cumulative camera pan, one value per second of video from t0, sampled 'fps' times a second. */
-async function klvPan(vid,t0,t1,fps,prog){
-  var n=Math.floor((t1-t0)*fps)+1,cum=0,prev=null,out=[],i,t00=Date.now();
-  for(i=0;i<n&&!KLV.stop;i++){
-    await klvSeek(vid,t0+i/fps);var sp=klvSpec(vid);
-    if(prev){var s=klvShift(prev,sp);if(s.resp>0.05) cum+=s.dx;}
-    prev=sp;
-    if(i%fps===0) out.push(cum);
-    if(i%25===0&&prog) prog(i/n,(Date.now()-t00)/1000);
-  }
-  return out;
-}
-/* ----- aligning the pan with the logged ball positions ----- */
-function klvUnif(x,w){var n=x.length,p=new Float64Array(n+1),i;for(i=0;i<n;i++) p[i+1]=p[i]+x[i];
-  var out=new Float64Array(n),lo=Math.floor(w/2),hi=w-lo;
-  for(i=0;i<n;i++){var a=i-lo,b=i+hi,s=0;
-    // window a..b-1 with the edge value repeated outside the data
-    var ca=Math.max(0,a),cb=Math.min(n,b);s=p[cb]-p[ca];s+=Math.max(0,-a)*x[0]+Math.max(0,b-n)*x[n-1];out[i]=s/w;}
-  return out;}
-function klvGauss(x,sg){var n=x.length,r=Math.ceil(4*sg),k=[],s=0,i,j;for(i=-r;i<=r;i++){var v=Math.exp(-i*i/(2*sg*sg));k.push(v);s+=v;}
-  var out=new Float64Array(n);
-  for(i=0;i<n;i++){var a=0;for(j=-r;j<=r;j++){var q=i+j;if(q<0) q=-q-1;if(q>=n) q=2*n-q-1;q=Math.max(0,Math.min(n-1,q));a+=k[j+r]*x[q];}out[i]=a/s;}
-  return out;}
-function klvHP(x){var u=klvUnif(x,60),o=new Float64Array(x.length);for(var i=0;i<x.length;i++) o[i]=x[i]-u[i];return o;}
-function klvCorr(a,ai,b,bi,w){var ma=0,mb=0,i;for(i=0;i<w;i++){ma+=a[ai+i];mb+=b[bi+i];}ma/=w;mb/=w;
-  var sab=0,saa=0,sbb=0;for(i=0;i<w;i++){var u=a[ai+i]-ma,v=b[bi+i]-mb;sab+=u*v;saa+=u*u;sbb+=v*v;}
-  var d=Math.sqrt(saa*sbb);return d>0?sab/d:0;}
-/* pts: ball positions [{t,x}] with t in seconds from the half start; pan1: cumulative pan per second starting at video time tb; vs: video time of the half start. Returns windows {mid,off,c}: offset in seconds (video ahead of the log) and how well it matches. */
-function klvAlign(pts,pan1,tb,vs){
-  var T=pan1.length,W=90,STEP=30,L0=-60,L1=120,K=L1-L0+1,i,j,k;
-  var ts=pts.map(function(p){return p.t;}),M=Math.max.apply(null,ts)+1;
-  if(M<W+STEP||T<W) return null;
-  var xt=new Float64Array(M),pi=0;
-  for(i=0;i<M;i++){while(pi<pts.length-1&&pts[pi+1].t<=i) pi++;
-    var a=pts[pi],b=pts[Math.min(pi+1,pts.length-1)];
-    if(i<=pts[0].t) xt[i]=pts[0].x;else if(i>=pts[pts.length-1].t) xt[i]=pts[pts.length-1].x;
-    else xt[i]=(b.t===a.t)?a.x:a.x+(b.x-a.x)*(i-a.t)/(b.t-a.t);}
-  var xh=klvGauss(klvHP(xt),2),ph=klvGauss(klvHP(Float64Array.from(pan1)),2);
-  var starts=[];for(i=0;i+W<M;i+=STEP) starts.push(i);
-  var C=starts.map(function(s){var row=new Float64Array(K);
-    for(j=0;j<K;j++){var lo=Math.round(s+vs+L0+j-tb);row[j]=(lo>=0&&lo+W<=T)?Math.abs(klvCorr(xh,s,ph,lo,W)):0;}return row;});
-  var pen=0.004,D=[Float64Array.from(C[0])],Bk=[new Int32Array(K)];
-  for(i=1;i<starts.length;i++){var d=new Float64Array(K),bk=new Int32Array(K);
-    for(j=0;j<K;j++){var bv=-1e18,bj=0;for(k=0;k<=j;k++){var v=D[i-1][k]-pen*(j-k);if(v>bv){bv=v;bj=k;}}d[j]=C[i][j]+bv;bk[j]=bj;}
-    D.push(d);Bk.push(bk);}
-  var last=D[D.length-1],jj=0;for(j=1;j<K;j++) if(last[j]>last[jj]) jj=j;
-  var path=[jj];for(i=starts.length-1;i>0;i--){jj=Bk[i][jj];path.push(jj);}path.reverse();
-  return starts.map(function(s,i){return {mid:s+W/2,off:L0+path[i],c:C[i][path[i]]};});
-}
 function klvOffAt(wins,t){
   var bi=0,i;for(i=1;i<wins.length;i++) if(Math.abs(wins[i].mid-t)<Math.abs(wins[bi].mid-t)) bi=i;
   var near=wins.filter(function(w){return Math.abs(w.mid-t)<=75;});if(!near.length) near=[wins[bi]];
@@ -2100,33 +2058,64 @@ function klvOffAt(wins,t){
 }
 function klvFmt(s){s=Math.max(0,Math.round(s));return fmtClock(s);}
 /* ----- step 1: re-time ----- */
-async function klvRetime(){
-  var m=cur(),cfg=m.config,out=[],opened=[];
+async function klvCheck(){
+  var m=cur(),cfg=m.config;
   if(KLV.on){KLV.stop=true;return;}
+  var all=$('#sgAll')&&$('#sgAll').checked;
+  var isPf=function(e){return e.kind==='penalty'||e.kind==='freepass';};
   var halves=[1,2].filter(function(h){return klvFile(m,h);});
-  if(!halves.length){klvMsg('Choose the match video file first (Match video, above the pitch).',true);return;}
-  KLV.on=true;KLV.stop=false;klvUi();
-  var res={};
+  var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&(all||isPf(e))&&(e.bt||klvFile(m,klvHalf(cfg,e)));});
+  if(!halves.length&&!shots.length){klvMsg('Choose the match video file first (Match video, above the pitch).',true);return;}
+  KLV.on=true;KLV.stop=false;KLV.res=null;KLV.sug=[];KLV.plan={};klvUi();klvRetimeShow();klvSugShow();
+  var failMsg='',opened=new Map(),notes=[],res={},bad={},perHalf={1:{n:0,f:0,s:0},2:{n:0,f:0,s:0}},hn=function(h){return h===1?'1st':'2nd';};
+  var wA=0;
+  klvPStart('chkProg','Looking at the shots');
   try{
-    for(var hi=0;hi<halves.length&&!KLV.stop;hi++){
-      var h=halves[hi],base=(h-1)*klvHalfLen(cfg),pts=[];
-      m.events.forEach(function(e){if(e.ot!=null||e.x==null||e.y==null) return;if(klvHalf(cfg,e)!==h) return;var t=e.t-base;if(t>=0) pts.push({t:t,x:e.x});});
-      pts.sort(function(a,b){return a.t-b.t;});
-      if(pts.length<12){res[h]={err:'Not enough ball positions in the '+(h===1?'1st':'2nd')+' half to match (need at least 12).'};continue;}
-      var v=await klvOpen(klvFile(m,h));opened.push(v);
-      var vs=vStartOf(cfg,h),M=pts[pts.length-1].t+1,dur=v.vid.duration||0,tb=Math.max(0,vs-65),te=Math.min(dur-1,vs+M+125);
-      if(te-tb<100){res[h]={err:'The video is too short to match the '+(h===1?'1st':'2nd')+' half.'};continue;}
-      var pan=await klvPan(v.vid,tb,te,KLV_FPS,function(f,el){var left=el/Math.max(f,0.001)*(1-f)/60;
-        klvMsg('Reading the camera movement, '+(h===1?'1st':'2nd')+' half: '+Math.round(f*100)+'% · about '+(left<1?'under a minute':Math.round(left)+' min')+' left. Keep this tab open.',false);});
-      if(KLV.stop) break;
-      var wins=klvAlign(pts,pan,tb,vs);
-      res[h]=wins?{wins:wins,base:base}:{err:'Could not match the '+(h===1?'1st':'2nd')+' half.'};
+    /* the exact time of each shot */
+    if(!KLV.stop&&shots.length){
+      var jobs=[];
+      shots.forEach(function(e){
+        var pf=isPf(e),off=KLV.plan[e.id]||0,v0=klvExpected(m,e)+off,h=klvHalf(cfg,e),ap=null,pts=e.bt?btPts(e):null;
+        if(pts&&pts.length){var w0=pf?[v0-1,v0+(e.kind==='penalty'?20:12)]:[v0-6,v0+6];ap=pf?klvApex(pts,w0[0],w0[1],0.25,true):klvApex(pts,w0[0],w0[1],0.16,false);}
+        if(ap!=null){KLV.sug.push({id:e.id,dt:ap-v0});perHalf[h].n++;perHalf[h].f++;perHalf[h].s++;return;}
+        if(!klvFile(m,h)){KLV.sug.push({id:e.id,dt:null});perHalf[h].n++;return;}
+        var w=pf?[v0-1,v0+(e.kind==='penalty'?16:8)]:[v0-3,v0+4];
+        jobs.push({e:e,pf:pf,v:v0,w:w,n:Math.floor((w[1]-w[0])*3)+1,h:h});
+      });
+      var total=jobs.reduce(function(s2,j){return s2+j.n;},0),frames=0,t0=Date.now();
+      if(jobs.length){
+        klvPStart('chkProg','Loading the ball finder (20 MB, downloaded once)');klvPSet(wA,'Loading the ball finder (20 MB, downloaded once)');
+        await klvLoadDet();
+        for(var q=0;q<jobs.length&&!KLV.stop;q++){
+          var j=jobs[q],h2=j.h,f=klvFile(m,h2),vv=opened.get(f);
+          if(!vv){vv=await klvOpen(f);opened.set(f,vv);}
+          var vsh=vStartOf(cfg,h2);
+          if(vv.vid.duration&&vsh>vv.vid.duration-5){bad[h2]=vsh;frames+=j.n;KLV.sug.push({id:j.e.id,dt:null,skipped:true});continue;}
+          var pts2=[];
+          for(var i=0;i<j.n&&!KLV.stop;i++){
+            var t=j.w[0]+i/3;if(t<0||t>vv.vid.duration){frames++;continue;}
+            await klvSeek(vv.vid,t);var r=await klvDetect(vv.vid);frames++;
+            if(r) pts2.push({t:t,x:r.x,y:r.y});
+            klvPSet(wA+(1-wA)*frames/total,'Finding the ball, shot '+(q+1)+' of '+jobs.length);
+          }
+          if(KLV.stop) break;
+          var ap2=j.pf?klvApex(pts2,j.w[0],j.w[1],0.25,true):klvApex(pts2,j.w[0],j.w[1],0.16,false);
+          KLV.sug.push({id:j.e.id,dt:ap2==null?null:ap2-j.v});perHalf[h2].n++;if(ap2!=null) perHalf[h2].f++;
+          if(q%3===0) klvSugShow();
+        }
+      }
     }
-  }catch(err){klvMsg('Could not re-time: '+((err&&err.message)||'something went wrong')+'.',true);}
+  }catch(err){var em=(err&&err.message)||'something went wrong';failMsg='Could not check the times: '+em+'. The ball finder is downloaded from the internet the first time it is needed.'+(KLV.res?' The overall offset from step 1 is still listed below and can be applied.':'');klvPEnd('failed',em);}
   finally{opened.forEach(klvClose);}
   var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
-  if(stopped){klvMsg('Stopped.',false);KLV.res=null;klvUi();return;}
-  klvMsg('',false);KLV.res=res;klvRetimeShow();klvUi();
+  var found=KLV.sug.filter(function(x){return x.dt!=null;}).length;
+  var errs=[1,2].filter(function(k){return res[k]&&res[k].err;}).map(function(k){return res[k].err;});
+  var badTxt=[1,2].filter(function(k){return bad[k]!=null;}).map(function(k){return 'The '+hn(k)+' half video is shorter than its start time ('+vFmt(bad[k])+'), so its shots were skipped. Check the '+hn(k)+' half video start time in Match setup (a separate 2nd half video usually starts at 0:00).';}).join(' ');
+  var split=[1,2].filter(function(k){return perHalf[k].n;}).map(function(k){return hn(k)+' half: '+perHalf[k].f+' of '+perHalf[k].n;}).join('; ');
+  var sumTxt=(shots.length?'Found the top of the shot in '+found+' of '+(KLV.sug.length-KLV.sug.filter(function(x){return x.skipped;}).length)+' shots'+(split?' ('+split+')':'')+'. ':'')+badTxt;
+  if(failMsg) klvMsg(failMsg,true);else{klvMsg((stopped?'Stopped. ':'')+sumTxt.trim(),!!badTxt);
+  klvPEnd(stopped?'stopped':(badTxt?'failed':'done'),sumTxt.trim());}
+  klvRetimeShow();klvSugShow();klvUi();
 }
 /* the new time for each event under the found offsets */
 function klvPlan(m,res){
@@ -2160,17 +2149,10 @@ function klvRetimeShow(sel,res0){
     var all=0;m.events.forEach(function(e){if(e.ot==null&&res[klvHalf(m.config,e)]&&res[klvHalf(m.config,e)].wins) all++;});
     h+='<p>'+moved+' of '+pl.length+' events would move'+(all>pl.length?' ('+(all-pl.length)+' events are past the end of the video and stay as they are)':'')+'. Match confidence: '+cnt.high+' high, '+cnt.medium+' medium, '+cnt.low+' low. Low ones sit near a change of offset or where the camera movement matched the ball weakly; check them in the video.</p>';
   }
-  if(any){var tot=pl2(m,res);if(tot.low>0.6*tot.n){res.weak=true;h+='<p class="bad">Most of the match is weak, so nothing will be applied. Check that this is the right video file for the half and that its start time is about right.</p>';}}
+  if(any){var tot=pl2(m,res);if(tot.low>0.6*tot.n){res.weak=true;h+='<p class="bad">Most of the match is weak, so the overall offset will not be applied. Check that this is the right video file for the half and that its start time is about right.</p>';}}
   el.innerHTML=h;
 }
 function pl2(m,res){var pl=klvPlan(m,res),low=0;pl.forEach(function(p){if(p.conf==='low') low++;});return {n:pl.length,low:low};}
-function klvApplyRetime(){
-  var m=cur();if(!m||!KLV.res) return;
-  var pl=klvPlan(m,KLV.res),n=0;
-  pl.forEach(function(p){if(p.nt!==p.e.t){if(p.e.t0==null) p.e.t0=p.e.t;p.e.t=p.nt;n++;}});
-  KLV.res=null;save();render();klvMsg('Re-timed '+n+' events. The original times are kept; use Restore original times to go back.',false);klvUi();
-  offerExport('Re-timing',n);
-}
 function klvRestore(){
   var m=cur();if(!m) return;var n=0;
   m.events.forEach(function(e){if(e.t0!=null){e.t=e.t0;delete e.t0;n++;}});
@@ -2181,15 +2163,28 @@ function klvBase(){
   var raw=window.KORF_BALL_BASE||((/^https?:$/.test(location.protocol)&&/github\.io$/.test(location.hostname))?'ball/':'https://ericvl-korf.github.io/korf-tools/ball/');
   try{return new URL(raw,location.href).href;}catch(e){return raw;}
 }
+/* The graphics chip (WebGPU) path is built but switched off: it made the video stutter while tracking. Set to true to use it again. */
+var KLV_GPU=false;
+function klvScript(src){return new Promise(function(ok,no){var sc=document.createElement('script');sc.src=src;sc.onload=ok;sc.onerror=function(){no(new Error('could not download the ball finder'));};document.head.appendChild(sc);});}
+/* Uses the graphics chip (WebGPU) when the browser has one and it passes a test run, otherwise the processor (WebAssembly). */
 function klvLoadDet(){
   if(KLV.det.sess) return Promise.resolve(KLV.det.sess);
   if(KLV.det.ortP) return KLV.det.ortP;
   var base=klvBase();
-  KLV.det.ortP=new Promise(function(ok,no){var sc=document.createElement('script');sc.src=base+'ort.wasm.min.js';sc.onload=ok;sc.onerror=function(){no(new Error('could not download the ball finder'));};document.head.appendChild(sc);})
-  .then(function(){
+  KLV.det.ortP=(async function(){
+    if(KLV_GPU&&navigator.gpu&&!KLV.det.noGpu){
+      try{
+        await klvScript(base+'ort.webgpu.min.js');
+        ort.env.wasm.wasmPaths=base;
+        var g=await ort.InferenceSession.create(base+'ball960.onnx',{executionProviders:['webgpu']});
+        await g.run({images:new ort.Tensor('float32',new Float32Array(3*544*960),[1,3,544,960])});
+        KLV.det.gpu=true;return g;
+      }catch(e){KLV.det.noGpu=true;KLV.det.gpuErr=(e&&e.message)||'';try{console.warn('Ball finder: graphics chip not used ('+KLV.det.gpuErr+')');}catch(x){}}
+    }
+    await klvScript(base+'ort.wasm.min.js');
     ort.env.wasm.wasmPaths=base;ort.env.wasm.proxy=true;ort.env.wasm.numThreads=window.crossOriginIsolated?Math.min(4,navigator.hardwareConcurrency||2):1;
     return ort.InferenceSession.create(base+'ball960.onnx',{executionProviders:['wasm']});
-  }).then(function(s){KLV.det.sess=s;return s;},function(e){KLV.det.ortP=null;throw e;});
+  })().then(function(s){KLV.det.sess=s;return s;},function(e){KLV.det.ortP=null;throw e;});
   return KLV.det.ortP;
 }
 var KDC=null;
@@ -2199,7 +2194,8 @@ async function klvDetect(vid){
   var g=KDC.getContext('2d',{willReadFrequently:true});g.fillStyle='rgb(114,114,114)';g.fillRect(0,0,960,544);g.drawImage(vid,0,0,dw,dh);
   var d=g.getImageData(0,0,960,544).data,n=960*544,f=new Float32Array(3*n);
   for(var i=0;i<n;i++){f[i]=d[4*i+2];f[n+i]=d[4*i+1];f[2*n+i]=d[4*i];}
-  var out=(await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])})).out,a=out.data,N=out.dims[1],best=null;
+  var res;try{res=await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])});}catch(er){if(!KLV.det.gpu) throw er;KLV.det.gpuErr=(er&&er.message)||'';KLV.det.noGpu=true;KLV.det.gpu=false;KLV.det.sess=null;KLV.det.ortP=null;await klvLoadDet();res=await KLV.det.sess.run({images:new ort.Tensor('float32',f,[1,3,544,960])});}
+  var out=res.out,a=out.data,N=out.dims[1],best=null;
   for(var k=0;k<N;k++){var sco=a[6*k+4]*a[6*k+5];if(sco>=0.25&&(!best||sco>best.s)) best={x:a[6*k]/dw,y:a[6*k+1]/dh,s:sco};}
   return best;
 }
@@ -2225,46 +2221,6 @@ function klvApex(pts,t0,t1,minP,first){
   return best?best.t:null;
 }
 function klvExpected(m,e){var h=klvHalf(m.config,e);return vTarget(m.config,h,e.t)+toAdd(m,h,e.t);}
-async function klvSuggest(){
-  var m=cur(),cfg=m.config;
-  if(KLV.on){KLV.stop=true;return;}
-  var all=$('#sgAll')&&$('#sgAll').checked;
-  var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&klvFile(m,klvHalf(cfg,e))&&(all||e.kind==='penalty'||e.kind==='freepass');});
-  if(!shots.length){klvMsg(all?'No shots with a video file to check. Choose the match video file first.':'No penalties or free passes with a video file to check. Choose the match video file first, or tick All shots.',true);return;}
-  KLV.on=true;KLV.stop=false;KLV.sug=[];klvUi();klvSugShow();
-  var opened=new Map(),done=0,total=0,t0=Date.now(),frames=0;
-  try{
-    klvMsg('Loading the ball finder (20 MB, downloaded once)…',false);
-    await klvLoadDet();
-    var jobs=shots.map(function(e){
-      var pf=e.kind==='penalty'||e.kind==='freepass',v=klvExpected(m,e),w=pf?[v-1,v+(e.kind==='penalty'?16:8)]:[v-3,v+4];
-      return {e:e,pf:pf,v:v,w:w,n:Math.floor((w[1]-w[0])*3)+1};});
-    total=jobs.reduce(function(s,j){return s+j.n;},0);
-    t0=Date.now();
-    for(var q=0;q<jobs.length&&!KLV.stop;q++){
-      var j=jobs[q],h=klvHalf(cfg,j.e),f=klvFile(m,h),vv=opened.get(f);
-      if(!vv){vv=await klvOpen(f);opened.set(f,vv);}
-      var pts=[];
-      for(var i=0;i<j.n&&!KLV.stop;i++){
-        var t=j.w[0]+i/3;if(t<0||t>vv.vid.duration) {frames++;continue;}
-        await klvSeek(vv.vid,t);var r=await klvDetect(vv.vid);frames++;
-        if(r) pts.push({t:t,x:r.x,y:r.y});
-        if(frames%3===0){var el=(Date.now()-t0)/1000,left=Math.max(0,Math.round(el/frames*(total-frames)/60));
-          klvMsg('Looking at shot '+(q+1)+' of '+jobs.length+' · about '+(left<1?'under a minute':left+(left===1?' minute':' minutes'))+' left. Keep this tab open. You can stop at any time and keep what was found.',false);}
-      }
-      if(KLV.stop) break;
-      var ap=j.pf?klvApex(pts,j.w[0],j.w[1],0.25,true):klvApex(pts,j.w[0],j.w[1],0.16,false);
-      done++;
-      KLV.sug.push({id:j.e.id,dt:ap==null?null:ap-j.v});
-      if(done%3===0) klvSugShow();
-    }
-  }catch(err){klvMsg('Could not check the shots: '+((err&&err.message)||'something went wrong')+'. The ball finder is downloaded from the internet the first time you use it.',true);}
-  finally{opened.forEach(klvClose);}
-  var stopped=KLV.stop;KLV.on=false;KLV.stop=false;
-  var found=KLV.sug.filter(function(s){return s.dt!=null;}).length;
-  klvMsg((stopped?'Stopped. ':'')+'Looked at '+KLV.sug.length+' shots and found the top of the shot in '+found+'.',false);
-  klvSugShow();klvUi();
-}
 function klvSugRows(){
   var m=cur(),rows=[];if(!m||!KLV.sug) return rows;
   KLV.sug.forEach(function(s){
@@ -2272,7 +2228,7 @@ function klvSugRows(){
     var e=m.events.filter(function(x){return x.id===s.id;})[0];if(!e) return;
     var pf=e.kind==='penalty'||e.kind==='freepass',d=Math.round(s.dt);
     if(d===0) return;
-    rows.push({e:e,s:s,d:d,tick:pf?Math.abs(d)>=1:Math.abs(d)>=2});
+    rows.push({e:e,s:s,d:d,off:(KLV.plan&&KLV.plan[e.id])||0,tick:pf?Math.abs(d)>=1:Math.abs(d)>=2});
   });
   return rows;
 }
@@ -2281,21 +2237,26 @@ function klvSugShow(){
   if(!KLV.sug){el.innerHTML='';return;}
   var rows=klvSugRows();
   el.innerHTML=rows.length?'<ul class="sglist">'+rows.map(function(r,i){var e=r.e;
-    return '<li><label><input type="checkbox" data-sg="'+esc(e.id)+'"'+(r.tick?' checked':'')+'> <b>'+esc(evClock(e))+'</b> '+esc(e.team==='H'?m.home:m.away)+' '+(e.kind==='penalty'?'penalty':(e.kind==='freepass'?'free pass':'shot'))+(e.shooter?' · '+esc(e.shooter.name):'')+' → <b>'+esc(klvFmt(e.t+r.d))+'</b> ('+(r.d>0?'+':'')+r.d+' s)</label></li>';}).join('')+'</ul>':(KLV.on?'':'<p>No shot needs a different time.</p>');
+    return '<li><label><input type="checkbox" data-sg="'+esc(e.id)+'"'+(r.tick?' checked':'')+'> <b>'+esc(evClock(e))+'</b> '+esc(e.team==='H'?m.home:m.away)+' '+(e.kind==='penalty'?'penalty':(e.kind==='freepass'?'free pass':'shot'))+(e.shooter?' · '+esc(e.shooter.name):'')+' → <b>'+esc(klvFmt(e.t+r.off+r.d))+'</b> ('+((r.off+r.d)>0?'+':'')+(r.off+r.d)+' s)</label></li>';}).join('')+'</ul>':(KLV.on?'':'<p>No shot needs a different time.</p>');
 }
-function klvApplySug(){
-  var m=cur();if(!m||!KLV.sug) return;
+function klvApplyCheck(){
+  var m=cur();if(!m) return;
   var ticks={};document.querySelectorAll('#sgOut input[data-sg]').forEach(function(c){if(c.checked) ticks[c.getAttribute('data-sg')]=1;});
-  var cfg=m.config,hl=klvHalfLen(cfg),n=0;
-  klvSugRows().forEach(function(r){
+  var cfg=m.config,hl=klvHalfLen(cfg),nOff=0,nShot=0;
+  var rows=klvSugRows();
+  if(KLV.res&&!KLV.res.weak){
+    klvPlan(m,KLV.res).forEach(function(p){if(p.nt!==p.e.t){if(p.e.t0==null) p.e.t0=p.e.t;p.e.t=p.nt;nOff++;}});
+  }
+  rows.forEach(function(r){
     if(!ticks[r.e.id]) return;
     var i=m.events.indexOf(r.e),h=klvHalf(cfg,r.e),base=(h-1)*hl;
     var lo=Math.max(base,i>0?m.events[i-1].t:base),hi=Math.min(base+hl-1,i<m.events.length-1?m.events[i+1].t:base+hl-1);
     var nt=Math.max(lo,Math.min(hi,r.e.t+r.d));
-    if(nt!==r.e.t){if(r.e.t0==null) r.e.t0=r.e.t;r.e.t=nt;n++;}
+    if(nt!==r.e.t){if(r.e.t0==null) r.e.t0=r.e.t;r.e.t=nt;nShot++;}
   });
-  KLV.sug=null;save();render();klvMsg('Changed the time of '+n+' shots. The original times are kept; use Restore original times to go back.',false);klvUi();
-  offerExport('Shot times',n);
+  KLV.res=null;KLV.sug=null;KLV.plan={};save();render();
+  klvMsg((nOff?'Moved '+nOff+' events by the overall offset. ':'')+(nShot?'Changed the time of '+nShot+' shots. ':'')+(nOff||nShot?'':'Nothing needed changing. ')+'The original times are kept; use Restore original times to go back.',false);klvUi();
+  offerExport('Check times',nOff+nShot);
 }
 /* ----- tap sync: match the log to a YouTube video by hand ----- */
 function tsMode(m){var mt=m.config.meta||{};return !!(ytParse(mt[vidKey(m)])&&!vidFile(m));}
@@ -2381,14 +2342,14 @@ function tsClick(e){
 }
 function tsApply(){
   if(!KLV.ts.res) return;
-  KLV.res=KLV.ts.res;klvApplyRetime();KLV.ts.taps={};KLV.ts.res=null;KLV.ts.sig='';$('#tsOut').innerHTML='';tsRender();
+  KLV.res=KLV.ts.res;KLV.sug=null;klvApplyCheck();KLV.ts.taps={};KLV.ts.res=null;KLV.ts.sig='';$('#tsOut').innerHTML='';tsRender();
 }
 /* ----- finding the ball in the background while you track (video file only): the positions are kept on each shot, so Korf Lab does not have to search ----- */
-var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0};
-function bgPref(){try{return localStorage.getItem('klBg')!=='0';}catch(e){return true;}}
+var BG={run:false,done:0,err:'',errAt:0,vids:new Map(),last:0,gen:0,cur:null,skip:new Set(),hang:{},badFile:new Set(),skipped:0};
+function bgPref(){try{return localStorage.getItem('klBg')==='1';}catch(e){return false;}}
 function bgWin(m,e){
   var cfg=m.config,h=klvHalf(cfg,e),r=vTarget(cfg,h,e.t)+toAdd(m,h,e.t),pf=e.kind==='penalty'||e.kind==='freepass';
-  return {h:h,a:Math.max(0,Math.round((r-9)*3)),b:Math.round((r+(pf?22:6))*3)};
+  return pf?{h:h,a:Math.max(0,Math.round((r-1)*3)),b:Math.round((r+(e.kind==='penalty'?20:12))*3)}:{h:h,a:Math.max(0,Math.round((r-4)*3)),b:Math.round((r+4)*3)};
 }
 function bgHas(e,w){
   if(!e.bt) return false;
@@ -2397,23 +2358,25 @@ function bgHas(e,w){
 }
 function bgPending(m){
   var out=[];if(!m||m.sample) return out;
-  m.events.forEach(function(e){if(e.type!=='shot'||e.ot!=null) return;var w=bgWin(m,e);if(!klvFile(m,w.h)||bgHas(e,w)) return;out.push({e:e,w:w});});
+  m.events.forEach(function(e){if(e.type!=='shot'||e.ot!=null||BG.skip.has(e.id)) return;var w=bgWin(m,e);var f=klvFile(m,w.h);if(!f||BG.badFile.has(f)||bgHas(e,w)) return;out.push({e:e,w:w});});
   return out;
 }
 function bgWant(){var m=cur();return bgPref()&&m&&!m.sample&&ui.view==='track'&&!KLV.on&&!document.hidden;}
 async function bgLoop(){
   if(BG.run||!bgWant()||(BG.err&&Date.now()-BG.errAt<60000)) return;
   var m0=cur(),pend=bgPending(m0);if(!pend.length) return;
-  BG.run=true;BG.err='';bgUi();
+  var gen=++BG.gen;BG.run=true;BG.err='';BG.last=Date.now();bgUi();
   try{
     await klvLoadDet();
-    while(bgWant()&&cur()===m0){
+    while(bgWant()&&cur()===m0&&gen===BG.gen){
       var q=bgPending(m0)[0];if(!q) break;
+      BG.cur=q;BG.last=Date.now();
       var file=klvFile(m0,q.w.h),v=BG.vids.get(file);
-      if(!v){v=await klvOpen(file);BG.vids.set(file,v);}
+      if(!v){v=await klvOpen(file);if(gen!==BG.gen){klvClose(v);break;}BG.vids.set(file,v);BG.hang[file.name]=0;}
       var arr=[],ok=true;
       for(var t=q.w.a;t<=q.w.b;t++){
-        if(!bgWant()||cur()!==m0||m0.events.indexOf(q.e)<0){ok=false;break;}
+        if(!bgWant()||cur()!==m0||m0.events.indexOf(q.e)<0||gen!==BG.gen){ok=false;break;}
+        BG.last=Date.now();
         await klvSeek(v.vid,t/3);
         var t0=performance.now(),r=await klvDetect(v.vid);
         arr.push(r?Math.round(r.x*1000)+','+Math.round(r.y*1000):'.');
@@ -2422,47 +2385,41 @@ async function bgLoop(){
       if(!ok) break;
       q.e.bt=q.w.h+'|'+q.w.a+'|'+arr.join(' ');BG.done++;save();bgUi();
     }
-  }catch(err){BG.err=(err&&err.message)||'something went wrong';BG.errAt=Date.now();}
-  finally{BG.run=false;bgUi();}
+  }catch(err){if(gen===BG.gen){BG.err=(err&&err.message)||'something went wrong';BG.errAt=Date.now();}}
+  finally{if(gen===BG.gen){BG.run=false;BG.cur=null;}bgUi();}
+}
+/* if the ball finder stops moving for a minute and a half it is stuck: give up on that shot (or on that video file after two hangs) and carry on with the rest */
+function bgWatchdog(){
+  if(!BG.run||!bgWant()||Date.now()-BG.last<90000) return;
+  var q=BG.cur;BG.gen++;BG.run=false;BG.last=Date.now();
+  if(q){
+    var f=klvFile(cur(),q.w.h),nm=f?f.name:'';
+    BG.skip.add(q.e.id);BG.skipped++;
+    BG.hang[nm]=(BG.hang[nm]||0)+1;
+    if(f&&BG.hang[nm]>=2){BG.badFile.add(f);BG.err='the browser got stuck reading '+nm+' (it may be a format the browser cannot seek in; try a different copy of the video, for example an MP4 with H.264 video). Its shots are skipped';BG.errAt=Date.now();}
+  }
+  BG.cur=null;bgUi();
 }
 function bgUi(){
   var m=cur(),box=$('#bgBox');if(!box) return;
   var has=!!(m&&!m.sample&&(vfiles[1]||vfiles[2]));
-  box.hidden=!has;if(!has) return;
-  var on=bgPref();$('#bgOn').checked=on;
+  var on=bgPref();box.hidden=!(has&&on);if(!has||!on) return;
   var shots=m.events.filter(function(e){return e.type==='shot'&&e.ot==null;}).length,pend=bgPending(m).length;
   var t='';
-  if(!on) t='Off.';
-  else if(BG.err) t='Stopped: '+BG.err+'.';
+  if(BG.err) t='Stopped: '+BG.err+'.';
   else if(!shots) t='Starts when you log shots.';
-  else if(!pend) t='Done for all '+shots+' shots.';
-  else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done. Keep this tab open and visible.';
-  $('#bgNote').textContent=t;
+  else if(!pend) t=BG.skipped?'Done. '+BG.skipped+' of '+shots+' shots were skipped because the video would not read there'+(BG.err?' ('+BG.err+')':'')+'.':'Done for all '+shots+' shots.';
+  else t=(BG.run?'Working: ':'Waiting: ')+(shots-pend)+' of '+shots+' shots done'+(BG.skipped?' ('+BG.skipped+' skipped because the video would not read there)':'')+'. Keep this tab open and visible.'+(BG.err&&pend?' Stopped on one video: '+BG.err+'.':'');
+  $('#bgNote').textContent='Ball tracking is on (turn it off in Match setup, step 2). '+t;
 }
-$('#bgOn').addEventListener('change',function(e){try{localStorage.setItem('klBg',e.target.checked?'1':'0');}catch(x){}bgUi();bgLoop();});
-setInterval(function(){bgUi();bgLoop();},4000);
+function bgSet(on){try{localStorage.setItem('klBg',on?'1':'0');}catch(x){}var a=$('#vdBg');if(a) a.checked=on;bgUi();bgLoop();}
+$('#vdBg').addEventListener('change',function(e){bgSet(e.target.checked);});
+setInterval(function(){bgWatchdog();bgUi();bgLoop();},4000);
 /* flag the shots whose logged time is off, from the ball positions saved while tracking (no video needed) */
 function btPts(e){
   if(!e.bt) return null;var q=e.bt.split('|');if(q.length<3) return null;var a=+q[1],tk=q[2].trim().split(' '),pts=[];
   tk.forEach(function(z,i){if(z==='.'||z==='') return;var c=z.split(','),x=+c[0]/1000,y=+c[1]/1000;if(isFinite(x)&&isFinite(y)) pts.push({t:(a+i)/3,x:x,y:y});});
   return pts;
-}
-function klvFlagSaved(){
-  var m=cur();if(!m) return;
-  var sug=[],n=0;
-  m.events.forEach(function(e){
-    if(e.type!=='shot'||e.ot!=null||!e.bt) return;
-    var pts=btPts(e);if(!pts) return;n++;
-    var pf=e.kind==='penalty'||e.kind==='freepass',v=klvExpected(m,e),w=pf?[v-1,v+(e.kind==='penalty'?20:12)]:[v-6,v+6];
-    var ap=pf?klvApex(pts,w[0],w[1],0.25,true):klvApex(pts,w[0],w[1],0.16,false);
-    sug.push({id:e.id,dt:ap==null?null:ap-v});
-  });
-  KLV.sug=sug;klvSugShow();klvUi();
-  var found=sug.filter(function(s){return s.dt!=null;}),rows=klvSugRows(),flagged=rows.filter(function(r){return r.tick;}).length;
-  var ds=found.map(function(s){return s.dt;}).sort(function(a,b){return a-b;}),med=ds.length?ds[Math.floor(ds.length/2)]:0;
-  var txt='Looked at '+n+' shots with saved ball positions and found the top of the shot in '+found.length+'. '+flagged+' look mistimed (by 2 seconds or more; 1 second for penalties and free passes).';
-  if(found.length>=5&&Math.abs(med)>=2) txt+=' Most shots are about '+Math.abs(Math.round(med))+' seconds '+(med<0?'late':'early')+' in the log, so step 1 (re-time the log) may fit better than moving shots one by one.';
-  klvMsg(txt,false);
 }
 /* ----- panel state ----- */
 function klvUi(){
@@ -2478,12 +2435,10 @@ function klvUi(){
   var tm=tsMode(m);$('#tsBox').hidden=!tm;$('#chkLocal').hidden=false;
   $('#chkLocalHint').hidden=false;tsRender();
   var busy=KLV.on;
-  $('#rtGo').textContent=busy?'Stop':'Find the video offset';$('#rtGo').disabled=!have.length&&!busy;
-  $('#sgGo').textContent=busy?'Stop':'Look for shot times';$('#sgGo').disabled=!have.length&&!busy;
   var nbt=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&e.bt;}).length;
-  $('#sgSaved').disabled=busy||!nbt;$('#sgSavedNote').textContent=nbt?'Saved ball positions for '+nbt+' shots.':'No saved ball positions yet: they are found while you track with a video file.';
-  $('#rtApply').hidden=!(KLV.res&&!KLV.res.weak&&(KLV.res[1]&&KLV.res[1].wins||KLV.res[2]&&KLV.res[2].wins))||busy;
-  $('#sgApply').hidden=!(KLV.sug&&klvSugRows().length)||busy;
+  var nb2=m.events.filter(function(e){return e.type==='shot'&&e.ot==null&&e.bt&&klvHalf(m.config,e)===2;}).length;$('#chkGo').textContent=busy?'Stop':'Check times';$('#chkGo').disabled=!busy&&!have.length&&!nbt;$('#sgSavedNote').textContent=nbt?'Saved ball positions for '+nbt+' shots'+(sp?' ('+(nbt-nb2)+' in the 1st half, '+nb2+' in the 2nd)':'')+'.':'No saved ball positions yet: they are found while you track with a video file.';
+  var offOk=!!(KLV.res&&!KLV.res.weak&&(KLV.res[1]&&KLV.res[1].wins||KLV.res[2]&&KLV.res[2].wins));
+  $('#chkApply').hidden=!(offOk||(KLV.sug&&klvSugRows().length))||busy;
   var any=m.events.some(function(e){return e.t0!=null;});
   $('#chkRestore').hidden=!any;
 }
@@ -2491,11 +2446,8 @@ function klvRender(){klvUi();}
 function klvPick(k,f){var m=cur();if(!m||!f) return;var mt=m.config.meta=m.config.meta||{};vfiles[k]=f;mt['fn'+k]=f.name.slice(0,120);save();var vb=$('#vidBox');if(vb) vb.dataset.vid='';KLV.res=null;KLV.sug=null;renderVideo();klvRetimeShow();klvSugShow();}
 $('#chkF1').addEventListener('change',function(e){klvPick(1,e.target.files&&e.target.files[0]);});
 $('#chkF2').addEventListener('change',function(e){klvPick(2,e.target.files&&e.target.files[0]);});
-$('#rtGo').addEventListener('click',klvRetime);
-$('#sgGo').addEventListener('click',klvSuggest);
-$('#sgSaved').addEventListener('click',klvFlagSaved);
-$('#rtApply').addEventListener('click',klvApplyRetime);
-$('#sgApply').addEventListener('click',klvApplySug);
+$('#chkGo').addEventListener('click',klvCheck);
+$('#chkApply').addEventListener('click',klvApplyCheck);
 $('#chkRestore').addEventListener('click',klvRestore);
 $('#tsList').addEventListener('click',tsClick);
 $('#tsApply').addEventListener('click',tsApply);
@@ -3161,7 +3113,7 @@ function syncSetup(){
   syncTeamPick();
   [['#fxDate','date'],['#fxWeek','week']].forEach(function(x){var i=$(x[0]);if(i&&document.activeElement!==i) i.value=draft.meta[x[1]]||'';});
   syncVideoSetup();
-  (function(){var lg=draft.meta.league||'',sl=$('#fxLeague'),ot=$('#fxLeagueOther');if(!sl||!ot) return;var inList=LEAGUES.indexOf(lg)>=0,other=!!lg&&!inList||ui.leagueOther;sl.value=other?'__other':(inList?lg:'');ot.hidden=!other;if(other&&document.activeElement!==ot) ot.value=lg;})();
+  (function(){var lg=draft.meta.league||'',sl=$('#fxLeague'),ot=$('#fxLeagueOther');if(!sl||!ot) return;var cty=LEAGUE_COUNTRY[lg]||ui.country||countryPref(),cs=$('#fxCountry');ui.country=cty;if(cs) cs.value=cty;if(leagueCountryShown!==cty) fillLeagues(cty);var inList=LEAGUES.indexOf(lg)>=0,other=!!lg&&!inList||ui.leagueOther;sl.value=other?'__other':(inList?lg:'');ot.hidden=!other;if(other&&document.activeElement!==ot) ot.value=lg;})();
   syncCounts();
   var lock=setupLocked();
   setPressed('[data-len]','data-len',function(v){return Number(v)===draft.length;});
@@ -3219,8 +3171,9 @@ function syncTeamsUi(){
   qa('[data-vdm]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.vdm===ui.vdMode?'true':'false');});
   var vm=ui.vdMode,body=$('#vdBody'),g=document.querySelector('.vdgrid'),why=$('#vdWhy');
   if(body) body.hidden=!(vm==='yt'||vm==='file');
+  var bb=$('#vdBgBox');if(bb){bb.hidden=vm!=='file';$('#vdBg').checked=bgPref();}
   if(g){g.classList.toggle('m-yt',vm==='yt');g.classList.toggle('m-file',vm==='file');}
-  if(why) why.textContent=vm==='file'?'A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later (it finds how far the logged times drift from the video and suggests better shot times). The file never leaves your computer, and you choose it again each time you open Korf Log.':(vm==='yt'?'The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.':(vm==='none'?'No video. You can add one later from Match setup.':'Choose one of the options above.'));
+  if(why) why.textContent=vm==='file'?'A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later, which suggests better shot times. The file never leaves your computer, and you choose it again each time you open Korf Log.':(vm==='yt'?'The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.':(vm==='none'?'No video. You can add one later from Match setup.':'Choose one of the options above.'));
 }
 function lookHTML(){
   var h='';
@@ -3354,6 +3307,7 @@ sv.addEventListener('input',function(e){
     if(t.dataset.f==='no'){t.value=t.value.replace(/\D/g,'').slice(0,2);}
     p[t.dataset.f]=t.value;
   }
+  else if(t.id==='fxCountry'){ui.country=t.value;try{localStorage.setItem('klCountry',t.value);}catch(x){}if(LEAGUE_COUNTRY[draft.meta.league||'']&&LEAGUE_COUNTRY[draft.meta.league]!==t.value){draft.meta.league='';ui.leagueOther=false;}if(typeof syncSetup==='function') syncSetup();}
   else if(t.id==='fxLeague'){if(t.value==='__other'){ui.leagueOther=true;draft.meta.league=($('#fxLeagueOther').value||'').trim();}else{ui.leagueOther=false;draft.meta.league=t.value;}if(typeof syncSetup==='function') syncSetup();}
   else if(t.id==='fxLeagueOther'){draft.meta.league=t.value;}
   else if(t.id==='fxDate'){draft.meta.date=t.value;}
@@ -3421,7 +3375,8 @@ function renderStart(){
   var ms=db.matches.filter(function(m){return !m.sample;});
   $('#contList').innerHTML=ms.length?ms.map(function(m){
     var mt=(m.config&&m.config.meta)||{};
-    return '<button type="button" class="btn" data-pick="'+esc(m.id)+'"><b>'+esc(m.home+' v '+m.away)+'</b><span>'+esc((mt.date||'')+(mt.date?' · ':'')+m.events.length+' events')+'</span></button>';}).join(''):'<p class="note">No matches saved in this browser yet. Open a backup file below.</p>';
+    var sure=ui.delSaved===m.id;
+    return '<div class="controw"><button type="button" class="btn" data-pick="'+esc(m.id)+'"><b>'+esc(m.home+' v '+m.away)+'</b><span>'+esc((mt.date||'')+(mt.date?' · ':'')+m.events.length+' events')+'</span></button><button type="button" class="btn'+(sure?' danger':'')+'" data-delsaved="'+esc(m.id)+'" aria-label="Delete the saved match '+esc(m.home+' v '+m.away)+'">'+(sure?'Tap again to delete':'Delete')+'</button></div>';}).join(''):'<p class="note">No matches saved in this browser yet. Open a backup file below.</p>';
   var ak=ui.askId&&matchById(ui.askId);
   $('#askCard').hidden=!ak;
   if(ak) $('#askTitle').textContent=ak.home+' v '+ak.away;
@@ -3429,7 +3384,20 @@ function renderStart(){
 $('#stNew').addEventListener('click',function(){openSetup('new');});
 $('#stCont').addEventListener('click',function(){ui.startMode='cont';ui.askId=null;renderStart();});
 $('#stBack').addEventListener('click',function(){ui.view='track';ui.askId=null;render();});
+var delSavedTimer=null;
+function deleteSaved(id){
+  if(ui.delSaved!==id){ui.delSaved=id;clearTimeout(delSavedTimer);delSavedTimer=setTimeout(function(){ui.delSaved=null;renderStart();},4000);renderStart();return;}
+  ui.delSaved=null;clearTimeout(delSavedTimer);
+  var m=matchById(id);if(!m) return;
+  var wasCur=db.current===id;
+  db.matches=db.matches.filter(function(x){return x!==m;});
+  if(!db.matches.length) db.matches.push(sampleMatch());
+  if(wasCur||!matchById(db.current)){pauseQuiet();db.current=db.matches[0].id;ui.review=null;ui.popup=null;ui.restore=null;ui.confirmDel=false;resetFilters();loadClock();}
+  if(ui.askId===id) ui.askId=null;
+  save();renderStart();
+}
 $('#contList').addEventListener('click',function(e){
+  var d=e.target.closest('[data-delsaved]');if(d){deleteSaved(d.dataset.delsaved);return;}
   var b=e.target.closest('[data-pick]');if(!b) return;
   pauseQuiet();db.current=b.dataset.pick;ui.review=null;ui.popup=null;ui.restore=null;ui.confirmDel=false;resetFilters();loadClock();save();
   ui.askId=db.current;renderStart();
@@ -3560,10 +3528,36 @@ function setMax(on){
     if(ui.max&&document.documentElement.requestFullscreen&&!document.fullscreenElement){var pr=document.documentElement.requestFullscreen();if(pr&&pr.catch) pr.catch(function(){});}
     if(!ui.max&&document.fullscreenElement&&document.exitFullscreen){var pr2=document.exitFullscreen();if(pr2&&pr2.catch) pr2.catch(function(){});}
   }catch(e){}
-  $('#maxBtn').textContent=ui.max?'Exit maximised':'Maximise';
+  $('#maxBtn').textContent=ui.max?'Exit maximised':'Maximise';if(typeof vzWant==='number') vzApply();
   setTimeout(resize,30);setTimeout(resize,250);
 }
 $('#maxBtn').addEventListener('click',function(){setMax(!ui.max);});
+/* Video size: 100% to 200% in steps of 10%. Remembered in this browser only. */
+var vzPct=100,vzWant=100;try{var vzs=parseInt(localStorage.getItem('klVz'),10);if(vzs>=100&&vzs<=200) vzWant=Math.round(vzs/10)*10;}catch(e){}
+/* The video can only grow as far as the space allows, so the + button stops there and the court never shrinks for nothing. */
+function vzLimit(){
+  var lim=2,mx=document.body.classList.contains('max'),box=document.getElementById('vidBox');
+  if(!document.body.classList.contains('hasvid')) return 200;
+  if(mx){
+    var mn=document.querySelector('.main'),bar=document.getElementById('maxbar'),H=Math.min(window.innerHeight,window.innerHeight)-84;
+    if(mn&&bar&&bar.offsetWidth){var colW=mn.clientWidth-bar.offsetWidth-12;lim=Math.min(.6/.36,colW/(.64*H));}
+  }else{
+    var mn2=document.querySelector('.main'),lf=document.querySelector('.col.left'),rs=document.querySelector('.col.rest'),base=Math.max(340,window.innerHeight-215);
+    if(mn2&&lf&&rs){var side=rs.offsetTop<lf.offsetTop+lf.offsetHeight-5&&rs.offsetLeft>lf.offsetLeft;var gp=parseFloat(getComputedStyle(mn2).columnGap)||0;
+      var availW=side?mn2.clientWidth-rs.offsetWidth-gp:mn2.clientWidth;if(availW>0) lim=availW/base;}
+  }
+  return Math.max(100,Math.min(200,Math.floor(lim*10+1e-6)*10));
+}
+function vzApply(){
+  var cap=vzLimit();vzPct=Math.max(100,Math.min(cap,vzWant));
+  document.body.style.setProperty('--vz',String(vzPct/100));
+  document.querySelectorAll('.vszVal').forEach(function(b){b.textContent=vzPct+'%';});
+  document.querySelectorAll('[data-vz="-1"]').forEach(function(b){b.disabled=vzPct<=100;});
+  document.querySelectorAll('[data-vz="1"]').forEach(function(b){b.disabled=vzPct>=cap;});
+}
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-vz]');if(!b) return;vzWant=Math.max(100,Math.min(200,vzPct+10*Number(b.dataset.vz)));try{localStorage.setItem('klVz',String(vzWant));}catch(x){}vzApply();});
+window.addEventListener('resize',vzApply);
+vzApply();
 $('#maxExit').addEventListener('click',function(){setMax(false);});
 $('#maxUndo').addEventListener('click',undo);
 $('#newMatch').addEventListener('click',openStart);
