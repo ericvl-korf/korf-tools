@@ -1,0 +1,10088 @@
+[
+ {
+  "key": "(1st half)",
+  "message": "(1st half)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "(finds the ball in your video as soon as you tick this; takes a few minutes)",
+  "message": "(finds the ball in your video as soon as you tick this; takes a few minutes)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "(foul)",
+  "message": "(foul)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1521
+   ]
+  }
+ },
+ {
+  "key": "(if separate)",
+  "message": "(if separate)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642,
+    1642
+   ]
+  }
+ },
+ {
+  "key": "(injured)",
+  "message": "(injured)",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1183,
+    1468
+   ],
+   "lab": [
+    458
+   ]
+  }
+ },
+ {
+  "key": "(none)",
+  "message": "(none)",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1183,
+    1468
+   ],
+   "lab": [
+    458
+   ]
+  }
+ },
+ {
+  "key": "(passes so far: {attackPasses}).",
+  "message": "(passes so far: {attackPasses}).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1715
+   ]
+  }
+ },
+ {
+  "key": "(some are in your selection)",
+  "message": "(some are in your selection)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1700
+   ]
+  }
+ },
+ {
+  "key": "(some values guessed: older files do not record them)",
+  "message": "(some values guessed: older files do not record them)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    870
+   ]
+  }
+ },
+ {
+  "key": "(the log only remembers its name, {names}, so choose it again each time you open Korf Lab).",
+  "message": "(the log only remembers its name, {names}, so choose it again each time you open Korf Lab).",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1699
+   ]
+  }
+ },
+ {
+  "key": "(the rest came from your log)",
+  "message": "(the rest came from your log)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1981
+   ]
+  }
+ },
+ {
+  "key": "({all} events are past the end of the video and stay as they are)",
+  "message": "({all} events are past the end of the video and stay as they are)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2143
+   ]
+  }
+ },
+ {
+  "key": "({nbt} in the 1st half, {nb2} in the 2nd)",
+  "message": "({nbt} in the 1st half, {nb2} in the 2nd)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2430
+   ]
+  }
+ },
+ {
+  "key": "({skipped} skipped because the video would not read there)",
+  "message": "({skipped} skipped because the video would not read there)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2403
+   ]
+  }
+ },
+ {
+  "key": "+ Add player",
+  "message": "+ Add player",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2788
+   ]
+  }
+ },
+ {
+  "key": "+ Add substitute",
+  "message": "+ Add substitute",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2792
+   ]
+  }
+ },
+ {
+  "key": ", or a logged turnover",
+  "message": ", or a logged turnover",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    917
+   ]
+  }
+ },
+ {
+  "key": "1st",
+  "message": "1st",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2063,
+    2287,
+    2307,
+    2971,
+    2976,
+    2977,
+    3021
+   ],
+   "lab": [
+    1667,
+    1683,
+    1729,
+    1820,
+    2050,
+    2055
+   ]
+  }
+ },
+ {
+  "key": "1st half",
+  "message": "1st half",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    964,
+    965,
+    2131,
+    2842,
+    2846,
+    2937
+   ],
+   "lab": [
+    441,
+    1035,
+    1064,
+    1677,
+    2317
+   ]
+  }
+ },
+ {
+  "key": "1st half YouTube link",
+  "message": "1st half YouTube link",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    3038
+   ],
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "1st half starts at (video time)",
+  "message": "1st half starts at (video time)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "1st half video file",
+  "message": "1st half video file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2421,
+    3036
+   ]
+  }
+ },
+ {
+  "key": "2nd",
+  "message": "2nd",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2063,
+    2287,
+    2307,
+    2971,
+    2976,
+    2977,
+    3021
+   ],
+   "lab": [
+    1667,
+    1683,
+    1729,
+    1820,
+    2050,
+    2055
+   ]
+  }
+ },
+ {
+  "key": "2nd half",
+  "message": "2nd half",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    964,
+    965,
+    2131,
+    2937
+   ],
+   "lab": [
+    441,
+    1035,
+    1064,
+    1677,
+    2317
+   ]
+  }
+ },
+ {
+  "key": "2nd half YouTube link",
+  "message": "2nd half YouTube link",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "2nd half file",
+  "message": "2nd half file",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "2nd half starts at (video time)",
+  "message": "2nd half starts at (video time)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "3rd quarter",
+  "message": "3rd quarter",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2937
+   ]
+  }
+ },
+ {
+  "key": "<a href=\"mailto:eric.vanlooy1982@gmail.com?subject=Korf%20match%20tracking%20request&amp;body=Hi%20Eric%2C%0A%0AI%27d%20like%20to%20book%20match%20tracking.%0A%0ATracking%20option%20%28basic%20%C2%A35%20or%20full%20%C2%A310%29%3A%0ASingle%20match%20or%20season%20agreement%20%28min.%2010%20matches%2C%2020%25%20off%29%3F%0AClub%3A%0ALeague%3A%0ATeam%20name%3A%0AOpponent%20name%3A%0AMatch%20date%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20our%20team%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20opponent%20%28if%20known%29%3A%0A%0AYouTube%20link%28s%29%20to%20the%20match%20video%20%28one%20per%20half%20if%20it%20is%20split%29%3A%0A%0AThanks%21\">Email Eric</a> to get started: the email is pre-filled with what I need (player names and the YouTube link).",
+  "message": "<a href=\"mailto:eric.vanlooy1982@gmail.com?subject=Korf%20match%20tracking%20request&amp;body=Hi%20Eric%2C%0A%0AI%27d%20like%20to%20book%20match%20tracking.%0A%0ATracking%20option%20%28basic%20%C2%A35%20or%20full%20%C2%A310%29%3A%0ASingle%20match%20or%20season%20agreement%20%28min.%2010%20matches%2C%2020%25%20off%29%3F%0AClub%3A%0ALeague%3A%0ATeam%20name%3A%0AOpponent%20name%3A%0AMatch%20date%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20our%20team%3A%0A%0APlayer%20names%20%28line-up%20and%20subs%29%2C%20opponent%20%28if%20known%29%3A%0A%0AYouTube%20link%28s%29%20to%20the%20match%20video%20%28one%20per%20half%20if%20it%20is%20split%29%3A%0A%0AThanks%21\">Email Eric</a> to get started: the email is pre-filled with what I need (player names and the YouTube link).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    451
+   ]
+  }
+ },
+ {
+  "key": "<b>Check times</b> looks at the ball around each shot and works out the exact time of the top of its flight. It uses the ball positions saved while you tracked and, for shots that have none, finds the ball in the video. Penalties and free passes are logged at the referee's call, so their time is that of the shot that follows. It then lists the shots whose logged time is off, with the time they would move to; untick any you do not want to move. Nothing changes until you press <b>Apply changes</b>.",
+  "message": "<b>Check times</b> looks at the ball around each shot and works out the exact time of the top of its flight. It uses the ball positions saved while you tracked and, for shots that have none, finds the ball in the video. Penalties and free passes are logged at the referee's call, so their time is that of the shot that follows. It then lists the shots whose logged time is off, with the time they would move to; untick any you do not want to move. Nothing changes until you press <b>Apply changes</b>.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    572
+   ]
+  }
+ },
+ {
+  "key": "<b>Note:</b> shot map markers are plotted on a simulated 40 × 20 m court, using each shot's distance and angle from the post.",
+  "message": "<b>Note:</b> shot map markers are plotted on a simulated 40 × 20 m court, using each shot's distance and angle from the post.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    315
+   ]
+  }
+ },
+ {
+  "key": "<b>£5 per match*, basic tracking:</b> line-ups, shots and goals, without passes and shot types.<br><b>£10 per match*, full tracking:</b> line-ups, shots and goals, plus every pass and the type of each shot.",
+  "message": "<b>£5 per match*, basic tracking:</b> line-ups, shots and goals, without passes and shot types.<br><b>£10 per match*, full tracking:</b> line-ups, shots and goals, plus every pass and the type of each shot.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    451
+   ]
+  }
+ },
+ {
+  "key": "A highlight video is already being made. Stop it first.",
+  "message": "A highlight video is already being made. Stop it first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1723
+   ]
+  }
+ },
+ {
+  "key": "A highlight video is being made. Stop it first.",
+  "message": "A highlight video is being made. Stop it first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1726
+   ]
+  }
+ },
+ {
+  "key": "A time out is running. Press Time out end when play restarts.",
+  "message": "A time out is running. Press Time out end when play restarts.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1958
+   ]
+  }
+ },
+ {
+  "key": "A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later, which suggests better shot times. The file never leaves your computer, and you choose it again each time you open Korf Log.",
+  "message": "A video file on this computer plays in Korf Log and stays in step with the clock. It also lets you run Check times against the video later, which suggests better shot times. The file never leaves your computer, and you choose it again each time you open Korf Log.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3143
+   ]
+  }
+ },
+ {
+  "key": "Add player",
+  "message": "Add player",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1360,
+    1366
+   ]
+  }
+ },
+ {
+  "key": "Add player names for",
+  "message": "Add player names for",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    666
+   ]
+  }
+ },
+ {
+  "key": "Add the video times and a YouTube link or a video file to build a reel from the filtered shots.",
+  "message": "Add the video times and a YouTube link or a video file to build a reel from the filtered shots.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1716
+   ]
+  }
+ },
+ {
+  "key": "Add the {choice} half {choice2} above to preview it here.",
+  "message": "Add the {choice} half {choice2} above to preview it here.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2971
+   ]
+  }
+ },
+ {
+  "key": "All",
+  "message": "All",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1348,
+    1348
+   ]
+  }
+ },
+ {
+  "key": "All attacks",
+  "message": "All attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1633
+   ]
+  }
+ },
+ {
+  "key": "All matches",
+  "message": "All matches",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2477
+   ]
+  }
+ },
+ {
+  "key": "All matches ({ldCount})",
+  "message": "All matches ({ldCount})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    598
+   ]
+  }
+ },
+ {
+  "key": "All matches: court {L} × {L2} m · {D} minutes · {p}",
+  "message": "All matches: court {L} × {L2} m · {D} minutes · {p}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    869
+   ]
+  }
+ },
+ {
+  "key": "All players",
+  "message": "All players",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1349
+   ]
+  }
+ },
+ {
+  "key": "All players with at least 1 shot",
+  "message": "All players with at least 1 shot",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1266
+   ]
+  }
+ },
+ {
+  "key": "All players with time in attack",
+  "message": "All players with time in attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1272,
+    1273
+   ]
+  }
+ },
+ {
+  "key": "All players, split by shot type",
+  "message": "All players, split by shot type",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1263,
+    1264
+   ]
+  }
+ },
+ {
+  "key": "All players: time in the attacking and defending zones",
+  "message": "All players: time in the attacking and defending zones",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1271
+   ]
+  }
+ },
+ {
+  "key": "All shooters",
+  "message": "All shooters",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1628
+   ]
+  }
+ },
+ {
+  "key": "All shots",
+  "message": "All shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "All shots are folded onto one half court. 0° is straight in front of the post facing the centre line, turning clockwise. The court size is read from each file (40 × 20 m is assumed for older files that do not say). Division and gender belong to the shooter, so shots without a named player drop out when either is filtered.{choice}",
+  "message": "All shots are folded onto one half court. 0° is straight in front of the post facing the centre line, turning clockwise. The court size is read from each file (40 × 20 m is assumed for older files that do not say). Division and gender belong to the shooter, so shots without a named player drop out when either is filtered.{choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1044
+   ]
+  }
+ },
+ {
+  "key": "All shots of the whole selection, whatever filter is set on screen.",
+  "message": "All shots of the whole selection, whatever filter is set on screen.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1081,
+    1085
+   ]
+  }
+ },
+ {
+  "key": "All teams",
+  "message": "All teams",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    538
+   ]
+  }
+ },
+ {
+  "key": "All types",
+  "message": "All types",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1629
+   ]
+  }
+ },
+ {
+  "key": "All {choice} shots of the whole selection.{choice2}",
+  "message": "All {choice} shots of the whole selection.{choice2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1084
+   ]
+  }
+ },
+ {
+  "key": "Att.",
+  "message": "Att.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1348
+   ]
+  }
+ },
+ {
+  "key": "Attack",
+  "message": "Attack",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2528
+   ],
+   "lab": [
+    1633,
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Attack keeps the ball",
+  "message": "Attack keeps the ball",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2528
+   ]
+  }
+ },
+ {
+  "key": "Attack no.",
+  "message": "Attack no.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1634
+   ]
+  }
+ },
+ {
+  "key": "Attack replay",
+  "message": "Attack replay",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2492
+   ]
+  }
+ },
+ {
+  "key": "Attack {pi}{n} of {itemCount} ·",
+  "message": "Attack {pi}{n} of {itemCount} ·",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2466
+   ]
+  }
+ },
+ {
+  "key": "Attack {value}",
+  "message": "Attack {value}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1667
+   ]
+  }
+ },
+ {
+  "key": "Attack, pass and turnover figures are left out because these files do not record passes or turnovers.",
+  "message": "Attack, pass and turnover figures are left out because these files do not record passes or turnovers.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    917
+   ]
+  }
+ },
+ {
+  "key": "Attacking and defensive rebounds collected",
+  "message": "Attacking and defensive rebounds collected",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1267
+   ]
+  }
+ },
+ {
+  "key": "Attacking direction at the start",
+  "message": "Attacking direction at the start",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    789
+   ]
+  }
+ },
+ {
+  "key": "Attacking direction at the start · {teamLabel}",
+  "message": "Attacking direction at the start · {teamLabel}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2929
+   ]
+  }
+ },
+ {
+  "key": "Attacking rebound",
+  "message": "Attacking rebound",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
+   ]
+  }
+ },
+ {
+  "key": "Attacking rebound %",
+  "message": "Attacking rebound %",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "Attacking rebounds",
+  "message": "Attacking rebounds",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1107,
+    1240
+   ]
+  }
+ },
+ {
+  "key": "Available for attacks that ended in a goal",
+  "message": "Available for attacks that ended in a goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2592
+   ]
+  }
+ },
+ {
+  "key": "Average shot distance",
+  "message": "Average shot distance",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1240
+   ]
+  }
+ },
+ {
+  "key": "Average {avg}%",
+  "message": "Average {avg}%",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1285
+   ]
+  }
+ },
+ {
+  "key": "Avg attack length",
+  "message": "Avg attack length",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1107
+   ]
+  }
+ },
+ {
+  "key": "Avg shot distance",
+  "message": "Avg shot distance",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1346
+   ]
+  }
+ },
+ {
+  "key": "Awarded to {teamName}",
+  "message": "Awarded to {teamName}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2528,
+    2528
+   ]
+  }
+ },
+ {
+  "key": "Away",
+  "message": "Away",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1127,
+    1164,
+    1520,
+    1520,
+    2762,
+    2782,
+    2854,
+    3069,
+    3195,
+    3270
+   ],
+   "lab": [
+    434,
+    808
+   ]
+  }
+ },
+ {
+  "key": "Away team",
+  "message": "Away team",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2780
+   ]
+  }
+ },
+ {
+  "key": "Away team name",
+  "message": "Away team name",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    499
+   ]
+  }
+ },
+ {
+  "key": "Back",
+  "message": "Back",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Back to the full view",
+  "message": "Back to the full view",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    504
+   ]
+  }
+ },
+ {
+  "key": "Back to the start screen",
+  "message": "Back to the start screen",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    455
+   ]
+  }
+ },
+ {
+  "key": "Back to the tracker",
+  "message": "Back to the tracker",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3341
+   ]
+  }
+ },
+ {
+  "key": "Backup",
+  "message": "Backup",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3545
+   ]
+  }
+ },
+ {
+  "key": "Ball finder: graphics chip not used ({gpuErr})",
+  "message": "Ball finder: graphics chip not used ({gpuErr})",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2175
+   ]
+  }
+ },
+ {
+  "key": "Ball out (attack keeps)",
+  "message": "Ball out (attack keeps)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1519
+   ]
+  }
+ },
+ {
+  "key": "Ball out (defence)",
+  "message": "Ball out (defence)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1520
+   ]
+  }
+ },
+ {
+  "key": "Ball out · attack",
+  "message": "Ball out · attack",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2528
+   ]
+  }
+ },
+ {
+  "key": "Ball out · defence",
+  "message": "Ball out · defence",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2529
+   ]
+  }
+ },
+ {
+  "key": "Ball out, attack keeps it",
+  "message": "Ball out, attack keeps it",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2415
+   ]
+  }
+ },
+ {
+  "key": "Ball out, defence gets it",
+  "message": "Ball out, defence gets it",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2415
+   ]
+  }
+ },
+ {
+  "key": "Ball out, the attack keeps it",
+  "message": "Ball out, the attack keeps it",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2460
+   ]
+  }
+ },
+ {
+  "key": "Ball out, the defence gets it",
+  "message": "Ball out, the defence gets it",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2460
+   ]
+  }
+ },
+ {
+  "key": "Ball tracking is on (turn it off in Match setup, step 2). {t}",
+  "message": "Ball tracking is on (turn it off in Match setup, step 2). {t}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2404
+   ]
+  }
+ },
+ {
+  "key": "Bar chart",
+  "message": "Bar chart",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    689
+   ]
+  }
+ },
+ {
+  "key": "Batch finished: {itemCount} reports sent to the print window.",
+  "message": "Batch finished: {itemCount} reports sent to the print window.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1457
+   ]
+  }
+ },
+ {
+  "key": "Batch stopped after {i} of {itemCount} reports.",
+  "message": "Batch stopped after {i} of {itemCount} reports.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1457
+   ]
+  }
+ },
+ {
+  "key": "Before you continue",
+  "message": "Before you continue",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3058
+   ]
+  }
+ },
+ {
+  "key": "Best 10",
+  "message": "Best 10",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "Best 15",
+  "message": "Best 15",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "Best 20",
+  "message": "Best 20",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "Best 30",
+  "message": "Best 30",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "Best 5",
+  "message": "Best 5",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "Best clips",
+  "message": "Best clips",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1630
+   ]
+  }
+ },
+ {
+  "key": "Bigger video",
+  "message": "Bigger video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    526,
+    533
+   ]
+  }
+ },
+ {
+  "key": "Both divisions",
+  "message": "Both divisions",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1626
+   ]
+  }
+ },
+ {
+  "key": "Both teams",
+  "message": "Both teams",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1625
+   ]
+  }
+ },
+ {
+  "key": "Both teams in each match. * means the file does not record this, so it is assumed or inferred.",
+  "message": "Both teams in each match. * means the file does not record this, so it is assumed or inferred.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1143
+   ]
+  }
+ },
+ {
+  "key": "CENTRE LINE",
+  "message": "CENTRE LINE",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2652
+   ],
+   "lab": [
+    762
+   ]
+  }
+ },
+ {
+  "key": "CSV",
+  "message": "CSV",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3562
+   ]
+  }
+ },
+ {
+  "key": "CSV file",
+  "message": "CSV file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3545
+   ]
+  }
+ },
+ {
+  "key": "Cancel",
+  "message": "Cancel",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3166
+   ]
+  }
+ },
+ {
+  "key": "Captions",
+  "message": "Captions",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Captions apply to both the highlight video and the ffmpeg script. Individual clips applies to the ffmpeg script only. The Portrait 10:16 frame and Crop follows the ball apply to both. Ticking Crop follows the ball needs the Portrait option and your video file: Korf Lab then finds the ball in the filtered clips on this computer straight away (a few minutes, and a 20 MB ball finder is downloaded the first time). Unticking it stops the search; change the filters and tick it again to find the ball in the new clips. Make highlight video makes one video: 1280 × 720, or 720 × 1152 portrait when Portrait 10:16 is ticked.",
+  "message": "Captions apply to both the highlight video and the ffmpeg script. Individual clips applies to the ffmpeg script only. The Portrait 10:16 frame and Crop follows the ball apply to both. Ticking Crop follows the ball needs the Portrait option and your video file: Korf Lab then finds the ball in the filtered clips on this computer straight away (a few minutes, and a 20 MB ball finder is downloaded the first time). Unticking it stops the search; change the filters and tick it again to find the ball in the new clips. Make highlight video makes one video: 1280 × 720, or 720 × 1152 portrait when Portrait 10:16 is ticked.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Changed the time of {nShot} shots.",
+  "message": "Changed the time of {nShot} shots.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2251
+   ]
+  }
+ },
+ {
+  "key": "Chart",
+  "message": "Chart",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    680
+   ]
+  }
+ },
+ {
+  "key": "Check before you continue",
+  "message": "Check before you continue",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3061
+   ]
+  }
+ },
+ {
+  "key": "Check the times against your video here. When you are done, press Export match above the pitch.",
+  "message": "Check the times against your video here. When you are done, press Export match above the pitch.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3412
+   ]
+  }
+ },
+ {
+  "key": "Check times",
+  "message": "Check times",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2252,
+    2430
+   ]
+  }
+ },
+ {
+  "key": "Check times now",
+  "message": "Check times now",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3393
+   ]
+  }
+ },
+ {
+  "key": "Choose Transfer to attack once the ball is in their attacking half.",
+  "message": "Choose Transfer to attack once the ball is in their attacking half.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1713
+   ]
+  }
+ },
+ {
+  "key": "Choose a video file on this computer first.",
+  "message": "Choose a video file on this computer first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1723
+   ]
+  }
+ },
+ {
+  "key": "Choose again when tracking: {n}",
+  "message": "Choose again when tracking: {n}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3037
+   ]
+  }
+ },
+ {
+  "key": "Choose again: {fn1}",
+  "message": "Choose again: {fn1}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "Choose again: {fn2}",
+  "message": "Choose again: {fn2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "Choose again: {n}",
+  "message": "Choose again: {n}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2422
+   ]
+  }
+ },
+ {
+  "key": "Choose one of the options above.",
+  "message": "Choose one of the options above.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3143
+   ]
+  }
+ },
+ {
+  "key": "Choose or type the league.",
+  "message": "Choose or type the league.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2287
+   ]
+  }
+ },
+ {
+  "key": "Choose the match video file above. It stays on this computer.",
+  "message": "Choose the match video file above. It stays on this computer.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2424
+   ]
+  }
+ },
+ {
+  "key": "Choose the match video file first (Match video, above the pitch).",
+  "message": "Choose the match video file first (Match video, above the pitch).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2061
+   ]
+  }
+ },
+ {
+  "key": "Choose the video file again: {fnh} (a file has to be chosen each time Korf Log is opened).",
+  "message": "Choose the video file again: {fnh} (a file has to be chosen each time Korf Log is opened).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1889
+   ]
+  }
+ },
+ {
+  "key": "Choose the video file and the video start times first.",
+  "message": "Choose the video file and the video start times first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1935
+   ]
+  }
+ },
+ {
+  "key": "Choose the video file on this computer first.",
+  "message": "Choose the video file on this computer first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1724
+   ]
+  }
+ },
+ {
+  "key": "Choose the video file on this computer first. The log only remembers the file name ({names}), so pick it again each time you open the page.",
+  "message": "Choose the video file on this computer first. The log only remembers the file name ({names}), so pick it again each time you open the page.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1723
+   ]
+  }
+ },
+ {
+  "key": "Choose the video file on this computer first: the ball is found in your video.",
+  "message": "Choose the video file on this computer first: the ball is found in your video.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1725
+   ]
+  }
+ },
+ {
+  "key": "Choose your video file{choice}",
+  "message": "Choose your video file{choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1699
+   ]
+  }
+ },
+ {
+  "key": "Click anywhere on the court for each pass in this attack{choice}",
+  "message": "Click anywhere on the court for each pass in this attack{choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1715
+   ]
+  }
+ },
+ {
+  "key": "Click on the court to count the first pass.",
+  "message": "Click on the court to count the first pass.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1800
+   ]
+  }
+ },
+ {
+  "key": "Click on the court to set where the first pass starts.",
+  "message": "Click on the court to set where the first pass starts.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1800
+   ]
+  }
+ },
+ {
+  "key": "Click where the ball is first held to set the start of the pass.",
+  "message": "Click where the ball is first held to set the start of the pass.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1716
+   ]
+  }
+ },
+ {
+  "key": "Click where the pass is received; that spot starts the next pass.",
+  "message": "Click where the pass is received; that spot starts the next pass.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1716
+   ]
+  }
+ },
+ {
+  "key": "Clip {i}{n} of {n2} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}",
+  "message": "Clip {i}{n} of {n2} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1729
+   ]
+  }
+ },
+ {
+  "key": "Clock speed",
+  "message": "Clock speed",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    496
+   ]
+  }
+ },
+ {
+  "key": "Colour by",
+  "message": "Colour by",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Column chart",
+  "message": "Column chart",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    714
+   ]
+  }
+ },
+ {
+  "key": "Confirm swap",
+  "message": "Confirm swap",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1360,
+    1366
+   ]
+  }
+ },
+ {
+  "key": "Continue a previous match",
+  "message": "Continue a previous match",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    595
+   ]
+  }
+ },
+ {
+  "key": "Continue anyway",
+  "message": "Continue anyway",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3061
+   ]
+  }
+ },
+ {
+  "key": "Copied {itemCount} lines.",
+  "message": "Copied {itemCount} lines.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2119
+   ]
+  }
+ },
+ {
+  "key": "Copying is blocked here. Use Save CSV instead.",
+  "message": "Copying is blocked here. Use Save CSV instead.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2119,
+    2120
+   ]
+  }
+ },
+ {
+  "key": "Could not check the times: {em}. The ball finder is downloaded from the internet the first time it is needed.{choice}",
+  "message": "Could not check the times: {em}. The ball finder is downloaded from the internet the first time it is needed.{choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2101
+   ]
+  }
+ },
+ {
+  "key": "Could not download here. The {choice} is in the export box: copy it and keep it somewhere safe.",
+  "message": "Could not download here. The {choice} is in the export box: copy it and keep it somewhere safe.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3562
+   ]
+  }
+ },
+ {
+  "key": "Could not find the ball: {choice}. The ball finder is downloaded from the internet the first time you use it.",
+  "message": "Could not find the ball: {choice}. The ball finder is downloaded from the internet the first time you use it.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1984
+   ]
+  }
+ },
+ {
+  "key": "Could not make the video: {choice}. Try the ffmpeg script instead.",
+  "message": "Could not make the video: {choice}. Try the ffmpeg script instead.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1862
+   ]
+  }
+ },
+ {
+  "key": "Could not read that file.",
+  "message": "Could not read that file.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3600,
+    3603
+   ]
+  }
+ },
+ {
+  "key": "Could not read this file.",
+  "message": "Could not read this file.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    501
+   ]
+  }
+ },
+ {
+  "key": "Could not read {name}.",
+  "message": "Could not read {name}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2366
+   ]
+  }
+ },
+ {
+  "key": "Could not save the file here.",
+  "message": "Could not save the file here.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2329
+   ]
+  }
+ },
+ {
+  "key": "Count",
+  "message": "Count",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1258
+   ]
+  }
+ },
+ {
+  "key": "Count tracking<small>Click anywhere on the court to add a pass to the attack. Logs pass count only, not location</small>",
+  "message": "Count tracking<small>Click anywhere on the court to add a pass to the attack. Logs pass count only, not location</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    730
+   ]
+  }
+ },
+ {
+  "key": "Country, to shorten the league list",
+  "message": "Country, to shorten the league list",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    622
+   ]
+  }
+ },
+ {
+  "key": "Court",
+  "message": "Court",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    699
+   ]
+  }
+ },
+ {
+  "key": "Court length in metres",
+  "message": "Court length in metres",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    716
+   ]
+  }
+ },
+ {
+  "key": "Create a separate team + player report PDF for each player you select",
+  "message": "Create a separate team + player report PDF for each player you select",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    328
+   ]
+  }
+ },
+ {
+  "key": "Crop follows the ball",
+  "message": "Crop follows the ball",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Crop follows the ball is ticked but no ball positions are loaded, so the crop stays in the centre.",
+  "message": "Crop follows the ball is ticked but no ball positions are loaded, so the crop stays in the centre.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1803
+   ]
+  }
+ },
+ {
+  "key": "Crop follows the ball is ticked, but no ball positions are loaded yet, so the crop stays in the centre. Click Find the ball in my video first.",
+  "message": "Crop follows the ball is ticked, but no ball positions are loaded yet, so the crop stays in the centre. Click Find the ball in my video first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2077
+   ]
+  }
+ },
+ {
+  "key": "Cumulative goals through the match; dashed line marks the end of the first half",
+  "message": "Cumulative goals through the match; dashed line marks the end of the first half",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    969
+   ]
+  }
+ },
+ {
+  "key": "Darker cells are higher values; hover a cell for goals and shots",
+  "message": "Darker cells are higher values; hover a cell for goals and shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1321
+   ]
+  }
+ },
+ {
+  "key": "Def.",
+  "message": "Def.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1348
+   ]
+  }
+ },
+ {
+  "key": "Defence",
+  "message": "Defence",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2529
+   ]
+  }
+ },
+ {
+  "key": "Defence gets the ball",
+  "message": "Defence gets the ball",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2528,
+    2529,
+    2529
+   ]
+  }
+ },
+ {
+  "key": "Defended shot",
+  "message": "Defended shot",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2529
+   ],
+   "lab": [
+    1518,
+    2415,
+    2460
+   ]
+  }
+ },
+ {
+  "key": "Defensive rebound %",
+  "message": "Defensive rebound %",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "Defensive rebounds",
+  "message": "Defensive rebounds",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1107,
+    1240
+   ]
+  }
+ },
+ {
+  "key": "Delete",
+  "message": "Delete",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1642,
+    3346
+   ]
+  }
+ },
+ {
+  "key": "Delete?",
+  "message": "Delete?",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1771,
+    1783
+   ]
+  }
+ },
+ {
+  "key": "Deleted event #{di}{n} ({evLabel}). Everything after it was recalculated.",
+  "message": "Deleted event #{di}{n} ({evLabel}). Everything after it was recalculated.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3453
+   ]
+  }
+ },
+ {
+  "key": "Div 1",
+  "message": "Div 1",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2773
+   ]
+  }
+ },
+ {
+  "key": "Div 2",
+  "message": "Div 2",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2773
+   ]
+  }
+ },
+ {
+  "key": "Division",
+  "message": "Division",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1626
+   ]
+  }
+ },
+ {
+  "key": "Division (shooter)",
+  "message": "Division (shooter)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Division 1",
+  "message": "Division 1",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1626
+   ]
+  }
+ },
+ {
+  "key": "Division 2",
+  "message": "Division 2",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1626
+   ]
+  }
+ },
+ {
+  "key": "Division and gender",
+  "message": "Division and gender",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1304
+   ]
+  }
+ },
+ {
+  "key": "Division attacking first · {teamLabel}",
+  "message": "Division attacking first · {teamLabel}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2928
+   ]
+  }
+ },
+ {
+  "key": "Division attacking first, away team",
+  "message": "Division attacking first, away team",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    782
+   ]
+  }
+ },
+ {
+  "key": "Division attacking first, home team",
+  "message": "Division attacking first, home team",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    775
+   ]
+  }
+ },
+ {
+  "key": "Division not recorded",
+  "message": "Division not recorded",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1034
+   ]
+  }
+ },
+ {
+  "key": "Division they join",
+  "message": "Division they join",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2478
+   ]
+  }
+ },
+ {
+  "key": "Division {attDiv}",
+  "message": "Division {attDiv}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1667
+   ]
+  }
+ },
+ {
+  "key": "Division {div}",
+  "message": "Division {div}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1034,
+    1063,
+    1257
+   ]
+  }
+ },
+ {
+  "key": "Division {d}",
+  "message": "Division {d}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1299
+   ]
+  }
+ },
+ {
+  "key": "Division {d} ({cntItem} on court)",
+  "message": "Division {d} ({cntItem} on court)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2478
+   ]
+  }
+ },
+ {
+  "key": "Division {d} has {mm} male and {ff} female players; each division should field 2 male and 2 female players.",
+  "message": "Division {d} has {mm} male and {ff} female players; each division should field 2 male and 2 female players.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2881
+   ]
+  }
+ },
+ {
+  "key": "Division {d} has {n} {choice} in the starting line-up; a division should field 4.",
+  "message": "Division {d} has {n} {choice} in the starting line-up; a division should field 4.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2880
+   ]
+  }
+ },
+ {
+  "key": "Division {d}: {psCount} ({mm} male, {ff} female)",
+  "message": "Division {d}: {psCount} ({mm} male, {ff} female)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2893
+   ]
+  }
+ },
+ {
+  "key": "Division {d}{choice} · {psCount} on court",
+  "message": "Division {d}{choice} · {psCount} on court",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2463
+   ]
+  }
+ },
+ {
+  "key": "Divisions swap between attack and defence after every two goals.",
+  "message": "Divisions swap between attack and defence after every two goals.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2937
+   ]
+  }
+ },
+ {
+  "key": "Done for all {shots} shots.",
+  "message": "Done for all {shots} shots.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2402
+   ]
+  }
+ },
+ {
+  "key": "Done {i} of {itemCount}. Next report starts in a moment.",
+  "message": "Done {i} of {itemCount}. Next report starts in a moment.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1475
+   ]
+  }
+ },
+ {
+  "key": "Done.",
+  "message": "Done.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1700
+   ]
+  }
+ },
+ {
+  "key": "Done. {skipped} of {shots} shots were skipped because the video would not read there{choice}.",
+  "message": "Done. {skipped} of {shots} shots were skipped because the video would not read there{choice}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2402
+   ]
+  }
+ },
+ {
+  "key": "Double-click (or double-tap) to log a shot.",
+  "message": "Double-click (or double-tap) to log a shot.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1717
+   ]
+  }
+ },
+ {
+  "key": "Download this match as a backup file",
+  "message": "Download this match as a backup file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    504
+   ]
+  }
+ },
+ {
+  "key": "Download this match as a backup file you can import later",
+  "message": "Download this match as a backup file you can import later",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    459
+   ]
+  }
+ },
+ {
+  "key": "Each attack counted once, open play only. Shots kept alive by an attacking rebound, or by the ball going out with the attack keeping it, stay in the same multi-shot attack.",
+  "message": "Each attack counted once, open play only. Shots kept alive by an attacking rebound, or by the ball going out with the attack keeping it, stay in the same multi-shot attack.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1094
+   ]
+  }
+ },
+ {
+  "key": "Each dot is a player; click one to open their profile",
+  "message": "Each dot is a player; click one to open their profile",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1293
+   ]
+  }
+ },
+ {
+  "key": "Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).",
+  "message": "Each half has its own video. Enter the video time at which the clock starts in each one (use 0:00 if the video starts right at the whistle).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3041
+   ]
+  }
+ },
+ {
+  "key": "Each report is the team report followed by that player's page, for the match selection above. The print window opens once per player; choose <b>Save as PDF</b> each time. The file name is suggested as \"Team - Player - team and player report\".",
+  "message": "Each report is the team report followed by that player's page, for the match selection above. The print window opens once per player; choose <b>Save as PDF</b> each time. The file name is suggested as \"Team - Player - team and player report\".",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    335
+   ]
+  }
+ },
+ {
+  "key": "End match",
+  "message": "End match",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1279
+   ]
+  }
+ },
+ {
+  "key": "End match when play stops.",
+  "message": "End match when play stops.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1712
+   ]
+  }
+ },
+ {
+  "key": "End of Q{go}",
+  "message": "End of Q{go}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1285
+   ]
+  }
+ },
+ {
+  "key": "End of quarter {go}.",
+  "message": "End of quarter {go}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1712
+   ]
+  }
+ },
+ {
+  "key": "End this half. The next half is set up with the clock stopped until you press Start.",
+  "message": "End this half. The next half is set up with the clock stopped until you press Start.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    493
+   ]
+  }
+ },
+ {
+  "key": "End {pBtn}",
+  "message": "End {pBtn}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1279
+   ]
+  }
+ },
+ {
+  "key": "End {pBtn} when the half is over, then Start when play restarts.",
+  "message": "End {pBtn} when the half is over, then Start when play restarts.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1712
+   ]
+  }
+ },
+ {
+  "key": "Ended without a shot",
+  "message": "Ended without a shot",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2417
+   ]
+  }
+ },
+ {
+  "key": "Enter the fixture date.",
+  "message": "Enter the fixture date.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2288
+   ]
+  }
+ },
+ {
+  "key": "Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved. A file stays on your computer and has to be chosen again each time Korf Log is opened.",
+  "message": "Enter the video time at which the clock starts for each half. Leave the 2nd half blank to carry on straight after the 1st. While tracking, Start moves the video to the right moment, and the video and clock buttons keep the alignment saved. A file stays on your computer and has to be chosen again each time Korf Log is opened.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3041
+   ]
+  }
+ },
+ {
+  "key": "Event log",
+  "message": "Event log",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    539
+   ]
+  }
+ },
+ {
+  "key": "Events to track",
+  "message": "Events to track",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    723
+   ]
+  }
+ },
+ {
+  "key": "Exit maximised",
+  "message": "Exit maximised",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3498
+   ]
+  }
+ },
+ {
+  "key": "Export format",
+  "message": "Export format",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    831
+   ]
+  }
+ },
+ {
+  "key": "Export this match as a CSV or backup file",
+  "message": "Export this match as a CSV or backup file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    492
+   ]
+  }
+ },
+ {
+  "key": "Failed after",
+  "message": "Failed after",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2034
+   ]
+  }
+ },
+ {
+  "key": "Fast forward the match clock and the video together by 1 second",
+  "message": "Fast forward the match clock and the video together by 1 second",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    491
+   ]
+  }
+ },
+ {
+  "key": "Female",
+  "message": "Female",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2449,
+    2473,
+    2775
+   ],
+   "lab": [
+    1033,
+    1062
+   ]
+  }
+ },
+ {
+  "key": "Female and male players",
+  "message": "Female and male players",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1627
+   ]
+  }
+ },
+ {
+  "key": "Female players only",
+  "message": "Female players only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1627
+   ]
+  }
+ },
+ {
+  "key": "Fill in the video start time for each half first.",
+  "message": "Fill in the video start time for each half first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1722
+   ]
+  }
+ },
+ {
+  "key": "Fill in the video time at which each half starts, and add a YouTube link or choose your video file(s) below.",
+  "message": "Fill in the video time at which each half starts, and add a YouTube link or choose your video file(s) below.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1699
+   ]
+  }
+ },
+ {
+  "key": "Filled dot: goal",
+  "message": "Filled dot: goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1044
+   ]
+  }
+ },
+ {
+  "key": "Filled dot: goal. Hollow dot: no goal. {note} Shots are folded onto one half court; 0° is straight in front of the post.",
+  "message": "Filled dot: goal. Hollow dot: no goal. {note} Shots are folded onto one half court; 0° is straight in front of the post.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1077
+   ]
+  }
+ },
+ {
+  "key": "Fills this team's buttons when no player names are logged, and outlines player buttons when they are.",
+  "message": "Fills this team's buttons when no player names are logged, and outlines player buttons when they are.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2784
+   ]
+  }
+ },
+ {
+  "key": "Filters",
+  "message": "Filters",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    325
+   ]
+  }
+ },
+ {
+  "key": "Find each event in the video and press Now. When you are done, apply the result and press Export match above the pitch.",
+  "message": "Find each event in the video and press Now. When you are done, apply the result and press Export match above the pitch.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3412
+   ]
+  }
+ },
+ {
+  "key": "Find the ball in my video",
+  "message": "Find the ball in my video",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645,
+    1987
+   ]
+  }
+ },
+ {
+  "key": "Finding the ball, shot {q}{n} of {jobsCount}",
+  "message": "Finding the ball, shot {q}{n} of {jobsCount}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2092
+   ]
+  }
+ },
+ {
+  "key": "Finding the penalty and free pass shots",
+  "message": "Finding the penalty and free pass shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1967
+   ]
+  }
+ },
+ {
+  "key": "Finds the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded.",
+  "message": "Finds the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1724
+   ]
+  }
+ },
+ {
+  "key": "Finished: all {itemCount} clips played.",
+  "message": "Finished: all {itemCount} clips played.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1745
+   ]
+  }
+ },
+ {
+  "key": "First 300 of {ptsCount} shots.",
+  "message": "First 300 of {ptsCount} shots.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1046
+   ]
+  }
+ },
+ {
+  "key": "Fixture",
+  "message": "Fixture",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    619
+   ]
+  }
+ },
+ {
+  "key": "Fixture week <span style=\"font-weight:500;text-transform:none;letter-spacing:0\">(optional)</span>",
+  "message": "Fixture week <span style=\"font-weight:500;text-transform:none;letter-spacing:0\">(optional)</span>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    625
+   ]
+  }
+ },
+ {
+  "key": "Following the ball in the clips",
+  "message": "Following the ball in the clips",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1973
+   ]
+  }
+ },
+ {
+  "key": "For {label}",
+  "message": "For {label}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1105
+   ]
+  }
+ },
+ {
+  "key": "Foul",
+  "message": "Foul",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1473
+   ],
+   "lab": [
+    466
+   ]
+  }
+ },
+ {
+  "key": "Foul during the rebound, {choice} get the ball",
+  "message": "Foul during the rebound, {choice} get the ball",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2460
+   ]
+  }
+ },
+ {
+  "key": "Found in your video",
+  "message": "Found in your video",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1978
+   ]
+  }
+ },
+ {
+  "key": "Found the ball in {found} of {done} frames{choice}.",
+  "message": "Found the ball in {found} of {done} frames{choice}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1981
+   ]
+  }
+ },
+ {
+  "key": "Found the top of the shot in {found} of {itemCount} shots{choice}.",
+  "message": "Found the top of the shot in {found} of {itemCount} shots{choice}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2108
+   ]
+  }
+ },
+ {
+  "key": "Free pass",
+  "message": "Free pass",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2528
+   ],
+   "lab": [
+    765,
+    2409
+   ]
+  }
+ },
+ {
+  "key": "Free pass awarded",
+  "message": "Free pass awarded",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1444
+   ]
+  }
+ },
+ {
+  "key": "Free pass awarded to {teamName}. Log the passes, then double-click the shot.",
+  "message": "Free pass awarded to {teamName}. Log the passes, then double-click the shot.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2552
+   ]
+  }
+ },
+ {
+  "key": "Free pass awarded. Log the passes, then double-click the shot.",
+  "message": "Free pass awarded. Log the passes, then double-click the shot.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3443
+   ]
+  }
+ },
+ {
+  "key": "Free pass shot",
+  "message": "Free pass shot",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1442,
+    2500
+   ]
+  }
+ },
+ {
+  "key": "From this device (kept in this browser)",
+  "message": "From this device (kept in this browser)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    425
+   ]
+  }
+ },
+ {
+  "key": "Full match length",
+  "message": "Full match length",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    682
+   ]
+  }
+ },
+ {
+  "key": "Full time",
+  "message": "Full time",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1285
+   ]
+  }
+ },
+ {
+  "key": "Full time.",
+  "message": "Full time.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1712
+   ]
+  }
+ },
+ {
+  "key": "Full tracking<small>One click per pass on the court. Logs pass location and pass count</small>",
+  "message": "Full tracking<small>One click per pass on the court. Logs pass location and pass count</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    729
+   ]
+  }
+ },
+ {
+  "key": "Gender",
+  "message": "Gender",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1627
+   ]
+  }
+ },
+ {
+  "key": "Gender (shooter)",
+  "message": "Gender (shooter)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Gender and division are shown when the opponent's players are named in the log.",
+  "message": "Gender and division are shown when the opponent's players are named in the log.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1084
+   ]
+  }
+ },
+ {
+  "key": "Gender not recorded",
+  "message": "Gender not recorded",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1033
+   ]
+  }
+ },
+ {
+  "key": "Give the new player a name and a gender.",
+  "message": "Give the new player a name and a gender.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1361
+   ]
+  }
+ },
+ {
+  "key": "Go back 1 second on the match clock only. The video does not move. Events after that time are removed.",
+  "message": "Go back 1 second on the match clock only. The video does not move. Events after that time are removed.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    495
+   ]
+  }
+ },
+ {
+  "key": "Go back 1 second. Events after that time are removed.",
+  "message": "Go back 1 second. Events after that time are removed.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    488
+   ]
+  }
+ },
+ {
+  "key": "Go back and fill it in",
+  "message": "Go back and fill it in",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3061
+   ]
+  }
+ },
+ {
+  "key": "Go back to the start screen? Your unfinished setup will be discarded.",
+  "message": "Go back to the start screen? Your unfinished setup will be discarded.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3531
+   ]
+  }
+ },
+ {
+  "key": "Go forward 1 second",
+  "message": "Go forward 1 second",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    490
+   ]
+  }
+ },
+ {
+  "key": "Go forward 1 second on the match clock only. The video does not move.",
+  "message": "Go forward 1 second on the match clock only. The video does not move.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    495
+   ]
+  }
+ },
+ {
+  "key": "Go to start",
+  "message": "Go to start",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2979
+   ]
+  }
+ },
+ {
+  "key": "Go to {st}",
+  "message": "Go to {st}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2979
+   ]
+  }
+ },
+ {
+  "key": "Goal",
+  "message": "Goal",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2280,
+    2528
+   ],
+   "lab": [
+    765,
+    1101,
+    1251,
+    1517,
+    2413,
+    2460,
+    2601
+   ]
+  }
+ },
+ {
+  "key": "Goal % multi-shot",
+  "message": "Goal % multi-shot",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1106
+   ]
+  }
+ },
+ {
+  "key": "Goal % single shot",
+  "message": "Goal % single shot",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1106
+   ]
+  }
+ },
+ {
+  "key": "Goals",
+  "message": "Goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916,
+    1240,
+    1251,
+    1254,
+    1263,
+    1304,
+    1346
+   ]
+  }
+ },
+ {
+  "key": "Goals / attack",
+  "message": "Goals / attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "Goals and misses",
+  "message": "Goals and misses",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1631
+   ]
+  }
+ },
+ {
+  "key": "Goals by 5-minute block",
+  "message": "Goals by 5-minute block",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    974
+   ]
+  }
+ },
+ {
+  "key": "Goals cannot be rebounded, so they are left out of the rebound percentages. Rebound % = rebounds collected ÷ all shots that did not score. Attacking rebound % = rebounds collected by the shooting team ÷ its own shots that did not score. Defensive rebound % = rebounds collected by the defending team ÷ opponent shots that did not score. {choice}",
+  "message": "Goals cannot be rebounded, so they are left out of the rebound percentages. Rebound % = rebounds collected ÷ all shots that did not score. Attacking rebound % = rebounds collected by the shooting team ÷ its own shots that did not score. Defensive rebound % = rebounds collected by the defending team ÷ opponent shots that did not score. {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    917
+   ]
+  }
+ },
+ {
+  "key": "Goals only",
+  "message": "Goals only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1631
+   ]
+  }
+ },
+ {
+  "key": "Goals per minute in attack",
+  "message": "Goals per minute in attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1240,
+    1273
+   ]
+  }
+ },
+ {
+  "key": "Goals/min",
+  "message": "Goals/min",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1348
+   ]
+  }
+ },
+ {
+  "key": "Half",
+  "message": "Half",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1624
+   ]
+  }
+ },
+ {
+  "key": "Half court",
+  "message": "Half court",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    517
+   ]
+  }
+ },
+ {
+  "key": "Half court. {n} events logged in the match.",
+  "message": "Half court. {n} events logged in the match.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1726
+   ]
+  }
+ },
+ {
+  "key": "Half time",
+  "message": "Half time",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1285
+   ]
+  }
+ },
+ {
+  "key": "Half time.",
+  "message": "Half time.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1712
+   ]
+  }
+ },
+ {
+  "key": "Head to head",
+  "message": "Head to head",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    941
+   ]
+  }
+ },
+ {
+  "key": "Hide",
+  "message": "Hide",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    0
+   ],
+   "lab": [
+    0
+   ]
+  }
+ },
+ {
+  "key": "Hide everything except the clock, score, buttons and court so the court is as big as possible",
+  "message": "Hide everything except the clock, score, buttons and court so the court is as big as possible",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    460
+   ]
+  }
+ },
+ {
+  "key": "Highlight reel",
+  "message": "Highlight reel",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Hollow dot: no goal",
+  "message": "Hollow dot: no goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1044
+   ]
+  }
+ },
+ {
+  "key": "Home",
+  "message": "Home",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1127,
+    1164,
+    1520,
+    2762,
+    2782,
+    2854,
+    3069,
+    3195,
+    3270
+   ],
+   "lab": [
+    434,
+    808
+   ]
+  }
+ },
+ {
+  "key": "Home team",
+  "message": "Home team",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2780
+   ]
+  }
+ },
+ {
+  "key": "Home team name",
+  "message": "Home team name",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    480
+   ]
+  }
+ },
+ {
+  "key": "How attacks end",
+  "message": "How attacks end",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1094
+   ]
+  }
+ },
+ {
+  "key": "How each type of shot ends; the number on the right is the share that scored",
+  "message": "How each type of shot ends; the number on the right is the share that scored",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1009
+   ]
+  }
+ },
+ {
+  "key": "How long attacks are before they end, for {label}",
+  "message": "How long attacks are before they end, for {label}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1101
+   ]
+  }
+ },
+ {
+  "key": "How shots ended",
+  "message": "How shots ended",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1251
+   ]
+  }
+ },
+ {
+  "key": "H{X}V{Y}",
+  "message": "H{X}V{Y}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    957
+   ]
+  }
+ },
+ {
+  "key": "Imported {itemCount} events from {name}.",
+  "message": "Imported {itemCount} events from {name}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3596
+   ]
+  }
+ },
+ {
+  "key": "In attack",
+  "message": "In attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1254,
+    1348
+   ]
+  }
+ },
+ {
+  "key": "In defence",
+  "message": "In defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1254,
+    1348
+   ]
+  }
+ },
+ {
+  "key": "In: {choice}",
+  "message": "In: {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1332
+   ]
+  }
+ },
+ {
+  "key": "Individual clips for the ffmpeg script",
+  "message": "Individual clips for the ffmpeg script",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Injured, no replacement",
+  "message": "Injured, no replacement",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2468
+   ]
+  }
+ },
+ {
+  "key": "JSON",
+  "message": "JSON",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3562
+   ]
+  }
+ },
+ {
+  "key": "Korf Lab · created by <b>Eric Van Looy</b>",
+  "message": "Korf Lab · created by <b>Eric Van Looy</b>",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2620
+   ]
+  }
+ },
+ {
+  "key": "Korf Log files<small>Event logs saved from Korf Log (CSV or JSON)</small>",
+  "message": "Korf Log files<small>Event logs saved from Korf Log (CSV or JSON)</small>",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    303
+   ]
+  }
+ },
+ {
+  "key": "Korf Log is still finding the ball for {n} shots. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.",
+  "message": "Korf Log is still finding the ball for {n} shots. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3400
+   ]
+  }
+ },
+ {
+  "key": "Korf Log · created by <b>Eric Van Looy</b>",
+  "message": "Korf Log · created by <b>Eric Van Looy</b>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3678
+   ]
+  }
+ },
+ {
+  "key": "Language",
+  "message": "Language",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    453
+   ],
+   "lab": [
+    290
+   ]
+  }
+ },
+ {
+  "key": "Last logged event",
+  "message": "Last logged event",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    515
+   ]
+  }
+ },
+ {
+  "key": "List the ten attacks by this team that look most like this goal",
+  "message": "List the ten attacks by this team that look most like this goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2592
+   ]
+  }
+ },
+ {
+  "key": "Load a file to see numbers",
+  "message": "Load a file to see numbers",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1406
+   ]
+  }
+ },
+ {
+  "key": "Load data",
+  "message": "Load data",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    300
+   ]
+  }
+ },
+ {
+  "key": "Loaded {n} ball positions from {name}. Portrait 10:16 and Crop follows the ball are ticked for the ffmpeg script.",
+  "message": "Loaded {n} ball positions from {name}. Portrait 10:16 and Crop follows the ball are ticked for the ffmpeg script.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2101
+   ]
+  }
+ },
+ {
+  "key": "Loading the ball finder (20 MB, downloaded once)",
+  "message": "Loading the ball finder (20 MB, downloaded once)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2080,
+    2080
+   ]
+  }
+ },
+ {
+  "key": "Loading the ball finder (20 MB, downloaded once)…",
+  "message": "Loading the ball finder (20 MB, downloaded once)…",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1946
+   ]
+  }
+ },
+ {
+  "key": "Log separate shot types<small>Distance shots or runners</small>",
+  "message": "Log separate shot types<small>Distance shots or runners</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    736
+   ]
+  }
+ },
+ {
+  "key": "Logged automatically as a {choice}{choice2}",
+  "message": "Logged automatically as a {choice}{choice2}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2511
+   ]
+  }
+ },
+ {
+  "key": "Look at the sample match",
+  "message": "Look at the sample match",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3166,
+    3341
+   ]
+  }
+ },
+ {
+  "key": "Looking at the shots",
+  "message": "Looking at the shots",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2065
+   ]
+  }
+ },
+ {
+  "key": "Make highlight video",
+  "message": "Make highlight video",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Make the video bigger; the court gets smaller by the same amount",
+  "message": "Make the video bigger; the court gets smaller by the same amount",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    526,
+    533
+   ]
+  }
+ },
+ {
+  "key": "Male",
+  "message": "Male",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2449,
+    2473,
+    2775
+   ],
+   "lab": [
+    1033,
+    1062
+   ]
+  }
+ },
+ {
+  "key": "Male players only",
+  "message": "Male players only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1627
+   ]
+  }
+ },
+ {
+  "key": "Mark size",
+  "message": "Mark size",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Match",
+  "message": "Match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1785
+   ]
+  }
+ },
+ {
+  "key": "Match by match",
+  "message": "Match by match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1134,
+    1251
+   ]
+  }
+ },
+ {
+  "key": "Match ended",
+  "message": "Match ended",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1285
+   ]
+  }
+ },
+ {
+  "key": "Match format",
+  "message": "Match format",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    678
+   ]
+  }
+ },
+ {
+  "key": "Match half",
+  "message": "Match half",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Match results",
+  "message": "Match results",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1143
+   ]
+  }
+ },
+ {
+  "key": "Match setup",
+  "message": "Match setup",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3164,
+    602
+   ]
+  }
+ },
+ {
+  "key": "Match started. Press Start on the clock when play begins.",
+  "message": "Match started. Press Start on the clock when play begins.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3204
+   ]
+  }
+ },
+ {
+  "key": "Match video",
+  "message": "Match video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    628,
+    631
+   ]
+  }
+ },
+ {
+  "key": "Match video file",
+  "message": "Match video file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2421
+   ]
+  }
+ },
+ {
+  "key": "Matches differ, so shots are drawn on the largest court ({L} × {L2} m) and time runs to the longest match ({D} min)",
+  "message": "Matches differ, so shots are drawn on the largest court ({L} × {L2} m) and time runs to the longest match ({D} min)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    868
+   ]
+  }
+ },
+ {
+  "key": "Maximise",
+  "message": "Maximise",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3498
+   ]
+  }
+ },
+ {
+  "key": "Minutes in attack",
+  "message": "Minutes in attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1240
+   ]
+  }
+ },
+ {
+  "key": "Minutes in attack and in defence by match",
+  "message": "Minutes in attack and in defence by match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1254
+   ]
+  }
+ },
+ {
+  "key": "Minutes in defence",
+  "message": "Minutes in defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1240
+   ]
+  }
+ },
+ {
+  "key": "Minutes played",
+  "message": "Minutes played",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1271
+   ]
+  }
+ },
+ {
+  "key": "Misses only",
+  "message": "Misses only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1631
+   ]
+  }
+ },
+ {
+  "key": "Move the match clock only",
+  "message": "Move the match clock only",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    495
+   ]
+  }
+ },
+ {
+  "key": "Move the video and the clock together, so they stay lined up",
+  "message": "Move the video and the clock together, so they stay lined up",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    533
+   ]
+  }
+ },
+ {
+  "key": "Move the video only, to line it up with the clock",
+  "message": "Move the video only, to line it up with the clock",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    533
+   ]
+  }
+ },
+ {
+  "key": "Moved {nOff} events by the overall offset.",
+  "message": "Moved {nOff} events by the overall offset.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2251
+   ]
+  }
+ },
+ {
+  "key": "Multi-shot attack · {teamName}",
+  "message": "Multi-shot attack · {teamName}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1797
+   ]
+  }
+ },
+ {
+  "key": "Multi-shot attacks",
+  "message": "Multi-shot attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1106,
+    1633
+   ]
+  }
+ },
+ {
+  "key": "Needed for the exact moment of penalty and free pass shots{choice} and for the crop that follows the ball. Do it after steps 1 and 2, and again if you change the shots. Works on your computer and takes a few minutes; keep the tab open.{choice2}",
+  "message": "Needed for the exact moment of penalty and free pass shots{choice} and for the crop that follows the ball. Do it after steps 1 and 2, and again if you change the shots. Works on your computer and takes a few minutes; keep the tab open.{choice2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1700
+   ]
+  }
+ },
+ {
+  "key": "New match setup",
+  "message": "New match setup",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3164
+   ]
+  }
+ },
+ {
+  "key": "New player",
+  "message": "New player",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2469
+   ]
+  }
+ },
+ {
+  "key": "Next",
+  "message": "Next",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Next: {choice}",
+  "message": "Next: {choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3103
+   ]
+  }
+ },
+ {
+  "key": "No clips with a YouTube link and start times.",
+  "message": "No clips with a YouTube link and start times.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1737
+   ]
+  }
+ },
+ {
+  "key": "No clips with a video file and start times. Choose the file and enter the half start times.",
+  "message": "No clips with a video file and start times. Choose the file and enter the half start times.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1796
+   ]
+  }
+ },
+ {
+  "key": "No clips with a video file name and start times.",
+  "message": "No clips with a video file name and start times.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2074
+   ]
+  }
+ },
+ {
+  "key": "No events found in that file.",
+  "message": "No events found in that file.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1508,
+    1512
+   ]
+  }
+ },
+ {
+  "key": "No events found in that text.",
+  "message": "No events found in that text.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1600
+   ]
+  }
+ },
+ {
+  "key": "No goal",
+  "message": "No goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1101,
+    1251,
+    2415,
+    2460
+   ]
+  }
+ },
+ {
+  "key": "No matches for {team}",
+  "message": "No matches for {team}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1406
+   ]
+  }
+ },
+ {
+  "key": "No named players in the loaded files, so there is nothing to print.",
+  "message": "No named players in the loaded files, so there is nothing to print.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1441
+   ]
+  }
+ },
+ {
+  "key": "No named players in the loaded files{choice}. Players appear when the tracker setup lists them.",
+  "message": "No named players in the loaded files{choice}. Players appear when the tracker setup lists them.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1235
+   ]
+  }
+ },
+ {
+  "key": "No result",
+  "message": "No result",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2412
+   ]
+  }
+ },
+ {
+  "key": "No saved ball positions yet: they are found while you track with a video file.",
+  "message": "No saved ball positions yet: they are found while you track with a video file.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2430
+   ]
+  }
+ },
+ {
+  "key": "No shots",
+  "message": "No shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    792
+   ]
+  }
+ },
+ {
+  "key": "No shots match the current filters.",
+  "message": "No shots match the current filters.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1722
+   ]
+  }
+ },
+ {
+  "key": "No shots match the filters above. Change a filter.",
+  "message": "No shots match the filters above. Change a filter.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1698
+   ]
+  }
+ },
+ {
+  "key": "No valid events found in that file.",
+  "message": "No valid events found in that file.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1572
+   ]
+  }
+ },
+ {
+  "key": "No valid events found in that text.",
+  "message": "No valid events found in that text.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1603
+   ]
+  }
+ },
+ {
+  "key": "No video. You can add one later from Match setup.",
+  "message": "No video. You can add one later from Match setup.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3143
+   ]
+  }
+ },
+ {
+  "key": "Nobody (injured)",
+  "message": "Nobody (injured)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1336
+   ]
+  }
+ },
+ {
+  "key": "Nobody comes on",
+  "message": "Nobody comes on",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2468
+   ]
+  }
+ },
+ {
+  "key": "Normal speed",
+  "message": "Normal speed",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    496
+   ]
+  }
+ },
+ {
+  "key": "Not in the match setup",
+  "message": "Not in the match setup",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2469
+   ]
+  }
+ },
+ {
+  "key": "Not logging passes until it reaches their attacking half",
+  "message": "Not logging passes until it reaches their attacking half",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1664
+   ]
+  }
+ },
+ {
+  "key": "Not recorded",
+  "message": "Not recorded",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1062,
+    1063
+   ]
+  }
+ },
+ {
+  "key": "Not started",
+  "message": "Not started",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2467
+   ]
+  }
+ },
+ {
+  "key": "Note: the genders differ.",
+  "message": "Note: the genders differ.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1367
+   ]
+  }
+ },
+ {
+  "key": "Nothing needed changing.",
+  "message": "Nothing needed changing.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2251
+   ]
+  }
+ },
+ {
+  "key": "Nothing to copy: no shots match these filters.",
+  "message": "Nothing to copy: no shots match these filters.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2118
+   ]
+  }
+ },
+ {
+  "key": "Nothing to save: no shots match these filters.",
+  "message": "Nothing to save: no shots match these filters.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2115
+   ]
+  }
+ },
+ {
+  "key": "Nothing to show yet. {choice}",
+  "message": "Nothing to show yet. {choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1800
+   ]
+  }
+ },
+ {
+  "key": "Now",
+  "message": "Now",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2313
+   ]
+  }
+ },
+ {
+  "key": "Number of periods",
+  "message": "Number of periods",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    690
+   ]
+  }
+ },
+ {
+  "key": "Number of shots in each 1 m band from the post, all shot types",
+  "message": "Number of shots in each 1 m band from the post, all shot types",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    991
+   ]
+  }
+ },
+ {
+  "key": "Open",
+  "message": "Open",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1668
+   ]
+  }
+ },
+ {
+  "key": "Open a backup file",
+  "message": "Open a backup file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    600
+   ]
+  }
+ },
+ {
+  "key": "Open-play attacks",
+  "message": "Open-play attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "Open-play shots only; penalties and free passes excluded",
+  "message": "Open-play shots only; penalties and free passes excluded",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    980
+   ]
+  }
+ },
+ {
+  "key": "Opening attack",
+  "message": "Opening attack",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    764
+   ]
+  }
+ },
+ {
+  "key": "Opens a 2-minute video tutorial of Korf Lab in a new tab",
+  "message": "Opens a 2-minute video tutorial of Korf Lab in a new tab",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    290
+   ]
+  }
+ },
+ {
+  "key": "Opens a 3-minute video tutorial of Korf Log in a new tab",
+  "message": "Opens a 3-minute video tutorial of Korf Log in a new tab",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    453
+   ]
+  }
+ },
+ {
+  "key": "Opens the Mental Health UK donation page in a new tab, with £5 filled in",
+  "message": "Opens the Mental Health UK donation page in a new tab, with £5 filled in",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    453
+   ],
+   "lab": [
+    290
+   ]
+  }
+ },
+ {
+  "key": "Opponent",
+  "message": "Opponent",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1084
+   ]
+  }
+ },
+ {
+  "key": "Opponents",
+  "message": "Opponents",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1081
+   ]
+  }
+ },
+ {
+  "key": "Opponents of {team}",
+  "message": "Opponents of {team}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    538
+   ]
+  }
+ },
+ {
+  "key": "Or a video file on this computer",
+  "message": "Or a video file on this computer",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3036
+   ]
+  }
+ },
+ {
+  "key": "Or a video file on this computer{choice}",
+  "message": "Or a video file on this computer{choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "Other",
+  "message": "Other",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
+   ]
+  }
+ },
+ {
+  "key": "Other (type a name)…",
+  "message": "Other (type a name)…",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1624,
+    3072
+   ],
+   "lab": [
+    2274
+   ]
+  }
+ },
+ {
+  "key": "Other league name",
+  "message": "Other league name",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    623
+   ],
+   "lab": [
+    346
+   ]
+  }
+ },
+ {
+  "key": "Out: {choice}",
+  "message": "Out: {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1332
+   ]
+  }
+ },
+ {
+  "key": "Outcome",
+  "message": "Outcome",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1631
+   ]
+  }
+ },
+ {
+  "key": "Page",
+  "message": "Page",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    329
+   ]
+  }
+ },
+ {
+  "key": "Page {page} of {pages}",
+  "message": "Page {page} of {pages}",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    0
+   ],
+   "lab": [
+    0
+   ]
+  }
+ },
+ {
+  "key": "Pass",
+  "message": "Pass",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1441
+   ]
+  }
+ },
+ {
+  "key": "Pass tracking",
+  "message": "Pass tracking",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    728
+   ]
+  }
+ },
+ {
+  "key": "Passes / attack",
+  "message": "Passes / attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    917
+   ]
+  }
+ },
+ {
+  "key": "Passes are not logged until the ball is passed into their attacking half. Then choose what happened.",
+  "message": "Passes are not logged until the ball is passed into their attacking half. Then choose what happened.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1697
+   ]
+  }
+ },
+ {
+  "key": "Passes are switched off in the setup.",
+  "message": "Passes are switched off in the setup.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2746
+   ]
+  }
+ },
+ {
+  "key": "Passes per attack",
+  "message": "Passes per attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1101
+   ]
+  }
+ },
+ {
+  "key": "Passes<small>Choose how passes are tracked</small>",
+  "message": "Passes<small>Choose how passes are tracked</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    727
+   ]
+  }
+ },
+ {
+  "key": "Paste a YouTube link",
+  "message": "Paste a YouTube link",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    640,
+    641
+   ]
+  }
+ },
+ {
+  "key": "Paste a YouTube link (optional)",
+  "message": "Paste a YouTube link (optional)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    528
+   ]
+  }
+ },
+ {
+  "key": "Paste a YouTube link for the match first.",
+  "message": "Paste a YouTube link for the match first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1726
+   ]
+  }
+ },
+ {
+  "key": "Pause",
+  "message": "Pause",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1275,
+    1275,
+    1283,
+    1283,
+    3003
+   ],
+   "lab": [
+    2468
+   ]
+  }
+ },
+ {
+  "key": "Pause or resume the extra time stopwatch (Space bar). Events are logged as {fmtClock} + extra time.",
+  "message": "Pause or resume the extra time stopwatch (Space bar). Events are logged as {fmtClock} + extra time.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1276
+   ]
+  }
+ },
+ {
+  "key": "Pause or resume the match clock (and the video with it)",
+  "message": "Pause or resume the match clock (and the video with it)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    847
+   ]
+  }
+ },
+ {
+  "key": "Pause or resume the match clock (and the video with it). Space bar does the same.",
+  "message": "Pause or resume the match clock (and the video with it). Space bar does the same.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    522
+   ]
+  }
+ },
+ {
+  "key": "Penalties and free passes",
+  "message": "Penalties and free passes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1114
+   ]
+  }
+ },
+ {
+  "key": "Penalty",
+  "message": "Penalty",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1442,
+    2500,
+    2528
+   ],
+   "lab": [
+    765,
+    2409
+   ]
+  }
+ },
+ {
+  "key": "Penalty taker",
+  "message": "Penalty taker",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2514
+   ]
+  }
+ },
+ {
+  "key": "Play",
+  "message": "Play",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    3003
+   ],
+   "lab": [
+    2468,
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Play all on YouTube",
+  "message": "Play all on YouTube",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Play the video, or step through it, until the whistle that starts the {choice} half, then press Set. The time goes straight into the field above.{choice2}",
+  "message": "Play the video, or step through it, until the whistle that starts the {choice} half, then press Set. The time goes straight into the field above.{choice2}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2976
+   ]
+  }
+ },
+ {
+  "key": "Player",
+  "message": "Player",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1259,
+    1313,
+    1346
+   ]
+  }
+ },
+ {
+  "key": "Player by match",
+  "message": "Player by match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1321
+   ]
+  }
+ },
+ {
+  "key": "Player name",
+  "message": "Player name",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2771,
+    2771
+   ]
+  }
+ },
+ {
+  "key": "Player names",
+  "message": "Player names",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    663
+   ]
+  }
+ },
+ {
+  "key": "Players",
+  "message": "Players",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1235
+   ]
+  }
+ },
+ {
+  "key": "Portrait 10:16 centre crop (Instagram)",
+  "message": "Portrait 10:16 centre crop (Instagram)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Press Ctrl or ⌘ + C to copy the selected text.",
+  "message": "Press Ctrl or ⌘ + C to copy the selected text.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3609
+   ]
+  }
+ },
+ {
+  "key": "Press Play or Next to start. {np}{choice} in this attack.",
+  "message": "Press Play or Next to start. {np}{choice} in this attack.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2456
+   ]
+  }
+ },
+ {
+  "key": "Press Resume on the clock to carry on tracking.",
+  "message": "Press Resume on the clock to carry on tracking.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3375,
+    3598
+   ]
+  }
+ },
+ {
+  "key": "Press Resume on the clock to carry on, or End {pBtn} to set up the next half.",
+  "message": "Press Resume on the clock to carry on, or End {pBtn} to set up the next half.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3375,
+    3598
+   ]
+  }
+ },
+ {
+  "key": "Print",
+  "message": "Print",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    328
+   ]
+  }
+ },
+ {
+  "key": "Print or save the team report as a paginated PDF",
+  "message": "Print or save the team report as a paginated PDF",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    328
+   ]
+  }
+ },
+ {
+  "key": "Print the team report followed by stats for every player",
+  "message": "Print the team report followed by stats for every player",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    328
+   ]
+  }
+ },
+ {
+  "key": "Printing is blocked here. Open the page in its own tab and try again.",
+  "message": "Printing is blocked here. Open the page in its own tab and try again.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1424,
+    1480,
+    1502
+   ]
+  }
+ },
+ {
+  "key": "Quarter {p}",
+  "message": "Quarter {p}",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    964
+   ],
+   "lab": [
+    441
+   ]
+  }
+ },
+ {
+  "key": "Rebound %",
+  "message": "Rebound %",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "Rebound -",
+  "message": "Rebound -",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2522
+   ]
+  }
+ },
+ {
+  "key": "Rebound - {teamName}",
+  "message": "Rebound - {teamName}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2523
+   ]
+  }
+ },
+ {
+  "key": "Rebound by attack",
+  "message": "Rebound by attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2415
+   ]
+  }
+ },
+ {
+  "key": "Rebound by defence",
+  "message": "Rebound by defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2415
+   ]
+  }
+ },
+ {
+  "key": "Rebound by {choice}{choice2}",
+  "message": "Rebound by {choice}{choice2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1521
+   ]
+  }
+ },
+ {
+  "key": "Rebound collected by {choice}",
+  "message": "Rebound collected by {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2460
+   ]
+  }
+ },
+ {
+  "key": "Rebound · Foul · {teamName}",
+  "message": "Rebound · Foul · {teamName}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1436
+   ]
+  }
+ },
+ {
+  "key": "Rebound · {choice}",
+  "message": "Rebound · {choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1436
+   ]
+  }
+ },
+ {
+  "key": "Rebounds",
+  "message": "Rebounds",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1267
+   ]
+  }
+ },
+ {
+  "key": "Recording runs at normal playback speed. Keep this tab open and visible until it finishes.{choice}",
+  "message": "Recording runs at normal playback speed. Keep this tab open and visible until it finishes.{choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1803
+   ]
+  }
+ },
+ {
+  "key": "Referee calls<small>Tiles above the court</small>",
+  "message": "Referee calls<small>Tiles above the court</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    741
+   ]
+  }
+ },
+ {
+  "key": "Reload",
+  "message": "Reload",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    427
+   ]
+  }
+ },
+ {
+  "key": "Remove",
+  "message": "Remove",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    427
+   ]
+  }
+ },
+ {
+  "key": "Remove the last event (Ctrl+Z)",
+  "message": "Remove the last event (Ctrl+Z)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    504
+   ]
+  }
+ },
+ {
+  "key": "Removed the last event ({evLabel}).",
+  "message": "Removed the last event ({evLabel}).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1416
+   ]
+  }
+ },
+ {
+  "key": "Report {i} of {itemCount}: {team} · {name}. Choose Save as PDF in the print window.",
+  "message": "Report {i} of {itemCount}: {team} · {name}. Choose Save as PDF in the print window.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1468
+   ]
+  }
+ },
+ {
+  "key": "Restart",
+  "message": "Restart",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Restored the original time of {n} events.",
+  "message": "Restored the original time of {n} events.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2152
+   ]
+  }
+ },
+ {
+  "key": "Resume",
+  "message": "Resume",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1275,
+    1275,
+    1283,
+    1283
+   ]
+  }
+ },
+ {
+  "key": "Review mode. Press Back to live to carry on tracking.",
+  "message": "Review mode. Press Back to live to carry on tracking.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1711
+   ]
+  }
+ },
+ {
+  "key": "Reviewing {teamName} attack {att} · {pLong}",
+  "message": "Reviewing {teamName} attack {att} · {pLong}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1703
+   ]
+  }
+ },
+ {
+  "key": "Rewind the match clock and the video together by 1 second. Events after that time are removed.",
+  "message": "Rewind the match clock and the video together by 1 second. Events after that time are removed.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    487
+   ]
+  }
+ },
+ {
+  "key": "Rewound extra time to +{fmtClock}",
+  "message": "Rewound extra time to +{fmtClock}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1706
+   ]
+  }
+ },
+ {
+  "key": "Rewound to {fmtClock}",
+  "message": "Rewound to {fmtClock}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1706
+   ]
+  }
+ },
+ {
+  "key": "Run the clock 25% faster",
+  "message": "Run the clock 25% faster",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    496
+   ]
+  }
+ },
+ {
+  "key": "Run the clock at half speed",
+  "message": "Run the clock at half speed",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    496
+   ]
+  }
+ },
+ {
+  "key": "Run the clock at three quarters speed",
+  "message": "Run the clock at three quarters speed",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    496
+   ]
+  }
+ },
+ {
+  "key": "Sample file<small>A made-up match to try Korf Lab</small>",
+  "message": "Sample file<small>A made-up match to try Korf Lab</small>",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    305
+   ]
+  }
+ },
+ {
+  "key": "Sample match",
+  "message": "Sample match",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1633
+   ]
+  }
+ },
+ {
+  "key": "Save CSV file",
+  "message": "Save CSV file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1612
+   ]
+  }
+ },
+ {
+  "key": "Save backup file",
+  "message": "Save backup file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1612
+   ]
+  }
+ },
+ {
+  "key": "Save cancelled.",
+  "message": "Save cancelled.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2337
+   ]
+  }
+ },
+ {
+  "key": "Save setup",
+  "message": "Save setup",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3165
+   ]
+  }
+ },
+ {
+  "key": "Saved ball positions for {nbt} shots{choice}.",
+  "message": "Saved ball positions for {nbt} shots{choice}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2430
+   ]
+  }
+ },
+ {
+  "key": "Saved in your log",
+  "message": "Saved in your log",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1978
+   ]
+  }
+ },
+ {
+  "key": "Saved {base}{choice} ({LCount} clips). Put it in the folder with your video file and run it to get {choice2}{choice3}",
+  "message": "Saved {base}{choice} ({LCount} clips). Put it in the folder with your video file and run it to get {choice2}{choice3}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2077
+   ]
+  }
+ },
+ {
+  "key": "Saved {fn}.",
+  "message": "Saved {fn}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2336
+   ]
+  }
+ },
+ {
+  "key": "Saved {fn}. If no file appeared, your browser may have blocked the download.",
+  "message": "Saved {fn}. If no file appeared, your browser may have blocked the download.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2328
+   ]
+  }
+ },
+ {
+  "key": "Score progression",
+  "message": "Score progression",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    969
+   ]
+  }
+ },
+ {
+  "key": "Scoreboard and match clock",
+  "message": "Scoreboard and match clock",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    478
+   ]
+  }
+ },
+ {
+  "key": "Scored out of taken; the pale track is the largest number taken by any team",
+  "message": "Scored out of taken; the pale track is the largest number taken by any team",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1114
+   ]
+  }
+ },
+ {
+  "key": "Second chances and tempo",
+  "message": "Second chances and tempo",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1105
+   ]
+  }
+ },
+ {
+  "key": "Second team",
+  "message": "Second team",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    351
+   ]
+  }
+ },
+ {
+  "key": "Seconds after",
+  "message": "Seconds after",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1637
+   ]
+  }
+ },
+ {
+  "key": "Seconds before",
+  "message": "Seconds before",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1636
+   ]
+  }
+ },
+ {
+  "key": "Select a row to open the profile. Select a column heading to sort; select it again to reverse the order.",
+  "message": "Select a row to open the profile. Select a column heading to sort; select it again to reverse the order.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1349
+   ]
+  }
+ },
+ {
+  "key": "Select all",
+  "message": "Select all",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    595
+   ]
+  }
+ },
+ {
+  "key": "Select the league…",
+  "message": "Select the league…",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1624
+   ],
+   "lab": [
+    2274
+   ]
+  }
+ },
+ {
+  "key": "Select the team…",
+  "message": "Select the team…",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3072
+   ]
+  }
+ },
+ {
+  "key": "Set as {choice} half start",
+  "message": "Set as {choice} half start",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2977
+   ]
+  }
+ },
+ {
+  "key": "Set where the first half starts in the video first (Match setup, step 2), so Korf Log knows where to look.",
+  "message": "Set where the first half starts in the video first (Match setup, step 2), so Korf Log knows where to look.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2305
+   ]
+  }
+ },
+ {
+  "key": "Setup saved.",
+  "message": "Setup saved.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3208
+   ]
+  }
+ },
+ {
+  "key": "Setup steps",
+  "message": "Setup steps",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    615
+   ]
+  }
+ },
+ {
+  "key": "Shooter",
+  "message": "Shooter",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2514
+   ],
+   "lab": [
+    1628
+   ]
+  }
+ },
+ {
+  "key": "Shooters grouped by the division and gender recorded in the tracker",
+  "message": "Shooters grouped by the division and gender recorded in the tracker",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1304
+   ]
+  }
+ },
+ {
+  "key": "Shot",
+  "message": "Shot",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1442,
+    2500
+   ]
+  }
+ },
+ {
+  "key": "Shot %",
+  "message": "Shot %",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916,
+    1240,
+    1266,
+    1304,
+    1346
+   ]
+  }
+ },
+ {
+  "key": "Shot % by distance",
+  "message": "Shot % by distance",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    980
+   ]
+  }
+ },
+ {
+  "key": "Shot distance histogram",
+  "message": "Shot distance histogram",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    991
+   ]
+  }
+ },
+ {
+  "key": "Shot locations",
+  "message": "Shot locations",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1251
+   ]
+  }
+ },
+ {
+  "key": "Shot map",
+  "message": "Shot map",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1046
+   ]
+  }
+ },
+ {
+  "key": "Shot maps, all teams",
+  "message": "Shot maps, all teams",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1085
+   ]
+  }
+ },
+ {
+  "key": "Shot moment found for {shotsFound} of {shotsTotal} penalties and free passes.",
+  "message": "Shot moment found for {shotsFound} of {shotsTotal} penalties and free passes.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1976
+   ]
+  }
+ },
+ {
+  "key": "Shot type",
+  "message": "Shot type",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2508
+   ],
+   "lab": [
+    1042,
+    1629
+   ]
+  }
+ },
+ {
+  "key": "Shot types",
+  "message": "Shot types",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    735
+   ]
+  }
+ },
+ {
+  "key": "Shot types and outcomes",
+  "message": "Shot types and outcomes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1009
+   ]
+  }
+ },
+ {
+  "key": "Shot types: goals and misses",
+  "message": "Shot types: goals and misses",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1251
+   ]
+  }
+ },
+ {
+  "key": "Shots",
+  "message": "Shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916,
+    1240,
+    1251,
+    1254,
+    1264,
+    1304,
+    1346
+   ]
+  }
+ },
+ {
+  "key": "Shots and goals per minute in attack, by match",
+  "message": "Shots and goals per minute in attack, by match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1254
+   ]
+  }
+ },
+ {
+  "key": "Shots are switched off in the setup.",
+  "message": "Shots are switched off in the setup.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2742
+   ]
+  }
+ },
+ {
+  "key": "Shots by",
+  "message": "Shots by",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Shots by distance from the post (m)",
+  "message": "Shots by distance from the post (m)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1251
+   ]
+  }
+ },
+ {
+  "key": "Shots from a converted Yellow Bucket file are plotted on a simulated 40 × 20 m court.",
+  "message": "Shots from a converted Yellow Bucket file are plotted on a simulated 40 × 20 m court.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1044
+   ]
+  }
+ },
+ {
+  "key": "Shots per minute in attack",
+  "message": "Shots per minute in attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1240,
+    1272
+   ]
+  }
+ },
+ {
+  "key": "Shots taken",
+  "message": "Shots taken",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1284
+   ]
+  }
+ },
+ {
+  "key": "Shots/min",
+  "message": "Shots/min",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1348
+   ]
+  }
+ },
+ {
+  "key": "Shots<small>Double-click on the court</small>",
+  "message": "Shots<small>Double-click on the court</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    734
+   ]
+  }
+ },
+ {
+  "key": "Show",
+  "message": "Show",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    0
+   ],
+   "lab": [
+    0
+   ]
+  }
+ },
+ {
+  "key": "Show me",
+  "message": "Show me",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2313
+   ]
+  }
+ },
+ {
+  "key": "Show this attack",
+  "message": "Show this attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
+   ]
+  }
+ },
+ {
+  "key": "Showing the first {shownCount}. The CSV has all {LCount}.",
+  "message": "Showing the first {shownCount}. The CSV has all {LCount}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1669
+   ]
+  }
+ },
+ {
+  "key": "Similar attacks",
+  "message": "Similar attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Single-shot attacks",
+  "message": "Single-shot attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1633
+   ]
+  }
+ },
+ {
+  "key": "Smaller video",
+  "message": "Smaller video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    526,
+    533
+   ]
+  }
+ },
+ {
+  "key": "Speed",
+  "message": "Speed",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Start",
+  "message": "Start",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1275,
+    1283
+   ]
+  }
+ },
+ {
+  "key": "Start extra time",
+  "message": "Start extra time",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1275,
+    1283
+   ]
+  }
+ },
+ {
+  "key": "Start match",
+  "message": "Start match",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3165
+   ]
+  }
+ },
+ {
+  "key": "Start or pause the clock (Space bar)",
+  "message": "Start or pause the clock (Space bar)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1276,
+    489
+   ]
+  }
+ },
+ {
+  "key": "Start point cleared.",
+  "message": "Start point cleared.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1409,
+    3617
+   ]
+  }
+ },
+ {
+  "key": "Starts when you log shots.",
+  "message": "Starts when you log shots.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2401
+   ]
+  }
+ },
+ {
+  "key": "Step through one attack: each pass, the shot and any rebound. On screen only, not in printed reports",
+  "message": "Step through one attack: each pass, the shot and any rebound. On screen only, not in printed reports",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2492
+   ]
+  }
+ },
+ {
+  "key": "Step {k}{n} of {itemCount} ·",
+  "message": "Step {k}{n} of {itemCount} ·",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2457
+   ]
+  }
+ },
+ {
+  "key": "Step {setupStep} of 6 · {value}",
+  "message": "Step {setupStep} of 6 · {value}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3062,
+    3105
+   ]
+  }
+ },
+ {
+  "key": "Step {step}{n} of {itemCount}",
+  "message": "Step {step}{n} of {itemCount}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2467
+   ]
+  }
+ },
+ {
+  "key": "Stop",
+  "message": "Stop",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2430
+   ],
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "Stop finding the ball",
+  "message": "Stop finding the ball",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1936
+   ]
+  }
+ },
+ {
+  "key": "Stop the YouTube play-through first.",
+  "message": "Stop the YouTube play-through first.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1723
+   ]
+  }
+ },
+ {
+  "key": "Stopped after",
+  "message": "Stopped after",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2034
+   ]
+  }
+ },
+ {
+  "key": "Stopped before the ball was found.",
+  "message": "Stopped before the ball was found.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1982
+   ]
+  }
+ },
+ {
+  "key": "Stopped early.",
+  "message": "Stopped early.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1859
+   ]
+  }
+ },
+ {
+  "key": "Stopped on one video: {err}.",
+  "message": "Stopped on one video: {err}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2403
+   ]
+  }
+ },
+ {
+  "key": "Stopped.",
+  "message": "Stopped.",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2109
+   ],
+   "lab": [
+    1981
+   ]
+  }
+ },
+ {
+  "key": "Stopped: {err}.",
+  "message": "Stopped: {err}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2400
+   ]
+  }
+ },
+ {
+  "key": "Subs",
+  "message": "Subs",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1687
+   ]
+  }
+ },
+ {
+  "key": "Substitute name",
+  "message": "Substitute name",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2771,
+    2771
+   ]
+  }
+ },
+ {
+  "key": "Substitutes: {subs}",
+  "message": "Substitutes: {subs}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2897
+   ]
+  }
+ },
+ {
+  "key": "Substitution",
+  "message": "Substitution",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1445
+   ]
+  }
+ },
+ {
+  "key": "Substitution · {teamName}",
+  "message": "Substitution · {teamName}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2453
+   ]
+  }
+ },
+ {
+  "key": "Substitutions",
+  "message": "Substitutions",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1337
+   ]
+  }
+ },
+ {
+  "key": "Table",
+  "message": "Table",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    680
+   ]
+  }
+ },
+ {
+  "key": "Tap again to delete",
+  "message": "Tap again to delete",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1642,
+    3346
+   ]
+  }
+ },
+ {
+  "key": "Tap at least 2 events in the {choice} half.",
+  "message": "Tap at least 2 events in the {choice} half.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2287
+   ]
+  }
+ },
+ {
+  "key": "Tap sync now",
+  "message": "Tap sync now",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3393
+   ]
+  }
+ },
+ {
+  "key": "Tapped at video time {V}: the video is {choice} the log by {off} s.",
+  "message": "Tapped at video time {V}: the video is {choice} the log by {off} s.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2313
+   ]
+  }
+ },
+ {
+  "key": "Team",
+  "message": "Team",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2458
+   ],
+   "lab": [
+    1346,
+    1625,
+    2482
+   ]
+  }
+ },
+ {
+  "key": "Team A",
+  "message": "Team A",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2783
+   ]
+  }
+ },
+ {
+  "key": "Team B",
+  "message": "Team B",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2783
+   ]
+  }
+ },
+ {
+  "key": "Team in possession first",
+  "message": "Team in possession first",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    768
+   ]
+  }
+ },
+ {
+  "key": "Team numbers in every match, in date order",
+  "message": "Team numbers in every match, in date order",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1134
+   ]
+  }
+ },
+ {
+  "key": "Teams side by side",
+  "message": "Teams side by side",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    941
+   ]
+  }
+ },
+ {
+  "key": "That CSV is not a Korf Log export.",
+  "message": "That CSV is not a Korf Log export.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1510
+   ]
+  }
+ },
+ {
+  "key": "That does not look like a YouTube link. Paste the address from the YouTube share button or the browser address bar.",
+  "message": "That does not look like a YouTube link. Paste the address from the YouTube share button or the browser address bar.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1986
+   ]
+  }
+ },
+ {
+  "key": "That file has no ball positions. It needs the columns time_s and x (or x_norm).",
+  "message": "That file has no ball positions. It needs the columns time_s and x (or x_norm).",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2101
+   ]
+  }
+ },
+ {
+  "key": "The 10 attacks most like this goal",
+  "message": "The 10 attacks most like this goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
+   ]
+  }
+ },
+ {
+  "key": "The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.",
+  "message": "The YouTube video plays in Korf Log and stays in step with the clock. Note: Check times against the video needs a video file on this computer, so it is not available with a YouTube link.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3143
+   ]
+  }
+ },
+ {
+  "key": "The ball finder did not find the ball in these clips.",
+  "message": "The ball finder did not find the ball in these clips.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1982
+   ]
+  }
+ },
+ {
+  "key": "The ball positions come from your log; nothing had to be searched.",
+  "message": "The ball positions come from your log; nothing had to be searched.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1981
+   ]
+  }
+ },
+ {
+  "key": "The match is at full time.",
+  "message": "The match is at full time.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3375,
+    3598
+   ]
+  }
+ },
+ {
+  "key": "The overall offset from step 1 is still listed below and can be applied.",
+  "message": "The overall offset from step 1 is still listed below and can be applied.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2101
+   ]
+  }
+ },
+ {
+  "key": "The same video carries on into the 2nd half, so pick the 2nd half to set its start too (or leave it blank to follow straight after the 1st).",
+  "message": "The same video carries on into the 2nd half, so pick the 2nd half to set its start too (or leave it blank to follow straight after the 1st).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2976
+   ]
+  }
+ },
+ {
+  "key": "The starting line-up has {n} {xItem} {choice}; a team should field 4 {xItem2} players.",
+  "message": "The starting line-up has {n} {xItem} {choice}; a team should field 4 {xItem2} players.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2883
+   ]
+  }
+ },
+ {
+  "key": "The team's ten attacks closest to this one, whatever their outcome, listed with goals first, then attacks that did not score but won an attacking rebound at some point, then the rest, so you can see how often this kind of sequence works. Compared on the route of the passes, where the first shot was taken and the number of passes. Attacks towards opposite ends are turned the same way for the comparison, but each drawing shows the half court the attack was really played in, with the post it attacked. A higher percentage means a closer match.",
+  "message": "The team's ten attacks closest to this one, whatever their outcome, listed with goals first, then attacks that did not score but won an attacking rebound at some point, then the rest, so you can see how often this kind of sequence works. Compared on the route of the passes, where the first shot was taken and the number of passes. Attacks towards opposite ends are turned the same way for the comparison, but each drawing shows the half court the attack was really played in, with the post it attacked. A higher percentage means a closer match.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
+   ]
+  }
+ },
+ {
+  "key": "The time of {nf}{choice} corrected against the video. They are saved in this export, and the original times are kept in the time_original_s column.",
+  "message": "The time of {nf}{choice} corrected against the video. They are saved in this export, and the original times are kept in the time_original_s column.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3399
+   ]
+  }
+ },
+ {
+  "key": "The timer is paused.",
+  "message": "The timer is paused.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1719
+   ]
+  }
+ },
+ {
+  "key": "The video has not reported its time yet. Play or move the video for a moment, then press Now again.",
+  "message": "The video has not reported its time yet. Play or move the video for a moment, then press Now again.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2330
+   ]
+  }
+ },
+ {
+  "key": "The video is 8 seconds before the logged time. Pause it on the moment, then press Now.",
+  "message": "The video is 8 seconds before the logged time. Pause it on the moment, then press Now.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2328
+   ]
+  }
+ },
+ {
+  "key": "The {choice} half now starts at {t} in the video.",
+  "message": "The {choice} half now starts at {t} in the video.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3021
+   ]
+  }
+ },
+ {
+  "key": "The {k} half video is shorter than its start time ({badItem}), so its shots were skipped. Check the {k2} half video start time in Match setup (a separate 2nd half video usually starts at 0:00).",
+  "message": "The {k} half video is shorter than its start time ({badItem}), so its shots were skipped. Check the {k2} half video start time in Match setup (a separate 2nd half video usually starts at 0:00).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2106
+   ]
+  }
+ },
+ {
+  "key": "There are no goals, time outs, penalties or shots in this half to find in the video.",
+  "message": "There are no goals, time outs, penalties or shots in this half to find in the video.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2308
+   ]
+  }
+ },
+ {
+  "key": "This attack was tracked without pass locations (Count tracking), so its route cannot be compared",
+  "message": "This attack was tracked without pass locations (Count tracking), so its route cannot be compared",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2592
+   ]
+  }
+ },
+ {
+  "key": "This browser cannot record video. Try Chrome, Edge or Firefox, or use the ffmpeg script.",
+  "message": "This browser cannot record video. Try Chrome, Edge or Firefox, or use the ffmpeg script.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1797
+   ]
+  }
+ },
+ {
+  "key": "This browser has no supported video recorder. Use the ffmpeg script instead.",
+  "message": "This browser has no supported video recorder. Use the ffmpeg script instead.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1798
+   ]
+  }
+ },
+ {
+  "key": "This does not look like a tracker event log. Missing column{choice}: {miss}.",
+  "message": "This does not look like a tracker event log. Missing column{choice}: {miss}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    498
+   ]
+  }
+ },
+ {
+  "key": "This is the sample match. Set up a match first.",
+  "message": "This is the sample match. Set up a match first.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3547
+   ]
+  }
+ },
+ {
+  "key": "This match: court {L} × {L2} m · {D} minutes · {p}",
+  "message": "This match: court {L} × {L2} m · {D} minutes · {p}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    867
+   ]
+  }
+ },
+ {
+  "key": "This shot was the free pass<small>Untick it to log a standard shot</small>",
+  "message": "This shot was the free pass<small>Untick it to log a standard shot</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    849
+   ]
+  }
+ },
+ {
+  "key": "This video is for the {choice} half. The other half uses its own video: use the buttons above to switch to it.",
+  "message": "This video is for the {choice} half. The other half uses its own video: use the buttons above to switch to it.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2307
+   ]
+  }
+ },
+ {
+  "key": "Ticking this starts finding the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded. Needs the Portrait option.",
+  "message": "Ticking this starts finding the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded. Needs the Portrait option.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1725
+   ]
+  }
+ },
+ {
+  "key": "Time out",
+  "message": "Time out",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1446
+   ]
+  }
+ },
+ {
+  "key": "Time out end",
+  "message": "Time out end",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1446,
+    1687
+   ]
+  }
+ },
+ {
+  "key": "Time out ended. The clock is running again.",
+  "message": "Time out ended. The clock is running again.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3428
+   ]
+  }
+ },
+ {
+  "key": "Time out start",
+  "message": "Time out start",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1446,
+    1687
+   ]
+  }
+ },
+ {
+  "key": "Time out. The clock is stopped and the video keeps playing. Press Time out end when play restarts.",
+  "message": "Time out. The clock is stopped and the video keeps playing. Press Time out end when play restarts.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3433
+   ]
+  }
+ },
+ {
+  "key": "To keep the whole log in step with the video, press the orange <b>Time out start</b> and <b>Time out end</b> buttons whenever the clock is stopped: the video keeps running, and Korf Log adds the time out to the video time.",
+  "message": "To keep the whole log in step with the video, press the orange <b>Time out start</b> and <b>Time out end</b> buttons whenever the clock is stopped: the video keeps running, and Korf Log adds the time out to the video time.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    573
+   ]
+  }
+ },
+ {
+  "key": "Total",
+  "message": "Total",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1313
+   ]
+  }
+ },
+ {
+  "key": "Transfer to attack",
+  "message": "Transfer to attack",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1447,
+    1699
+   ]
+  }
+ },
+ {
+  "key": "Turnover",
+  "message": "Turnover",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1443
+   ],
+   "lab": [
+    2416
+   ]
+  }
+ },
+ {
+  "key": "Turnover in attack",
+  "message": "Turnover in attack",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1447
+   ]
+  }
+ },
+ {
+  "key": "Turnover in attack. {teamName} have the ball back.",
+  "message": "Turnover in attack. {teamName} have the ball back.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3447
+   ]
+  }
+ },
+ {
+  "key": "Turnover in attack<small>Offered when the defence wins the ball</small>",
+  "message": "Turnover in attack<small>Offered when the defence wins the ball</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    752
+   ]
+  }
+ },
+ {
+  "key": "Turnover · {TO_SHORTItem}",
+  "message": "Turnover · {TO_SHORTItem}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1443
+   ]
+  }
+ },
+ {
+  "key": "Turnovers",
+  "message": "Turnovers",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    917
+   ]
+  }
+ },
+ {
+  "key": "Turnovers = open-play attacks that ended with the ball lost: a defended shot, a defensive rebound, the ball out with the defence getting it{choice}.",
+  "message": "Turnovers = open-play attacks that ended with the ball lost: a defended shot, a defensive rebound, the ball out with the defence getting it{choice}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    917
+   ]
+  }
+ },
+ {
+  "key": "Turnovers<small>Tiles above the court</small>",
+  "message": "Turnovers<small>Tiles above the court</small>",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    748
+   ]
+  }
+ },
+ {
+  "key": "Type the league name",
+  "message": "Type the league name",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    623
+   ],
+   "lab": [
+    346
+   ]
+  }
+ },
+ {
+  "key": "Unknown shooter",
+  "message": "Unknown shooter",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1729,
+    1820,
+    2055,
+    2062
+   ]
+  }
+ },
+ {
+  "key": "Use the tiles above the court to log turnovers and referee calls.",
+  "message": "Use the tiles above the court to log turnovers and referee calls.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1718
+   ]
+  }
+ },
+ {
+  "key": "Video and start times are set.",
+  "message": "Video and start times are set.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1699
+   ]
+  }
+ },
+ {
+  "key": "View",
+  "message": "View",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
+   ]
+  }
+ },
+ {
+  "key": "Volume against efficiency",
+  "message": "Volume against efficiency",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1293
+   ]
+  }
+ },
+ {
+  "key": "Waiting:",
+  "message": "Waiting:",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2403
+   ]
+  }
+ },
+ {
+  "key": "Watch on YouTube",
+  "message": "Watch on YouTube",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1883,
+    2993
+   ]
+  }
+ },
+ {
+  "key": "Week {week}",
+  "message": "Week {week}",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1646
+   ],
+   "lab": [
+    964
+   ]
+  }
+ },
+ {
+  "key": "When players were swapped; the dashed line is half time",
+  "message": "When players were swapped; the dashed line is half time",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1337
+   ]
+  }
+ },
+ {
+  "key": "Where in the match goals are scored, all matches added together",
+  "message": "Where in the match goals are scored, all matches added together",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    974
+   ]
+  }
+ },
+ {
+  "key": "Which half",
+  "message": "Which half",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    651
+   ]
+  }
+ },
+ {
+  "key": "Which half's video",
+  "message": "Which half's video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    559
+   ]
+  }
+ },
+ {
+  "key": "Whole match",
+  "message": "Whole match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1624,
+    2477
+   ]
+  }
+ },
+ {
+  "key": "Working:",
+  "message": "Working:",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2403
+   ]
+  }
+ },
+ {
+  "key": "Yellow Bucket files<small>Shot location exports (CSV)</small>",
+  "message": "Yellow Bucket files<small>Shot location exports (CSV)</small>",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    304
+   ]
+  }
+ },
+ {
+  "key": "You used a video file on this computer, so Korf Log can compare it with your log. <b>Re-time the log</b> finds how far the logged times drift from the video. <b>Suggest shot times</b> proposes better times for shots. Nothing changes unless you apply it, and the originals are kept. Do this before you export.",
+  "message": "You used a video file on this computer, so Korf Log can compare it with your log. <b>Re-time the log</b> finds how far the logged times drift from the video. <b>Suggest shot times</b> proposes better times for shots. Nothing changes unless you apply it, and the originals are kept. Do this before you export.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    818
+   ]
+  }
+ },
+ {
+  "key": "YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.",
+  "message": "YouTube does not play embedded videos in a page opened as a file on this computer (it reports a player configuration error). Open the video on YouTube, or open Korf Log from its web address.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1883
+   ]
+  }
+ },
+ {
+  "key": "YouTube does not play embedded videos in a page opened as a file on this computer. Open Korf Log from its web address to preview here, or open the video on YouTube and type the time in.",
+  "message": "YouTube does not play embedded videos in a page opened as a file on this computer. Open Korf Log from its web address to preview here, or open the video on YouTube and type the time in.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2993
+   ]
+  }
+ },
+ {
+  "key": "YouTube link",
+  "message": "YouTube link",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2971,
+    3038
+   ],
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "YouTube only plays inside a page opened from a web address (for example the GitHub Pages link), not from a file on your computer.",
+  "message": "YouTube only plays inside a page opened from a web address (for example the GitHub Pages link), not from a file on your computer.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1738
+   ]
+  }
+ },
+ {
+  "key": "ZONE A",
+  "message": "ZONE A",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2650
+   ]
+  }
+ },
+ {
+  "key": "ZONE B",
+  "message": "ZONE B",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2650
+   ]
+  }
+ },
+ {
+  "key": "Zone A (left)",
+  "message": "Zone A (left)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2932,
+    2932
+   ]
+  }
+ },
+ {
+  "key": "Zone B (right)",
+  "message": "Zone B (right)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2932,
+    2932
+   ]
+  }
+ },
+ {
+  "key": "Zone B ▸",
+  "message": "Zone B ▸",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1659
+   ]
+  }
+ },
+ {
+  "key": "about {left} min",
+  "message": "about {left} min",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2018
+   ]
+  }
+ },
+ {
+  "key": "ahead of",
+  "message": "ahead of",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2313
+   ]
+  }
+ },
+ {
+  "key": "all loaded matches",
+  "message": "all loaded matches",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    539
+   ]
+  }
+ },
+ {
+  "key": "all opponents",
+  "message": "all opponents",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "attacking",
+  "message": "attacking",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1667
+   ]
+  }
+ },
+ {
+  "key": "ball/",
+  "message": "ball/",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1869
+   ]
+  }
+ },
+ {
+  "key": "below, or paste a YouTube link.",
+  "message": "below, or paste a YouTube link.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1699
+   ]
+  }
+ },
+ {
+  "key": "by {player}",
+  "message": "by {player}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2461
+   ]
+  }
+ },
+ {
+  "key": "collected in defence",
+  "message": "collected in defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1107
+   ]
+  }
+ },
+ {
+  "key": "comes on in Division {dv2}.",
+  "message": "comes on in Division {dv2}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1367
+   ]
+  }
+ },
+ {
+  "key": "defended",
+  "message": "defended",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    656,
+    850
+   ]
+  }
+ },
+ {
+  "key": "done",
+  "message": "done",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1705
+   ]
+  }
+ },
+ {
+  "key": "event was",
+  "message": "event was",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3387,
+    3399
+   ]
+  }
+ },
+ {
+  "key": "events were",
+  "message": "events were",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3387,
+    3399
+   ]
+  }
+ },
+ {
+  "key": "ffmpeg script (Mac/Linux)",
+  "message": "ffmpeg script (Mac/Linux)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "ffmpeg script (Windows)",
+  "message": "ffmpeg script (Windows)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1645
+   ]
+  }
+ },
+ {
+  "key": "first to last event",
+  "message": "first to last event",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1107
+   ]
+  }
+ },
+ {
+  "key": "first two quarters",
+  "message": "first two quarters",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2937
+   ]
+  }
+ },
+ {
+  "key": "for {name}",
+  "message": "for {name}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1380,
+    1384
+   ]
+  }
+ },
+ {
+  "key": "for {plLabel}. {plLabel2} goes to the bench.",
+  "message": "for {plLabel}. {plLabel2} goes to the bench.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1361
+   ]
+  }
+ },
+ {
+  "key": "for {teamLabel}",
+  "message": "for {teamLabel}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1235
+   ]
+  }
+ },
+ {
+  "key": "free pass",
+  "message": "free pass",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2233
+   ]
+  }
+ },
+ {
+  "key": "free pass shot",
+  "message": "free pass shot",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2511
+   ]
+  }
+ },
+ {
+  "key": "from {klvFmt} to {klvFmt2}{choice}",
+  "message": "from {klvFmt} to {klvFmt2}{choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2138
+   ]
+  }
+ },
+ {
+  "key": "goal",
+  "message": "goal",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1014
+   ],
+   "lab": [
+    656,
+    849,
+    1631,
+    2309
+   ]
+  }
+ },
+ {
+  "key": "goal · {pf} lost",
+  "message": "goal · {pf} lost",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1093
+   ]
+  }
+ },
+ {
+  "key": "halves and quarters",
+  "message": "halves and quarters",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    865
+   ]
+  }
+ },
+ {
+  "key": "have Division {value} attacking",
+  "message": "have Division {value} attacking",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2937
+   ]
+  }
+ },
+ {
+  "key": "have the ball",
+  "message": "have the ball",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1664
+   ]
+  }
+ },
+ {
+  "key": "its opponents",
+  "message": "its opponents",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    941
+   ]
+  }
+ },
+ {
+  "key": "match + video",
+  "message": "match + video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1284
+   ]
+  }
+ },
+ {
+  "key": "match video",
+  "message": "match video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2849
+   ]
+  }
+ },
+ {
+  "key": "mm:ss",
+  "message": "mm:ss",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    643
+   ]
+  }
+ },
+ {
+  "key": "mm:ss, e.g. 00:30",
+  "message": "mm:ss, e.g. 00:30",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3039
+   ]
+  }
+ },
+ {
+  "key": "mm:ss, e.g. 04:10",
+  "message": "mm:ss, e.g. 04:10",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    642
+   ]
+  }
+ },
+ {
+  "key": "mm:ss, e.g. 38:20",
+  "message": "mm:ss, e.g. 38:20",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3039
+   ]
+  }
+ },
+ {
+  "key": "nobody (injured)",
+  "message": "nobody (injured)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1332
+   ]
+  }
+ },
+ {
+  "key": "of {itemCount}",
+  "message": "of {itemCount}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1661
+   ]
+  }
+ },
+ {
+  "key": "pass",
+  "message": "pass",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1796
+   ],
+   "lab": [
+    1387,
+    2456,
+    2480,
+    2600
+   ]
+  }
+ },
+ {
+  "key": "rebound",
+  "message": "rebound",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    656,
+    2310,
+    2311
+   ]
+  }
+ },
+ {
+  "key": "selected match",
+  "message": "selected match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    539
+   ]
+  }
+ },
+ {
+  "key": "shots kept alive",
+  "message": "shots kept alive",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1107
+   ]
+  }
+ },
+ {
+  "key": "something went wrong",
+  "message": "something went wrong",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2101,
+    2379
+   ]
+  }
+ },
+ {
+  "key": "step 2 of 2",
+  "message": "step 2 of 2",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2519
+   ]
+  }
+ },
+ {
+  "key": "takes {plLabel}'s place in Division {dv2}. {plLabel2} becomes a substitute.",
+  "message": "takes {plLabel}'s place in Division {dv2}. {plLabel2} becomes a substitute.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1367
+   ]
+  }
+ },
+ {
+  "key": "the browser could not open {name}",
+  "message": "the browser could not open {name}",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2041
+   ],
+   "lab": [
+    1953
+   ]
+  }
+ },
+ {
+  "key": "the browser got stuck reading {nm} (it may be a format the browser cannot seek in; try a different copy of the video, for example an MP4 with H.264 video). Its shots are skipped",
+  "message": "the browser got stuck reading {nm} (it may be a format the browser cannot seek in; try a different copy of the video, for example an MP4 with H.264 video). Its shots are skipped",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2390
+   ]
+  }
+ },
+ {
+  "key": "the browser took too long to open {name}",
+  "message": "the browser took too long to open {name}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2041
+   ]
+  }
+ },
+ {
+  "key": "the clips in the folder {base}_clips.",
+  "message": "the clips in the folder {base}_clips.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2077
+   ]
+  }
+ },
+ {
+  "key": "under a minute",
+  "message": "under a minute",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2018
+   ],
+   "lab": [
+    1958
+   ]
+  }
+ },
+ {
+  "key": "video file",
+  "message": "video file",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2971
+   ]
+  }
+ },
+ {
+  "key": "with Division {value}",
+  "message": "with Division {value}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2937
+   ]
+  }
+ },
+ {
+  "key": "{SItem} scored from {SItem2}",
+  "message": "{SItem} scored from {SItem2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1111
+   ]
+  }
+ },
+ {
+  "key": "{TO_SHORTItem} turnover",
+  "message": "{TO_SHORTItem} turnover",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3438
+   ]
+  }
+ },
+ {
+  "key": "{atts} attacks · {shotsCount}{choice}{choice2}{choice3} · {fmtClock}{choice4}",
+  "message": "{atts} attacks · {shotsCount}{choice}{choice2}{choice3} · {fmtClock}{choice4}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1796
+   ]
+  }
+ },
+ {
+  "key": "{att} attacking rebounds",
+  "message": "{att} attacking rebounds",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1267
+   ]
+  }
+ },
+ {
+  "key": "{base} · step 1 of 2{choice}",
+  "message": "{base} · step 1 of 2{choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2505
+   ]
+  }
+ },
+ {
+  "key": "{base}.mp4. Only the merged file is kept.",
+  "message": "{base}.mp4. Only the merged file is kept.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2077
+   ]
+  }
+ },
+ {
+  "key": "{cItem} of {n} attacks",
+  "message": "{cItem} of {n} attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1093
+   ]
+  }
+ },
+ {
+  "key": "{choice} - {oc} - {choice2} half {choice3}",
+  "message": "{choice} - {oc} - {choice2} half {choice3}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2055
+   ]
+  }
+ },
+ {
+  "key": "{choice} Regular time is over and the clock runs on in extra time. Events are logged as {tm} + extra time. Press {choice2}",
+  "message": "{choice} Regular time is over and the clock runs on in extra time. Events are logged as {tm} + extra time. Press {choice2}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1712
+   ]
+  }
+ },
+ {
+  "key": "{choice} and removed {itemCount}{choice2}",
+  "message": "{choice} and removed {itemCount}{choice2}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1706
+   ]
+  }
+ },
+ {
+  "key": "{choice} half {choice2} · {team} · {choice3} · {choice4} · {oc}{choice5}{choice6}",
+  "message": "{choice} half {choice2} · {team} · {choice3} · {choice4} · {oc}{choice5}{choice6}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1683
+   ]
+  }
+ },
+ {
+  "key": "{choice} min",
+  "message": "{choice} min",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1254
+   ]
+  }
+ },
+ {
+  "key": "{choice} per minute in attack · {name}",
+  "message": "{choice} per minute in attack · {name}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1254
+   ]
+  }
+ },
+ {
+  "key": "{choice} shot maps",
+  "message": "{choice} shot maps",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1081,
+    1084
+   ]
+  }
+ },
+ {
+  "key": "{choice} · {hcItem} passes",
+  "message": "{choice} · {hcItem} passes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1101
+   ]
+  }
+ },
+ {
+  "key": "{choice} · {oc} · {choice2} half {choice3}",
+  "message": "{choice} · {oc} · {choice2} half {choice3}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1820
+   ]
+  }
+ },
+ {
+  "key": "{choice} · {teamName} · Division {div}",
+  "message": "{choice} · {teamName} · Division {div}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2514
+   ]
+  }
+ },
+ {
+  "key": "{choice}Saved {fnm} ({size} MB, {LCount} clips).",
+  "message": "{choice}Saved {fnm} ({size} MB, {LCount} clips).",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1859
+   ]
+  }
+ },
+ {
+  "key": "{commonItem} only",
+  "message": "{commonItem} only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    552
+   ]
+  }
+ },
+ {
+  "key": "{def} defensive rebounds",
+  "message": "{def} defensive rebounds",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1267
+   ]
+  }
+ },
+ {
+  "key": "{evClock} · pick who comes off and who comes on, or mark a player injured with no replacement",
+  "message": "{evClock} · pick who comes off and who comes on, or mark a player injured with no replacement",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2457
+   ]
+  }
+ },
+ {
+  "key": "{goals} goals from {shots} shots",
+  "message": "{goals} goals from {shots} shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1266,
+    1318
+   ]
+  }
+ },
+ {
+  "key": "{goals} goals from {shots} shots ({pf})",
+  "message": "{goals} goals from {shots} shots ({pf})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1288
+   ]
+  }
+ },
+ {
+  "key": "{g} ({n} players)",
+  "message": "{g} ({n} players)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1303
+   ]
+  }
+ },
+ {
+  "key": "{g} goals from {n} shots ({pf})",
+  "message": "{g} goals from {n} shots ({pf})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    792
+   ]
+  }
+ },
+ {
+  "key": "{itemCount} events",
+  "message": "{itemCount} events",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    421
+   ]
+  }
+ },
+ {
+  "key": "{itemCount} selected matches",
+  "message": "{itemCount} selected matches",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    539
+   ]
+  }
+ },
+ {
+  "key": "{kind} applied",
+  "message": "{kind} applied",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3386
+   ]
+  }
+ },
+ {
+  "key": "{k} half: {f} of {n}",
+  "message": "{k} half: {f} of {n}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2107
+   ]
+  }
+ },
+ {
+  "key": "{label} against {choice}",
+  "message": "{label} against {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    941
+   ]
+  }
+ },
+ {
+  "key": "{label} goals",
+  "message": "{label} goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    993
+   ]
+  }
+ },
+ {
+  "key": "{label} shots",
+  "message": "{label} shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    993
+   ]
+  }
+ },
+ {
+  "key": "{label} · {klvPFmt} elapsed",
+  "message": "{label} · {klvPFmt} elapsed",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2017
+   ]
+  }
+ },
+ {
+  "key": "{label}: {done} of {total} frames · about {choice} left. Keep this tab open.",
+  "message": "{label}: {done} of {total} frames · about {choice} left. Keep this tab open.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1958
+   ]
+  }
+ },
+ {
+  "key": "{minutes} min, {choice}{choice2}",
+  "message": "{minutes} min, {choice}{choice2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1141
+   ]
+  }
+ },
+ {
+  "key": "{mmItem} per match",
+  "message": "{mmItem} per match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1131
+   ]
+  }
+ },
+ {
+  "key": "{moved} of {plCount} events would move{choice}. Match confidence: {high} high, {medium} medium, {low} low. Low ones sit near a change of offset or where the camera movement matched the ball weakly; check them in the video.",
+  "message": "{moved} of {plCount} events would move{choice}. Match confidence: {high} high, {medium} medium, {low} low. Low ones sit near a change of offset or where the camera movement matched the ball weakly; check them in the video.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2143
+   ]
+  }
+ },
+ {
+  "key": "{multi} attacks",
+  "message": "{multi} attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1106
+   ]
+  }
+ },
+ {
+  "key": "{name} · in attack",
+  "message": "{name} · in attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1271
+   ]
+  }
+ },
+ {
+  "key": "{name} · in defence",
+  "message": "{name} · in defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1271
+   ]
+  }
+ },
+ {
+  "key": "{name} · {catsItem} min",
+  "message": "{name} · {catsItem} min",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    974
+   ]
+  }
+ },
+ {
+  "key": "{name}: expected shots from two teams, but found {teamsCount}: {teams}.",
+  "message": "{name}: expected shots from two teams, but found {teamsCount}: {teams}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2266
+   ]
+  }
+ },
+ {
+  "key": "{name}: no shots found in that file.",
+  "message": "{name}: no shots found in that file.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2265
+   ]
+  }
+ },
+ {
+  "key": "{name}: that does not look like a Yellow Bucket shot location export. Missing column{choice}: {miss}.",
+  "message": "{name}: that does not look like a Yellow Bucket shot location export. Missing column{choice}: {miss}.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2262
+   ]
+  }
+ },
+ {
+  "key": "{name}: {n} ball positions",
+  "message": "{name}: {n} ball positions",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1993
+   ]
+  }
+ },
+ {
+  "key": "{name}: {rowsCount} shots ({teamsItem} {n0}, {teamsItem2} {n1}), up to {mx} min.",
+  "message": "{name}: {rowsCount} shots ({teamsItem} {n0}, {teamsItem2} {n1}), up to {mx} min.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2273
+   ]
+  }
+ },
+ {
+  "key": "{nm} comes on in Division {dv}{choice}",
+  "message": "{nm} comes on in Division {dv}{choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1361
+   ]
+  }
+ },
+ {
+  "key": "{nm}: the video is ahead of the log by",
+  "message": "{nm}: the video is ahead of the log by",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2137
+   ]
+  }
+ },
+ {
+  "key": "{n} of {itemCount} reports selected",
+  "message": "{n} of {itemCount} reports selected",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1436
+   ]
+  }
+ },
+ {
+  "key": "{n} of {ldCount} matches",
+  "message": "{n} of {ldCount} matches",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    598
+   ]
+  }
+ },
+ {
+  "key": "{oItem}: {cItem} of {n}",
+  "message": "{oItem}: {cItem} of {n}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1005
+   ]
+  }
+ },
+ {
+  "key": "{pct}% alike · {choice}",
+  "message": "{pct}% alike · {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
+   ]
+  }
+ },
+ {
+  "key": "{perMin} ({goalsL} goals in {fmtMin})",
+  "message": "{perMin} ({goalsL} goals in {fmtMin})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1273
+   ]
+  }
+ },
+ {
+  "key": "{perMin} ({shotsL} shots in {fmtMin})",
+  "message": "{perMin} ({shotsL} shots in {fmtMin})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1272
+   ]
+  }
+ },
+ {
+  "key": "{periods} {choice} of {per} min each.",
+  "message": "{periods} {choice} of {per} min each.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3091
+   ]
+  }
+ },
+ {
+  "key": "{pf} of attacks",
+  "message": "{pf} of attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1106
+   ]
+  }
+ },
+ {
+  "key": "{plLabel} goes off injured and nobody replaces them. Division {div} plays on with {cntItem} players.",
+  "message": "{plLabel} goes off injured and nobody replaces them. Division {div} plays on with {cntItem} players.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1356
+   ]
+  }
+ },
+ {
+  "key": "{pos}Pass {n} of {np} · {tm}",
+  "message": "{pos}Pass {n} of {np} · {tm}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2458
+   ]
+  }
+ },
+ {
+  "key": "{pos}Turnover · {tm}",
+  "message": "{pos}Turnover · {tm}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2459
+   ]
+  }
+ },
+ {
+  "key": "{ppCount} shots · {gg} goals",
+  "message": "{ppCount} shots · {gg} goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1077
+   ]
+  }
+ },
+ {
+  "key": "{ptsCount} shots · {nG} goals",
+  "message": "{ptsCount} shots · {nG} goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1046
+   ]
+  }
+ },
+ {
+  "key": "{r} m from the post · {a}°",
+  "message": "{r} m from the post · {a}°",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2716
+   ]
+  }
+ },
+ {
+  "key": "{r} m from the post · {a}° · {evClock}",
+  "message": "{r} m from the post · {a}° · {evClock}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2503
+   ]
+  }
+ },
+ {
+  "key": "{seenCount} matches",
+  "message": "{seenCount} matches",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1785
+   ]
+  }
+ },
+ {
+  "key": "{shots} shots, {goals} goals",
+  "message": "{shots} shots, {goals} goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1445
+   ]
+  }
+ },
+ {
+  "key": "{shown} of {itemCount}",
+  "message": "{shown} of {itemCount}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1799
+   ]
+  }
+ },
+ {
+  "key": "{single} attacks",
+  "message": "{single} attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1106
+   ]
+  }
+ },
+ {
+  "key": "{teamLabel} season report",
+  "message": "{teamLabel} season report",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    580
+   ]
+  }
+ },
+ {
+  "key": "{teamLabel} · coach report: team and all players · {matchScope} · {toLocaleDateString}",
+  "message": "{teamLabel} · coach report: team and all players · {matchScope} · {toLocaleDateString}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1419
+   ]
+  }
+ },
+ {
+  "key": "{teamName} are in attack.",
+  "message": "{teamName} are in attack.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3447
+   ]
+  }
+ },
+ {
+  "key": "{teamName} attacking foul turnover.",
+  "message": "{teamName} attacking foul turnover.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2553
+   ]
+  }
+ },
+ {
+  "key": "{teamName} have the ball",
+  "message": "{teamName} have the ball",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1696
+   ]
+  }
+ },
+ {
+  "key": "{teamName} · {label} rebound{choice}",
+  "message": "{teamName} · {label} rebound{choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2521
+   ]
+  }
+ },
+ {
+  "key": "{teamName}: {name} off injured, no replacement.",
+  "message": "{teamName}: {name} off injured, no replacement.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1377
+   ]
+  }
+ },
+ {
+  "key": "{teamName}: {name} on{choice}.",
+  "message": "{teamName}: {name} on{choice}.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1380,
+    1384
+   ]
+  }
+ },
+ {
+  "key": "{team} · goal {pItem}",
+  "message": "{team} · goal {pItem}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    961
+   ]
+  }
+ },
+ {
+  "key": "{team} · team report and player page for {name} · {toLocaleDateString}",
+  "message": "{team} · team report and player page for {name} · {toLocaleDateString}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1465
+   ]
+  }
+ },
+ {
+  "key": "{tl} colour",
+  "message": "{tl} colour",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2784
+   ]
+  }
+ },
+ {
+  "key": "{tn} start in possession{choice} attacking {zone} in the {choice2}. {on}{choice3}{oz}. Directions flip at the start of the {choice4}.{choice5}",
+  "message": "{tn} start in possession{choice} attacking {zone} in the {choice2}. {on}{choice3}{oz}. Directions flip at the start of the {choice4}.{choice5}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2937
+   ]
+  }
+ },
+ {
+  "key": "{t} only",
+  "message": "{t} only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    553
+   ]
+  }
+ },
+ {
+  "key": "{value} Portrait 10:16 and Crop follows the ball are ticked for the portrait video.",
+  "message": "{value} Portrait 10:16 and Crop follows the ball are ticked for the portrait video.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1981
+   ]
+  }
+ },
+ {
+  "key": "{value} attacks",
+  "message": "{value} attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1101
+   ]
+  }
+ },
+ {
+  "key": "{value} can be made into a video from your file",
+  "message": "{value} can be made into a video from your file",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1715
+   ]
+  }
+ },
+ {
+  "key": "{value} can play from YouTube",
+  "message": "{value} can play from YouTube",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1714
+   ]
+  }
+ },
+ {
+  "key": "{value} colour",
+  "message": "{value} colour",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2283,
+    2283
+   ]
+  }
+ },
+ {
+  "key": "{value} events",
+  "message": "{value} events",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3346
+   ]
+  }
+ },
+ {
+  "key": "{value} goals",
+  "message": "{value} goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    974,
+    1243,
+    1263
+   ]
+  }
+ },
+ {
+  "key": "{value} moved to a new time. Export the corrected event log now so the new times are saved in your file. The original times are kept in the file too (column time_original_s), and you can still export later with Export match.",
+  "message": "{value} moved to a new time. Export the corrected event log now so the new times are saved in your file. The original times are kept in the file too (column time_original_s), and you can still export later with Export match.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3387
+   ]
+  }
+ },
+ {
+  "key": "{value} not scored",
+  "message": "{value} not scored",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1243
+   ]
+  }
+ },
+ {
+  "key": "{value} of {shots}",
+  "message": "{value} of {shots}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1244
+   ]
+  }
+ },
+ {
+  "key": "{value} of {shots} shots done{choice}. Keep this tab open and visible.{choice2}",
+  "message": "{value} of {shots} shots done{choice}. Keep this tab open and visible.{choice2}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2403
+   ]
+  }
+ },
+ {
+  "key": "{value} selected. Narrow them down with the filters above (half, team, shooter, shot type, outcome), or keep them all.",
+  "message": "{value} selected. Narrow them down with the filters above (half, team, shooter, shot type, outcome), or keep them all.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1698
+   ]
+  }
+ },
+ {
+  "key": "{value} shots",
+  "message": "{value} shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1251,
+    1264
+   ]
+  }
+ },
+ {
+  "key": "{value}The original times are kept; use Restore original times to go back.",
+  "message": "{value}The original times are kept; use Restore original times to go back.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2251
+   ]
+  }
+ },
+ {
+  "key": "{what} cancelled.",
+  "message": "{what} cancelled.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3572
+   ]
+  }
+ },
+ {
+  "key": "{what} saved as {fn} ({itemCount} events).",
+  "message": "{what} saved as {fn} ({itemCount} events).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3570
+   ]
+  }
+ },
+ {
+  "key": "{what} saved as {fn} ({itemCount} events). If no file appeared, press Export match when the match has ended and use Copy.",
+  "message": "{what} saved as {fn} ({itemCount} events). If no file appeared, press Export match when the match has ended and use Copy.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3556
+   ]
+  }
+ },
+ {
+  "key": "{xItem} goals from {xItem2} shots ({pf})",
+  "message": "{xItem} goals from {xItem2} shots ({pf})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    981
+   ]
+  }
+ },
+ {
+  "key": "{xItem} shots, {xItem2} goals ({pf})",
+  "message": "{xItem} shots, {xItem2} goals ({pf})",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    992
+   ]
+  }
+ },
+ {
+  "key": "{x} min",
+  "message": "{x} min",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1183,
+    1183
+   ]
+  }
+ },
+ {
+  "key": "· Attack {a}",
+  "message": "· Attack {a}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1767,
+    1781
+   ]
+  }
+ },
+ {
+  "key": "· Division {div}",
+  "message": "· Division {div}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2521
+   ]
+  }
+ },
+ {
+  "key": "· Division {value}",
+  "message": "· Division {value}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2826,
+    2827
+   ]
+  }
+ },
+ {
+  "key": "· Week {fixture_week}",
+  "message": "· Week {fixture_week}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    576
+   ]
+  }
+ },
+ {
+  "key": "· Week {week}",
+  "message": "· Week {week}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1642
+   ]
+  }
+ },
+ {
+  "key": "· against {choice}",
+  "message": "· against {choice}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "· all teams",
+  "message": "· all teams",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    916
+   ]
+  }
+ },
+ {
+  "key": "· attacking zone",
+  "message": "· attacking zone",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2463
+   ]
+  }
+ },
+ {
+  "key": "· clip {hlClock}–{hlClock2}",
+  "message": "· clip {hlClock}–{hlClock2}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1683
+   ]
+  }
+ },
+ {
+  "key": "· defending zone",
+  "message": "· defending zone",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2463
+   ]
+  }
+ },
+ {
+  "key": "· ends: {outText}",
+  "message": "· ends: {outText}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1796
+   ]
+  }
+ },
+ {
+  "key": "· extra time",
+  "message": "· extra time",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1285
+   ]
+  }
+ },
+ {
+  "key": "· not shown, because not every match logged them: {__hiddenStats}",
+  "message": "· not shown, because not every match logged them: {__hiddenStats}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1406
+   ]
+  }
+ },
+ {
+  "key": "· placed automatically, 2.5 m in front of the post",
+  "message": "· placed automatically, 2.5 m in front of the post",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2505
+   ]
+  }
+ },
+ {
+  "key": "· {choice} left",
+  "message": "· {choice} left",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2018
+   ]
+  }
+ },
+ {
+  "key": "· {ns} shots",
+  "message": "· {ns} shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1667
+   ]
+  }
+ },
+ {
+  "key": "◂ Zone A",
+  "message": "◂ Zone A",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1659
+   ]
+  }
+ },
+ {
+  "key": "✓ Finished in",
+  "message": "✓ Finished in",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2034
+   ]
+  }
+ }
+]
