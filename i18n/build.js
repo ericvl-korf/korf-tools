@@ -35,7 +35,7 @@ function scan(name,html){
       for(const k in n){if(k==='loc')continue;const v=n[k];if(v&&typeof v==='object')walk(v);}})(ast);
   }
   const bodyNoScript=body.replace(/<script[\s\S]*?<\/script>/g,s=>s.replace(/[^\n]/g,' '));
-  const re=/<([a-zA-Z0-9]+)\b([^>]*\bdata-i18n(?:-html)?(?:\s[^>]*)?)>([\s\S]*?)<\/\1>/g;let m;
+  const re=/<([a-zA-Z0-9]+)\b([^>]*\bdata-i18n(?:-html)?(?:[\s=][^>]*)?)>([\s\S]*?)<\/\1>/g;let m;
   while((m=re.exec(bodyNoScript))){const attrs=m[2];const ctx=(/data-i18n-ctx="([^"]*)"/.exec(attrs)||[])[1]||'';
     const isHtml=/data-i18n-html\b/.test(attrs);const text=m[3].replace(/\s+/g,' ').trim();
     if(text)add(isHtml?text:decode(text),ctx,bodyNoScript.slice(0,m.index).split('\n').length,'markup');}
