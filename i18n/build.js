@@ -18,8 +18,9 @@ function decode(s){return s.replace(/&nbsp;/g,'\u00a0').replace(/&amp;/g,'&').re
 function scripts(html){const out=[];const re=/<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/g;let m;while((m=re.exec(html))){out.push({start:m.index+m[0].indexOf('>')+1,code:m[1]});}return out;}
 function scan(name,html){
   const found=[];const add=(msg,ctx,line,kind)=>found.push({msg,ctx:ctx||'',line,kind});
-  const body=html.replace(/<!--i18n:start-->[\s\S]*?<!--i18n:end-->\n?/g,'');
+  const body=html;
   for(const sc of scripts(body)){
+    if(/^\s*(window\.__I18N=|\/\* i18n runtime \*\/)/.test(sc.code))continue;
     let ast;try{ast=acorn.parse(sc.code,{ecmaVersion:2022,locations:true});}catch(e){console.error(name,'script parse error',e.message);process.exit(1);}
     const base=body.slice(0,sc.start).split('\n').length-1;
     (function walk(n){if(!n||typeof n!=='object')return;
@@ -27,6 +28,7 @@ function scan(name,html){
       if(n.type==='CallExpression'){const c=n.callee;let nm='';
         if(c.type==='MemberExpression'&&c.object.type==='Identifier'&&c.object.name==='i18n'&&!c.computed)nm=c.property.name;
         else if(c.type==='Identifier'&&c.name==='N_')nm='N_';
+        if(nm==='labels'){const a0=n.arguments[0];(function lw(x){if(!x)return;if(x.type==='Literal'&&typeof x.value==='string'){if(/[A-Za-z]{2}/.test(x.value)&&(/^[A-Z]/.test(x.value)||/\s/.test(x.value))&&!/^var\(/.test(x.value))add(x.value,'',base+x.loc.start.line,'labels');}else if(x.type==='ObjectExpression')x.properties.forEach(p=>lw(p.value));else if(x.type==='ArrayExpression')x.elements.forEach(lw);})(a0);}
         if(nm==='t'||nm==='th'||nm==='N_'){const a=n.arguments[0];
           if(a&&a.type==='Literal'&&typeof a.value==='string'){const cx=n.arguments[2]&&n.arguments[2].type==='Literal'?n.arguments[2].value:'';add(a.value,cx,base+n.loc.start.line,nm);}
           else console.warn(name+': i18n.'+nm+' with a non-literal message at line',base+n.loc.start.line);}}

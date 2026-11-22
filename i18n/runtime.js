@@ -95,7 +95,12 @@
   }
   window.t=t;window.th=th;window.N_=function(s){return s;};
   window.i18n={
-    t:t,th:th,locale:function(){return LOC;},set:set,onChange:function(f){LISTEN.push(f);},apply:apply,
+    t:t,th:th,
+    /* label tables: i18n.labels({goal:'Goal'}) / i18n.labels(['a','b']) returns a copy whose values are translated whenever they are read */
+    labels:function(src){function ui(v){return typeof v==='string'&&/[A-Za-z]{2}/.test(v)&&(/^[A-Z]/.test(v)||/\s/.test(v))&&!/^var\(/.test(v);}
+      function wrap(s){var out=Array.isArray(s)?[]:{};Object.keys(s).forEach(function(k){var v=s[k];if(v&&typeof v==='object'){var w=wrap(v);Object.defineProperty(out,k,{enumerable:true,get:function(){return w;}});}else if(ui(v)){Object.defineProperty(out,k,{enumerable:true,get:function(){return t(v);}});}else out[k]=v;});return out;}
+      return wrap(src);},
+    locale:function(){return LOC;},set:set,onChange:function(f){LISTEN.push(f);},apply:apply,
     html:function(h){return new Raw(h);},
     number:num,                                           // i18n.number(2.5) -> "2,5" in Dutch
     asEnglish:function(fn){FORCE_EN++;try{return fn();}finally{FORCE_EN--;}},   // exports and saved data stay English

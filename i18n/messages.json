@@ -1,5 +1,17 @@
 [
  {
+  "key": "# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh",
+  "message": "# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2161
+   ]
+  }
+ },
+ {
   "key": "(1st half)",
   "message": "(1st half)",
   "apps": [
@@ -7,7 +19,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -19,7 +31,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -31,7 +43,7 @@
   ],
   "lines": {
    "lab": [
-    1521
+    1640
    ]
   }
  },
@@ -43,8 +55,8 @@
   ],
   "lines": {
    "lab": [
-    1642,
-    1642
+    1761,
+    1761
    ]
   }
  },
@@ -57,11 +69,23 @@
   ],
   "lines": {
    "log": [
-    1183,
-    1468
+    1302,
+    1588
    ],
    "lab": [
-    458
+    577
+   ]
+  }
+ },
+ {
+  "key": "(needs ffmpeg)",
+  "message": "(needs ffmpeg)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2161
    ]
   }
  },
@@ -74,11 +98,11 @@
   ],
   "lines": {
    "log": [
-    1183,
-    1468
+    1302,
+    1588
    ],
    "lab": [
-    458
+    577
    ]
   }
  },
@@ -90,7 +114,7 @@
   ],
   "lines": {
    "log": [
-    1715
+    1836
    ]
   }
  },
@@ -102,7 +126,7 @@
   ],
   "lines": {
    "lab": [
-    1700
+    1819
    ]
   }
  },
@@ -114,7 +138,7 @@
   ],
   "lines": {
    "lab": [
-    870
+    989
    ]
   }
  },
@@ -126,7 +150,7 @@
   ],
   "lines": {
    "lab": [
-    1699
+    1818
    ]
   }
  },
@@ -138,7 +162,19 @@
   ],
   "lines": {
    "lab": [
-    1981
+    2100
+   ]
+  }
+ },
+ {
+  "key": "(weak match)",
+  "message": "(weak match)",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2259
    ]
   }
  },
@@ -150,7 +186,7 @@
   ],
   "lines": {
    "log": [
-    2143
+    2264
    ]
   }
  },
@@ -162,7 +198,7 @@
   ],
   "lines": {
    "log": [
-    2430
+    2551
    ]
   }
  },
@@ -174,7 +210,7 @@
   ],
   "lines": {
    "log": [
-    2403
+    2524
    ]
   }
  },
@@ -186,7 +222,7 @@
   ],
   "lines": {
    "log": [
-    2788
+    2909
    ]
   }
  },
@@ -198,7 +234,7 @@
   ],
   "lines": {
    "log": [
-    2792
+    2913
    ]
   }
  },
@@ -210,7 +246,19 @@
   ],
   "lines": {
    "lab": [
-    917
+    1036
+   ]
+  }
+ },
+ {
+  "key": ". Untick the box above to log a standard shot and choose a shot type.",
+  "message": ". Untick the box above to log a standard shot and choose a shot type.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2632
    ]
   }
  },
@@ -223,21 +271,21 @@
   ],
   "lines": {
    "log": [
-    2063,
-    2287,
-    2307,
-    2971,
-    2976,
-    2977,
-    3021
+    2184,
+    2408,
+    2428,
+    3092,
+    3097,
+    3098,
+    3142
    ],
    "lab": [
-    1667,
-    1683,
-    1729,
-    1820,
-    2050,
-    2055
+    1786,
+    1802,
+    1848,
+    1939,
+    2169,
+    2174
    ]
   }
  },
@@ -250,19 +298,23 @@
   ],
   "lines": {
    "log": [
-    964,
-    965,
-    2131,
-    2842,
-    2846,
-    2937
+    1083,
+    1084,
+    2252,
+    2963,
+    2967,
+    2971,
+    3058
    ],
    "lab": [
-    441,
-    1035,
-    1064,
-    1677,
-    2317
+    560,
+    1154,
+    1161,
+    1183,
+    1743,
+    1796,
+    2436,
+    2597
    ]
   }
  },
@@ -275,10 +327,10 @@
   ],
   "lines": {
    "log": [
-    3038
+    3159
    ],
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -290,7 +342,19 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
+   ]
+  }
+ },
+ {
+  "key": "1st half video",
+  "message": "1st half video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2970
    ]
   }
  },
@@ -302,8 +366,8 @@
   ],
   "lines": {
    "log": [
-    2421,
-    3036
+    2542,
+    3157
    ]
   }
  },
@@ -316,21 +380,21 @@
   ],
   "lines": {
    "log": [
-    2063,
-    2287,
-    2307,
-    2971,
-    2976,
-    2977,
-    3021
+    2184,
+    2408,
+    2428,
+    3092,
+    3097,
+    3098,
+    3142
    ],
    "lab": [
-    1667,
-    1683,
-    1729,
-    1820,
-    2050,
-    2055
+    1786,
+    1802,
+    1848,
+    1939,
+    2169,
+    2174
    ]
   }
  },
@@ -343,17 +407,21 @@
   ],
   "lines": {
    "log": [
-    964,
-    965,
-    2131,
-    2937
+    1083,
+    1084,
+    2252,
+    2971,
+    3058
    ],
    "lab": [
-    441,
-    1035,
-    1064,
-    1677,
-    2317
+    560,
+    1154,
+    1161,
+    1183,
+    1743,
+    1796,
+    2436,
+    2597
    ]
   }
  },
@@ -365,7 +433,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -377,7 +445,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -389,7 +457,19 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
+   ]
+  }
+ },
+ {
+  "key": "2nd half video",
+  "message": "2nd half video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2970
    ]
   }
  },
@@ -401,7 +481,7 @@
   ],
   "lines": {
    "log": [
-    2937
+    3058
    ]
   }
  },
@@ -413,7 +493,7 @@
   ],
   "lines": {
    "log": [
-    451
+    570
    ]
   }
  },
@@ -425,7 +505,7 @@
   ],
   "lines": {
    "log": [
-    572
+    691
    ]
   }
  },
@@ -437,7 +517,7 @@
   ],
   "lines": {
    "lab": [
-    315
+    434
    ]
   }
  },
@@ -449,7 +529,7 @@
   ],
   "lines": {
    "log": [
-    451
+    570
    ]
   }
  },
@@ -461,7 +541,7 @@
   ],
   "lines": {
    "lab": [
-    1723
+    1842
    ]
   }
  },
@@ -473,7 +553,7 @@
   ],
   "lines": {
    "lab": [
-    1726
+    1845
    ]
   }
  },
@@ -485,7 +565,7 @@
   ],
   "lines": {
    "log": [
-    1958
+    2079
    ]
   }
  },
@@ -497,7 +577,7 @@
   ],
   "lines": {
    "log": [
-    3143
+    3264
    ]
   }
  },
@@ -509,8 +589,8 @@
   ],
   "lines": {
    "log": [
-    1360,
-    1366
+    1479,
+    1485
    ]
   }
  },
@@ -522,7 +602,31 @@
   ],
   "lines": {
    "log": [
-    666
+    785
+   ]
+  }
+ },
+ {
+  "key": "Add the match video if you have one, so the clock and the video can start together.",
+  "message": "Add the match video if you have one, so the clock and the video can start together.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3167
+   ]
+  }
+ },
+ {
+  "key": "Add the video",
+  "message": "Add the video",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1818
    ]
   }
  },
@@ -534,7 +638,7 @@
   ],
   "lines": {
    "lab": [
-    1716
+    1835
    ]
   }
  },
@@ -546,7 +650,7 @@
   ],
   "lines": {
    "log": [
-    2971
+    3092
    ]
   }
  },
@@ -554,12 +658,19 @@
   "key": "All",
   "message": "All",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    1854
+   ],
    "lab": [
-    1348,
-    1348
+    1161,
+    1161,
+    1161,
+    1467,
+    1467
    ]
   }
  },
@@ -571,7 +682,7 @@
   ],
   "lines": {
    "lab": [
-    1633
+    1752
    ]
   }
  },
@@ -583,7 +694,7 @@
   ],
   "lines": {
    "lab": [
-    2477
+    2596
    ]
   }
  },
@@ -595,7 +706,7 @@
   ],
   "lines": {
    "lab": [
-    598
+    717
    ]
   }
  },
@@ -607,7 +718,7 @@
   ],
   "lines": {
    "lab": [
-    869
+    988
    ]
   }
  },
@@ -619,7 +730,7 @@
   ],
   "lines": {
    "lab": [
-    1349
+    1468
    ]
   }
  },
@@ -631,7 +742,7 @@
   ],
   "lines": {
    "lab": [
-    1266
+    1385
    ]
   }
  },
@@ -643,8 +754,8 @@
   ],
   "lines": {
    "lab": [
-    1272,
-    1273
+    1391,
+    1392
    ]
   }
  },
@@ -656,8 +767,8 @@
   ],
   "lines": {
    "lab": [
-    1263,
-    1264
+    1382,
+    1383
    ]
   }
  },
@@ -669,7 +780,7 @@
   ],
   "lines": {
    "lab": [
-    1271
+    1390
    ]
   }
  },
@@ -681,7 +792,7 @@
   ],
   "lines": {
    "lab": [
-    1628
+    1747
    ]
   }
  },
@@ -693,7 +804,8 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1363,
+    1749
    ]
   }
  },
@@ -705,7 +817,7 @@
   ],
   "lines": {
    "lab": [
-    1044
+    1163
    ]
   }
  },
@@ -717,8 +829,8 @@
   ],
   "lines": {
    "lab": [
-    1081,
-    1085
+    1200,
+    1204
    ]
   }
  },
@@ -730,7 +842,9 @@
   ],
   "lines": {
    "lab": [
-    538
+    657,
+    674,
+    999
    ]
   }
  },
@@ -742,7 +856,7 @@
   ],
   "lines": {
    "lab": [
-    1629
+    1748
    ]
   }
  },
@@ -754,7 +868,31 @@
   ],
   "lines": {
    "lab": [
-    1084
+    1203
+   ]
+  }
+ },
+ {
+  "key": "Angle",
+  "message": "Angle",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1164
+   ]
+  }
+ },
+ {
+  "key": "Any",
+  "message": "Any",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1753
    ]
   }
  },
@@ -766,7 +904,7 @@
   ],
   "lines": {
    "lab": [
-    1348
+    1467
    ]
   }
  },
@@ -779,11 +917,12 @@
   ],
   "lines": {
    "log": [
-    2528
+    2649
    ],
    "lab": [
-    1633,
-    2482
+    1752,
+    1782,
+    2601
    ]
   }
  },
@@ -795,7 +934,7 @@
   ],
   "lines": {
    "log": [
-    2528
+    2649
    ]
   }
  },
@@ -807,7 +946,19 @@
   ],
   "lines": {
    "lab": [
-    1634
+    1753
+   ]
+  }
+ },
+ {
+  "key": "Attack outcomes",
+  "message": "Attack outcomes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1213
    ]
   }
  },
@@ -819,19 +970,19 @@
   ],
   "lines": {
    "lab": [
-    2492
+    2611
    ]
   }
  },
  {
-  "key": "Attack {pi}{n} of {itemCount} ·",
-  "message": "Attack {pi}{n} of {itemCount} ·",
+  "key": "Attack {pi} of {itemCount} ·",
+  "message": "Attack {pi} of {itemCount} ·",
   "apps": [
    "lab"
   ],
   "lines": {
    "lab": [
-    2466
+    2585
    ]
   }
  },
@@ -843,7 +994,7 @@
   ],
   "lines": {
    "log": [
-    1667
+    1788
    ]
   }
  },
@@ -855,7 +1006,19 @@
   ],
   "lines": {
    "lab": [
-    917
+    1036
+   ]
+  }
+ },
+ {
+  "key": "Attacking",
+  "message": "Attacking",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1386
    ]
   }
  },
@@ -867,7 +1030,7 @@
   ],
   "lines": {
    "lab": [
-    1267
+    1386
    ]
   }
  },
@@ -879,7 +1042,7 @@
   ],
   "lines": {
    "log": [
-    789
+    908
    ]
   }
  },
@@ -891,7 +1054,7 @@
   ],
   "lines": {
    "log": [
-    2929
+    3050
    ]
   }
  },
@@ -903,7 +1066,7 @@
   ],
   "lines": {
    "lab": [
-    2601
+    2720
    ]
   }
  },
@@ -915,7 +1078,10 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035,
+    1039,
+    1245,
+    1254
    ]
   }
  },
@@ -927,8 +1093,57 @@
   ],
   "lines": {
    "lab": [
-    1107,
-    1240
+    1041,
+    1226,
+    1359
+   ]
+  }
+ },
+ {
+  "key": "Attacks",
+  "message": "Attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1214
+   ]
+  }
+ },
+ {
+  "key": "Attacks by number of passes",
+  "message": "Attacks by number of passes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1220
+   ]
+  }
+ },
+ {
+  "key": "Attacks ending in a goal",
+  "message": "Attacks ending in a goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1221
+   ]
+  }
+ },
+ {
+  "key": "Automatic playback is off because your device is set to reduce motion. Use Next and Back to step through.",
+  "message": "Automatic playback is off because your device is set to reduce motion. Use Next and Back to step through.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
    ]
   }
  },
@@ -940,7 +1155,7 @@
   ],
   "lines": {
    "lab": [
-    2592
+    2711
    ]
   }
  },
@@ -952,7 +1167,7 @@
   ],
   "lines": {
    "lab": [
-    1240
+    1359
    ]
   }
  },
@@ -964,7 +1179,7 @@
   ],
   "lines": {
    "lab": [
-    1285
+    1404
    ]
   }
  },
@@ -976,7 +1191,7 @@
   ],
   "lines": {
    "lab": [
-    1107
+    1226
    ]
   }
  },
@@ -988,7 +1203,9 @@
   ],
   "lines": {
    "lab": [
-    1346
+    1244,
+    1254,
+    1465
    ]
   }
  },
@@ -1000,8 +1217,8 @@
   ],
   "lines": {
    "log": [
-    2528,
-    2528
+    2649,
+    2649
    ]
   }
  },
@@ -1014,20 +1231,21 @@
   ],
   "lines": {
    "log": [
-    1127,
-    1164,
-    1520,
-    1520,
-    2762,
-    2782,
-    2854,
-    3069,
-    3195,
-    3270
+    1023,
+    1246,
+    1283,
+    1641,
+    1641,
+    2883,
+    2903,
+    2975,
+    3190,
+    3314,
+    3389
    ],
    "lab": [
-    434,
-    808
+    553,
+    927
    ]
   }
  },
@@ -1039,7 +1257,7 @@
   ],
   "lines": {
    "log": [
-    2780
+    2901
    ]
   }
  },
@@ -1051,7 +1269,7 @@
   ],
   "lines": {
    "log": [
-    499
+    618
    ]
   }
  },
@@ -1063,7 +1281,7 @@
   ],
   "lines": {
    "lab": [
-    2482
+    2601
    ]
   }
  },
@@ -1075,7 +1293,7 @@
   ],
   "lines": {
    "log": [
-    504
+    623
    ]
   }
  },
@@ -1087,7 +1305,7 @@
   ],
   "lines": {
    "log": [
-    455
+    574
    ]
   }
  },
@@ -1099,7 +1317,7 @@
   ],
   "lines": {
    "log": [
-    3341
+    3460
    ]
   }
  },
@@ -1111,7 +1329,7 @@
   ],
   "lines": {
    "log": [
-    3545
+    3664
    ]
   }
  },
@@ -1123,7 +1341,7 @@
   ],
   "lines": {
    "log": [
-    2175
+    2296
    ]
   }
  },
@@ -1135,7 +1353,7 @@
   ],
   "lines": {
    "lab": [
-    1519
+    1638
    ]
   }
  },
@@ -1147,7 +1365,8 @@
   ],
   "lines": {
    "lab": [
-    1520
+    1214,
+    1639
    ]
   }
  },
@@ -1159,7 +1378,7 @@
   ],
   "lines": {
    "log": [
-    2528
+    2649
    ]
   }
  },
@@ -1171,7 +1390,7 @@
   ],
   "lines": {
    "log": [
-    2529
+    2650
    ]
   }
  },
@@ -1183,7 +1402,7 @@
   ],
   "lines": {
    "lab": [
-    2415
+    2534
    ]
   }
  },
@@ -1195,7 +1414,7 @@
   ],
   "lines": {
    "lab": [
-    2415
+    2534
    ]
   }
  },
@@ -1207,7 +1426,7 @@
   ],
   "lines": {
    "lab": [
-    2460
+    2579
    ]
   }
  },
@@ -1219,7 +1438,7 @@
   ],
   "lines": {
    "lab": [
-    2460
+    2579
    ]
   }
  },
@@ -1231,7 +1450,7 @@
   ],
   "lines": {
    "log": [
-    2404
+    2525
    ]
   }
  },
@@ -1243,7 +1462,7 @@
   ],
   "lines": {
    "lab": [
-    689
+    808
    ]
   }
  },
@@ -1255,7 +1474,7 @@
   ],
   "lines": {
    "lab": [
-    1457
+    1576
    ]
   }
  },
@@ -1267,7 +1486,7 @@
   ],
   "lines": {
    "lab": [
-    1457
+    1576
    ]
   }
  },
@@ -1279,7 +1498,7 @@
   ],
   "lines": {
    "log": [
-    3058
+    3179
    ]
   }
  },
@@ -1291,7 +1510,7 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1749
    ]
   }
  },
@@ -1303,7 +1522,7 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1749
    ]
   }
  },
@@ -1315,7 +1534,7 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1749
    ]
   }
  },
@@ -1327,7 +1546,7 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1749
    ]
   }
  },
@@ -1339,7 +1558,7 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1749
    ]
   }
  },
@@ -1351,7 +1570,7 @@
   ],
   "lines": {
    "lab": [
-    1630
+    1749
    ]
   }
  },
@@ -1363,8 +1582,8 @@
   ],
   "lines": {
    "log": [
-    526,
-    533
+    645,
+    652
    ]
   }
  },
@@ -1376,7 +1595,7 @@
   ],
   "lines": {
    "lab": [
-    1626
+    1745
    ]
   }
  },
@@ -1388,7 +1607,7 @@
   ],
   "lines": {
    "lab": [
-    1625
+    1744
    ]
   }
  },
@@ -1400,7 +1619,7 @@
   ],
   "lines": {
    "lab": [
-    1143
+    1262
    ]
   }
  },
@@ -1413,10 +1632,10 @@
   ],
   "lines": {
    "log": [
-    2652
+    2773
    ],
    "lab": [
-    762
+    881
    ]
   }
  },
@@ -1428,7 +1647,7 @@
   ],
   "lines": {
    "log": [
-    3562
+    3681
    ]
   }
  },
@@ -1440,7 +1659,7 @@
   ],
   "lines": {
    "log": [
-    3545
+    3664
    ]
   }
  },
@@ -1452,7 +1671,7 @@
   ],
   "lines": {
    "log": [
-    3166
+    3285
    ]
   }
  },
@@ -1464,7 +1683,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -1476,7 +1695,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -1488,7 +1707,7 @@
   ],
   "lines": {
    "log": [
-    2251
+    2372
    ]
   }
  },
@@ -1500,7 +1719,7 @@
   ],
   "lines": {
    "lab": [
-    680
+    799
    ]
   }
  },
@@ -1512,7 +1731,7 @@
   ],
   "lines": {
    "log": [
-    3061
+    3182
    ]
   }
  },
@@ -1524,7 +1743,7 @@
   ],
   "lines": {
    "log": [
-    3412
+    3531
    ]
   }
  },
@@ -1536,8 +1755,8 @@
   ],
   "lines": {
    "log": [
-    2252,
-    2430
+    2373,
+    2551
    ]
   }
  },
@@ -1549,7 +1768,7 @@
   ],
   "lines": {
    "log": [
-    3393
+    3512
    ]
   }
  },
@@ -1561,7 +1780,7 @@
   ],
   "lines": {
    "log": [
-    1713
+    1834
    ]
   }
  },
@@ -1573,7 +1792,7 @@
   ],
   "lines": {
    "lab": [
-    1723
+    1842
    ]
   }
  },
@@ -1585,7 +1804,7 @@
   ],
   "lines": {
    "log": [
-    3037
+    3158
    ]
   }
  },
@@ -1597,7 +1816,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -1609,7 +1828,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -1621,7 +1840,7 @@
   ],
   "lines": {
    "log": [
-    2422
+    2543
    ]
   }
  },
@@ -1633,7 +1852,7 @@
   ],
   "lines": {
    "log": [
-    3143
+    3264
    ]
   }
  },
@@ -1645,7 +1864,31 @@
   ],
   "lines": {
    "lab": [
-    2287
+    2406
+   ]
+  }
+ },
+ {
+  "key": "Choose the 2nd half video file.",
+  "message": "Choose the 2nd half video file.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2968
+   ]
+  }
+ },
+ {
+  "key": "Choose the look",
+  "message": "Choose the look",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1820
    ]
   }
  },
@@ -1657,7 +1900,7 @@
   ],
   "lines": {
    "log": [
-    2424
+    2545
    ]
   }
  },
@@ -1669,7 +1912,7 @@
   ],
   "lines": {
    "log": [
-    2061
+    2182
    ]
   }
  },
@@ -1681,7 +1924,7 @@
   ],
   "lines": {
    "log": [
-    1889
+    2010
    ]
   }
  },
@@ -1693,7 +1936,7 @@
   ],
   "lines": {
    "lab": [
-    1935
+    2054
    ]
   }
  },
@@ -1705,7 +1948,7 @@
   ],
   "lines": {
    "lab": [
-    1724
+    1843
    ]
   }
  },
@@ -1717,7 +1960,7 @@
   ],
   "lines": {
    "lab": [
-    1723
+    1842
    ]
   }
  },
@@ -1729,7 +1972,67 @@
   ],
   "lines": {
    "lab": [
-    1725
+    1844
+   ]
+  }
+ },
+ {
+  "key": "Choose the {choice}video file, or choose No video.",
+  "message": "Choose the {choice}video file, or choose No video.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2967
+   ]
+  }
+ },
+ {
+  "key": "Choose what you want to track. Only ticked events appear while tracking.",
+  "message": "Choose what you want to track. Only ticked events appear while tracking.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3170
+   ]
+  }
+ },
+ {
+  "key": "Choose whether to add a match video (or No video).",
+  "message": "Choose whether to add a match video (or No video).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2961
+   ]
+  }
+ },
+ {
+  "key": "Choose which files to load above. Team and player visuals appear here as soon as one file is loaded.",
+  "message": "Choose which files to load above. Team and player visuals appear here as soon as one file is loaded.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1527
+   ]
+  }
+ },
+ {
+  "key": "Choose which team starts in possession, which of its divisions attacks first, and which way it attacks.",
+  "message": "Choose which team starts in possession, which of its divisions attacks first, and which way it attacks.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3171
    ]
   }
  },
@@ -1741,7 +2044,31 @@
   ],
   "lines": {
    "lab": [
-    1699
+    1818
+   ]
+  }
+ },
+ {
+  "key": "Clear",
+  "message": "Clear",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2434
+   ]
+  }
+ },
+ {
+  "key": "Click Make highlight video (records in the browser; keep the tab open and visible), or an ffmpeg script (faster: save it, put it next to your video file and run it), or Play all on YouTube.",
+  "message": "Click Make highlight video (records in the browser; keep the tab open and visible), or an ffmpeg script (faster: save it, put it next to your video file and run it), or Play all on YouTube.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1821
    ]
   }
  },
@@ -1753,7 +2080,7 @@
   ],
   "lines": {
    "log": [
-    1715
+    1836
    ]
   }
  },
@@ -1765,7 +2092,7 @@
   ],
   "lines": {
    "log": [
-    1800
+    1921
    ]
   }
  },
@@ -1777,7 +2104,7 @@
   ],
   "lines": {
    "log": [
-    1800
+    1921
    ]
   }
  },
@@ -1789,7 +2116,7 @@
   ],
   "lines": {
    "log": [
-    1716
+    1837
    ]
   }
  },
@@ -1801,19 +2128,19 @@
   ],
   "lines": {
    "log": [
-    1716
+    1837
    ]
   }
  },
  {
-  "key": "Clip {i}{n} of {n2} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}",
-  "message": "Clip {i}{n} of {n2} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}",
+  "key": "Clip {i} of {n} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}",
+  "message": "Clip {i} of {n} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}",
   "apps": [
    "lab"
   ],
   "lines": {
    "lab": [
-    1729
+    1848
    ]
   }
  },
@@ -1825,7 +2152,31 @@
   ],
   "lines": {
    "log": [
-    496
+    615
+   ]
+  }
+ },
+ {
+  "key": "Close",
+  "message": "Close",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    911
+   ]
+  }
+ },
+ {
+  "key": "Close (0–2.5 m)",
+  "message": "Close (0–2.5 m)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1097
    ]
   }
  },
@@ -1837,7 +2188,80 @@
   ],
   "lines": {
    "lab": [
-    1042
+    1161
+   ]
+  }
+ },
+ {
+  "key": "Colour {c}",
+  "message": "Colour {c}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2905,
+    3270
+   ]
+  }
+ },
+ {
+  "key": "Coloured by division",
+  "message": "Coloured by division",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1187
+   ]
+  }
+ },
+ {
+  "key": "Coloured by gender",
+  "message": "Coloured by gender",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1187
+   ]
+  }
+ },
+ {
+  "key": "Coloured by half",
+  "message": "Coloured by half",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1187
+   ]
+  }
+ },
+ {
+  "key": "Coloured by shot type",
+  "message": "Coloured by shot type",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1187
+   ]
+  }
+ },
+ {
+  "key": "Coloured by team",
+  "message": "Coloured by team",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1187
    ]
   }
  },
@@ -1849,7 +2273,31 @@
   ],
   "lines": {
    "lab": [
-    714
+    833
+   ]
+  }
+ },
+ {
+  "key": "Coming on",
+  "message": "Coming on",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2587
+   ]
+  }
+ },
+ {
+  "key": "Confirm delete of the last event",
+  "message": "Confirm delete of the last event",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1904
    ]
   }
  },
@@ -1861,8 +2309,20 @@
   ],
   "lines": {
    "log": [
-    1360,
-    1366
+    1479,
+    1485
+   ]
+  }
+ },
+ {
+  "key": "Confirm: injured, no replacement",
+  "message": "Confirm: injured, no replacement",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1475
    ]
   }
  },
@@ -1874,7 +2334,7 @@
   ],
   "lines": {
    "log": [
-    595
+    714
    ]
   }
  },
@@ -1886,7 +2346,7 @@
   ],
   "lines": {
    "log": [
-    3061
+    3182
    ]
   }
  },
@@ -1898,7 +2358,19 @@
   ],
   "lines": {
    "lab": [
-    2119
+    2238
+   ]
+  }
+ },
+ {
+  "key": "Copy list",
+  "message": "Copy list",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1763
    ]
   }
  },
@@ -1910,8 +2382,8 @@
   ],
   "lines": {
    "lab": [
-    2119,
-    2120
+    2238,
+    2239
    ]
   }
  },
@@ -1923,7 +2395,7 @@
   ],
   "lines": {
    "log": [
-    2101
+    2222
    ]
   }
  },
@@ -1935,7 +2407,7 @@
   ],
   "lines": {
    "log": [
-    3562
+    3681
    ]
   }
  },
@@ -1947,7 +2419,7 @@
   ],
   "lines": {
    "lab": [
-    1984
+    2103
    ]
   }
  },
@@ -1959,7 +2431,7 @@
   ],
   "lines": {
    "lab": [
-    1862
+    1981
    ]
   }
  },
@@ -1971,8 +2443,8 @@
   ],
   "lines": {
    "log": [
-    3600,
-    3603
+    3719,
+    3722
    ]
   }
  },
@@ -1984,7 +2456,7 @@
   ],
   "lines": {
    "lab": [
-    501
+    620
    ]
   }
  },
@@ -1996,7 +2468,7 @@
   ],
   "lines": {
    "lab": [
-    2366
+    2485
    ]
   }
  },
@@ -2008,7 +2480,7 @@
   ],
   "lines": {
    "lab": [
-    2329
+    2448
    ]
   }
  },
@@ -2020,7 +2492,7 @@
   ],
   "lines": {
    "lab": [
-    1258
+    1377
    ]
   }
  },
@@ -2032,7 +2504,7 @@
   ],
   "lines": {
    "log": [
-    730
+    849
    ]
   }
  },
@@ -2044,7 +2516,7 @@
   ],
   "lines": {
    "log": [
-    622
+    741
    ]
   }
  },
@@ -2052,11 +2524,27 @@
   "key": "Court",
   "message": "Court",
   "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    818
+   ],
+   "lab": [
+    1258
+   ]
+  }
+ },
+ {
+  "key": "Court colour",
+  "message": "Court colour",
+  "apps": [
    "log"
   ],
   "lines": {
    "log": [
-    699
+    3268
    ]
   }
  },
@@ -2068,7 +2556,31 @@
   ],
   "lines": {
    "log": [
-    716
+    835
+   ]
+  }
+ },
+ {
+  "key": "Court length must be between 30 and 40 m.",
+  "message": "Court length must be between 30 and 40 m.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2988
+   ]
+  }
+ },
+ {
+  "key": "Court preview, {len} by {h} metres",
+  "message": "Court preview, {len} by {h} metres",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2923
    ]
   }
  },
@@ -2080,7 +2592,7 @@
   ],
   "lines": {
    "lab": [
-    328
+    447
    ]
   }
  },
@@ -2092,7 +2604,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -2104,7 +2616,7 @@
   ],
   "lines": {
    "lab": [
-    1803
+    1922
    ]
   }
  },
@@ -2116,7 +2628,7 @@
   ],
   "lines": {
    "lab": [
-    2077
+    2196
    ]
   }
  },
@@ -2128,7 +2640,31 @@
   ],
   "lines": {
    "lab": [
-    969
+    1088
+   ]
+  }
+ },
+ {
+  "key": "Custom colour for {tl}",
+  "message": "Custom colour for {tl}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2905
+   ]
+  }
+ },
+ {
+  "key": "Custom {xItem}",
+  "message": "Custom {xItem}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3270
    ]
   }
  },
@@ -2140,7 +2676,19 @@
   ],
   "lines": {
    "lab": [
-    1321
+    1440
+   ]
+  }
+ },
+ {
+  "key": "Date",
+  "message": "Date",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1258
    ]
   }
  },
@@ -2152,7 +2700,7 @@
   ],
   "lines": {
    "lab": [
-    1348
+    1467
    ]
   }
  },
@@ -2164,7 +2712,7 @@
   ],
   "lines": {
    "log": [
-    2529
+    2650
    ]
   }
  },
@@ -2176,9 +2724,25 @@
   ],
   "lines": {
    "log": [
-    2528,
-    2529,
-    2529
+    2649,
+    2650,
+    2650,
+    2650
+   ]
+  }
+ },
+ {
+  "key": "Defended",
+  "message": "Defended",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    771,
+    772,
+    1116,
+    1129
    ]
   }
  },
@@ -2191,12 +2755,38 @@
   ],
   "lines": {
    "log": [
-    2529
+    989,
+    2650
    ],
    "lab": [
-    1518,
-    2415,
-    2460
+    1214,
+    1637,
+    2534,
+    2579
+   ]
+  }
+ },
+ {
+  "key": "Defensive",
+  "message": "Defensive",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1386
+   ]
+  }
+ },
+ {
+  "key": "Defensive rebound",
+  "message": "Defensive rebound",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1214
    ]
   }
  },
@@ -2208,7 +2798,10 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035,
+    1039,
+    1246,
+    1254
    ]
   }
  },
@@ -2220,8 +2813,9 @@
   ],
   "lines": {
    "lab": [
-    1107,
-    1240
+    1041,
+    1226,
+    1359
    ]
   }
  },
@@ -2233,8 +2827,57 @@
   ],
   "lines": {
    "log": [
-    1642,
-    3346
+    1763,
+    3465
+   ]
+  }
+ },
+ {
+  "key": "Delete event #{n}",
+  "message": "Delete event #{n}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1892
+   ]
+  }
+ },
+ {
+  "key": "Delete the last event",
+  "message": "Delete the last event",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1904
+   ]
+  }
+ },
+ {
+  "key": "Delete the saved match {home}",
+  "message": "Delete the saved match {home}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3465
+   ]
+  }
+ },
+ {
+  "key": "Delete this event",
+  "message": "Delete this event",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1892,
+    1904
    ]
   }
  },
@@ -2246,20 +2889,105 @@
   ],
   "lines": {
    "log": [
-    1771,
-    1783
+    1892,
+    1904
    ]
   }
  },
  {
-  "key": "Deleted event #{di}{n} ({evLabel}). Everything after it was recalculated.",
-  "message": "Deleted event #{di}{n} ({evLabel}). Everything after it was recalculated.",
+  "key": "Deleted event #{di} ({evLabel}). Everything after it was recalculated.",
+  "message": "Deleted event #{di} ({evLabel}). Everything after it was recalculated.",
   "apps": [
    "log"
   ],
   "lines": {
    "log": [
-    3453
+    3572
+   ]
+  }
+ },
+ {
+  "key": "Density",
+  "message": "Density",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1161
+   ]
+  }
+ },
+ {
+  "key": "Density shows where shots were taken from, smoothed over about 1 m. Switch back to Shots for individual attempts.",
+  "message": "Density shows where shots were taken from, smoothed over about 1 m. Switch back to Shots for individual attempts.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1165
+   ]
+  }
+ },
+ {
+  "key": "Did not",
+  "message": "Did not",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1221
+   ]
+  }
+ },
+ {
+  "key": "Dist.",
+  "message": "Dist.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1466
+   ]
+  }
+ },
+ {
+  "key": "Distance",
+  "message": "Distance",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1101,
+    1164
+   ]
+  }
+ },
+ {
+  "key": "Distance (m)",
+  "message": "Distance (m)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1112
+   ]
+  }
+ },
+ {
+  "key": "Distance shot",
+  "message": "Distance shot",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    768
    ]
   }
  },
@@ -2271,7 +2999,7 @@
   ],
   "lines": {
    "log": [
-    2773
+    2894
    ]
   }
  },
@@ -2283,7 +3011,7 @@
   ],
   "lines": {
    "log": [
-    2773
+    2894
    ]
   }
  },
@@ -2291,11 +3019,17 @@
   "key": "Division",
   "message": "Division",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    2599,
+    2894
+   ],
    "lab": [
-    1626
+    1161,
+    1745
    ]
   }
  },
@@ -2307,7 +3041,7 @@
   ],
   "lines": {
    "lab": [
-    1042
+    1161
    ]
   }
  },
@@ -2319,7 +3053,8 @@
   ],
   "lines": {
    "lab": [
-    1626
+    1161,
+    1745
    ]
   }
  },
@@ -2331,7 +3066,8 @@
   ],
   "lines": {
    "lab": [
-    1626
+    1161,
+    1745
    ]
   }
  },
@@ -2343,7 +3079,7 @@
   ],
   "lines": {
    "lab": [
-    1304
+    1423
    ]
   }
  },
@@ -2355,7 +3091,7 @@
   ],
   "lines": {
    "log": [
-    2928
+    3049
    ]
   }
  },
@@ -2367,7 +3103,7 @@
   ],
   "lines": {
    "log": [
-    782
+    901
    ]
   }
  },
@@ -2379,7 +3115,7 @@
   ],
   "lines": {
    "log": [
-    775
+    894
    ]
   }
  },
@@ -2391,7 +3127,7 @@
   ],
   "lines": {
    "lab": [
-    1034
+    1153
    ]
   }
  },
@@ -2403,7 +3139,7 @@
   ],
   "lines": {
    "log": [
-    2478
+    2599
    ]
   }
  },
@@ -2415,7 +3151,7 @@
   ],
   "lines": {
    "log": [
-    1667
+    1788
    ]
   }
  },
@@ -2427,9 +3163,9 @@
   ],
   "lines": {
    "lab": [
-    1034,
-    1063,
-    1257
+    1153,
+    1182,
+    1376
    ]
   }
  },
@@ -2441,7 +3177,7 @@
   ],
   "lines": {
    "lab": [
-    1299
+    1418
    ]
   }
  },
@@ -2453,7 +3189,7 @@
   ],
   "lines": {
    "log": [
-    2478
+    2599
    ]
   }
  },
@@ -2465,7 +3201,7 @@
   ],
   "lines": {
    "log": [
-    2881
+    3002
    ]
   }
  },
@@ -2477,7 +3213,7 @@
   ],
   "lines": {
    "log": [
-    2880
+    3001
    ]
   }
  },
@@ -2489,7 +3225,7 @@
   ],
   "lines": {
    "log": [
-    2893
+    3014
    ]
   }
  },
@@ -2501,7 +3237,7 @@
   ],
   "lines": {
    "log": [
-    2463
+    2584
    ]
   }
  },
@@ -2513,7 +3249,7 @@
   ],
   "lines": {
    "log": [
-    2937
+    3058
    ]
   }
  },
@@ -2525,7 +3261,7 @@
   ],
   "lines": {
    "log": [
-    2402
+    2523
    ]
   }
  },
@@ -2537,7 +3273,7 @@
   ],
   "lines": {
    "lab": [
-    1475
+    1594
    ]
   }
  },
@@ -2549,7 +3285,7 @@
   ],
   "lines": {
    "lab": [
-    1700
+    1819
    ]
   }
  },
@@ -2561,7 +3297,7 @@
   ],
   "lines": {
    "log": [
-    2402
+    2523
    ]
   }
  },
@@ -2573,7 +3309,7 @@
   ],
   "lines": {
    "log": [
-    1717
+    1838
    ]
   }
  },
@@ -2585,7 +3321,7 @@
   ],
   "lines": {
    "log": [
-    504
+    623
    ]
   }
  },
@@ -2597,7 +3333,7 @@
   ],
   "lines": {
    "log": [
-    459
+    578
    ]
   }
  },
@@ -2609,7 +3345,7 @@
   ],
   "lines": {
    "lab": [
-    1094
+    1213
    ]
   }
  },
@@ -2621,7 +3357,7 @@
   ],
   "lines": {
    "lab": [
-    1293
+    1412
    ]
   }
  },
@@ -2633,7 +3369,7 @@
   ],
   "lines": {
    "log": [
-    3041
+    3162
    ]
   }
  },
@@ -2645,7 +3381,7 @@
   ],
   "lines": {
    "lab": [
-    335
+    454
    ]
   }
  },
@@ -2657,7 +3393,7 @@
   ],
   "lines": {
    "log": [
-    1279
+    1398
    ]
   }
  },
@@ -2669,7 +3405,7 @@
   ],
   "lines": {
    "log": [
-    1712
+    1833
    ]
   }
  },
@@ -2681,7 +3417,7 @@
   ],
   "lines": {
    "log": [
-    1285
+    1404
    ]
   }
  },
@@ -2693,7 +3429,7 @@
   ],
   "lines": {
    "log": [
-    1712
+    1833
    ]
   }
  },
@@ -2705,7 +3441,7 @@
   ],
   "lines": {
    "log": [
-    493
+    612
    ]
   }
  },
@@ -2717,7 +3453,7 @@
   ],
   "lines": {
    "log": [
-    1279
+    1398
    ]
   }
  },
@@ -2729,7 +3465,19 @@
   ],
   "lines": {
    "log": [
-    1712
+    1833
+   ]
+  }
+ },
+ {
+  "key": "Ended in a goal",
+  "message": "Ended in a goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1221
    ]
   }
  },
@@ -2741,7 +3489,7 @@
   ],
   "lines": {
    "lab": [
-    2417
+    2536
    ]
   }
  },
@@ -2749,11 +3497,27 @@
   "key": "Enter the fixture date.",
   "message": "Enter the fixture date.",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    2958
+   ],
    "lab": [
-    2288
+    2407
+   ]
+  }
+ },
+ {
+  "key": "Enter the league name.",
+  "message": "Enter the league name.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2957
    ]
   }
  },
@@ -2765,7 +3529,19 @@
   ],
   "lines": {
    "log": [
-    3041
+    3162
+   ]
+  }
+ },
+ {
+  "key": "Estimated: the shot is taken some seconds after the referee call. Click Find the ball in my video to find the exact moment.",
+  "message": "Estimated: the shot is taken some seconds after the referee call. Click Find the ball in my video to find the exact moment.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1787
    ]
   }
  },
@@ -2777,7 +3553,19 @@
   ],
   "lines": {
    "log": [
-    539
+    658
+   ]
+  }
+ },
+ {
+  "key": "Events",
+  "message": "Events",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3170
    ]
   }
  },
@@ -2789,7 +3577,19 @@
   ],
   "lines": {
    "log": [
-    723
+    842
+   ]
+  }
+ },
+ {
+  "key": "Every logged shot, filtered. Add the video times to get clip start and end times and YouTube links.",
+  "message": "Every logged shot, filtered. Add the video times to get clip start and end times and YouTube links.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1740
    ]
   }
  },
@@ -2801,7 +3601,7 @@
   ],
   "lines": {
    "log": [
-    3498
+    3617
    ]
   }
  },
@@ -2813,7 +3613,7 @@
   ],
   "lines": {
    "log": [
-    831
+    950
    ]
   }
  },
@@ -2825,7 +3625,7 @@
   ],
   "lines": {
    "log": [
-    492
+    611
    ]
   }
  },
@@ -2837,7 +3637,7 @@
   ],
   "lines": {
    "log": [
-    2034
+    2155
    ]
   }
  },
@@ -2849,7 +3649,7 @@
   ],
   "lines": {
    "log": [
-    491
+    610
    ]
   }
  },
@@ -2862,13 +3662,15 @@
   ],
   "lines": {
    "log": [
-    2449,
-    2473,
-    2775
+    2570,
+    2594,
+    2896
    ],
    "lab": [
-    1033,
-    1062
+    1152,
+    1161,
+    1181,
+    1340
    ]
   }
  },
@@ -2880,7 +3682,7 @@
   ],
   "lines": {
    "lab": [
-    1627
+    1746
    ]
   }
  },
@@ -2892,7 +3694,7 @@
   ],
   "lines": {
    "lab": [
-    1627
+    1746
    ]
   }
  },
@@ -2904,7 +3706,7 @@
   ],
   "lines": {
    "lab": [
-    1722
+    1841
    ]
   }
  },
@@ -2916,7 +3718,7 @@
   ],
   "lines": {
    "lab": [
-    1699
+    1818
    ]
   }
  },
@@ -2928,7 +3730,7 @@
   ],
   "lines": {
    "lab": [
-    1044
+    1163
    ]
   }
  },
@@ -2940,7 +3742,7 @@
   ],
   "lines": {
    "lab": [
-    1077
+    1196
    ]
   }
  },
@@ -2952,7 +3754,7 @@
   ],
   "lines": {
    "log": [
-    2784
+    2905
    ]
   }
  },
@@ -2964,7 +3766,7 @@
   ],
   "lines": {
    "lab": [
-    325
+    444
    ]
   }
  },
@@ -2976,7 +3778,7 @@
   ],
   "lines": {
    "log": [
-    3412
+    3531
    ]
   }
  },
@@ -2988,20 +3790,21 @@
   ],
   "lines": {
    "lab": [
-    1645,
-    1987
+    1764,
+    1819,
+    2106
    ]
   }
  },
  {
-  "key": "Finding the ball, shot {q}{n} of {jobsCount}",
-  "message": "Finding the ball, shot {q}{n} of {jobsCount}",
+  "key": "Finding the ball, shot {q} of {jobsCount}",
+  "message": "Finding the ball, shot {q} of {jobsCount}",
   "apps": [
    "log"
   ],
   "lines": {
    "log": [
-    2092
+    2213
    ]
   }
  },
@@ -3013,7 +3816,7 @@
   ],
   "lines": {
    "lab": [
-    1967
+    2086
    ]
   }
  },
@@ -3025,7 +3828,8 @@
   ],
   "lines": {
    "lab": [
-    1724
+    1764,
+    1843
    ]
   }
  },
@@ -3037,7 +3841,7 @@
   ],
   "lines": {
    "lab": [
-    1745
+    1864
    ]
   }
  },
@@ -3049,7 +3853,31 @@
   ],
   "lines": {
    "lab": [
-    1046
+    1165
+   ]
+  }
+ },
+ {
+  "key": "First half",
+  "message": "First half",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1086
+   ]
+  }
+ },
+ {
+  "key": "First half attacking directions",
+  "message": "First half attacking directions",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2941
    ]
   }
  },
@@ -3061,7 +3889,8 @@
   ],
   "lines": {
    "log": [
-    619
+    3166,
+    738
    ]
   }
  },
@@ -3073,7 +3902,7 @@
   ],
   "lines": {
    "log": [
-    625
+    744
    ]
   }
  },
@@ -3085,7 +3914,7 @@
   ],
   "lines": {
    "lab": [
-    1973
+    2092
    ]
   }
  },
@@ -3097,7 +3926,19 @@
   ],
   "lines": {
    "lab": [
-    1105
+    1224
+   ]
+  }
+ },
+ {
+  "key": "Format and court",
+  "message": "Format and court",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3169
    ]
   }
  },
@@ -3110,10 +3951,10 @@
   ],
   "lines": {
    "log": [
-    1473
+    1593
    ],
    "lab": [
-    466
+    585
    ]
   }
  },
@@ -3125,7 +3966,7 @@
   ],
   "lines": {
    "lab": [
-    2460
+    2579
    ]
   }
  },
@@ -3137,7 +3978,7 @@
   ],
   "lines": {
    "lab": [
-    1978
+    2097
    ]
   }
  },
@@ -3149,7 +3990,7 @@
   ],
   "lines": {
    "lab": [
-    1981
+    2100
    ]
   }
  },
@@ -3161,7 +4002,19 @@
   ],
   "lines": {
    "log": [
-    2108
+    2229
+   ]
+  }
+ },
+ {
+  "key": "Free",
+  "message": "Free",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1466
    ]
   }
  },
@@ -3174,11 +4027,25 @@
   ],
   "lines": {
    "log": [
-    2528
+    1799,
+    2649
    ],
    "lab": [
-    765,
-    2409
+    768,
+    884,
+    2528
+   ]
+  }
+ },
+ {
+  "key": "Free pass & penalty circles",
+  "message": "Free pass & penalty circles",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3268
    ]
   }
  },
@@ -3190,7 +4057,7 @@
   ],
   "lines": {
    "log": [
-    1444
+    1563
    ]
   }
  },
@@ -3202,7 +4069,7 @@
   ],
   "lines": {
    "log": [
-    2552
+    2673
    ]
   }
  },
@@ -3214,7 +4081,20 @@
   ],
   "lines": {
    "log": [
-    3443
+    1789,
+    3562
+   ]
+  }
+ },
+ {
+  "key": "Free pass goals",
+  "message": "Free pass goals",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
    ]
   }
  },
@@ -3226,8 +4106,22 @@
   ],
   "lines": {
    "log": [
-    1442,
-    2500
+    1561,
+    2621
+   ]
+  }
+ },
+ {
+  "key": "Free pass shots",
+  "message": "Free pass shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1230,
+    1234,
+    1258
    ]
   }
  },
@@ -3239,7 +4133,7 @@
   ],
   "lines": {
    "lab": [
-    425
+    544
    ]
   }
  },
@@ -3251,7 +4145,7 @@
   ],
   "lines": {
    "log": [
-    682
+    801
    ]
   }
  },
@@ -3263,7 +4157,7 @@
   ],
   "lines": {
    "log": [
-    1285
+    1404
    ]
   }
  },
@@ -3275,7 +4169,7 @@
   ],
   "lines": {
    "log": [
-    1712
+    1833
    ]
   }
  },
@@ -3287,7 +4181,7 @@
   ],
   "lines": {
    "log": [
-    729
+    848
    ]
   }
  },
@@ -3295,11 +4189,17 @@
   "key": "Gender",
   "message": "Gender",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    2594,
+    2896
+   ],
    "lab": [
-    1627
+    1161,
+    1746
    ]
   }
  },
@@ -3311,7 +4211,7 @@
   ],
   "lines": {
    "lab": [
-    1042
+    1161
    ]
   }
  },
@@ -3323,7 +4223,7 @@
   ],
   "lines": {
    "lab": [
-    1084
+    1203
    ]
   }
  },
@@ -3335,7 +4235,19 @@
   ],
   "lines": {
    "lab": [
-    1033
+    1152
+   ]
+  }
+ },
+ {
+  "key": "General turnover",
+  "message": "General turnover",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1796
    ]
   }
  },
@@ -3347,7 +4259,31 @@
   ],
   "lines": {
    "log": [
-    1361
+    1480
+   ]
+  }
+ },
+ {
+  "key": "Give the two teams different colours.",
+  "message": "Give the two teams different colours.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2985
+   ]
+  }
+ },
+ {
+  "key": "Give the two teams different names.",
+  "message": "Give the two teams different names.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2984
    ]
   }
  },
@@ -3359,7 +4295,7 @@
   ],
   "lines": {
    "log": [
-    495
+    614
    ]
   }
  },
@@ -3371,7 +4307,7 @@
   ],
   "lines": {
    "log": [
-    488
+    607
    ]
   }
  },
@@ -3383,7 +4319,7 @@
   ],
   "lines": {
    "log": [
-    3061
+    3182
    ]
   }
  },
@@ -3395,7 +4331,7 @@
   ],
   "lines": {
    "log": [
-    3531
+    3650
    ]
   }
  },
@@ -3407,7 +4343,7 @@
   ],
   "lines": {
    "log": [
-    490
+    609
    ]
   }
  },
@@ -3419,7 +4355,7 @@
   ],
   "lines": {
    "log": [
-    495
+    614
    ]
   }
  },
@@ -3431,7 +4367,7 @@
   ],
   "lines": {
    "log": [
-    2979
+    3100
    ]
   }
  },
@@ -3443,7 +4379,7 @@
   ],
   "lines": {
    "log": [
-    2979
+    3100
    ]
   }
  },
@@ -3456,17 +4392,36 @@
   ],
   "lines": {
    "log": [
-    2280,
-    2528
+    989,
+    2401,
+    2649
    ],
    "lab": [
-    765,
-    1101,
-    1251,
-    1517,
-    2413,
-    2460,
-    2601
+    771,
+    772,
+    884,
+    1116,
+    1208,
+    1214,
+    1220,
+    1370,
+    1636,
+    2532,
+    2579,
+    2720
+   ]
+  }
+ },
+ {
+  "key": "Goal %",
+  "message": "Goal %",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1129,
+    1221
    ]
   }
  },
@@ -3478,7 +4433,7 @@
   ],
   "lines": {
    "lab": [
-    1106
+    1225
    ]
   }
  },
@@ -3490,7 +4445,7 @@
   ],
   "lines": {
    "lab": [
-    1106
+    1225
    ]
   }
  },
@@ -3502,13 +4457,23 @@
   ],
   "lines": {
    "lab": [
-    916,
-    1240,
-    1251,
+    1035,
+    1039,
+    1086,
+    1129,
+    1242,
     1254,
-    1263,
-    1304,
-    1346
+    1359,
+    1370,
+    1370,
+    1370,
+    1373,
+    1382,
+    1413,
+    1423,
+    1424,
+    1431,
+    1465
    ]
   }
  },
@@ -3520,7 +4485,7 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035
    ]
   }
  },
@@ -3532,7 +4497,7 @@
   ],
   "lines": {
    "lab": [
-    1631
+    1750
    ]
   }
  },
@@ -3544,7 +4509,19 @@
   ],
   "lines": {
    "lab": [
-    974
+    1093
+   ]
+  }
+ },
+ {
+  "key": "Goals by shot type",
+  "message": "Goals by shot type",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1370
    ]
   }
  },
@@ -3556,7 +4533,7 @@
   ],
   "lines": {
    "lab": [
-    917
+    1036
    ]
   }
  },
@@ -3568,7 +4545,44 @@
   ],
   "lines": {
    "lab": [
-    1631
+    1750
+   ]
+  }
+ },
+ {
+  "key": "Goals per attack %",
+  "message": "Goals per attack %",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1040
+   ]
+  }
+ },
+ {
+  "key": "Goals per five minute block",
+  "message": "Goals per five minute block",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1093
+   ]
+  }
+ },
+ {
+  "key": "Goals per minute",
+  "message": "Goals per minute",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1373,
+    1373
    ]
   }
  },
@@ -3580,8 +4594,8 @@
   ],
   "lines": {
    "lab": [
-    1240,
-    1273
+    1359,
+    1392
    ]
   }
  },
@@ -3593,7 +4607,20 @@
   ],
   "lines": {
    "lab": [
-    1348
+    1431,
+    1467
+   ]
+  }
+ },
+ {
+  "key": "Group",
+  "message": "Group",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1424
    ]
   }
  },
@@ -3605,7 +4632,9 @@
   ],
   "lines": {
    "lab": [
-    1624
+    1161,
+    1743,
+    1782
    ]
   }
  },
@@ -3617,7 +4646,7 @@
   ],
   "lines": {
    "log": [
-    517
+    636
    ]
   }
  },
@@ -3629,7 +4658,7 @@
   ],
   "lines": {
    "log": [
-    1726
+    1847
    ]
   }
  },
@@ -3641,7 +4670,7 @@
   ],
   "lines": {
    "log": [
-    1285
+    1404
    ]
   }
  },
@@ -3653,7 +4682,7 @@
   ],
   "lines": {
    "log": [
-    1712
+    1833
    ]
   }
  },
@@ -3665,7 +4694,7 @@
   ],
   "lines": {
    "lab": [
-    941
+    1060
    ]
   }
  },
@@ -3693,7 +4722,7 @@
   ],
   "lines": {
    "log": [
-    460
+    579
    ]
   }
  },
@@ -3705,7 +4734,31 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
+   ]
+  }
+ },
+ {
+  "key": "Highlights",
+  "message": "Highlights",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1869
+   ]
+  }
+ },
+ {
+  "key": "Highlights list",
+  "message": "Highlights list",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1740
    ]
   }
  },
@@ -3717,7 +4770,7 @@
   ],
   "lines": {
    "lab": [
-    1044
+    1163
    ]
   }
  },
@@ -3730,19 +4783,20 @@
   ],
   "lines": {
    "log": [
-    1127,
-    1164,
-    1520,
-    2762,
-    2782,
-    2854,
-    3069,
-    3195,
-    3270
+    1022,
+    1246,
+    1283,
+    1641,
+    2883,
+    2903,
+    2975,
+    3190,
+    3314,
+    3389
    ],
    "lab": [
-    434,
-    808
+    553,
+    927
    ]
   }
  },
@@ -3754,7 +4808,7 @@
   ],
   "lines": {
    "log": [
-    2780
+    2901
    ]
   }
  },
@@ -3766,7 +4820,7 @@
   ],
   "lines": {
    "log": [
-    480
+    599
    ]
   }
  },
@@ -3778,7 +4832,7 @@
   ],
   "lines": {
    "lab": [
-    1094
+    1213
    ]
   }
  },
@@ -3790,7 +4844,7 @@
   ],
   "lines": {
    "lab": [
-    1009
+    1128
    ]
   }
  },
@@ -3802,7 +4856,19 @@
   ],
   "lines": {
    "lab": [
-    1101
+    1220
+   ]
+  }
+ },
+ {
+  "key": "How long is the match, how is it split, and how big is the court?",
+  "message": "How long is the match, how is it split, and how big is the court?",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3169
    ]
   }
  },
@@ -3814,7 +4880,7 @@
   ],
   "lines": {
    "lab": [
-    1251
+    1370
    ]
   }
  },
@@ -3826,7 +4892,7 @@
   ],
   "lines": {
    "lab": [
-    957
+    1076
    ]
   }
  },
@@ -3838,7 +4904,19 @@
   ],
   "lines": {
    "log": [
-    3596
+    3715
+   ]
+  }
+ },
+ {
+  "key": "In",
+  "message": "In",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1456
    ]
   }
  },
@@ -3850,8 +4928,11 @@
   ],
   "lines": {
    "lab": [
-    1254,
-    1348
+    1373,
+    1373,
+    1373,
+    1390,
+    1467
    ]
   }
  },
@@ -3863,8 +4944,11 @@
   ],
   "lines": {
    "lab": [
-    1254,
-    1348
+    1373,
+    1373,
+    1373,
+    1390,
+    1467
    ]
   }
  },
@@ -3876,7 +4960,7 @@
   ],
   "lines": {
    "lab": [
-    1332
+    1451
    ]
   }
  },
@@ -3888,7 +4972,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -3900,7 +4984,7 @@
   ],
   "lines": {
    "log": [
-    2468
+    2589
    ]
   }
  },
@@ -3912,7 +4996,7 @@
   ],
   "lines": {
    "log": [
-    3562
+    3681
    ]
   }
  },
@@ -3924,7 +5008,7 @@
   ],
   "lines": {
    "lab": [
-    2620
+    2741
    ]
   }
  },
@@ -3936,7 +5020,7 @@
   ],
   "lines": {
    "lab": [
-    303
+    422
    ]
   }
  },
@@ -3948,7 +5032,7 @@
   ],
   "lines": {
    "log": [
-    3400
+    3519
    ]
   }
  },
@@ -3960,7 +5044,7 @@
   ],
   "lines": {
    "log": [
-    3678
+    3799
    ]
   }
  },
@@ -3973,10 +5057,10 @@
   ],
   "lines": {
    "log": [
-    453
+    572
    ],
    "lab": [
-    290
+    409
    ]
   }
  },
@@ -3988,7 +5072,31 @@
   ],
   "lines": {
    "log": [
-    515
+    634
+   ]
+  }
+ },
+ {
+  "key": "Leave blank for one video",
+  "message": "Leave blank for one video",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1761
+   ]
+  }
+ },
+ {
+  "key": "Length",
+  "message": "Length",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1258
    ]
   }
  },
@@ -4000,7 +5108,8 @@
   ],
   "lines": {
    "lab": [
-    2592
+    2601,
+    2711
    ]
   }
  },
@@ -4012,7 +5121,7 @@
   ],
   "lines": {
    "lab": [
-    1406
+    1525
    ]
   }
  },
@@ -4024,7 +5133,7 @@
   ],
   "lines": {
    "lab": [
-    300
+    419
    ]
   }
  },
@@ -4036,7 +5145,7 @@
   ],
   "lines": {
    "lab": [
-    2101
+    2220
    ]
   }
  },
@@ -4048,8 +5157,8 @@
   ],
   "lines": {
    "log": [
-    2080,
-    2080
+    2201,
+    2201
    ]
   }
  },
@@ -4061,7 +5170,19 @@
   ],
   "lines": {
    "lab": [
-    1946
+    2065
+   ]
+  }
+ },
+ {
+  "key": "Loading…",
+  "message": "Loading…",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    541
    ]
   }
  },
@@ -4073,7 +5194,7 @@
   ],
   "lines": {
    "log": [
-    736
+    855
    ]
   }
  },
@@ -4085,7 +5206,43 @@
   ],
   "lines": {
    "log": [
-    2511
+    2632
+   ]
+  }
+ },
+ {
+  "key": "Logged turnover",
+  "message": "Logged turnover",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1214
+   ]
+  }
+ },
+ {
+  "key": "Long",
+  "message": "Long",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    911
+   ]
+  }
+ },
+ {
+  "key": "Long (5 m +)",
+  "message": "Long (5 m +)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1097
    ]
   }
  },
@@ -4097,8 +5254,8 @@
   ],
   "lines": {
    "log": [
-    3166,
-    3341
+    3285,
+    3460
    ]
   }
  },
@@ -4110,7 +5267,7 @@
   ],
   "lines": {
    "log": [
-    2065
+    2186
    ]
   }
  },
@@ -4122,7 +5279,19 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
+   ]
+  }
+ },
+ {
+  "key": "Make it",
+  "message": "Make it",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1821
    ]
   }
  },
@@ -4134,8 +5303,8 @@
   ],
   "lines": {
    "log": [
-    526,
-    533
+    645,
+    652
    ]
   }
  },
@@ -4148,13 +5317,15 @@
   ],
   "lines": {
    "log": [
-    2449,
-    2473,
-    2775
+    2570,
+    2594,
+    2896
    ],
    "lab": [
-    1033,
-    1062
+    1152,
+    1161,
+    1181,
+    1340
    ]
   }
  },
@@ -4166,7 +5337,7 @@
   ],
   "lines": {
    "lab": [
-    1627
+    1746
    ]
   }
  },
@@ -4178,7 +5349,7 @@
   ],
   "lines": {
    "lab": [
-    1042
+    1161
    ]
   }
  },
@@ -4186,11 +5357,21 @@
   "key": "Match",
   "message": "Match",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    1808
+   ],
    "lab": [
-    1785
+    1086,
+    1164,
+    1254,
+    1258,
+    1456,
+    1782,
+    1904
    ]
   }
  },
@@ -4202,8 +5383,8 @@
   ],
   "lines": {
    "lab": [
-    1134,
-    1251
+    1253,
+    1370
    ]
   }
  },
@@ -4215,7 +5396,7 @@
   ],
   "lines": {
    "log": [
-    1285
+    1404
    ]
   }
  },
@@ -4227,7 +5408,7 @@
   ],
   "lines": {
    "log": [
-    678
+    797
    ]
   }
  },
@@ -4239,7 +5420,7 @@
   ],
   "lines": {
    "lab": [
-    1042
+    1161
    ]
   }
  },
@@ -4251,7 +5432,7 @@
   ],
   "lines": {
    "lab": [
-    1143
+    1262
    ]
   }
  },
@@ -4263,8 +5444,8 @@
   ],
   "lines": {
    "log": [
-    3164,
-    602
+    3283,
+    721
    ]
   }
  },
@@ -4276,7 +5457,7 @@
   ],
   "lines": {
    "log": [
-    3204
+    3323
    ]
   }
  },
@@ -4288,8 +5469,9 @@
   ],
   "lines": {
    "log": [
-    628,
-    631
+    2004,
+    747,
+    750
    ]
   }
  },
@@ -4301,7 +5483,19 @@
   ],
   "lines": {
    "log": [
-    2421
+    2542
+   ]
+  }
+ },
+ {
+  "key": "Match video preview",
+  "message": "Match video preview",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3117
    ]
   }
  },
@@ -4313,7 +5507,7 @@
   ],
   "lines": {
    "lab": [
-    868
+    987
    ]
   }
  },
@@ -4325,7 +5519,80 @@
   ],
   "lines": {
    "log": [
-    3498
+    3617
+   ]
+  }
+ },
+ {
+  "key": "Metric",
+  "message": "Metric",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1059,
+    1431
+   ]
+  }
+ },
+ {
+  "key": "Mid",
+  "message": "Mid",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    911
+   ]
+  }
+ },
+ {
+  "key": "Mid (2.5–5 m)",
+  "message": "Mid (2.5–5 m)",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1097
+   ]
+  }
+ },
+ {
+  "key": "Min in attack",
+  "message": "Min in attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1431
+   ]
+  }
+ },
+ {
+  "key": "Min in defence",
+  "message": "Min in defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1431
+   ]
+  }
+ },
+ {
+  "key": "Minutes",
+  "message": "Minutes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1094
    ]
   }
  },
@@ -4337,7 +5604,7 @@
   ],
   "lines": {
    "lab": [
-    1240
+    1359
    ]
   }
  },
@@ -4349,7 +5616,19 @@
   ],
   "lines": {
    "lab": [
-    1254
+    1373
+   ]
+  }
+ },
+ {
+  "key": "Minutes in attack and in defence per match",
+  "message": "Minutes in attack and in defence per match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1373
    ]
   }
  },
@@ -4361,7 +5640,7 @@
   ],
   "lines": {
    "lab": [
-    1240
+    1359
    ]
   }
  },
@@ -4373,7 +5652,7 @@
   ],
   "lines": {
    "lab": [
-    1271
+    1390
    ]
   }
  },
@@ -4385,7 +5664,31 @@
   ],
   "lines": {
    "lab": [
-    1631
+    1750
+   ]
+  }
+ },
+ {
+  "key": "More shots",
+  "message": "More shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1165
+   ]
+  }
+ },
+ {
+  "key": "Most of the match is weak, so the overall offset will not be applied. Check that this is the right video file for the half and that its start time is about right.",
+  "message": "Most of the match is weak, so the overall offset will not be applied. Check that this is the right video file for the half and that its start time is about right.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2266
    ]
   }
  },
@@ -4397,7 +5700,7 @@
   ],
   "lines": {
    "log": [
-    495
+    614
    ]
   }
  },
@@ -4409,7 +5712,7 @@
   ],
   "lines": {
    "log": [
-    533
+    652
    ]
   }
  },
@@ -4421,7 +5724,7 @@
   ],
   "lines": {
    "log": [
-    533
+    652
    ]
   }
  },
@@ -4433,7 +5736,7 @@
   ],
   "lines": {
    "log": [
-    2251
+    2372
    ]
   }
  },
@@ -4445,7 +5748,7 @@
   ],
   "lines": {
    "log": [
-    1797
+    1918
    ]
   }
  },
@@ -4457,8 +5760,20 @@
   ],
   "lines": {
    "lab": [
-    1106,
-    1633
+    1225,
+    1752
+   ]
+  }
+ },
+ {
+  "key": "Name the teams, pick their colours and choose whether to add player names.",
+  "message": "Name the teams, pick their colours and choose whether to add player names.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3168
    ]
   }
  },
@@ -4470,7 +5785,7 @@
   ],
   "lines": {
    "lab": [
-    1700
+    1819
    ]
   }
  },
@@ -4482,7 +5797,7 @@
   ],
   "lines": {
    "log": [
-    3164
+    3283
    ]
   }
  },
@@ -4494,7 +5809,19 @@
   ],
   "lines": {
    "log": [
-    2469
+    2590
+   ]
+  }
+ },
+ {
+  "key": "New player name",
+  "message": "New player name",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2594
    ]
   }
  },
@@ -4506,7 +5833,7 @@
   ],
   "lines": {
    "lab": [
-    2482
+    2601
    ]
   }
  },
@@ -4518,7 +5845,7 @@
   ],
   "lines": {
    "log": [
-    3103
+    3224
    ]
   }
  },
@@ -4530,7 +5857,7 @@
   ],
   "lines": {
    "lab": [
-    1737
+    1856
    ]
   }
  },
@@ -4542,7 +5869,7 @@
   ],
   "lines": {
    "lab": [
-    1796
+    1915
    ]
   }
  },
@@ -4554,7 +5881,7 @@
   ],
   "lines": {
    "lab": [
-    2074
+    2193
    ]
   }
  },
@@ -4566,8 +5893,8 @@
   ],
   "lines": {
    "log": [
-    1508,
-    1512
+    1629,
+    1633
    ]
   }
  },
@@ -4579,7 +5906,31 @@
   ],
   "lines": {
    "log": [
-    1600
+    1721
+   ]
+  }
+ },
+ {
+  "key": "No events logged yet",
+  "message": "No events logged yet",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1899
+   ]
+  }
+ },
+ {
+  "key": "No files yet.",
+  "message": "No files yet.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    536
    ]
   }
  },
@@ -4591,10 +5942,13 @@
   ],
   "lines": {
    "lab": [
-    1101,
-    1251,
-    2415,
-    2460
+    1220,
+    1220,
+    1370,
+    1370,
+    1370,
+    2534,
+    2579
    ]
   }
  },
@@ -4606,7 +5960,31 @@
   ],
   "lines": {
    "lab": [
-    1406
+    1525
+   ]
+  }
+ },
+ {
+  "key": "No matches saved in this browser yet. Open a backup file below.",
+  "message": "No matches saved in this browser yet. Open a backup file below.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3465
+   ]
+  }
+ },
+ {
+  "key": "No matches.",
+  "message": "No matches.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1370
    ]
   }
  },
@@ -4618,7 +5996,7 @@
   ],
   "lines": {
    "lab": [
-    1441
+    1560
    ]
   }
  },
@@ -4630,7 +6008,7 @@
   ],
   "lines": {
    "lab": [
-    1235
+    1354
    ]
   }
  },
@@ -4642,7 +6020,7 @@
   ],
   "lines": {
    "lab": [
-    2412
+    2531
    ]
   }
  },
@@ -4654,7 +6032,19 @@
   ],
   "lines": {
    "log": [
-    2430
+    2551
+   ]
+  }
+ },
+ {
+  "key": "No shot needs a different time.",
+  "message": "No shot needs a different time.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2354
    ]
   }
  },
@@ -4666,7 +6056,8 @@
   ],
   "lines": {
    "lab": [
-    792
+    911,
+    1370
    ]
   }
  },
@@ -4678,7 +6069,7 @@
   ],
   "lines": {
    "lab": [
-    1722
+    1841
    ]
   }
  },
@@ -4690,7 +6081,19 @@
   ],
   "lines": {
    "lab": [
-    1698
+    1817
+   ]
+  }
+ },
+ {
+  "key": "No shots match these filters.",
+  "message": "No shots match these filters.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1781
    ]
   }
  },
@@ -4702,7 +6105,7 @@
   ],
   "lines": {
    "log": [
-    1572
+    1693
    ]
   }
  },
@@ -4714,7 +6117,7 @@
   ],
   "lines": {
    "log": [
-    1603
+    1724
    ]
   }
  },
@@ -4726,7 +6129,7 @@
   ],
   "lines": {
    "log": [
-    3143
+    3264
    ]
   }
  },
@@ -4738,7 +6141,7 @@
   ],
   "lines": {
    "lab": [
-    1336
+    1455
    ]
   }
  },
@@ -4750,7 +6153,7 @@
   ],
   "lines": {
    "log": [
-    2468
+    2589
    ]
   }
  },
@@ -4762,7 +6165,7 @@
   ],
   "lines": {
    "log": [
-    496
+    615
    ]
   }
  },
@@ -4774,7 +6177,31 @@
   ],
   "lines": {
    "log": [
-    2469
+    2590
+   ]
+  }
+ },
+ {
+  "key": "Not loaded",
+  "message": "Not loaded",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    542
+   ]
+  }
+ },
+ {
+  "key": "Not loaded yet",
+  "message": "Not loaded yet",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    543
    ]
   }
  },
@@ -4786,7 +6213,7 @@
   ],
   "lines": {
    "log": [
-    1664
+    1785
    ]
   }
  },
@@ -4798,8 +6225,8 @@
   ],
   "lines": {
    "lab": [
-    1062,
-    1063
+    1181,
+    1182
    ]
   }
  },
@@ -4811,7 +6238,7 @@
   ],
   "lines": {
    "lab": [
-    2467
+    2586
    ]
   }
  },
@@ -4823,7 +6250,7 @@
   ],
   "lines": {
    "log": [
-    1367
+    1486
    ]
   }
  },
@@ -4835,7 +6262,7 @@
   ],
   "lines": {
    "log": [
-    2251
+    2372
    ]
   }
  },
@@ -4847,7 +6274,7 @@
   ],
   "lines": {
    "lab": [
-    2118
+    2237
    ]
   }
  },
@@ -4859,7 +6286,31 @@
   ],
   "lines": {
    "lab": [
-    2115
+    2234
+   ]
+  }
+ },
+ {
+  "key": "Nothing to show yet",
+  "message": "Nothing to show yet",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1527
+   ]
+  }
+ },
+ {
+  "key": "Nothing to show yet.",
+  "message": "Nothing to show yet.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1344
    ]
   }
  },
@@ -4871,7 +6322,7 @@
   ],
   "lines": {
    "log": [
-    1800
+    1921
    ]
   }
  },
@@ -4883,7 +6334,7 @@
   ],
   "lines": {
    "log": [
-    2313
+    2434
    ]
   }
  },
@@ -4895,7 +6346,7 @@
   ],
   "lines": {
    "log": [
-    690
+    809
    ]
   }
  },
@@ -4907,7 +6358,7 @@
   ],
   "lines": {
    "lab": [
-    991
+    1110
    ]
   }
  },
@@ -4919,7 +6370,8 @@
   ],
   "lines": {
    "lab": [
-    1668
+    1466,
+    1787
    ]
   }
  },
@@ -4931,7 +6383,19 @@
   ],
   "lines": {
    "log": [
-    600
+    719
+   ]
+  }
+ },
+ {
+  "key": "Open play",
+  "message": "Open play",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    768
    ]
   }
  },
@@ -4943,7 +6407,8 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035,
+    1040
    ]
   }
  },
@@ -4955,7 +6420,7 @@
   ],
   "lines": {
    "lab": [
-    980
+    1099
    ]
   }
  },
@@ -4967,7 +6432,8 @@
   ],
   "lines": {
    "log": [
-    764
+    3171,
+    883
    ]
   }
  },
@@ -4979,7 +6445,7 @@
   ],
   "lines": {
    "lab": [
-    290
+    409
    ]
   }
  },
@@ -4991,7 +6457,7 @@
   ],
   "lines": {
    "log": [
-    453
+    572
    ]
   }
  },
@@ -5004,10 +6470,10 @@
   ],
   "lines": {
    "log": [
-    453
+    572
    ],
    "lab": [
-    290
+    409
    ]
   }
  },
@@ -5019,7 +6485,7 @@
   ],
   "lines": {
    "lab": [
-    1084
+    1203
    ]
   }
  },
@@ -5031,7 +6497,7 @@
   ],
   "lines": {
    "lab": [
-    1081
+    1200
    ]
   }
  },
@@ -5043,7 +6509,31 @@
   ],
   "lines": {
    "lab": [
-    538
+    657
+   ]
+  }
+ },
+ {
+  "key": "Opponents only",
+  "message": "Opponents only",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    671
+   ]
+  }
+ },
+ {
+  "key": "Optional",
+  "message": "Optional",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1761
    ]
   }
  },
@@ -5055,7 +6545,7 @@
   ],
   "lines": {
    "log": [
-    3036
+    3157
    ]
   }
  },
@@ -5067,7 +6557,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -5079,7 +6569,9 @@
   ],
   "lines": {
    "lab": [
-    2601
+    1208,
+    1214,
+    2720
    ]
   }
  },
@@ -5092,11 +6584,23 @@
   ],
   "lines": {
    "log": [
-    1624,
-    3072
+    1745,
+    3193
    ],
    "lab": [
-    2274
+    2393
+   ]
+  }
+ },
+ {
+  "key": "Other attacks",
+  "message": "Other attacks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1221
    ]
   }
  },
@@ -5109,10 +6613,61 @@
   ],
   "lines": {
    "log": [
-    623
+    742
    ],
    "lab": [
-    346
+    465
+   ]
+  }
+ },
+ {
+  "key": "Out",
+  "message": "Out",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1129,
+    1456
+   ]
+  }
+ },
+ {
+  "key": "Out of bounds",
+  "message": "Out of bounds",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    771,
+    772,
+    1116
+   ]
+  }
+ },
+ {
+  "key": "Out · attack keeps it",
+  "message": "Out · attack keeps it",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    989
+   ]
+  }
+ },
+ {
+  "key": "Out · defence gets it",
+  "message": "Out · defence gets it",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    989
    ]
   }
  },
@@ -5124,7 +6679,7 @@
   ],
   "lines": {
    "lab": [
-    1332
+    1451
    ]
   }
  },
@@ -5136,7 +6691,33 @@
   ],
   "lines": {
    "lab": [
-    1631
+    1164,
+    1750,
+    1782
+   ]
+  }
+ },
+ {
+  "key": "Outcomes",
+  "message": "Outcomes",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1370
+   ]
+  }
+ },
+ {
+  "key": "Outcomes by shot type",
+  "message": "Outcomes by shot type",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1128
    ]
   }
  },
@@ -5148,7 +6729,7 @@
   ],
   "lines": {
    "lab": [
-    329
+    448
    ]
   }
  },
@@ -5176,7 +6757,7 @@
   ],
   "lines": {
    "log": [
-    1441
+    1560
    ]
   }
  },
@@ -5188,7 +6769,24 @@
   ],
   "lines": {
    "log": [
-    728
+    847
+   ]
+  }
+ },
+ {
+  "key": "Passes",
+  "message": "Passes",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    984
+   ],
+   "lab": [
+    1221,
+    1258
    ]
   }
  },
@@ -5200,7 +6798,8 @@
   ],
   "lines": {
    "lab": [
-    917
+    1036,
+    1258
    ]
   }
  },
@@ -5212,7 +6811,7 @@
   ],
   "lines": {
    "log": [
-    1697
+    1818
    ]
   }
  },
@@ -5224,7 +6823,7 @@
   ],
   "lines": {
    "log": [
-    2746
+    2867
    ]
   }
  },
@@ -5236,7 +6835,8 @@
   ],
   "lines": {
    "lab": [
-    1101
+    1040,
+    1220
    ]
   }
  },
@@ -5248,7 +6848,7 @@
   ],
   "lines": {
    "log": [
-    727
+    846
    ]
   }
  },
@@ -5260,8 +6860,8 @@
   ],
   "lines": {
    "log": [
-    640,
-    641
+    759,
+    760
    ]
   }
  },
@@ -5273,7 +6873,7 @@
   ],
   "lines": {
    "log": [
-    528
+    647
    ]
   }
  },
@@ -5285,7 +6885,31 @@
   ],
   "lines": {
    "lab": [
-    1726
+    1845
+   ]
+  }
+ },
+ {
+  "key": "Paste the 2nd half YouTube link.",
+  "message": "Paste the 2nd half YouTube link.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2964
+   ]
+  }
+ },
+ {
+  "key": "Paste the {choice}YouTube link, or choose No video.",
+  "message": "Paste the {choice}YouTube link, or choose No video.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2963
    ]
   }
  },
@@ -5298,14 +6922,14 @@
   ],
   "lines": {
    "log": [
-    1275,
-    1275,
-    1283,
-    1283,
-    3003
+    1394,
+    1394,
+    1402,
+    1402,
+    3124
    ],
    "lab": [
-    2468
+    2587
    ]
   }
  },
@@ -5317,7 +6941,7 @@
   ],
   "lines": {
    "log": [
-    1276
+    1395
    ]
   }
  },
@@ -5329,7 +6953,7 @@
   ],
   "lines": {
    "log": [
-    847
+    966
    ]
   }
  },
@@ -5341,7 +6965,33 @@
   ],
   "lines": {
    "log": [
-    522
+    641
+   ]
+  }
+ },
+ {
+  "key": "Pen.",
+  "message": "Pen.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1466
+   ]
+  }
+ },
+ {
+  "key": "Penalties",
+  "message": "Penalties",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1230,
+    1234,
+    1258
    ]
   }
  },
@@ -5353,7 +7003,19 @@
   ],
   "lines": {
    "lab": [
-    1114
+    1233
+   ]
+  }
+ },
+ {
+  "key": "Penalties scored",
+  "message": "Penalties scored",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1042
    ]
   }
  },
@@ -5366,13 +7028,15 @@
   ],
   "lines": {
    "log": [
-    1442,
-    2500,
-    2528
+    1561,
+    1799,
+    2621,
+    2649
    ],
    "lab": [
-    765,
-    2409
+    768,
+    884,
+    2528
    ]
   }
  },
@@ -5384,7 +7048,31 @@
   ],
   "lines": {
    "log": [
-    2514
+    2635
+   ]
+  }
+ },
+ {
+  "key": "Pick the shots",
+  "message": "Pick the shots",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1817
+   ]
+  }
+ },
+ {
+  "key": "Picks the clips most worth showing, from the shots left after the other filters: goals first, then harder shots (distance, runner), longer goals and rallies, and clips where the ball was found in flight.",
+  "message": "Picks the clips most worth showing, from the shots left after the other filters: goals first, then harder shots (distance, runner), longer goals and rallies, and clips where the ball was found in flight.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1749
    ]
   }
  },
@@ -5397,11 +7085,11 @@
   ],
   "lines": {
    "log": [
-    3003
+    3124
    ],
    "lab": [
-    2468,
-    2482
+    2587,
+    2601
    ]
   }
  },
@@ -5413,7 +7101,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -5425,7 +7113,7 @@
   ],
   "lines": {
    "log": [
-    2976
+    3097
    ]
   }
  },
@@ -5437,9 +7125,12 @@
   ],
   "lines": {
    "lab": [
-    1259,
-    1313,
-    1346
+    1164,
+    1350,
+    1378,
+    1413,
+    1432,
+    1465
    ]
   }
  },
@@ -5451,7 +7142,19 @@
   ],
   "lines": {
    "lab": [
-    1321
+    1440
+   ]
+  }
+ },
+ {
+  "key": "Player coming off",
+  "message": "Player coming off",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2580
    ]
   }
  },
@@ -5463,8 +7166,9 @@
   ],
   "lines": {
    "log": [
-    2771,
-    2771
+    2594,
+    2892,
+    2892
    ]
   }
  },
@@ -5476,7 +7180,7 @@
   ],
   "lines": {
    "log": [
-    663
+    782
    ]
   }
  },
@@ -5484,11 +7188,16 @@
   "key": "Players",
   "message": "Players",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    2907
+   ],
    "lab": [
-    1235
+    1354,
+    1424
    ]
   }
  },
@@ -5500,7 +7209,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -5512,7 +7221,7 @@
   ],
   "lines": {
    "log": [
-    3609
+    3728
    ]
   }
  },
@@ -5524,7 +7233,7 @@
   ],
   "lines": {
    "lab": [
-    2456
+    2575
    ]
   }
  },
@@ -5536,8 +7245,8 @@
   ],
   "lines": {
    "log": [
-    3375,
-    3598
+    3494,
+    3717
    ]
   }
  },
@@ -5549,8 +7258,8 @@
   ],
   "lines": {
    "log": [
-    3375,
-    3598
+    3494,
+    3717
    ]
   }
  },
@@ -5562,7 +7271,7 @@
   ],
   "lines": {
    "lab": [
-    328
+    447
    ]
   }
  },
@@ -5574,7 +7283,7 @@
   ],
   "lines": {
    "lab": [
-    328
+    447
    ]
   }
  },
@@ -5586,7 +7295,7 @@
   ],
   "lines": {
    "lab": [
-    328
+    447
    ]
   }
  },
@@ -5598,9 +7307,9 @@
   ],
   "lines": {
    "lab": [
-    1424,
-    1480,
-    1502
+    1543,
+    1599,
+    1621
    ]
   }
  },
@@ -5613,10 +7322,26 @@
   ],
   "lines": {
    "log": [
-    964
+    1083
    ],
    "lab": [
-    441
+    560
+   ]
+  }
+ },
+ {
+  "key": "Rebound",
+  "message": "Rebound",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    989
+   ],
+   "lab": [
+    772
    ]
   }
  },
@@ -5628,7 +7353,8 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035,
+    1039
    ]
   }
  },
@@ -5640,7 +7366,7 @@
   ],
   "lines": {
    "log": [
-    2522
+    2643
    ]
   }
  },
@@ -5652,7 +7378,7 @@
   ],
   "lines": {
    "log": [
-    2523
+    2644
    ]
   }
  },
@@ -5664,7 +7390,10 @@
   ],
   "lines": {
    "lab": [
-    2415
+    771,
+    1116,
+    1129,
+    2534
    ]
   }
  },
@@ -5676,7 +7405,10 @@
   ],
   "lines": {
    "lab": [
-    2415
+    771,
+    1116,
+    1129,
+    2534
    ]
   }
  },
@@ -5688,7 +7420,7 @@
   ],
   "lines": {
    "lab": [
-    1521
+    1640
    ]
   }
  },
@@ -5700,7 +7432,7 @@
   ],
   "lines": {
    "lab": [
-    2460
+    2579
    ]
   }
  },
@@ -5712,7 +7444,7 @@
   ],
   "lines": {
    "log": [
-    1436
+    1555
    ]
   }
  },
@@ -5724,7 +7456,7 @@
   ],
   "lines": {
    "log": [
-    1436
+    1555
    ]
   }
  },
@@ -5736,7 +7468,9 @@
   ],
   "lines": {
    "lab": [
-    1267
+    1386,
+    1424,
+    1465
    ]
   }
  },
@@ -5748,7 +7482,43 @@
   ],
   "lines": {
    "lab": [
+    1922
+   ]
+  }
+ },
+ {
+  "key": "Referee",
+  "message": "Referee",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    984
+   ]
+  }
+ },
+ {
+  "key": "Referee calls",
+  "message": "Referee calls",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
     1803
+   ]
+  }
+ },
+ {
+  "key": "Referee calls: pick Penalty, Free pass, or both.",
+  "message": "Referee calls: pick Penalty, Free pass, or both.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2991
    ]
   }
  },
@@ -5760,7 +7530,7 @@
   ],
   "lines": {
    "log": [
-    741
+    860
    ]
   }
  },
@@ -5772,7 +7542,7 @@
   ],
   "lines": {
    "lab": [
-    427
+    546
    ]
   }
  },
@@ -5784,7 +7554,7 @@
   ],
   "lines": {
    "lab": [
-    427
+    546
    ]
   }
  },
@@ -5796,7 +7566,19 @@
   ],
   "lines": {
    "log": [
-    504
+    623
+   ]
+  }
+ },
+ {
+  "key": "Remove {choice}",
+  "message": "Remove {choice}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2897
    ]
   }
  },
@@ -5808,7 +7590,19 @@
   ],
   "lines": {
    "log": [
-    1416
+    1535
+   ]
+  }
+ },
+ {
+  "key": "Replay of one attack on the full court",
+  "message": "Replay of one attack on the full court",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2552
    ]
   }
  },
@@ -5820,7 +7614,7 @@
   ],
   "lines": {
    "lab": [
-    1468
+    1587
    ]
   }
  },
@@ -5832,7 +7626,7 @@
   ],
   "lines": {
    "lab": [
-    2482
+    2601
    ]
   }
  },
@@ -5844,7 +7638,7 @@
   ],
   "lines": {
    "log": [
-    2152
+    2273
    ]
   }
  },
@@ -5856,10 +7650,10 @@
   ],
   "lines": {
    "log": [
-    1275,
-    1275,
-    1283,
-    1283
+    1394,
+    1394,
+    1402,
+    1402
    ]
   }
  },
@@ -5871,7 +7665,7 @@
   ],
   "lines": {
    "log": [
-    1711
+    1832
    ]
   }
  },
@@ -5883,7 +7677,7 @@
   ],
   "lines": {
    "log": [
-    1703
+    1824
    ]
   }
  },
@@ -5895,7 +7689,7 @@
   ],
   "lines": {
    "log": [
-    487
+    606
    ]
   }
  },
@@ -5907,7 +7701,7 @@
   ],
   "lines": {
    "log": [
-    1706
+    1827
    ]
   }
  },
@@ -5919,7 +7713,19 @@
   ],
   "lines": {
    "log": [
-    1706
+    1827
+   ]
+  }
+ },
+ {
+  "key": "Route of one attack on the half court it was played in",
+  "message": "Route of one attack on the half court it was played in",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2678
    ]
   }
  },
@@ -5931,7 +7737,7 @@
   ],
   "lines": {
    "log": [
-    496
+    615
    ]
   }
  },
@@ -5943,7 +7749,7 @@
   ],
   "lines": {
    "log": [
-    496
+    615
    ]
   }
  },
@@ -5955,7 +7761,31 @@
   ],
   "lines": {
    "log": [
-    496
+    615
+   ]
+  }
+ },
+ {
+  "key": "Run.",
+  "message": "Run.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1466
+   ]
+  }
+ },
+ {
+  "key": "Runner",
+  "message": "Runner",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    768
    ]
   }
  },
@@ -5967,7 +7797,7 @@
   ],
   "lines": {
    "lab": [
-    305
+    424
    ]
   }
  },
@@ -5979,7 +7809,19 @@
   ],
   "lines": {
    "log": [
-    1633
+    1754
+   ]
+  }
+ },
+ {
+  "key": "Save CSV",
+  "message": "Save CSV",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1763
    ]
   }
  },
@@ -5991,7 +7833,7 @@
   ],
   "lines": {
    "log": [
-    1612
+    1733
    ]
   }
  },
@@ -6003,7 +7845,7 @@
   ],
   "lines": {
    "log": [
-    1612
+    1733
    ]
   }
  },
@@ -6015,7 +7857,7 @@
   ],
   "lines": {
    "lab": [
-    2337
+    2456
    ]
   }
  },
@@ -6027,7 +7869,7 @@
   ],
   "lines": {
    "log": [
-    3165
+    3284
    ]
   }
  },
@@ -6039,7 +7881,7 @@
   ],
   "lines": {
    "log": [
-    2430
+    2551
    ]
   }
  },
@@ -6051,7 +7893,7 @@
   ],
   "lines": {
    "lab": [
-    1978
+    2097
    ]
   }
  },
@@ -6063,7 +7905,7 @@
   ],
   "lines": {
    "lab": [
-    2077
+    2196
    ]
   }
  },
@@ -6075,7 +7917,7 @@
   ],
   "lines": {
    "lab": [
-    2336
+    2455
    ]
   }
  },
@@ -6087,7 +7929,19 @@
   ],
   "lines": {
    "lab": [
-    2328
+    2447
+   ]
+  }
+ },
+ {
+  "key": "Score",
+  "message": "Score",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1258
    ]
   }
  },
@@ -6099,7 +7953,19 @@
   ],
   "lines": {
    "lab": [
-    969
+    1088
+   ]
+  }
+ },
+ {
+  "key": "Score progression, {name}",
+  "message": "Score progression, {name}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1069
    ]
   }
  },
@@ -6111,7 +7977,19 @@
   ],
   "lines": {
    "log": [
-    478
+    597
+   ]
+  }
+ },
+ {
+  "key": "Scored",
+  "message": "Scored",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1234
    ]
   }
  },
@@ -6123,7 +8001,7 @@
   ],
   "lines": {
    "lab": [
-    1114
+    1233
    ]
   }
  },
@@ -6135,7 +8013,19 @@
   ],
   "lines": {
    "lab": [
-    1105
+    1224
+   ]
+  }
+ },
+ {
+  "key": "Second half",
+  "message": "Second half",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1086
    ]
   }
  },
@@ -6147,7 +8037,7 @@
   ],
   "lines": {
    "lab": [
-    351
+    470
    ]
   }
  },
@@ -6159,7 +8049,7 @@
   ],
   "lines": {
    "lab": [
-    1637
+    1756
    ]
   }
  },
@@ -6171,7 +8061,7 @@
   ],
   "lines": {
    "lab": [
-    1636
+    1755
    ]
   }
  },
@@ -6183,7 +8073,7 @@
   ],
   "lines": {
    "lab": [
-    1349
+    1468
    ]
   }
  },
@@ -6195,7 +8085,7 @@
   ],
   "lines": {
    "lab": [
-    595
+    714
    ]
   }
  },
@@ -6208,10 +8098,10 @@
   ],
   "lines": {
    "log": [
-    1624
+    1745
    ],
    "lab": [
-    2274
+    2393
    ]
   }
  },
@@ -6223,7 +8113,7 @@
   ],
   "lines": {
    "log": [
-    3072
+    3193
    ]
   }
  },
@@ -6235,7 +8125,31 @@
   ],
   "lines": {
    "log": [
-    2977
+    3098
+   ]
+  }
+ },
+ {
+  "key": "Set piece",
+  "message": "Set piece",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1234
+   ]
+  }
+ },
+ {
+  "key": "Set piece conversion",
+  "message": "Set piece conversion",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1233
    ]
   }
  },
@@ -6247,7 +8161,7 @@
   ],
   "lines": {
    "log": [
-    2305
+    2426
    ]
   }
  },
@@ -6259,7 +8173,7 @@
   ],
   "lines": {
    "log": [
-    3208
+    3327
    ]
   }
  },
@@ -6271,7 +8185,20 @@
   ],
   "lines": {
    "log": [
-    615
+    734
+   ]
+  }
+ },
+ {
+  "key": "Shirt number",
+  "message": "Shirt number",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2594,
+    2891
    ]
   }
  },
@@ -6284,10 +8211,11 @@
   ],
   "lines": {
    "log": [
-    2514
+    2635
    ],
    "lab": [
-    1628
+    1747,
+    1782
    ]
   }
  },
@@ -6299,7 +8227,7 @@
   ],
   "lines": {
    "lab": [
-    1304
+    1423
    ]
   }
  },
@@ -6311,8 +8239,8 @@
   ],
   "lines": {
    "log": [
-    1442,
-    2500
+    1561,
+    2621
    ]
   }
  },
@@ -6324,11 +8252,18 @@
   ],
   "lines": {
    "lab": [
-    916,
-    1240,
-    1266,
-    1304,
-    1346
+    1035,
+    1039,
+    1243,
+    1254,
+    1258,
+    1359,
+    1385,
+    1413,
+    1423,
+    1424,
+    1431,
+    1465
    ]
   }
  },
@@ -6340,7 +8275,7 @@
   ],
   "lines": {
    "lab": [
-    980
+    1099
    ]
   }
  },
@@ -6352,7 +8287,7 @@
   ],
   "lines": {
    "lab": [
-    991
+    1110
    ]
   }
  },
@@ -6364,7 +8299,19 @@
   ],
   "lines": {
    "lab": [
-    1251
+    1370
+   ]
+  }
+ },
+ {
+  "key": "Shot locations around the post, all shots drawn on one half court",
+  "message": "Shot locations around the post, all shots drawn on one half court",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    860
    ]
   }
  },
@@ -6376,7 +8323,7 @@
   ],
   "lines": {
    "lab": [
-    1046
+    1165
    ]
   }
  },
@@ -6388,7 +8335,7 @@
   ],
   "lines": {
    "lab": [
-    1085
+    1204
    ]
   }
  },
@@ -6400,7 +8347,31 @@
   ],
   "lines": {
    "lab": [
-    1976
+    2095
+   ]
+  }
+ },
+ {
+  "key": "Shot percentage by distance",
+  "message": "Shot percentage by distance",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1100
+   ]
+  }
+ },
+ {
+  "key": "Shot percentage by zone around the post",
+  "message": "Shot percentage by zone around the post",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    905
    ]
   }
  },
@@ -6413,11 +8384,14 @@
   ],
   "lines": {
    "log": [
-    2508
+    2629
    ],
    "lab": [
-    1042,
-    1629
+    1129,
+    1161,
+    1161,
+    1748,
+    1782
    ]
   }
  },
@@ -6429,7 +8403,7 @@
   ],
   "lines": {
    "log": [
-    735
+    854
    ]
   }
  },
@@ -6441,7 +8415,7 @@
   ],
   "lines": {
    "lab": [
-    1009
+    1128
    ]
   }
  },
@@ -6453,7 +8427,7 @@
   ],
   "lines": {
    "lab": [
-    1251
+    1370
    ]
   }
  },
@@ -6461,17 +8435,68 @@
   "key": "Shots",
   "message": "Shots",
   "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    984
+   ],
+   "lab": [
+    1035,
+    1039,
+    1129,
+    1161,
+    1241,
+    1254,
+    1258,
+    1359,
+    1370,
+    1370,
+    1370,
+    1373,
+    1383,
+    1413,
+    1423,
+    1424,
+    1431,
+    1465
+   ]
+  }
+ },
+ {
+  "key": "Shots against shot percentage per player",
+  "message": "Shots against shot percentage per player",
+  "apps": [
    "lab"
   ],
   "lines": {
    "lab": [
-    916,
-    1240,
-    1251,
-    1254,
-    1264,
-    1304,
-    1346
+    1400
+   ]
+  }
+ },
+ {
+  "key": "Shots and goals per match",
+  "message": "Shots and goals per match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1370
+   ]
+  }
+ },
+ {
+  "key": "Shots and goals per minute in attack per match",
+  "message": "Shots and goals per minute in attack per match",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1373
    ]
   }
  },
@@ -6483,7 +8508,19 @@
   ],
   "lines": {
    "lab": [
-    1254
+    1373
+   ]
+  }
+ },
+ {
+  "key": "Shots are not ticked, so the log will have no shots, shot maps or highlights.",
+  "message": "Shots are not ticked, so the log will have no shots, shot maps or highlights.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2993
    ]
   }
  },
@@ -6495,7 +8532,7 @@
   ],
   "lines": {
    "log": [
-    2742
+    2863
    ]
   }
  },
@@ -6507,7 +8544,19 @@
   ],
   "lines": {
    "lab": [
-    1042
+    1161
+   ]
+  }
+ },
+ {
+  "key": "Shots by distance",
+  "message": "Shots by distance",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1370
    ]
   }
  },
@@ -6519,7 +8568,19 @@
   ],
   "lines": {
    "lab": [
-    1251
+    1370
+   ]
+  }
+ },
+ {
+  "key": "Shots by distance from the post in 1 metre bands",
+  "message": "Shots by distance from the post in 1 metre bands",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1111
    ]
   }
  },
@@ -6531,7 +8592,20 @@
   ],
   "lines": {
    "lab": [
-    1044
+    1163
+   ]
+  }
+ },
+ {
+  "key": "Shots per minute",
+  "message": "Shots per minute",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1373,
+    1373
    ]
   }
  },
@@ -6543,8 +8617,8 @@
   ],
   "lines": {
    "lab": [
-    1240,
-    1272
+    1359,
+    1391
    ]
   }
  },
@@ -6556,7 +8630,7 @@
   ],
   "lines": {
    "lab": [
-    1284
+    1403
    ]
   }
  },
@@ -6568,7 +8642,8 @@
   ],
   "lines": {
    "lab": [
-    1348
+    1431,
+    1467
    ]
   }
  },
@@ -6580,7 +8655,7 @@
   ],
   "lines": {
    "log": [
-    734
+    853
    ]
   }
  },
@@ -6608,7 +8683,7 @@
   ],
   "lines": {
    "log": [
-    2313
+    2434
    ]
   }
  },
@@ -6620,7 +8695,7 @@
   ],
   "lines": {
    "lab": [
-    2601
+    2720
    ]
   }
  },
@@ -6632,7 +8707,7 @@
   ],
   "lines": {
    "lab": [
-    1669
+    1788
    ]
   }
  },
@@ -6644,7 +8719,7 @@
   ],
   "lines": {
    "lab": [
-    2482
+    2601
    ]
   }
  },
@@ -6656,7 +8731,31 @@
   ],
   "lines": {
    "lab": [
-    1633
+    1752
+   ]
+  }
+ },
+ {
+  "key": "Size of the shot marks",
+  "message": "Size of the shot marks",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1161
+   ]
+  }
+ },
+ {
+  "key": "Skip ›",
+  "message": "Skip ›",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2635
    ]
   }
  },
@@ -6668,8 +8767,20 @@
   ],
   "lines": {
    "log": [
-    526,
-    533
+    645,
+    652
+   ]
+  }
+ },
+ {
+  "key": "Sort by {label}",
+  "message": "Sort by {label}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1464
    ]
   }
  },
@@ -6681,7 +8792,7 @@
   ],
   "lines": {
    "lab": [
-    2482
+    2601
    ]
   }
  },
@@ -6693,8 +8804,8 @@
   ],
   "lines": {
    "log": [
-    1275,
-    1283
+    1394,
+    1402
    ]
   }
  },
@@ -6706,8 +8817,8 @@
   ],
   "lines": {
    "log": [
-    1275,
-    1283
+    1394,
+    1402
    ]
   }
  },
@@ -6719,7 +8830,7 @@
   ],
   "lines": {
    "log": [
-    3165
+    3284
    ]
   }
  },
@@ -6731,8 +8842,8 @@
   ],
   "lines": {
    "log": [
-    1276,
-    489
+    1395,
+    608
    ]
   }
  },
@@ -6744,8 +8855,8 @@
   ],
   "lines": {
    "log": [
-    1409,
-    3617
+    1528,
+    3736
    ]
   }
  },
@@ -6757,7 +8868,19 @@
   ],
   "lines": {
    "log": [
-    2401
+    2522
+   ]
+  }
+ },
+ {
+  "key": "Step in this attack",
+  "message": "Step in this attack",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2601
    ]
   }
  },
@@ -6769,19 +8892,19 @@
   ],
   "lines": {
    "lab": [
-    2492
+    2611
    ]
   }
  },
  {
-  "key": "Step {k}{n} of {itemCount} ·",
-  "message": "Step {k}{n} of {itemCount} ·",
+  "key": "Step {k} of {itemCount} ·",
+  "message": "Step {k} of {itemCount} ·",
   "apps": [
    "lab"
   ],
   "lines": {
    "lab": [
-    2457
+    2576
    ]
   }
  },
@@ -6793,20 +8916,32 @@
   ],
   "lines": {
    "log": [
-    3062,
-    3105
+    3183,
+    3226
    ]
   }
  },
  {
-  "key": "Step {step}{n} of {itemCount}",
-  "message": "Step {step}{n} of {itemCount}",
+  "key": "Step {step} of {itemCount}",
+  "message": "Step {step} of {itemCount}",
   "apps": [
    "lab"
   ],
   "lines": {
    "lab": [
-    2467
+    2586
+   ]
+  }
+ },
+ {
+  "key": "Steps to make a highlight reel",
+  "message": "Steps to make a highlight reel",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1741
    ]
   }
  },
@@ -6819,10 +8954,10 @@
   ],
   "lines": {
    "log": [
-    2430
+    2551
    ],
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -6834,7 +8969,7 @@
   ],
   "lines": {
    "lab": [
-    1936
+    2055
    ]
   }
  },
@@ -6846,7 +8981,7 @@
   ],
   "lines": {
    "lab": [
-    1723
+    1842
    ]
   }
  },
@@ -6858,7 +8993,7 @@
   ],
   "lines": {
    "log": [
-    2034
+    2155
    ]
   }
  },
@@ -6870,7 +9005,7 @@
   ],
   "lines": {
    "lab": [
-    1982
+    2101
    ]
   }
  },
@@ -6882,7 +9017,7 @@
   ],
   "lines": {
    "lab": [
-    1859
+    1978
    ]
   }
  },
@@ -6894,7 +9029,7 @@
   ],
   "lines": {
    "log": [
-    2403
+    2524
    ]
   }
  },
@@ -6907,10 +9042,10 @@
   ],
   "lines": {
    "log": [
-    2109
+    2230
    ],
    "lab": [
-    1981
+    2100
    ]
   }
  },
@@ -6922,7 +9057,7 @@
   ],
   "lines": {
    "log": [
-    2400
+    2521
    ]
   }
  },
@@ -6930,11 +9065,16 @@
   "key": "Subs",
   "message": "Subs",
   "apps": [
-   "log"
+   "log",
+   "lab"
   ],
   "lines": {
    "log": [
-    1687
+    984,
+    1808
+   ],
+   "lab": [
+    1258
    ]
   }
  },
@@ -6946,8 +9086,20 @@
   ],
   "lines": {
    "log": [
-    2771,
-    2771
+    2892,
+    2892
+   ]
+  }
+ },
+ {
+  "key": "Substitutes",
+  "message": "Substitutes",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2911
    ]
   }
  },
@@ -6959,7 +9111,7 @@
   ],
   "lines": {
    "log": [
-    2897
+    3018
    ]
   }
  },
@@ -6971,7 +9123,19 @@
   ],
   "lines": {
    "log": [
-    1445
+    1564
+   ]
+  }
+ },
+ {
+  "key": "Substitution timeline",
+  "message": "Substitution timeline",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1446
    ]
   }
  },
@@ -6983,7 +9147,7 @@
   ],
   "lines": {
    "log": [
-    2453
+    2574
    ]
   }
  },
@@ -6995,7 +9159,7 @@
   ],
   "lines": {
    "lab": [
-    1337
+    1456
    ]
   }
  },
@@ -7007,7 +9171,19 @@
   ],
   "lines": {
    "lab": [
-    680
+    799
+   ]
+  }
+ },
+ {
+  "key": "Taken",
+  "message": "Taken",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1234
    ]
   }
  },
@@ -7019,8 +9195,8 @@
   ],
   "lines": {
    "log": [
-    1642,
-    3346
+    1763,
+    3465
    ]
   }
  },
@@ -7032,7 +9208,7 @@
   ],
   "lines": {
    "log": [
-    2287
+    2408
    ]
   }
  },
@@ -7044,7 +9220,7 @@
   ],
   "lines": {
    "log": [
-    3393
+    3512
    ]
   }
  },
@@ -7056,7 +9232,7 @@
   ],
   "lines": {
    "log": [
-    2313
+    2434
    ]
   }
  },
@@ -7069,12 +9245,24 @@
   ],
   "lines": {
    "log": [
-    2458
+    2579,
+    2579
    ],
    "lab": [
-    1346,
-    1625,
-    2482
+    1086,
+    1129,
+    1161,
+    1164,
+    1214,
+    1234,
+    1254,
+    1350,
+    1413,
+    1456,
+    1465,
+    1744,
+    1782,
+    2601
    ]
   }
  },
@@ -7086,7 +9274,7 @@
   ],
   "lines": {
    "log": [
-    2783
+    2904
    ]
   }
  },
@@ -7098,7 +9286,7 @@
   ],
   "lines": {
    "log": [
-    2783
+    2904
    ]
   }
  },
@@ -7110,7 +9298,7 @@
   ],
   "lines": {
    "log": [
-    768
+    887
    ]
   }
  },
@@ -7122,7 +9310,19 @@
   ],
   "lines": {
    "lab": [
-    1134
+    1253
+   ]
+  }
+ },
+ {
+  "key": "Teams",
+  "message": "Teams",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3168
    ]
   }
  },
@@ -7134,7 +9334,7 @@
   ],
   "lines": {
    "lab": [
-    941
+    1060
    ]
   }
  },
@@ -7146,7 +9346,7 @@
   ],
   "lines": {
    "log": [
-    1510
+    1631
    ]
   }
  },
@@ -7158,7 +9358,7 @@
   ],
   "lines": {
    "log": [
-    1986
+    2107
    ]
   }
  },
@@ -7170,7 +9370,7 @@
   ],
   "lines": {
    "lab": [
-    2101
+    2220
    ]
   }
  },
@@ -7182,7 +9382,7 @@
   ],
   "lines": {
    "lab": [
-    2601
+    2720
    ]
   }
  },
@@ -7194,7 +9394,7 @@
   ],
   "lines": {
    "log": [
-    3143
+    3264
    ]
   }
  },
@@ -7206,7 +9406,7 @@
   ],
   "lines": {
    "lab": [
-    1982
+    2101
    ]
   }
  },
@@ -7218,7 +9418,7 @@
   ],
   "lines": {
    "lab": [
-    1981
+    2100
    ]
   }
  },
@@ -7230,8 +9430,8 @@
   ],
   "lines": {
    "log": [
-    3375,
-    3598
+    3494,
+    3717
    ]
   }
  },
@@ -7243,7 +9443,7 @@
   ],
   "lines": {
    "log": [
-    2101
+    2222
    ]
   }
  },
@@ -7255,7 +9455,19 @@
   ],
   "lines": {
    "log": [
-    2976
+    3097
+   ]
+  }
+ },
+ {
+  "key": "The shot moment was found with the ball finder: {moved} s after the referee call.",
+  "message": "The shot moment was found with the ball finder: {moved} s after the referee call.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1787
    ]
   }
  },
@@ -7267,7 +9479,7 @@
   ],
   "lines": {
    "log": [
-    2883
+    3004
    ]
   }
  },
@@ -7279,7 +9491,7 @@
   ],
   "lines": {
    "lab": [
-    2601
+    2720
    ]
   }
  },
@@ -7291,7 +9503,7 @@
   ],
   "lines": {
    "log": [
-    3399
+    3518
    ]
   }
  },
@@ -7303,7 +9515,7 @@
   ],
   "lines": {
    "log": [
-    1719
+    1840
    ]
   }
  },
@@ -7315,7 +9527,7 @@
   ],
   "lines": {
    "log": [
-    2330
+    2451
    ]
   }
  },
@@ -7327,7 +9539,7 @@
   ],
   "lines": {
    "log": [
-    2328
+    2449
    ]
   }
  },
@@ -7339,7 +9551,19 @@
   ],
   "lines": {
    "log": [
-    3021
+    3142
+   ]
+  }
+ },
+ {
+  "key": "The {choice} link does not look like a YouTube link. Paste the address from the YouTube share button.",
+  "message": "The {choice} link does not look like a YouTube link. Paste the address from the YouTube share button.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2970
    ]
   }
  },
@@ -7351,7 +9575,31 @@
   ],
   "lines": {
    "log": [
-    2106
+    2227
+   ]
+  }
+ },
+ {
+  "key": "The {side} team name has not been entered; it will be called \"{def}\".",
+  "message": "The {side} team name has not been entered; it will be called \"{def}\".",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2976
+   ]
+  }
+ },
+ {
+  "key": "The {xItem} video start time must look like 04:10 (minutes:seconds).",
+  "message": "The {xItem} video start time must look like 04:10 (minutes:seconds).",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2971
    ]
   }
  },
@@ -7363,7 +9611,19 @@
   ],
   "lines": {
    "log": [
-    2308
+    2429
+   ]
+  }
+ },
+ {
+  "key": "This JSON file has no events. Use a backup saved from Korf Log.",
+  "message": "This JSON file has no events. Use a backup saved from Korf Log.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    552
    ]
   }
  },
@@ -7375,7 +9635,7 @@
   ],
   "lines": {
    "lab": [
-    2592
+    2711
    ]
   }
  },
@@ -7387,7 +9647,7 @@
   ],
   "lines": {
    "lab": [
-    1797
+    1916
    ]
   }
  },
@@ -7399,7 +9659,7 @@
   ],
   "lines": {
    "lab": [
-    1798
+    1917
    ]
   }
  },
@@ -7411,7 +9671,7 @@
   ],
   "lines": {
    "lab": [
-    498
+    617
    ]
   }
  },
@@ -7423,7 +9683,19 @@
   ],
   "lines": {
    "log": [
-    3547
+    3666
+   ]
+  }
+ },
+ {
+  "key": "This looks like a Yellow Bucket shot location export. Use Convert a Yellow Bucket export below, then load the converted file.",
+  "message": "This looks like a Yellow Bucket shot location export. Use Convert a Yellow Bucket export below, then load the converted file.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    616
    ]
   }
  },
@@ -7435,7 +9707,7 @@
   ],
   "lines": {
    "lab": [
-    867
+    986
    ]
   }
  },
@@ -7447,7 +9719,43 @@
   ],
   "lines": {
    "log": [
-    849
+    968
+   ]
+  }
+ },
+ {
+  "key": "This team has no other attack to compare with.",
+  "message": "This team has no other attack to compare with.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2720
+   ]
+  }
+ },
+ {
+  "key": "This team has no players with a division.",
+  "message": "This team has no players with a division.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2586
+   ]
+  }
+ },
+ {
+  "key": "This team has no substitutes on the bench.",
+  "message": "This team has no substitutes on the bench.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2592
    ]
   }
  },
@@ -7459,7 +9767,55 @@
   ],
   "lines": {
    "log": [
-    2307
+    2428
+   ]
+  }
+ },
+ {
+  "key": "Tick at least one event to track.",
+  "message": "Tick at least one event to track.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2990
+   ]
+  }
+ },
+ {
+  "key": "Ticked: the ffmpeg script (1200x1920) and Make highlight video (720x1152) make a portrait 10:16 video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original shape.",
+  "message": "Ticked: the ffmpeg script (1200x1920) and Make highlight video (720x1152) make a portrait 10:16 video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original shape.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1764
+   ]
+  }
+ },
+ {
+  "key": "Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video.",
+  "message": "Ticked: the ffmpeg script saves each clip as its own video file in a folder. Unticked: it saves one highlight video.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1764
+   ]
+  }
+ },
+ {
+  "key": "Ticking this starts finding the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded. Needs the Portrait option and your video file.",
+  "message": "Ticking this starts finding the ball in the clips you have filtered, in your video file, on this computer. Nothing is uploaded. Needs the Portrait option and your video file.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1764
    ]
   }
  },
@@ -7471,7 +9827,22 @@
   ],
   "lines": {
    "lab": [
-    1725
+    1844
+   ]
+  }
+ },
+ {
+  "key": "Time",
+  "message": "Time",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1164,
+    1456,
+    1465,
+    1782
    ]
   }
  },
@@ -7483,7 +9854,7 @@
   ],
   "lines": {
    "log": [
-    1446
+    1565
    ]
   }
  },
@@ -7495,8 +9866,8 @@
   ],
   "lines": {
    "log": [
-    1446,
-    1687
+    1565,
+    1808
    ]
   }
  },
@@ -7508,7 +9879,7 @@
   ],
   "lines": {
    "log": [
-    3428
+    3547
    ]
   }
  },
@@ -7520,8 +9891,8 @@
   ],
   "lines": {
    "log": [
-    1446,
-    1687
+    1565,
+    1808
    ]
   }
  },
@@ -7533,7 +9904,19 @@
   ],
   "lines": {
    "log": [
-    3433
+    3552
+   ]
+  }
+ },
+ {
+  "key": "Time outs",
+  "message": "Time outs",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    984
    ]
   }
  },
@@ -7545,7 +9928,7 @@
   ],
   "lines": {
    "log": [
-    573
+    692
    ]
   }
  },
@@ -7557,7 +9940,7 @@
   ],
   "lines": {
    "lab": [
-    1313
+    1432
    ]
   }
  },
@@ -7569,8 +9952,20 @@
   ],
   "lines": {
    "log": [
-    1447,
-    1699
+    1566,
+    1820
+   ]
+  }
+ },
+ {
+  "key": "Transfers",
+  "message": "Transfers",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    984
    ]
   }
  },
@@ -7583,10 +9978,10 @@
   ],
   "lines": {
    "log": [
-    1443
+    1562
    ],
    "lab": [
-    2416
+    2535
    ]
   }
  },
@@ -7598,7 +9993,8 @@
   ],
   "lines": {
    "log": [
-    1447
+    1566,
+    1820
    ]
   }
  },
@@ -7610,7 +10006,7 @@
   ],
   "lines": {
    "log": [
-    3447
+    3566
    ]
   }
  },
@@ -7622,7 +10018,19 @@
   ],
   "lines": {
    "log": [
-    752
+    871
+   ]
+  }
+ },
+ {
+  "key": "Turnover · attacking foul",
+  "message": "Turnover · attacking foul",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2650
    ]
   }
  },
@@ -7634,7 +10042,103 @@
   ],
   "lines": {
    "log": [
-    1443
+    1562
+   ]
+  }
+ },
+ {
+  "key": "Turnover – attacking foul",
+  "message": "Turnover – attacking foul",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    983
+   ]
+  }
+ },
+ {
+  "key": "Turnover – forced error",
+  "message": "Turnover – forced error",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    983
+   ]
+  }
+ },
+ {
+  "key": "Turnover – shot clock",
+  "message": "Turnover – shot clock",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    983
+   ]
+  }
+ },
+ {
+  "key": "Turnover – unforced error",
+  "message": "Turnover – unforced error",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    983
+   ]
+  }
+ },
+ {
+  "key": "Turnover: ball out, defence gets it",
+  "message": "Turnover: ball out, defence gets it",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1208
+   ]
+  }
+ },
+ {
+  "key": "Turnover: defended shot",
+  "message": "Turnover: defended shot",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1208
+   ]
+  }
+ },
+ {
+  "key": "Turnover: defensive rebound",
+  "message": "Turnover: defensive rebound",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1208
+   ]
+  }
+ },
+ {
+  "key": "Turnover: logged turnover",
+  "message": "Turnover: logged turnover",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1208
    ]
   }
  },
@@ -7642,11 +10146,18 @@
   "key": "Turnovers",
   "message": "Turnovers",
   "apps": [
+   "log",
    "lab"
   ],
   "lines": {
+   "log": [
+    984,
+    1801
+   ],
    "lab": [
-    917
+    1036,
+    1041,
+    1258
    ]
   }
  },
@@ -7658,7 +10169,31 @@
   ],
   "lines": {
    "lab": [
-    917
+    1036
+   ]
+  }
+ },
+ {
+  "key": "Turnovers in total",
+  "message": "Turnovers in total",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1214
+   ]
+  }
+ },
+ {
+  "key": "Turnovers: pick General turnover or at least one detailed type.",
+  "message": "Turnovers: pick General turnover or at least one detailed type.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2992
    ]
   }
  },
@@ -7670,7 +10205,19 @@
   ],
   "lines": {
    "log": [
-    748
+    867
+   ]
+  }
+ },
+ {
+  "key": "Type",
+  "message": "Type",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1164
    ]
   }
  },
@@ -7683,10 +10230,22 @@
   ],
   "lines": {
    "log": [
-    623
+    742
    ],
    "lab": [
-    346
+    465
+   ]
+  }
+ },
+ {
+  "key": "Unknown",
+  "message": "Unknown",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1340
    ]
   }
  },
@@ -7698,10 +10257,10 @@
   ],
   "lines": {
    "lab": [
-    1729,
-    1820,
-    2055,
-    2062
+    1848,
+    1939,
+    2174,
+    2181
    ]
   }
  },
@@ -7713,7 +10272,19 @@
   ],
   "lines": {
    "log": [
-    1718
+    1839
+   ]
+  }
+ },
+ {
+  "key": "Video",
+  "message": "Video",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3167
    ]
   }
  },
@@ -7725,7 +10296,19 @@
   ],
   "lines": {
    "lab": [
-    1699
+    1818
+   ]
+  }
+ },
+ {
+  "key": "Video times (optional). Enter the video time at which each half started, as mm:ss, for example 04:10. Links and start times are filled in automatically when the log was made with a video in Korf Log. If the match video is split in two, add the 2nd half link as well.",
+  "message": "Video times (optional). Enter the video time at which each half started, as mm:ss, for example 04:10. Links and start times are filled in automatically when the log was made with a video in Korf Log. If the match video is split in two, add the 2nd half link as well.",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1758
    ]
   }
  },
@@ -7737,7 +10320,8 @@
   ],
   "lines": {
    "lab": [
-    1042
+    799,
+    1161
    ]
   }
  },
@@ -7749,7 +10333,7 @@
   ],
   "lines": {
    "lab": [
-    1293
+    1412
    ]
   }
  },
@@ -7761,7 +10345,7 @@
   ],
   "lines": {
    "log": [
-    2403
+    2524
    ]
   }
  },
@@ -7773,8 +10357,20 @@
   ],
   "lines": {
    "log": [
-    1883,
-    2993
+    2004,
+    3114
+   ]
+  }
+ },
+ {
+  "key": "Week",
+  "message": "Week",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1258
    ]
   }
  },
@@ -7787,10 +10383,10 @@
   ],
   "lines": {
    "log": [
-    1646
+    1767
    ],
    "lab": [
-    964
+    1083
    ]
   }
  },
@@ -7802,7 +10398,7 @@
   ],
   "lines": {
    "lab": [
-    1337
+    1456
    ]
   }
  },
@@ -7814,7 +10410,7 @@
   ],
   "lines": {
    "lab": [
-    974
+    1093
    ]
   }
  },
@@ -7826,7 +10422,7 @@
   ],
   "lines": {
    "log": [
-    651
+    770
    ]
   }
  },
@@ -7838,7 +10434,19 @@
   ],
   "lines": {
    "log": [
-    559
+    678
+   ]
+  }
+ },
+ {
+  "key": "Which match is this? The league and date are needed.",
+  "message": "Which match is this? The league and date are needed.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3166
    ]
   }
  },
@@ -7850,8 +10458,9 @@
   ],
   "lines": {
    "lab": [
-    1624,
-    2477
+    1161,
+    1743,
+    2596
    ]
   }
  },
@@ -7863,7 +10472,7 @@
   ],
   "lines": {
    "log": [
-    2403
+    2524
    ]
   }
  },
@@ -7875,7 +10484,31 @@
   ],
   "lines": {
    "lab": [
-    304
+    423
+   ]
+  }
+ },
+ {
+  "key": "You chose to add player names for {teamLabel} but have not added any.",
+  "message": "You chose to add player names for {teamLabel} but have not added any.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2982
+   ]
+  }
+ },
+ {
+  "key": "You have not said when the 1st half starts in the video. 00:00 (the very start of the video) will be used, so the video will be out of step with the clock if the match starts later.",
+  "message": "You have not said when the 1st half starts in the video. 00:00 (the very start of the video) will be used, so the video will be out of step with the clock if the match starts later.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2972
    ]
   }
  },
@@ -7887,7 +10520,7 @@
   ],
   "lines": {
    "log": [
-    818
+    937
    ]
   }
  },
@@ -7899,7 +10532,7 @@
   ],
   "lines": {
    "log": [
-    1883
+    2004
    ]
   }
  },
@@ -7911,7 +10544,7 @@
   ],
   "lines": {
    "log": [
-    2993
+    3114
    ]
   }
  },
@@ -7924,11 +10557,11 @@
   ],
   "lines": {
    "log": [
-    2971,
-    3038
+    3092,
+    3159
    ],
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -7940,7 +10573,7 @@
   ],
   "lines": {
    "lab": [
-    1738
+    1857
    ]
   }
  },
@@ -7952,7 +10585,8 @@
   ],
   "lines": {
    "log": [
-    2650
+    2771,
+    2949
    ]
   }
  },
@@ -7964,7 +10598,8 @@
   ],
   "lines": {
    "log": [
-    2650
+    2771,
+    2949
    ]
   }
  },
@@ -7976,8 +10611,8 @@
   ],
   "lines": {
    "log": [
-    2932,
-    2932
+    3053,
+    3053
    ]
   }
  },
@@ -7989,8 +10624,8 @@
   ],
   "lines": {
    "log": [
-    2932,
-    2932
+    3053,
+    3053
    ]
   }
  },
@@ -8002,7 +10637,7 @@
   ],
   "lines": {
    "log": [
-    1659
+    1780
    ]
   }
  },
@@ -8014,7 +10649,7 @@
   ],
   "lines": {
    "log": [
-    2018
+    2139
    ]
   }
  },
@@ -8026,7 +10661,7 @@
   ],
   "lines": {
    "log": [
-    2313
+    2434
    ]
   }
  },
@@ -8038,7 +10673,7 @@
   ],
   "lines": {
    "lab": [
-    539
+    658
    ]
   }
  },
@@ -8050,7 +10685,23 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035
+   ]
+  }
+ },
+ {
+  "key": "attack",
+  "message": "attack",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    3058
+   ],
+   "lab": [
+    1640
    ]
   }
  },
@@ -8062,7 +10713,20 @@
   ],
   "lines": {
    "log": [
-    1667
+    1788
+   ]
+  }
+ },
+ {
+  "key": "away",
+  "message": "away",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3049,
+    3050
    ]
   }
  },
@@ -8074,7 +10738,19 @@
   ],
   "lines": {
    "lab": [
-    1869
+    1988
+   ]
+  }
+ },
+ {
+  "key": "behind",
+  "message": "behind",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2434
    ]
   }
  },
@@ -8086,7 +10762,7 @@
   ],
   "lines": {
    "lab": [
-    1699
+    1818
    ]
   }
  },
@@ -8098,7 +10774,7 @@
   ],
   "lines": {
    "lab": [
-    2461
+    2580
    ]
   }
  },
@@ -8110,7 +10786,7 @@
   ],
   "lines": {
    "lab": [
-    1107
+    1226
    ]
   }
  },
@@ -8122,7 +10798,19 @@
   ],
   "lines": {
    "log": [
-    1367
+    1486
+   ]
+  }
+ },
+ {
+  "key": "defence",
+  "message": "defence",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1640
    ]
   }
  },
@@ -8134,8 +10822,8 @@
   ],
   "lines": {
    "lab": [
-    656,
-    850
+    775,
+    969
    ]
   }
  },
@@ -8147,33 +10835,20 @@
   ],
   "lines": {
    "lab": [
-    1705
+    1824,
+    1825
    ]
   }
  },
  {
-  "key": "event was",
-  "message": "event was",
+  "key": "e.g. 5",
+  "message": "e.g. 5",
   "apps": [
    "log"
   ],
   "lines": {
    "log": [
-    3387,
-    3399
-   ]
-  }
- },
- {
-  "key": "events were",
-  "message": "events were",
-  "apps": [
-   "log"
-  ],
-  "lines": {
-   "log": [
-    3387,
-    3399
+    744
    ]
   }
  },
@@ -8185,7 +10860,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -8197,7 +10872,7 @@
   ],
   "lines": {
    "lab": [
-    1645
+    1764
    ]
   }
  },
@@ -8209,7 +10884,7 @@
   ],
   "lines": {
    "lab": [
-    1107
+    1226
    ]
   }
  },
@@ -8221,7 +10896,7 @@
   ],
   "lines": {
    "log": [
-    2937
+    3058
    ]
   }
  },
@@ -8233,8 +10908,8 @@
   ],
   "lines": {
    "log": [
-    1380,
-    1384
+    1499,
+    1503
    ]
   }
  },
@@ -8246,7 +10921,7 @@
   ],
   "lines": {
    "log": [
-    1361
+    1480
    ]
   }
  },
@@ -8258,7 +10933,7 @@
   ],
   "lines": {
    "lab": [
-    1235
+    1354
    ]
   }
  },
@@ -8270,7 +10945,7 @@
   ],
   "lines": {
    "log": [
-    2233
+    2354
    ]
   }
  },
@@ -8282,7 +10957,7 @@
   ],
   "lines": {
    "log": [
-    2511
+    2632
    ]
   }
  },
@@ -8294,7 +10969,7 @@
   ],
   "lines": {
    "log": [
-    2138
+    2259
    ]
   }
  },
@@ -8307,13 +10982,13 @@
   ],
   "lines": {
    "log": [
-    1014
+    1133
    ],
    "lab": [
-    656,
-    849,
-    1631,
-    2309
+    775,
+    968,
+    1750,
+    2428
    ]
   }
  },
@@ -8325,7 +11000,23 @@
   ],
   "lines": {
    "lab": [
-    1093
+    1212
+   ]
+  }
+ },
+ {
+  "key": "halves",
+  "message": "halves",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    3212
+   ],
+   "lab": [
+    1260
    ]
   }
  },
@@ -8337,7 +11028,7 @@
   ],
   "lines": {
    "lab": [
-    865
+    984
    ]
   }
  },
@@ -8349,7 +11040,7 @@
   ],
   "lines": {
    "log": [
-    2937
+    3058
    ]
   }
  },
@@ -8361,7 +11052,20 @@
   ],
   "lines": {
    "log": [
-    1664
+    1785
+   ]
+  }
+ },
+ {
+  "key": "home",
+  "message": "home",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3049,
+    3050
    ]
   }
  },
@@ -8373,7 +11077,19 @@
   ],
   "lines": {
    "lab": [
-    941
+    1060
+   ]
+  }
+ },
+ {
+  "key": "match",
+  "message": "match",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1403
    ]
   }
  },
@@ -8385,7 +11101,7 @@
   ],
   "lines": {
    "log": [
-    1284
+    1403
    ]
   }
  },
@@ -8397,7 +11113,7 @@
   ],
   "lines": {
    "log": [
-    2849
+    2970
    ]
   }
  },
@@ -8409,7 +11125,7 @@
   ],
   "lines": {
    "log": [
-    643
+    762
    ]
   }
  },
@@ -8421,7 +11137,7 @@
   ],
   "lines": {
    "log": [
-    3039
+    3160
    ]
   }
  },
@@ -8433,7 +11149,7 @@
   ],
   "lines": {
    "log": [
-    642
+    761
    ]
   }
  },
@@ -8445,7 +11161,19 @@
   ],
   "lines": {
    "log": [
-    3039
+    3160
+   ]
+  }
+ },
+ {
+  "key": "no goal",
+  "message": "no goal",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    884
    ]
   }
  },
@@ -8457,7 +11185,20 @@
   ],
   "lines": {
    "lab": [
-    1332
+    1451
+   ]
+  }
+ },
+ {
+  "key": "none",
+  "message": "none",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1451,
+    1451
    ]
   }
  },
@@ -8469,7 +11210,72 @@
   ],
   "lines": {
    "lab": [
-    1661
+    1780
+   ]
+  }
+ },
+ {
+  "key": "oobA",
+  "message": "oobA",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2431
+   ]
+  }
+ },
+ {
+  "key": "oobD",
+  "message": "oobD",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2431
+   ]
+  }
+ },
+ {
+  "key": "opponent",
+  "message": "opponent",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1203
+   ]
+  }
+ },
+ {
+  "key": "optional",
+  "message": "optional",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    2907,
+    2911
+   ],
+   "lab": [
+    1825
+   ]
+  }
+ },
+ {
+  "key": "optional when a division is a player short",
+  "message": "optional when a division is a player short",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2580
    ]
   }
  },
@@ -8477,18 +11283,66 @@
   "key": "pass",
   "message": "pass",
   "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1506
+   ]
+  }
+ },
+ {
+  "key": "penalty",
+  "message": "penalty",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2632
+   ]
+  }
+ },
+ {
+  "key": "player",
+  "message": "player",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2897,
+    3001,
+    3004
+   ]
+  }
+ },
+ {
+  "key": "players",
+  "message": "players",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3001,
+    3004
+   ]
+  }
+ },
+ {
+  "key": "quarters",
+  "message": "quarters",
+  "apps": [
    "log",
    "lab"
   ],
   "lines": {
    "log": [
-    1796
+    3212
    ],
    "lab": [
-    1387,
-    2456,
-    2480,
-    2600
+    1260
    ]
   }
  },
@@ -8500,9 +11354,45 @@
   ],
   "lines": {
    "lab": [
-    656,
-    2310,
-    2311
+    775,
+    2429,
+    2430
+   ]
+  }
+ },
+ {
+  "key": "row",
+  "message": "row",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2981
+   ]
+  }
+ },
+ {
+  "key": "rows",
+  "message": "rows",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2981
+   ]
+  }
+ },
+ {
+  "key": "sample_TeamA_v_TeamB_eventlog.csv",
+  "message": "sample_TeamA_v_TeamB_eventlog.csv",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2723
    ]
   }
  },
@@ -8514,7 +11404,7 @@
   ],
   "lines": {
    "lab": [
-    539
+    658
    ]
   }
  },
@@ -8526,7 +11416,7 @@
   ],
   "lines": {
    "lab": [
-    1107
+    1226
    ]
   }
  },
@@ -8534,12 +11424,16 @@
   "key": "something went wrong",
   "message": "something went wrong",
   "apps": [
-   "log"
+   "log",
+   "lab"
   ],
   "lines": {
    "log": [
-    2101,
-    2379
+    2222,
+    2500
+   ],
+   "lab": [
+    2103
    ]
   }
  },
@@ -8551,7 +11445,19 @@
   ],
   "lines": {
    "log": [
-    2519
+    2640
+   ]
+  }
+ },
+ {
+  "key": "substitute",
+  "message": "substitute",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2897
    ]
   }
  },
@@ -8563,7 +11469,7 @@
   ],
   "lines": {
    "log": [
-    1367
+    1486
    ]
   }
  },
@@ -8576,10 +11482,10 @@
   ],
   "lines": {
    "log": [
-    2041
+    2162
    ],
    "lab": [
-    1953
+    2072
    ]
   }
  },
@@ -8591,7 +11497,19 @@
   ],
   "lines": {
    "log": [
-    2390
+    2511
+   ]
+  }
+ },
+ {
+  "key": "the browser refused to play or record this file",
+  "message": "the browser refused to play or record this file",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1981
    ]
   }
  },
@@ -8603,7 +11521,7 @@
   ],
   "lines": {
    "log": [
-    2041
+    2162
    ]
   }
  },
@@ -8615,7 +11533,20 @@
   ],
   "lines": {
    "lab": [
-    2077
+    2196
+   ]
+  }
+ },
+ {
+  "key": "the other side",
+  "message": "the other side",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2579,
+    2579
    ]
   }
  },
@@ -8628,10 +11559,22 @@
   ],
   "lines": {
    "log": [
-    2018
+    2139
    ],
    "lab": [
-    1958
+    2077
+   ]
+  }
+ },
+ {
+  "key": "unknown shooter",
+  "message": "unknown shooter",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1802
    ]
   }
  },
@@ -8643,7 +11586,7 @@
   ],
   "lines": {
    "log": [
-    2971
+    3092
    ]
   }
  },
@@ -8655,7 +11598,7 @@
   ],
   "lines": {
    "log": [
-    2937
+    3058
    ]
   }
  },
@@ -8667,7 +11610,7 @@
   ],
   "lines": {
    "lab": [
-    1111
+    1230
    ]
   }
  },
@@ -8679,7 +11622,7 @@
   ],
   "lines": {
    "log": [
-    3438
+    3557
    ]
   }
  },
@@ -8691,7 +11634,7 @@
   ],
   "lines": {
    "log": [
-    1796
+    1917
    ]
   }
  },
@@ -8703,7 +11646,7 @@
   ],
   "lines": {
    "lab": [
-    1267
+    1386
    ]
   }
  },
@@ -8715,7 +11658,7 @@
   ],
   "lines": {
    "log": [
-    2505
+    2626
    ]
   }
  },
@@ -8727,7 +11670,7 @@
   ],
   "lines": {
    "lab": [
-    2077
+    2196
    ]
   }
  },
@@ -8739,7 +11682,7 @@
   ],
   "lines": {
    "lab": [
-    1093
+    1212
    ]
   }
  },
@@ -8751,7 +11694,7 @@
   ],
   "lines": {
    "lab": [
-    2055
+    2174
    ]
   }
  },
@@ -8763,7 +11706,7 @@
   ],
   "lines": {
    "log": [
-    1712
+    1833
    ]
   }
  },
@@ -8775,7 +11718,7 @@
   ],
   "lines": {
    "log": [
-    1706
+    1827
    ]
   }
  },
@@ -8787,7 +11730,7 @@
   ],
   "lines": {
    "lab": [
-    1683
+    1802
    ]
   }
  },
@@ -8799,7 +11742,7 @@
   ],
   "lines": {
    "lab": [
-    1254
+    1373
    ]
   }
  },
@@ -8811,7 +11754,7 @@
   ],
   "lines": {
    "lab": [
-    1254
+    1373
    ]
   }
  },
@@ -8823,8 +11766,8 @@
   ],
   "lines": {
    "lab": [
-    1081,
-    1084
+    1200,
+    1203
    ]
   }
  },
@@ -8836,7 +11779,7 @@
   ],
   "lines": {
    "lab": [
-    1101
+    1220
    ]
   }
  },
@@ -8848,7 +11791,7 @@
   ],
   "lines": {
    "lab": [
-    1820
+    1939
    ]
   }
  },
@@ -8860,7 +11803,7 @@
   ],
   "lines": {
    "log": [
-    2514
+    2635
    ]
   }
  },
@@ -8872,7 +11815,7 @@
   ],
   "lines": {
    "lab": [
-    1859
+    1978
    ]
   }
  },
@@ -8884,7 +11827,7 @@
   ],
   "lines": {
    "lab": [
-    552
+    671
    ]
   }
  },
@@ -8896,7 +11839,7 @@
   ],
   "lines": {
    "lab": [
-    1267
+    1386
    ]
   }
  },
@@ -8908,7 +11851,7 @@
   ],
   "lines": {
    "log": [
-    2457
+    2578
    ]
   }
  },
@@ -8920,8 +11863,8 @@
   ],
   "lines": {
    "lab": [
-    1266,
-    1318
+    1385,
+    1437
    ]
   }
  },
@@ -8933,7 +11876,7 @@
   ],
   "lines": {
    "lab": [
-    1288
+    1407
    ]
   }
  },
@@ -8945,7 +11888,7 @@
   ],
   "lines": {
    "lab": [
-    1303
+    1422
    ]
   }
  },
@@ -8957,7 +11900,7 @@
   ],
   "lines": {
    "lab": [
-    792
+    911
    ]
   }
  },
@@ -8969,7 +11912,7 @@
   ],
   "lines": {
    "lab": [
-    421
+    540
    ]
   }
  },
@@ -8981,7 +11924,7 @@
   ],
   "lines": {
    "lab": [
-    539
+    658
    ]
   }
  },
@@ -8993,7 +11936,7 @@
   ],
   "lines": {
    "log": [
-    3386
+    3505
    ]
   }
  },
@@ -9005,7 +11948,7 @@
   ],
   "lines": {
    "log": [
-    2107
+    2228
    ]
   }
  },
@@ -9017,7 +11960,7 @@
   ],
   "lines": {
    "lab": [
-    941
+    1060
    ]
   }
  },
@@ -9029,7 +11972,7 @@
   ],
   "lines": {
    "lab": [
-    993
+    1112
    ]
   }
  },
@@ -9041,7 +11984,7 @@
   ],
   "lines": {
    "lab": [
-    993
+    1112
    ]
   }
  },
@@ -9053,7 +11996,7 @@
   ],
   "lines": {
    "log": [
-    2017
+    2138
    ]
   }
  },
@@ -9065,7 +12008,7 @@
   ],
   "lines": {
    "lab": [
-    1958
+    2077
    ]
   }
  },
@@ -9077,7 +12020,7 @@
   ],
   "lines": {
    "lab": [
-    1141
+    1260
    ]
   }
  },
@@ -9089,7 +12032,7 @@
   ],
   "lines": {
    "lab": [
-    1131
+    1250
    ]
   }
  },
@@ -9101,7 +12044,7 @@
   ],
   "lines": {
    "log": [
-    2143
+    2264
    ]
   }
  },
@@ -9113,7 +12056,119 @@
   ],
   "lines": {
    "lab": [
-    1106
+    1225
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {clip} other {clips}}",
+  "message": "{n, plural, one {clip} other {clips}}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1833,
+    1834
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {event was} other {events were}}",
+  "message": "{n, plural, one {event was} other {events were}}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    3506,
+    3518
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {event.} other {events.}}",
+  "message": "{n, plural, one {event.} other {events.}}",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    1827
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {file} other {files}}",
+  "message": "{n, plural, one {file} other {files}}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    535
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {match} other {matches}}",
+  "message": "{n, plural, one {match} other {matches}}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    1035,
+    1525
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {minute} other {minutes}}",
+  "message": "{n, plural, one {minute} other {minutes}}",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    2077
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {pass} other {passes}}",
+  "message": "{n, plural, one {pass} other {passes}}",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1917
+   ],
+   "lab": [
+    2575,
+    2599,
+    2719
+   ]
+  }
+ },
+ {
+  "key": "{n, plural, one {shot} other {shots}}",
+  "message": "{n, plural, one {shot} other {shots}}",
+  "apps": [
+   "log",
+   "lab"
+  ],
+  "lines": {
+   "log": [
+    1917
+   ],
+   "lab": [
+    1780,
+    1817,
+    2599,
+    2719
    ]
   }
  },
@@ -9125,7 +12180,7 @@
   ],
   "lines": {
    "lab": [
-    1271
+    1390
    ]
   }
  },
@@ -9137,7 +12192,7 @@
   ],
   "lines": {
    "lab": [
-    1271
+    1390
    ]
   }
  },
@@ -9149,7 +12204,7 @@
   ],
   "lines": {
    "lab": [
-    974
+    1093
    ]
   }
  },
@@ -9161,7 +12216,7 @@
   ],
   "lines": {
    "lab": [
-    2266
+    2385
    ]
   }
  },
@@ -9173,7 +12228,7 @@
   ],
   "lines": {
    "lab": [
-    2265
+    2384
    ]
   }
  },
@@ -9185,7 +12240,7 @@
   ],
   "lines": {
    "lab": [
-    2262
+    2381
    ]
   }
  },
@@ -9197,7 +12252,7 @@
   ],
   "lines": {
    "lab": [
-    1993
+    2112
    ]
   }
  },
@@ -9209,7 +12264,7 @@
   ],
   "lines": {
    "lab": [
-    2273
+    2392
    ]
   }
  },
@@ -9221,7 +12276,7 @@
   ],
   "lines": {
    "log": [
-    1361
+    1480
    ]
   }
  },
@@ -9233,7 +12288,7 @@
   ],
   "lines": {
    "log": [
-    2137
+    2258
    ]
   }
  },
@@ -9245,7 +12300,7 @@
   ],
   "lines": {
    "lab": [
-    1436
+    1555
    ]
   }
  },
@@ -9257,7 +12312,7 @@
   ],
   "lines": {
    "lab": [
-    598
+    717
    ]
   }
  },
@@ -9269,7 +12324,7 @@
   ],
   "lines": {
    "lab": [
-    1005
+    1124
    ]
   }
  },
@@ -9281,7 +12336,7 @@
   ],
   "lines": {
    "lab": [
-    2601
+    2720
    ]
   }
  },
@@ -9293,7 +12348,7 @@
   ],
   "lines": {
    "lab": [
-    1273
+    1392
    ]
   }
  },
@@ -9305,7 +12360,7 @@
   ],
   "lines": {
    "lab": [
-    1272
+    1391
    ]
   }
  },
@@ -9317,7 +12372,7 @@
   ],
   "lines": {
    "log": [
-    3091
+    3212
    ]
   }
  },
@@ -9329,7 +12384,7 @@
   ],
   "lines": {
    "lab": [
-    1106
+    1225
    ]
   }
  },
@@ -9341,7 +12396,7 @@
   ],
   "lines": {
    "log": [
-    1356
+    1475
    ]
   }
  },
@@ -9353,7 +12408,7 @@
   ],
   "lines": {
    "lab": [
-    2458
+    2577
    ]
   }
  },
@@ -9365,7 +12420,7 @@
   ],
   "lines": {
    "lab": [
-    2459
+    2578
    ]
   }
  },
@@ -9377,7 +12432,7 @@
   ],
   "lines": {
    "lab": [
-    1077
+    1196
    ]
   }
  },
@@ -9389,7 +12444,7 @@
   ],
   "lines": {
    "lab": [
-    1046
+    1165
    ]
   }
  },
@@ -9401,7 +12456,7 @@
   ],
   "lines": {
    "log": [
-    2716
+    2837
    ]
   }
  },
@@ -9413,7 +12468,7 @@
   ],
   "lines": {
    "log": [
-    2503
+    2624
    ]
   }
  },
@@ -9425,7 +12480,7 @@
   ],
   "lines": {
    "lab": [
-    1785
+    1904
    ]
   }
  },
@@ -9437,7 +12492,7 @@
   ],
   "lines": {
    "lab": [
-    1445
+    1564
    ]
   }
  },
@@ -9449,7 +12504,7 @@
   ],
   "lines": {
    "log": [
-    1799
+    1920
    ]
   }
  },
@@ -9461,7 +12516,7 @@
   ],
   "lines": {
    "lab": [
-    1106
+    1225
    ]
   }
  },
@@ -9473,7 +12528,7 @@
   ],
   "lines": {
    "lab": [
-    580
+    699
    ]
   }
  },
@@ -9485,7 +12540,19 @@
   ],
   "lines": {
    "lab": [
-    1419
+    1538
+   ]
+  }
+ },
+ {
+  "key": "{teamLabel}: {inc} incomplete {choice}. Players need a name, division and gender; substitutes need a name and gender.",
+  "message": "{teamLabel}: {inc} incomplete {choice}. Players need a name, division and gender; substitutes need a name and gender.",
+  "apps": [
+   "log"
+  ],
+  "lines": {
+   "log": [
+    2981
    ]
   }
  },
@@ -9497,7 +12564,7 @@
   ],
   "lines": {
    "log": [
-    3447
+    3566
    ]
   }
  },
@@ -9509,7 +12576,7 @@
   ],
   "lines": {
    "log": [
-    2553
+    2674
    ]
   }
  },
@@ -9521,7 +12588,7 @@
   ],
   "lines": {
    "log": [
-    1696
+    1817
    ]
   }
  },
@@ -9533,7 +12600,7 @@
   ],
   "lines": {
    "log": [
-    2521
+    2642
    ]
   }
  },
@@ -9545,7 +12612,7 @@
   ],
   "lines": {
    "log": [
-    1377
+    1496
    ]
   }
  },
@@ -9557,8 +12624,8 @@
   ],
   "lines": {
    "log": [
-    1380,
-    1384
+    1499,
+    1503
    ]
   }
  },
@@ -9570,7 +12637,7 @@
   ],
   "lines": {
    "lab": [
-    961
+    1080
    ]
   }
  },
@@ -9582,7 +12649,7 @@
   ],
   "lines": {
    "lab": [
-    1465
+    1584
    ]
   }
  },
@@ -9594,7 +12661,7 @@
   ],
   "lines": {
    "log": [
-    2784
+    2905
    ]
   }
  },
@@ -9606,7 +12673,7 @@
   ],
   "lines": {
    "log": [
-    2937
+    3058
    ]
   }
  },
@@ -9618,7 +12685,7 @@
   ],
   "lines": {
    "lab": [
-    553
+    672
    ]
   }
  },
@@ -9630,7 +12697,7 @@
   ],
   "lines": {
    "lab": [
-    1981
+    2100
    ]
   }
  },
@@ -9642,7 +12709,7 @@
   ],
   "lines": {
    "lab": [
-    1101
+    1220
    ]
   }
  },
@@ -9654,7 +12721,7 @@
   ],
   "lines": {
    "lab": [
-    1715
+    1834
    ]
   }
  },
@@ -9666,7 +12733,7 @@
   ],
   "lines": {
    "lab": [
-    1714
+    1833
    ]
   }
  },
@@ -9678,8 +12745,8 @@
   ],
   "lines": {
    "lab": [
-    2283,
-    2283
+    2402,
+    2402
    ]
   }
  },
@@ -9691,7 +12758,7 @@
   ],
   "lines": {
    "log": [
-    3346
+    3465
    ]
   }
  },
@@ -9703,9 +12770,9 @@
   ],
   "lines": {
    "lab": [
-    974,
-    1243,
-    1263
+    1093,
+    1362,
+    1382
    ]
   }
  },
@@ -9717,7 +12784,7 @@
   ],
   "lines": {
    "log": [
-    3387
+    3506
    ]
   }
  },
@@ -9729,7 +12796,7 @@
   ],
   "lines": {
    "lab": [
-    1243
+    1362
    ]
   }
  },
@@ -9741,7 +12808,7 @@
   ],
   "lines": {
    "lab": [
-    1244
+    1363
    ]
   }
  },
@@ -9753,7 +12820,7 @@
   ],
   "lines": {
    "log": [
-    2403
+    2524
    ]
   }
  },
@@ -9765,7 +12832,7 @@
   ],
   "lines": {
    "lab": [
-    1698
+    1817
    ]
   }
  },
@@ -9777,8 +12844,8 @@
   ],
   "lines": {
    "lab": [
-    1251,
-    1264
+    1370,
+    1383
    ]
   }
  },
@@ -9790,7 +12857,7 @@
   ],
   "lines": {
    "log": [
-    2251
+    2372
    ]
   }
  },
@@ -9802,7 +12869,7 @@
   ],
   "lines": {
    "log": [
-    3572
+    3691
    ]
   }
  },
@@ -9814,7 +12881,7 @@
   ],
   "lines": {
    "log": [
-    3570
+    3689
    ]
   }
  },
@@ -9826,7 +12893,7 @@
   ],
   "lines": {
    "log": [
-    3556
+    3675
    ]
   }
  },
@@ -9838,7 +12905,7 @@
   ],
   "lines": {
    "lab": [
-    981
+    1100
    ]
   }
  },
@@ -9850,7 +12917,7 @@
   ],
   "lines": {
    "lab": [
-    992
+    1111
    ]
   }
  },
@@ -9862,8 +12929,8 @@
   ],
   "lines": {
    "lab": [
-    1183,
-    1183
+    1302,
+    1302
    ]
   }
  },
@@ -9875,8 +12942,8 @@
   ],
   "lines": {
    "log": [
-    1767,
-    1781
+    1888,
+    1902
    ]
   }
  },
@@ -9888,7 +12955,7 @@
   ],
   "lines": {
    "log": [
-    2521
+    2642
    ]
   }
  },
@@ -9900,8 +12967,8 @@
   ],
   "lines": {
    "log": [
-    2826,
-    2827
+    2947,
+    2948
    ]
   }
  },
@@ -9913,7 +12980,7 @@
   ],
   "lines": {
    "lab": [
-    576
+    695
    ]
   }
  },
@@ -9925,7 +12992,7 @@
   ],
   "lines": {
    "lab": [
-    1642
+    1761
    ]
   }
  },
@@ -9937,7 +13004,7 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035
    ]
   }
  },
@@ -9949,7 +13016,7 @@
   ],
   "lines": {
    "lab": [
-    916
+    1035
    ]
   }
  },
@@ -9961,7 +13028,7 @@
   ],
   "lines": {
    "log": [
-    2463
+    2584
    ]
   }
  },
@@ -9973,7 +13040,7 @@
   ],
   "lines": {
    "lab": [
-    1683
+    1802
    ]
   }
  },
@@ -9985,7 +13052,7 @@
   ],
   "lines": {
    "log": [
-    2463
+    2584
    ]
   }
  },
@@ -9997,7 +13064,7 @@
   ],
   "lines": {
    "log": [
-    1796
+    1917
    ]
   }
  },
@@ -10009,7 +13076,7 @@
   ],
   "lines": {
    "log": [
-    1285
+    1404
    ]
   }
  },
@@ -10021,7 +13088,7 @@
   ],
   "lines": {
    "lab": [
-    1406
+    1525
    ]
   }
  },
@@ -10033,7 +13100,7 @@
   ],
   "lines": {
    "log": [
-    2505
+    2626
    ]
   }
  },
@@ -10045,7 +13112,7 @@
   ],
   "lines": {
    "log": [
-    2018
+    2139
    ]
   }
  },
@@ -10057,7 +13124,19 @@
   ],
   "lines": {
    "lab": [
-    1667
+    1786
+   ]
+  }
+ },
+ {
+  "key": "← towards the centre line",
+  "message": "← towards the centre line",
+  "apps": [
+   "lab"
+  ],
+  "lines": {
+   "lab": [
+    919
    ]
   }
  },
@@ -10069,7 +13148,7 @@
   ],
   "lines": {
    "log": [
-    1659
+    1780
    ]
   }
  },
@@ -10081,7 +13160,7 @@
   ],
   "lines": {
    "log": [
-    2034
+    2155
    ]
   }
  }

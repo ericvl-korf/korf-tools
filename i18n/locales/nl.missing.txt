@@ -1,6 +1,7 @@
 Quarter {p}
 Pause or resume the extra time stopwatch (Space bar). Events are logged as {fmtClock} + extra time.
 End {pBtn}
+match
 End of Q{go}
 {plLabel} goes off injured and nobody replaces them. Division {div} plays on with {cntItem} players.
 {nm} comes on in Division {dv}{choice}
@@ -23,6 +24,7 @@ Reviewing {teamName} attack {att} · {pLong}
 {choice} and removed {itemCount}{choice2}
 Rewound extra time to +{fmtClock}
 Rewound to {fmtClock}
+{n, plural, one {event.} other {events.}}
 {choice} Regular time is over and the clock runs on in extra time. Events are logged as {tm} + extra time. Press {choice2}
 End of quarter {go}.
 End {pBtn} when the half is over, then Start when play restarts.
@@ -30,7 +32,10 @@ Click anywhere on the court for each pass in this attack{choice}
 (passes so far: {attackPasses}).
 Half court. {n} events logged in the match.
 · Attack {a}
+Delete event #{n}
 {atts} attacks · {shotsCount}{choice}{choice2}{choice3} · {fmtClock}{choice4}
+{n, plural, one {shot} other {shots}}
+{n, plural, one {pass} other {passes}}
 · ends: {outText}
 Multi-shot attack · {teamName}
 {shown} of {itemCount}
@@ -45,7 +50,7 @@ Stopped after
 Failed after
 the browser took too long to open {name}
 the browser could not open {name}
-Finding the ball, shot {q}{n} of {jobsCount}
+Finding the ball, shot {q} of {jobsCount}
 Could not check the times: {em}. The ball finder is downloaded from the internet the first time it is needed.{choice}
 The overall offset from step 1 is still listed below and can be applied.
 The {k} half video is shorter than its start time ({badItem}), so its shots were skipped. Check the {k2} half video start time in Match setup (a separate 2nd half video usually starts at 0:00).
@@ -56,6 +61,7 @@ Stopped.
 from {klvFmt} to {klvFmt2}{choice}
 {moved} of {plCount} events would move{choice}. Match confidence: {high} high, {medium} medium, {low} low. Low ones sit near a change of offset or where the camera movement matched the ball weakly; check them in the video.
 ({all} events are past the end of the video and stay as they are)
+Most of the match is weak, so the overall offset will not be applied. Check that this is the right video file for the half and that its start time is about right.
 Restored the original time of {n} events.
 Ball finder: graphics chip not used ({gpuErr})
 free pass
@@ -65,8 +71,10 @@ Changed the time of {nShot} shots.
 Nothing needed changing.
 Tap at least 2 events in the {choice} half.
 This video is for the {choice} half. The other half uses its own video: use the buttons above to switch to it.
+Clear
 Tapped at video time {V}: the video is {choice} the log by {off} s.
 ahead of
+behind
 the browser got stuck reading {nm} (it may be a format the browser cannot seek in; try a different copy of the video, for example an MP4 with H.264 video). Its shots are skipped
 Stopped: {err}.
 Done. {skipped} of {shots} shots were skipped because the video would not read there{choice}.
@@ -82,12 +90,15 @@ Saved ball positions for {nbt} shots{choice}.
 ({nbt} in the 1st half, {nb2} in the 2nd)
 Substitution · {teamName}
 {evClock} · pick who comes off and who comes on, or mark a player injured with no replacement
+optional when a division is a player short
 Division {d}{choice} · {psCount} on court
 Division {d} ({cntItem} on court)
 {r} m from the post · {a}° · {evClock}
 {base} · step 1 of 2{choice}
 Logged automatically as a {choice}{choice2}
+penalty
 free pass shot
+. Untick the box above to log a standard shot and choose a shot type.
 {choice} · {teamName} · Division {div}
 step 2 of 2
 {teamName} · {label} rebound{choice}
@@ -100,20 +111,39 @@ Free pass awarded to {teamName}. Log the passes, then double-click the shot.
 {r} m from the post · {a}°
 Div 1
 Div 2
+Remove {choice}
+player
+substitute
 {tl} colour
+Colour {c}
+Custom colour for {tl}
+Court preview, {len} by {h} metres
 · Division {value}
+Paste the {choice}YouTube link, or choose No video.
+Choose the {choice}video file, or choose No video.
+The {choice} link does not look like a YouTube link. Paste the address from the YouTube share button.
 match video
+The {xItem} video start time must look like 04:10 (minutes:seconds).
+The {side} team name has not been entered; it will be called "{def}".
+{teamLabel}: {inc} incomplete {choice}. Players need a name, division and gender; substitutes need a name and gender.
+row
+rows
+You chose to add player names for {teamLabel} but have not added any.
 Division {d} has {n} {choice} in the starting line-up; a division should field 4.
+players
 Division {d} has {mm} male and {ff} female players; each division should field 2 male and 2 female players.
 The starting line-up has {n} {xItem} {choice}; a team should field 4 {xItem2} players.
 Division {d}: {psCount} ({mm} male, {ff} female)
 Substitutes: {subs}
 Division attacking first · {teamLabel}
+home
+away
 Attacking direction at the start · {teamLabel}
 {tn} start in possession{choice} attacking {zone} in the {choice2}. {on}{choice3}{oz}. Directions flip at the start of the {choice4}.{choice5}
 with Division {value}
 first two quarters
 have Division {value} attacking
+attack
 Add the {choice} half {choice2} above to preview it here.
 video file
 Play the video, or step through it, until the whistle that starts the {choice} half, then press Set. The time goes straight into the field above.{choice2}
@@ -123,19 +153,22 @@ The {choice} half now starts at {t} in the video.
 Choose again when tracking: {n}
 Step {setupStep} of 6 · {value}
 {periods} {choice} of {per} min each.
+halves
+quarters
 Next: {choice}
+Custom {xItem}
 {value} events
+Delete the saved match {home}
 Press Resume on the clock to carry on, or End {pBtn} to set up the next half.
 {kind} applied
 {value} moved to a new time. Export the corrected event log now so the new times are saved in your file. The original times are kept in the file too (column time_original_s), and you can still export later with Export match.
-event was
-events were
+{n, plural, one {event was} other {events were}}
 The time of {nf}{choice} corrected against the video. They are saved in this export, and the original times are kept in the time_original_s column.
 Korf Log is still finding the ball for {n} shots. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.
 {TO_SHORTItem} turnover
 {teamName} are in attack.
 Turnover in attack. {teamName} have the ball back.
-Deleted event #{di}{n} ({evLabel}). Everything after it was recalculated.
+Deleted event #{di} ({evLabel}). Everything after it was recalculated.
 Backup
 {what} saved as {fn} ({itemCount} events). If no file appeared, press Export match when the match has ended and use Copy.
 Could not download here. The {choice} is in the export box: copy it and keep it somewhere safe.
@@ -162,6 +195,7 @@ Opens the Mental Health UK donation page in a new tab, with £5 filled in
 Show
 Hide
 Page {page} of {pages}
+{n, plural, one {file} other {files}}
 {itemCount} events
 This does not look like a tracker event log. Missing column{choice}: {miss}.
 Opponents of {team}
@@ -174,11 +208,13 @@ all loaded matches
 {teamLabel} season report
 All matches ({ldCount})
 {n} of {ldCount} matches
+no goal
 {g} goals from {n} shots ({pf})
 halves and quarters
 This match: court {L} × {L2} m · {D} minutes · {p}
 Matches differ, so shots are drawn on the largest court ({L} × {L2} m) and time runs to the longest match ({D} min)
 All matches: court {L} × {L2} m · {D} minutes · {p}
+{n, plural, one {match} other {matches}}
 · against {choice}
 all opponents
 Goals cannot be rebounded, so they are left out of the rebound percentages. Rebound % = rebounds collected ÷ all shots that did not score. Attacking rebound % = rebounds collected by the shooting team ÷ its own shots that did not score. Defensive rebound % = rebounds collected by the defending team ÷ opponent shots that did not score. {choice}
@@ -186,21 +222,29 @@ Turnovers = open-play attacks that ended with the ball lost: a defended shot, a 
 , or a logged turnover
 {label} against {choice}
 its opponents
+Score progression, {name}
 H{X}V{Y}
 {team} · goal {pItem}
 Goals by 5-minute block
 {name} · {catsItem} min
 {value} goals
+Close (0–2.5 m)
+Mid (2.5–5 m)
+Long (5 m +)
 {xItem} goals from {xItem2} shots ({pf})
 Number of shots in each 1 m band from the post, all shot types
+Shots by distance from the post in 1 metre bands
 {xItem} shots, {xItem2} goals ({pf})
 {label} shots
 {label} goals
 {oItem}: {cItem} of {n}
 Division {div}
+Division 1
+Division 2
 All shots are folded onto one half court. 0° is straight in front of the post facing the centre line, turning clockwise. The court size is read from each file (40 × 20 m is assumed for older files that do not say). Division and gender belong to the shooter, so shots without a named player drop out when either is filtered.{choice}
 Shots from a converted Yellow Bucket file are plotted on a simulated 40 × 20 m court.
 {ptsCount} shots · {nG} goals
+Density shows where shots were taken from, smoothed over about 1 m. Switch back to Shots for individual attempts.
 First 300 of {ptsCount} shots.
 {ppCount} shots · {gg} goals
 Filled dot: goal. Hollow dot: no goal. {note} Shots are folded onto one half court; 0° is straight in front of the post.
@@ -208,6 +252,7 @@ Filled dot: goal. Hollow dot: no goal. {note} Shots are folded onto one half cou
 Opponents
 Opponent
 All {choice} shots of the whole selection.{choice2}
+opponent
 goal · {pf} lost
 {cItem} of {n} attacks
 How long attacks are before they end, for {label}
@@ -221,6 +266,7 @@ For {label}
 {mmItem} per match
 {minutes} min, {choice}{choice2}
 {x} min
+Unknown
 No named players in the loaded files{choice}. Players appear when the tracker setup lists them.
 for {teamLabel}
 {value} not scored
@@ -242,8 +288,10 @@ Average {avg}%
 Division {d}
 {g} ({n} players)
 Out: {choice}
+none
 In: {choice}
 nobody (injured)
+Sort by {label}
 · not shown, because not every match logged them: {__hiddenStats}
 No matches for {team}
 {teamLabel} · coach report: team and all players · {matchScope} · {toLocaleDateString}
@@ -255,25 +303,28 @@ Batch stopped after {i} of {itemCount} reports.
 Report {i} of {itemCount}: {team} · {name}. Choose Save as PDF in the print window.
 Done {i} of {itemCount}. Next report starts in a moment.
 Rebound by {choice}{choice2}
-Division 1
-Division 2
+defence
 Best 5
 Best 10
 Best 15
 Best 20
 Best 30
+Video times (optional). Enter the video time at which each half started, as mm:ss, for example 04:10. Links and start times are filled in automatically when the log was made with a video in Korf Log. If the match video is split in two, add the 2nd half link as well.
 · Week {week}
 Or a video file on this computer{choice}
 (1st half)
 Choose again: {fn1}
 2nd half file
 Choose again: {fn2}
+Ticked: the ffmpeg script (1200x1920) and Make highlight video (720x1152) make a portrait 10:16 video for Instagram by cropping the centre of the picture, so the sides are cut off. Unticked: the video keeps its original shape.
 Portrait 10:16 centre crop (Instagram)
 Captions apply to both the highlight video and the ffmpeg script. Individual clips applies to the ffmpeg script only. The Portrait 10:16 frame and Crop follows the ball apply to both. Ticking Crop follows the ball needs the Portrait option and your video file: Korf Lab then finds the ball in the filtered clips on this computer straight away (a few minutes, and a 20 MB ball finder is downloaded the first time). Unticking it stops the search; change the filters and tick it again to find the ball in the new clips. Make highlight video makes one video: 1280 × 720, or 720 × 1152 portrait when Portrait 10:16 is ticked.
 of {itemCount}
 · {ns} shots
+The shot moment was found with the ball finder: {moved} s after the referee call.
 Showing the first {shownCount}. The CSV has all {LCount}.
 {choice} half {choice2} · {team} · {choice3} · {choice4} · {oc}{choice5}{choice6}
+unknown shooter
 · clip {hlClock}–{hlClock2}
 {value} selected. Narrow them down with the filters above (half, team, shooter, shot type, outcome), or keep them all.
 Choose your video file{choice}
@@ -282,21 +333,25 @@ below, or paste a YouTube link.
 Needed for the exact moment of penalty and free pass shots{choice} and for the crop that follows the ball. Do it after steps 1 and 2, and again if you change the shots. Works on your computer and takes a few minutes; keep the tab open.{choice2}
 Done.
 {value} can play from YouTube
+{n, plural, one {clip} other {clips}}
 {value} can be made into a video from your file
 Choose the video file on this computer first. The log only remembers the file name ({names}), so pick it again each time you open the page.
-Clip {i}{n} of {n2} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}
+Clip {i} of {n} · {choice} · {team} · {choice2} · {oc} · {choice3} half {choice4}
 Finished: all {itemCount} clips played.
 {seenCount} matches
 Recording runs at normal playback speed. Keep this tab open and visible until it finishes.{choice}
 {choice} · {oc} · {choice2} half {choice3}
 {choice}Saved {fnm} ({size} MB, {LCount} clips).
 Could not make the video: {choice}. Try the ffmpeg script instead.
+the browser refused to play or record this file
 {label}: {done} of {total} frames · about {choice} left. Keep this tab open.
+{n, plural, one {minute} other {minutes}}
 Shot moment found for {shotsFound} of {shotsTotal} penalties and free passes.
 {value} Portrait 10:16 and Crop follows the ball are ticked for the portrait video.
 Found the ball in {found} of {done} frames{choice}.
 Could not find the ball: {choice}. The ball finder is downloaded from the internet the first time you use it.
 {name}: {n} ball positions
+# Korf Lab highlight reel. Put this file next to your video file(s) and run it with: sh
 {choice} - {oc} - {choice2} half {choice3}
 Saved {base}{choice} ({LCount} clips). Put it in the folder with your video file and run it to get {choice2}{choice3}
 the clips in the folder {base}_clips.
@@ -308,21 +363,25 @@ Copied {itemCount} lines.
 {name}: expected shots from two teams, but found {teamsCount}: {teams}.
 {name}: {rowsCount} shots ({teamsItem} {n0}, {teamsItem2} {n1}), up to {mx} min.
 {value} colour
+oobA
+oobD
 Saved {fn}. If no file appeared, your browser may have blocked the download.
 Saved {fn}.
 Could not read {name}.
 Press Play or Next to start. {np}{choice} in this attack.
-Step {k}{n} of {itemCount} ·
+Step {k} of {itemCount} ·
 {pos}Pass {n} of {np} · {tm}
 {pos}Turnover · {tm}
 Foul during the rebound, {choice} get the ball
+the other side
 Rebound collected by {choice}
 by {player}
-Attack {pi}{n} of {itemCount} ·
-Step {step}{n} of {itemCount}
+Attack {pi} of {itemCount} ·
+Step {step} of {itemCount}
 The 10 attacks most like this goal
 {pct}% alike · {choice}
 Show this attack
+sample_TeamA_v_TeamB_eventlog.csv
 Korf Log files<small>Event logs saved from Korf Log (CSV or JSON)</small>
 Yellow Bucket files<small>Shot location exports (CSV)</small>
 Sample file<small>A made-up match to try Korf Lab</small>
