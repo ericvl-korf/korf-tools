@@ -6,7 +6,7 @@ import json,re,sys,openpyxl
 wb=openpyxl.load_workbook(sys.argv[1]);ws=wb['Translations']
 p='i18n/locales/nl.json';nl=json.load(open(p,encoding='utf8'))
 def ph(s):
-    if 'plural' in s: s=re.sub(r'(one|other)\s*\{[^{}]*\}','',s)
+    if 'plural' in s: s=re.sub(r'\b(one|other)\s*\{[^{}]*\}','',s)
     return sorted(set(re.findall(r'\{\s*([A-Za-z_]\w*)',s))-{'one','other','plural'})
 bad=0;ch=0
 for r in ws.iter_rows(min_row=2,values_only=True):
