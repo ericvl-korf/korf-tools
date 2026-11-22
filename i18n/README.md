@@ -72,3 +72,10 @@ Text that appears in CSS (`::after` content) is read from a CSS variable such as
 * `node i18n/build.js` – missing messages and placeholder mismatches.
 * Open an app with `?lang=pseudo` and click through it: text without `⟦ ⟧` has not been made translatable.
 * Switch EN/NL while a match (Log) or files (Lab) are loaded: the screen must redraw in place and nothing may be lost.
+
+## Placeholder conventions
+
+- Placeholder names are descriptive snake_case and unique to their meaning: the same name in two messages means the same value (for example `{team_name}`), a different value gets a different name.
+- Suffixes show the type: `_count` (a quantity), `_number` (an ordinal or label such as a quarter or division number), `_m` / `_minutes` / `_seconds` / `_deg` / `_percent` / `_mb` (a measure whose unit is in the string), `_phrase` / `_hint` / `_note` (an optional sentence part, built from other messages).
+- Anything that is a count of things followed by a noun uses ICU plural inside the one message: `{shot_count, plural, one {# shot} other {# shots}}`. Do not build plurals with ternaries or by concatenating a number and a word.
+- The review workbook (`i18n/review/korf-nl-translation-review.xlsx`, column "Placeholder details") lists the type, meaning and translation keys of every placeholder.

@@ -44,7 +44,7 @@ function scan(name,html){
   for(const [k,msg] of CSS_KEYS)add(msg,'',0,'css');
   return found;
 }
-function params(s){const out=[];const re=/\{\s*([A-Za-z_]\w*)\s*(?:,|\})/g;let m;while((m=re.exec(s)))out.push(m[1]);return out.sort();}
+function params(s){const out=[];const re=/(?<!\b(?:one|other|zero|two|few|many|=\d+)\s*)\{\s*([A-Za-z_]\w*)\s*(?:,|\})/g;let m;while((m=re.exec(s)))out.push(m[1]);return out.sort();}
 let bad=0;const all={};const perApp={};
 for(const [app,file] of APPS){const p=path.join(root,file);if(!fs.existsSync(p))continue;const html=fs.readFileSync(p,'utf8');const f=scan(app,html);perApp[app]=f;
   for(const x of f){const k=x.ctx?x.ctx+SEP+x.msg:x.msg;const e=all[k]=all[k]||{msg:x.msg,ctx:x.ctx,apps:[],lines:{}};if(!e.apps.includes(app))e.apps.push(app);(e.lines[app]=e.lines[app]||[]).push(x.line);}}
