@@ -3046,8 +3046,8 @@ function syncStep2(){
   var s0=draft.start,lock=setupLocked();
   qa('[data-stteam]').forEach(function(b){var side=b.dataset.stteam==='H'?'home':'away';b.textContent=teamLabel(side);b.setAttribute('aria-pressed',b.dataset.stteam===s0.team?'true':'false');b.disabled=lock;});
   qa('[data-stdiv]').forEach(function(b){b.setAttribute('aria-pressed',Number(b.dataset.stdiv)===s0.divs[b.dataset.stdt]?'true':'false');b.disabled=lock;});
-  qa('[data-divlbl]').forEach(function(l){l.textContent=i18n.t('Division attacking first · {teamLabel}',{teamLabel:teamLabel(l.dataset.divlbl==='H'?i18n.t('home'):i18n.t('away'))});});
-  $('#dirLbl').textContent=i18n.t('Attacking direction at the start · {teamLabel}',{teamLabel:teamLabel(s0.team==='H'?i18n.t('home'):i18n.t('away'))});
+  qa('[data-divlbl]').forEach(function(l){l.textContent=i18n.t('Division attacking first · {teamLabel}',{teamLabel:teamLabel(l.dataset.divlbl==='H'?'home':'away')});});
+  $('#dirLbl').textContent=i18n.t('Attacking direction at the start · {teamLabel}',{teamLabel:teamLabel(s0.team==='H'?'home':'away')});
   qa('[data-stdir]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.stdir===s0.dir?'true':'false');b.disabled=lock;});
   var four=draft.periods===4,tn=teamLabel(s0.team==='H'?'home':'away'),on=teamLabel(s0.team==='H'?'away':'home');
   var zone=s0.dir==='right'?i18n.t('Zone B (right)'):i18n.t('Zone A (left)'),oz=s0.dir==='right'?i18n.t('Zone A (left)'):i18n.t('Zone B (right)');

@@ -4885,18 +4885,6 @@
   }
  },
  {
-  "key": "H{X}V{Y}",
-  "message": "H{X}V{Y}",
-  "apps": [
-   "lab"
-  ],
-  "lines": {
-   "lab": [
-    1076
-   ]
-  }
- },
- {
   "key": "Imported {itemCount} events from {name}.",
   "message": "Imported {itemCount} events from {name}.",
   "apps": [
@@ -10718,19 +10706,6 @@
   }
  },
  {
-  "key": "away",
-  "message": "away",
-  "apps": [
-   "log"
-  ],
-  "lines": {
-   "log": [
-    3049,
-    3050
-   ]
-  }
- },
- {
   "key": "ball/",
   "message": "ball/",
   "apps": [
@@ -11057,19 +11032,6 @@
   }
  },
  {
-  "key": "home",
-  "message": "home",
-  "apps": [
-   "log"
-  ],
-  "lines": {
-   "log": [
-    3049,
-    3050
-   ]
-  }
- },
- {
   "key": "its opponents",
   "message": "its opponents",
   "apps": [
@@ -11211,30 +11173,6 @@
   "lines": {
    "lab": [
     1780
-   ]
-  }
- },
- {
-  "key": "oobA",
-  "message": "oobA",
-  "apps": [
-   "lab"
-  ],
-  "lines": {
-   "lab": [
-    2431
-   ]
-  }
- },
- {
-  "key": "oobD",
-  "message": "oobD",
-  "apps": [
-   "lab"
-  ],
-  "lines": {
-   "lab": [
-    2431
    ]
   }
  },
@@ -11381,18 +11319,6 @@
   "lines": {
    "log": [
     2981
-   ]
-  }
- },
- {
-  "key": "sample_TeamA_v_TeamB_eventlog.csv",
-  "message": "sample_TeamA_v_TeamB_eventlog.csv",
-  "apps": [
-   "lab"
-  ],
-  "lines": {
-   "lab": [
-    2723
    ]
   }
  },

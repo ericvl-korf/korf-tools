@@ -136,8 +136,6 @@ The starting line-up has {n} {xItem} {choice}; a team should field 4 {xItem2} pl
 Division {d}: {psCount} ({mm} male, {ff} female)
 Substitutes: {subs}
 Division attacking first · {teamLabel}
-home
-away
 Attacking direction at the start · {teamLabel}
 {tn} start in possession{choice} attacking {zone} in the {choice2}. {on}{choice3}{oz}. Directions flip at the start of the {choice4}.{choice5}
 with Division {value}
@@ -223,7 +221,6 @@ Turnovers = open-play attacks that ended with the ball lost: a defended shot, a 
 {label} against {choice}
 its opponents
 Score progression, {name}
-H{X}V{Y}
 {team} · goal {pItem}
 Goals by 5-minute block
 {name} · {catsItem} min
@@ -363,8 +360,6 @@ Copied {itemCount} lines.
 {name}: expected shots from two teams, but found {teamsCount}: {teams}.
 {name}: {rowsCount} shots ({teamsItem} {n0}, {teamsItem2} {n1}), up to {mx} min.
 {value} colour
-oobA
-oobD
 Saved {fn}. If no file appeared, your browser may have blocked the download.
 Saved {fn}.
 Could not read {name}.
@@ -381,7 +376,6 @@ Step {step} of {itemCount}
 The 10 attacks most like this goal
 {pct}% alike · {choice}
 Show this attack
-sample_TeamA_v_TeamB_eventlog.csv
 Korf Log files<small>Event logs saved from Korf Log (CSV or JSON)</small>
 Yellow Bucket files<small>Shot location exports (CSV)</small>
 Sample file<small>A made-up match to try Korf Lab</small>
