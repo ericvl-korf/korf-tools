@@ -32,7 +32,7 @@
       else if(type==='number'){out+=val(num(v));}
       else{var a=arms(m[3]||''),pick;
         if(type==='plural'){var n=Number(v);pick=a['='+n]!==undefined?a['='+n]:(a[PRC?PRC.select(n):(n===1?'one':'other')]!==undefined?a[PRC?PRC.select(n):(n===1?'one':'other')]:a.other);
-          if(pick!==undefined)pick=pick.replace(/#/g,function(){return num(n);});}
+          if(pick!==undefined)pick=pick.replace(/#/g,function(){return String(n);});}
         else pick=a[String(v)]!==undefined?a[String(v)]:a.other;
         out+=pick===undefined?'':fmt(pick,vars,html);}
       i=c+1;
