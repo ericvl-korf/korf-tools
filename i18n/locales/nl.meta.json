@@ -162,6 +162,8 @@
  "Korf Log": "old",
  "Korf Log files<small>Event logs saved from Korf Log (CSV or JSON)</small>": "composed",
  "Korf Log is still finding the ball for {shot_count, plural, one {# shot} other {# shots}}. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.": "composed",
+ "Korf Log saved ball positions for goals only (the ball finder can be limited to goals in Korf Log's match setup). They cover {covered_count} of {clip_count, plural, one {# clip} other {# clips}}; the rest are found on this computer when you press Find the ball in my video.": "new",
+ "Korf Log saved ball positions for {covered_count} of {clip_count, plural, one {# clip} other {# clips}}. The rest are found on this computer when you press Find the ball in my video.": "new",
  "Korf Log · created by <b>Eric Van Looy</b>": "new",
  "Korfball team report": "old",
  "Lab": "old",
