@@ -446,6 +446,8 @@
  "Korf Log": "Korf Log",
  "Korf Log files<small>Event logs saved from Korf Log (CSV or JSON)</small>": "Korf Log-bestanden<small>Wedstrijdlogs opgeslagen vanuit Korf Log (CSV of JSON)</small>",
  "Korf Log is still finding the ball for {shot_count, plural, one {# shot} other {# shots}}. You can export now (Korf Lab finds the rest itself), or keep this tab open and export when it is done.": "Korf Log is nog bezig de bal te zoeken voor {shot_count, plural, one {# schot} other {# schoten}}. Je kunt nu exporteren (Korf Lab vindt de rest zelf), of houdt dit tabblad open en exporteer wanneer het klaar is.",
+ "Korf Log saved ball positions for goals only (the ball finder can be limited to goals in Korf Log's match setup). They cover {covered_count} of {clip_count, plural, one {# clip} other {# clips}}; the rest are found on this computer when you press Find the ball in my video.": "Korf Log heeft alleen balposities voor doelpunten opgeslagen (de baltracker kan in de wedstrijdinstellingen van Korf Log tot doelpunten worden beperkt). Ze dekken {covered_count} van {clip_count, plural, one {# fragment} other {# fragmenten}}; de rest wordt op deze computer gevonden als je op Zoek de bal in mijn video drukt.",
+ "Korf Log saved ball positions for {covered_count} of {clip_count, plural, one {# clip} other {# clips}}. The rest are found on this computer when you press Find the ball in my video.": "Korf Log heeft balposities opgeslagen voor {covered_count} van {clip_count, plural, one {# fragment} other {# fragmenten}}. De rest wordt op deze computer gevonden als je op Zoek de bal in mijn video drukt.",
  "Korf Log · created by <b>Eric Van Looy</b>": "Korf Log · gemaakt door <b>Eric Van Looy</b>",
  "Korfball team report": "Korfbal-teamrapport",
  "Lab": "Lab",
